@@ -471,14 +471,16 @@ analyze_gene(expr, gene_name = "TP53", threshold = 8)
 
 ::: {.columns}
 ::: {.column width="50%"}
-**tidyverse生态**
+#### tidyverse生态
+
 - `dplyr` — 数据处理
-- `ggplot2` — 可视化  
+- `ggplot2` — 可视化
 - `readr` — 数据读取
 - `tidyr` — 数据整理
 :::
 ::: {.column width="50%"}
-**Bioconductor生态**
+#### Bioconductor生态
+
 - `Biostrings` — 序列分析
 - `GenomicRanges` — 基因组区间
 - `DESeq2` — RNA-seq分析
@@ -605,15 +607,15 @@ library(pkg)
 
 ## 下节预告
 
-# tidyverse生态与数据可视化
+# R Markdown与现代报告工具
 
 ::: {.fragment .fade-in}
 ### 我们将学习：
 
-- 管道操作符 `|>` 的魔力
-- dplyr的五大核心动词
-- ggplot2图层语法
-- 制作高质量的科研图表
+- Markdown基础语法
+- R Markdown文档结构
+- 代码块与输出控制
+- Quarto现代工作流
 :::
 
 ---

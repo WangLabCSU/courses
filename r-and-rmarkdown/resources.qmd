@@ -16,7 +16,7 @@ subtitle: "持续学习与进阶参考"
 :::
 
 ::: {.resource-card}
-#### [RStudio/Posit](https://posit.co/)
+#### [Posit (原RStudio)](https://posit.co/)
 
 - RStudio IDE下载
 - 商业版功能介绍
@@ -49,18 +49,19 @@ subtitle: "持续学习与进阶参考"
 
 | 书名 | 作者 | 说明 |
 |------|------|------|
-| **R数据科学** | Hadley Wickham | tidyverse权威指南，必读 |
+| **R数据科学** | Hadley Wickham | tidyverse权威指南，必读，[在线免费阅读](https://r4ds.hadley.nz/) |
 | **R语言实战** | Robert Kabacoff | 全面系统，适合入门 |
-| **Advanced R** | Hadley Wickham | 进阶必读书 |
+| **Advanced R** | Hadley Wickham | 进阶必读书，[在线免费阅读](https://adv-r.hadley.nz/) |
 | **Efficient R Programming** | Colin Gillespie | 高效编程技巧 |
 
 ### R Markdown与报告
 
 | 书名 | 作者 | 说明 |
 |------|------|------|
-| **R Markdown Cookbook** | Yihui Xie 等 | 实用技巧大全 |
-| **bookdown** | Yihui Xie | 撰写书籍和文档 |
-| **Quarto指南** | Posit团队 | 现代报告工具 |
+| **R Markdown Cookbook** | Yihui Xie 等 | 实用技巧大全，[在线免费阅读](https://bookdown.org/yihui/rmarkdown-cookbook/) |
+| **R Markdown: The Definitive Guide** | Yihui Xie 等 | [在线免费阅读](https://bookdown.org/yihui/rmarkdown/) |
+| **bookdown** | Yihui Xie | 撰写书籍和文档，[在线免费阅读](https://bookdown.org/yihui/bookdown/) |
+| **Quarto指南** | Posit团队 | 现代报告工具，[官方文档](https://quarto.org/docs/guide/) |
 
 ### 生物信息学
 
@@ -68,7 +69,7 @@ subtitle: "持续学习与进阶参考"
 |------|------|------|
 | **Bioconductor案例分析** | 多位作者 | 生信实战 |
 | **Bioinformatics with R** | Robert Gentleman | Bioconductor基础 |
-| **Modern Statistics for Modern Biology** | Holmes & Huber | 现代统计方法 |
+| **Modern Statistics for Modern Biology** | Holmes & Huber | 现代统计方法，[在线免费阅读](https://www.huber.embl.de/msmb/) |
 
 ---
 
@@ -78,18 +79,18 @@ subtitle: "持续学习与进阶参考"
 ::: {.column width="50%"}
 ### 中文资源
 
-- [生信技能树](https://www.biotrainee.com/)
-- [生信菜鸟团](http://www.bio-info-trainee.com/)
-- [医学方R语言](https://www.medical-r.com/)
-- [DataCamp中文版](https://www.datacamp.com/)
+- [统计之都](https://cosx.org/) - 中国统计学社区
+- [知乎 - R语言话题](https://www.zhihu.com/topic/19559338)
+- [B站 - R语言教程](https://www.bilibili.com/) - 搜索"R语言"
+- [DataCamp](https://www.datacamp.com/) - 付费但质量高
 :::
 ::: {.column width="50%"}
 ### 英文资源
 
-- [DataCamp](https://www.datacamp.com/)
-- [Coursera - R Programming](https://www.coursera.org/learn/r-programming)
-- [edX - Data Science with R](https://www.edx.org/)
-- [ swirl (R内置教程) ](https://swirlstats.com/)
+- [DataCamp](https://www.datacamp.com/) - 交互式学习
+- [Coursera - R Programming](https://www.coursera.org/learn/r-programming) - Johns Hopkins
+- [edX - Data Science with R](https://www.edx.org/) - 多所名校课程
+- [swirl](https://swirlstats.com/) - R内置交互教程
 :::
 :::
 
@@ -101,7 +102,7 @@ subtitle: "持续学习与进阶参考"
 
 | 包名 | 用途 | 学习资源 |
 |------|------|----------|
-| `tidyverse` | 数据科学全家桶 | [R4DS](https://r4ds.had.co.nz/) |
+| `tidyverse` | 数据科学全家桶 | [R4DS](https://r4ds.hadley.nz/) |
 | `dplyr` | 数据处理 | [dplyr教程](https://dplyr.tidyverse.org/) |
 | `ggplot2` | 数据可视化 | [ggplot2书](https://ggplot2-book.org/) |
 | `tidyr` | 数据整理 | [tidyr教程](https://tidyr.tidyverse.org/) |
@@ -151,7 +152,7 @@ subtitle: "持续学习与进阶参考"
 
 ### LaTeX
 
-- **[TinyTeX](https://yihui.org/tinytex/)** - 轻量级LaTeX发行版
+- **[TinyTeX](https://yihui.org/tinytex/)** - 轻量级LaTeX发行版（推荐）
 - **[TeX Live](https://tug.org/texlive/)** - 完整LaTeX发行版
 - **[MiKTeX](https://miktex.org/)** - Windows平台
 
@@ -164,15 +165,14 @@ subtitle: "持续学习与进阶参考"
 ### 中文社区
 
 - [统计之都](https://cosx.org/) - 中国统计学社区
-- [生信技能树论坛](https://www.biotrainee.com/)
 - [知乎 - R语言话题](https://www.zhihu.com/topic/19559338)
-- [简书 - R语言](https://www.jianshu.com/c/4d463c7df66b)
+- [Bioconductor中文社区](https://www.bioconductor.org/)
 :::
 ::: {.column width="50%"}
 ### 英文社区
 
 - [Stack Overflow [r]](https://stackoverflow.com/questions/tagged/r)
-- [RStudio Community](https://community.rstudio.com/)
+- [Posit Community](https://community.rstudio.com/)
 - [r/statistics](https://www.reddit.com/r/statistics/)
 - [Bioconductor Support](https://support.bioconductor.org/)
 :::
@@ -254,20 +254,6 @@ theme_minimal()                # 简约主题
 labs(title = "", x = "")       # 标签
 facet_wrap(~group)             # 分面
 ```
-
----
-
-## 后续课程
-
-本课程为以下高级课程奠定基础：
-
-| 课程 | 主要内容 | 先修要求 |
-|------|----------|----------|
-| **转录组数据分析** | RNA-seq流程、差异表达、功能富集 | R基础 |
-| **基因组突变分析** | 突变检测、注释、可视化 | R基础 |
-| **单细胞测序分析** | Seurat流程、降维、聚类 | R基础、tidyverse |
-| **生物信息学算法** | 序列比对、基因组组装 | R/Python基础 |
-| **系统生物学** | 网络分析、通路建模 | R基础、统计学 |
 
 ---
 

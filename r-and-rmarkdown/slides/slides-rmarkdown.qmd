@@ -335,9 +335,7 @@ head(cars, 3)
 
 ---
 
-## 图表输出
-
-### 基础图形
+## 图表输出：基础图形
 
 ````markdown
 ```{r scatter, fig.width=8, fig.height=5}`r ''`
@@ -349,7 +347,7 @@ plot(cars$speed, cars$dist,
 ```
 ````
 
-```{r scatter, fig.width=8, fig.height=4.5}
+```{r scatter, fig.width=10, fig.height=5.5}
 plot(cars$speed, cars$dist, 
      main = "车速与刹车距离",
      xlab = "速度 (mph)",
@@ -359,7 +357,7 @@ plot(cars$speed, cars$dist,
 
 ---
 
-## ggplot2 图形
+## 图表输出：ggplot2 图形
 
 ````markdown
 ```{r ggplot-example}`r ''`
@@ -375,7 +373,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
 ```
 ````
 
-```{r ggplot-example, fig.width=9, fig.height=5}
+```{r ggplot-example, fig.width=10, fig.height=5.5}
 library(ggplot2)
 
 ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
