@@ -191,3 +191,22 @@ kbd {
   font-family: monospace;
   padding: 2px 6px;
 }
+
+/* Remove list bullets for cleaner course cards */
+.course-card ul,
+.feature-box ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.course-card ul li,
+.feature-box ul li {
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* Custom bullet replacement for course cards */
+.course-card ul li::before,
+.feature-box ul li::before {
+  content: none;
+}
