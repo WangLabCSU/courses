@@ -61,7 +61,6 @@ showtext::showtext_auto()
 
 > R是用于**统计计算**和**图形**的编程语言与环境
 
-::: {.fragment .fade-in}
 ### 核心特点
 
 | 特点 | 说明 |
@@ -71,7 +70,6 @@ showtext::showtext_auto()
 | **交互式** | 即时反馈，快速探索 |
 | **包生态** | 20,000+ CRAN包 |
 | **社区活跃** | 全球统计学家支持 |
-:::
 
 ---
 
@@ -104,11 +102,9 @@ showtext::showtext_auto()
 :::
 :::
 
-::: {.fragment .fade-in .callout-tip}
 ### R vs Python
 
 R更适合**统计分析**和**科研可视化**，Python更适合**通用编程**和**深度学习**。两者可以互补使用！
-:::
 
 ---
 
@@ -133,9 +129,7 @@ sudo apt-get install r-base
 下载地址: https://posit.co/download/rstudio-desktop/
 ```
 
-::: {.fragment .fade-in .callout-warning}
 推荐使用 **RStudio** —— 最强大的R IDE，提供代码编辑、调试、可视化、包管理一站式解决方案
-:::
 
 ---
 
@@ -390,11 +384,9 @@ for (i in 1:5) {
 }
 ```
 
-::: {.callout-tip}
 ### 最佳实践
 
 R中尽量使用**向量化操作**代替循环，效率更高！
-:::
 
 ---
 
@@ -547,38 +539,17 @@ require(dplyr)
 
 ## 本讲小结
 
-::: {.columns}
-::: {.column width="50%"}
 ### 核心概念
+- R是统计计算与图形语言
+- 五大基本类型：numeric, integer, character, logical, complex
+- 主要结构：vector, matrix, data.frame, list
+- 向量化操作是R的灵魂
 
-- ✅ R是统计计算与图形语言
-- ✅ 五大基本类型：numeric, integer, character, logical, complex
-- ✅ 主要结构：vector, matrix, data.frame, list
-- ✅ 向量化操作是R的灵魂
-- ✅ 条件与循环控制程序流
-- ✅ 函数封装可重用代码
-:::
-::: {.column width="50%"}
 ### 关键技能
-
-```r
-# 创建与索引
-x <- c(1, 2, 3)
-x[1]
-
-# 数据框操作
-df$column
-df[condition, ]
-
-# 函数定义
-my_fun <- function(x) { ... }
-
-# 包管理
-install.packages("pkg")
-library(pkg)
-```
-:::
-:::
+- 创建与索引：`x <- c(1, 2, 3); x[1]`
+- 数据框操作：`df$column; df[condition, ]`
+- 函数定义：`my_fun <- function(x) { ... }`
+- 包管理：`install.packages("pkg"); library(pkg)`
 
 ---
 
@@ -603,14 +574,12 @@ library(pkg)
 
 # R Markdown与现代报告工具
 
-::: {.fragment .fade-in}
 ### 我们将学习：
 
 - Markdown基础语法
 - R Markdown文档结构
 - 代码块与输出控制
 - Quarto现代工作流
-:::
 
 ---
 
@@ -618,10 +587,8 @@ library(pkg)
 
 ## Questions?
 
-::: {.center}
 王诗翔 副教授  
 中南大学生物医学信息系  
 
 📧 wangshx@csu.edu.cn  
 🐙 https://github.com/WangLabCSU
-:::

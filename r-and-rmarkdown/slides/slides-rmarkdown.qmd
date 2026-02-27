@@ -63,11 +63,9 @@ showtext::showtext_auto()
 
 ### 设计哲学
 
-::: {.quote}
-"The overriding design goal for Markdown's formatting syntax is to make it as **readable** as possible."
-
-— John Gruber
-:::
+> "The overriding design goal for Markdown's formatting syntax is to make it as **readable** as possible."
+>
+> — John Gruber
 
 ### 优势
 
@@ -122,11 +120,9 @@ showtext::showtext_auto()
 :::
 :::
 
-::: {.callout-tip}
 ### 提示
 
 Markdown有**标准语法**和**扩展语法**（如GFM、Pandoc），R Markdown支持大多数扩展
-:::
 
 ---
 
@@ -248,9 +244,7 @@ output:
 ---
 ```
 
-::: {.callout-note}
 YAML位于文档开头，用 `---` 包围，控制文档的全局设置
-:::
 
 ---
 
@@ -318,13 +312,11 @@ head(cars, 3)
 数据集包含 `r nrow(cars)` 个观测值，
 平均速度为 `r mean(cars$speed)` mph。
 
-::: {.callout-tip}
 ### 应用场景
 
 - 自动更新样本量、P值、统计量
 - 确保正文与表格数据一致
 - 多组比较时自动调整描述
-:::
 
 ---
 
@@ -621,43 +613,17 @@ calculate_bmi <- function(weight, height) {
 
 ## 本讲小结
 
-::: {.columns}
-::: {.column width="50%"}
 ### Markdown
+- 轻量级标记语言，支持标题、格式、列表、表格、代码块、LaTeX公式
 
-- 轻量级标记语言
-- 标题、格式、列表、表格
-- 代码块、LaTeX公式
-:::
-::: {.column width="50%"}
 ### R Markdown
+- `.Rmd` = 代码 + 文本，支持YAML元数据、代码块选项、内联代码、参数化报告
 
-- `.Rmd` = 代码 + 文本
-- YAML元数据
-- 代码块选项
-- 内联代码
-- 参数化报告
-:::
-:::
-
-::: {.columns}
-::: {.column width="50%"}
 ### Quarto
+- 下一代科学出版系统，支持多语言、原生交叉引用、现代美观
 
-- 下一代科学出版系统
-- 多语言支持
-- 原生交叉引用
-- 现代美观
-:::
-::: {.column width="50%"}
 ### 最佳实践
-
-- 可重复性原则
-- 版本控制 (Git)
-- 环境管理 (renv)
-- 规范的项目结构
-:::
-:::
+- 可重复性原则、版本控制(Git)、环境管理(renv)、规范的项目结构
 
 ---
 

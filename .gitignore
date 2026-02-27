@@ -2,6 +2,7 @@
 _site/
 /.quarto/
 *_files/
+_freeze/
 
 # R
 .Rhistory
