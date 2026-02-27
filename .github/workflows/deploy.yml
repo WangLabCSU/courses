@@ -62,12 +62,13 @@ jobs:
       - name: Render root website
         run: |
           echo "Rendering root website..."
-          quarto render index.qmd
+          quarto render
           
       - name: Render courses
         run: |
           # 查找所有课程目录（包含_quarto.yml的子目录）
-          for course in r-and-rmarkdown; do
+          for course in */; do
+            course=${course%/}
             if [ -d "$course" ] && [ -f "$course/_quarto.yml" ]; then
               echo "Rendering course: $course"
               cd "$course"
@@ -78,42 +79,14 @@ jobs:
           
       - name: Organize build output
         run: |
-          # 创建统一的_site目录
-          mkdir -p _site
-          
-          # 复制根目录构建结果
-          if [ -f "index.html" ]; then
-            cp index.html _site/
-          fi
-          
-          # 复制根目录其他文件
-          for file in license.html resources.html syllabus.html robots.txt sitemap.xml search.json; do
-            if [ -f "$file" ]; then
-              cp "$file" _site/
-            fi
-          done
-          
-          # 复制样式和库
-          if [ -d "site_libs" ]; then
-            cp -r site_libs _site/
-          fi
-          if [ -d "styles" ]; then
-            cp -r styles _site/
-          fi
-          if [ -d "logo" ]; then
-            cp -r logo _site/
-          fi
-          
-          # 复制各课程构建结果
-          for course in r-and-rmarkdown; do
+          # 创建统一的_site目录（根目录渲染已经创建好了）
+          # 复制各课程构建结果到根_site目录
+          for course in */; do
+            course=${course%/}
             if [ -d "$course/_site" ]; then
               echo "Copying $course to _site/"
               mkdir -p "_site/$course"
               cp -r "$course/_site"/* "_site/$course/"
-              # 确保logo在课程目录中
-              if [ -f "logo/csu_logo.png" ]; then
-                cp "logo/csu_logo.png" "_site/$course/"
-              fi
             fi
           done
           
