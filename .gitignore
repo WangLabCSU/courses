@@ -1,0 +1,56 @@
+# Quarto / R Markdown
+_site/
+/.quarto/
+*_files/
+
+# R
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+*.Rproj
+.Rproj.user/
+.renv/
+renv.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Output files (keep source only)
+*.html
+*.pdf
+*.docx
+!slides/*.html  # Keep rendered slides
+
+# Data (large files)
+*.csv
+*.tsv
+*.xlsx
+*.rds
+*.rda
+*.RData
+!data/*.csv     # Keep small example data
+
+**/*.quarto_ipynb

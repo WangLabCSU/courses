@@ -1,0 +1,163 @@
+---
+title: "中南大学 - 生物信息学课程"
+subtitle: "Department of Biomedical Informatics, Central South University"
+format:
+  html:
+    toc: false
+    page-layout: custom
+---
+
+::: {.hero-banner .text-center .py-5 .mb-4 style="background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%); color: white;"}
+
+# 生物信息学课程
+
+## Bioinformatics Courses
+
+::: {.lead .mt-3}
+中南大学 · 生物信息学专业 · 本科课程
+:::
+
+::: {.mt-4}
+[查看课程列表](#courses){.btn .btn-light .btn-lg .me-2}
+[实验室主页](https://wanglabcsu.github.io/){.btn .btn-outline-light .btn-lg}
+:::
+
+:::
+
+::: {.container .py-4}
+
+## 授课教师 {.text-center .mb-5}
+
+::: {.row .justify-content-center}
+::: {.col-md-8}
+
+::: {.instructor-card .mx-auto style="max-width: 600px;"}
+::: {.instructor-avatar style="width: 120px; height: 120px; overflow: hidden; padding: 0;"}
+![](http://biotree.top:38123/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
+:::
+::: {.instructor-info style="text-align: left;"}
+### 王诗翔 副教授
+
+**中南大学 · Department of Biomedical Informatics**
+
+研究方向：生物信息学、计算生物学、多组学数据分析
+
+🌐 [实验室主页](https://wanglabcsu.github.io/)  
+📧 wangshx@csu.edu.cn  
+🐙 [WangLabCSU](https://github.com/WangLabCSU)
+:::
+:::
+
+:::
+:::
+
+## 课程列表 {#courses .text-center .mt-5 .mb-4}
+
+::: {.row .g-4 .justify-content-center}
+
+::: {.col-md-6}
+::: {.course-card}
+### 📊 R与(R)Markdown基础
+
+**学时**: 4学时（理论2 + 实验2）  
+**对象**: 生物信息学专业 大二本科生
+
+掌握R语言核心语法与可重复性研究报告撰写技能。
+
+- R语言基础（数据类型、控制流、函数）
+- tidyverse数据处理与ggplot2可视化
+- R Markdown与Quarto报告编写
+
+[进入课程](r-and-rmarkdown/index.qmd){.btn .btn-primary .btn-sm .mt-2}
+[查看幻灯片](r-and-rmarkdown/slides/slides-r-basics.html){.btn .btn-outline-primary .btn-sm .mt-2}
+:::
+:::
+
+::: {.col-md-6}
+::: {.course-card style="opacity: 0.6;"}
+### 🧬 转录组数据分析
+
+**学时**: 4学时（理论2 + 实验2）  
+**对象**: 生物信息学专业 大二本科生
+
+RNA-seq数据处理与差异表达分析。
+
+- RNA-seq原理与流程
+- DESeq2/edgeR差异分析
+- 功能富集与通路分析
+
+::: {.badge .bg-secondary}
+即将推出
+:::
+:::
+:::
+
+:::
+
+## 课程特色 {.mt-5}
+
+::: {.row .g-4}
+::: {.col-md-3}
+::: {.feature-box}
+#### 🎯 面向实战
+所有内容紧密结合生物医学研究场景，代码示例可直接用于实际项目
+:::
+:::
+::: {.col-md-3}
+::: {.feature-box}
+#### 🔗 前后衔接
+课程体系完整，从基础到进阶，循序渐进
+:::
+:::
+::: {.col-md-3}
+::: {.feature-box}
+#### 📚 资源丰富
+提供完整的幻灯片、实验指导、示例代码、拓展阅读材料
+:::
+:::
+::: {.col-md-3}
+::: {.feature-box}
+#### 🚀 现代工具
+基于 Quarto 构建，支持多格式输出与在线交互
+:::
+:::
+:::
+
+## 使用说明 {.mt-5}
+
+::: {.row .justify-content-center}
+::: {.col-lg-8}
+
+::: {.callout-tip}
+### 如何使用本网站
+
+1. **在线访问**: 直接点击课程卡片进入学习
+2. **幻灯片浏览**: 每门课程配有交互式幻灯片，适合课堂展示
+3. **实验指导**: 详细的实验手册，含完整参考答案
+4. **离线使用**: 可下载完整网站到本地或机房使用
+:::
+
+::: {.callout-note}
+### 技术栈
+
+- **构建工具**: [Quarto](https://quarto.org/)
+- **编程语言**: R, Python
+- **托管平台**: GitHub Pages
+- **源码地址**: [GitHub](https://github.com/WangLabCSU/courses)
+:::
+
+:::
+:::
+
+:::
+
+::: {.text-center .py-4 .mt-5 style="background: #f8f9fa;"}
+
+**中南大学 · Department of Biomedical Informatics**  
+*Central South University*
+
+本网站使用 [Quarto](https://quarto.org) 构建 · 
+[GitHub 仓库](https://github.com/WangLabCSU/courses) · 
+[实验室主页](https://wanglabcsu.github.io/)
+
+:::

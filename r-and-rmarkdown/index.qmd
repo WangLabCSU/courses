@@ -1,0 +1,182 @@
+---
+title: "R与(R)Markdown基础"
+subtitle: "中南大学 生物信息学专业 本科课程"
+description: "掌握R语言核心语法与可重复性研究报告撰写技能"
+format:
+  html:
+    toc: false
+    page-layout: custom
+---
+
+::: {.hero-banner .text-center .py-5 .mb-4 style="background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%); color: white;"}
+
+# R与(R)Markdown基础
+
+## R and (R)Markdown Fundamentals
+
+::: {.lead .mt-3}
+中南大学 · 生物信息学专业 · 本科课程
+:::
+
+::: {.mt-4}
+[开始课前准备](syllabus.qmd){.btn .btn-light .btn-lg .me-2}
+[查看教学资源](resources.qmd){.btn .btn-outline-light .btn-lg}
+:::
+
+:::
+
+::: {.container .py-4}
+
+## 课程简介 {.text-center .mb-5}
+
+::: {.row .justify-content-center}
+::: {.col-lg-10}
+
+本课程面向**生物信息学专业**大二本科生，系统讲授 **R语言基础语法** 与 **(R)Markdown文档编写** 技术。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生：
+
+- 掌握R语言核心编程技能
+- 熟悉生物医学数据处理常用包
+- 学会使用R Markdown/Quarto撰写可重复性研究报告
+- 建立良好的计算生物学研究习惯
+
+:::
+:::
+
+## 课程模块 {.text-center .mb-4}
+
+::: {.row .g-4}
+
+::: {.col-md-6}
+::: {.course-card}
+### 📊 理论讲授 (2学时 = 90分钟)
+
+| 内容 | 时长 | 要点 |
+|------|:----:|------|
+| **R语言基础** | 50分钟 | 数据类型、结构、控制流、函数、R包生态 |
+| **R Markdown基础** | 25分钟 | 语法、代码块、输出控制 |
+| **现代报告工具** | 15分钟 | Quarto、可重复性研究 |
+
+[查看详细大纲](syllabus.qmd){.btn .btn-outline-primary .btn-sm .mt-2}
+:::
+:::
+
+::: {.col-md-6}
+::: {.course-card}
+### 🧪 实验操作 (2学时 = 90分钟)
+
+| 实验 | 时长 | 目标 |
+|------|:----:|------|
+| **实验1：R基础** | 45分钟 | 数据操作、可视化、编程练习 |
+| **实验2：报告撰写** | 45分钟 | 完整分析报告的R Markdown实现 |
+
+配套实验指导手册、示例数据、参考答案
+
+[进入实验指导](labs/lab1-r-basics.qmd){.btn .btn-outline-primary .btn-sm .mt-2}
+:::
+:::
+
+:::
+
+## 你将学到什么 {.text-center .mt-5 .mb-4}
+
+::: {.row .g-4 .text-center}
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 💻
+**R编程**
+向量、矩阵、数据框、列表操作；条件判断与循环；自定义函数
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 📦
+**核心包**
+tidyverse数据处理；ggplot2可视化；生物医学专用包
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 📝
+**文档编写**
+Markdown语法；R Markdown文档结构；交叉引用与自动化
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 🚀
+**现代工具**
+Quarto多格式输出；Git版本控制；可重复性研究最佳实践
+:::
+:::
+:::
+
+## 授课教师 {.mt-5}
+
+::: {.instructor-card}
+::: {.instructor-avatar style="width: 100px; height: 100px; overflow: hidden; padding: 0;"}
+![](http://biotree.top:38123/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
+:::
+::: {.instructor-info}
+### 王诗翔 副教授
+
+**中南大学 · 生物信息学专业**
+
+研究方向：生物信息学、计算生物学、多组学数据分析
+
+🌐 [实验室主页](https://wanglabcsu.github.io/)  
+📧 wangshx@csu.edu.cn  
+🐙 [WangLabCSU](https://github.com/WangLabCSU)
+:::
+:::
+
+## 课程特色 {.mt-5}
+
+::: {.row .g-4}
+::: {.col-md-4}
+::: {.feature-box}
+#### 🎯 面向实战
+所有内容紧密结合生物医学研究场景，代码示例可直接用于实际项目
+:::
+:::
+::: {.col-md-4}
+::: {.feature-box}
+#### 🔗 前后衔接
+本课程为后续《转录组分析》《基因组突变分析》等课程奠定基础
+:::
+:::
+::: {.col-md-4}
+::: {.feature-box}
+#### 📚 资源丰富
+提供完整的幻灯片、实验指导、示例代码、拓展阅读材料
+:::
+:::
+:::
+
+## 开始学习 {.text-center .mt-5}
+
+::: {.row .justify-content-center}
+::: {.col-md-10}
+
+::: {.d-grid .gap-2 .d-md-block}
+[📋 课程大纲](syllabus.qmd){.btn .btn-primary .btn-lg .me-2}
+[📊 幻灯片：R基础](slides/slides-r-basics.html){.btn .btn-secondary .btn-lg .me-2}
+[📊 幻灯片：R Markdown](slides/slides-rmarkdown.html){.btn .btn-secondary .btn-lg .me-2}
+[🧪 实验1](labs/lab1-r-basics.qmd){.btn .btn-success .btn-lg .me-2}
+[🧪 实验2](labs/lab2-rmarkdown.qmd){.btn .btn-success .btn-lg}
+:::
+
+:::
+:::
+
+:::
+
+::: {.text-center .py-4 .mt-5 style="background: #f8f9fa;"}
+
+**中南大学 · 生物信息学专业**  
+*Department of Biomedical Informatics, Central South University*
+
+本课程网站使用 [Quarto](https://quarto.org) 构建 · 
+[GitHub 仓库](https://github.com/WangLabCSU/courses/tree/main/r-and-rmarkdown) · 
+[实验室主页](https://wanglabcsu.github.io/)
+
+:::

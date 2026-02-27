@@ -1,0 +1,172 @@
+/*-- scss:defaults --*/
+
+// Colors
+$primary: #8B0000;      // 中南红
+$secondary: #1a5276;    // 深蓝
+$success: #27ae60;
+$info: #3498db;
+$warning: #f39c12;
+$danger: #e74c3c;
+$light: #f8f9fa;
+$dark: #2c3e50;
+
+// Body
+$body-bg: #ffffff;
+$body-color: #333333;
+
+// Fonts
+$font-family-sans-serif: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+$font-family-monospace: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+
+// Navbar
+$navbar-bg: $primary;
+$navbar-fg: #ffffff;
+$navbar-hover-color: rgba(255, 255, 255, 0.8);
+
+// Sidebar
+$sidebar-bg: #f8f9fa;
+$sidebar-fg: $dark;
+
+// Code
+$code-bg: #f5f5f5;
+$code-color: #c7254e;
+$pre-bg: #f8f9fa;
+$pre-color: #333333;
+
+/*-- scss:rules --*/
+
+/* Custom styles */
+.quarto-title-banner {
+  background: linear-gradient(135deg, $primary 0%, darken($primary, 15%) 100%);
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-title {
+  font-weight: 600;
+  color: $primary;
+  border-bottom: 2px solid $primary;
+  padding-bottom: 0.5rem;
+}
+
+.callout-important {
+  border-left-color: $primary !important;
+}
+
+.callout-important .callout-header {
+  background-color: rgba(139, 0, 0, 0.1) !important;
+}
+
+.code-copy-button {
+  opacity: 0.7;
+}
+
+.code-copy-button:hover {
+  opacity: 1;
+}
+
+/* Course card styles */
+.course-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.course-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.course-card h3 {
+  color: $primary;
+  margin-top: 0;
+}
+
+/* Schedule table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.schedule-table th {
+  background-color: $primary;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.schedule-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.schedule-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Lab badge */
+.lab-badge {
+  display: inline-block;
+  background-color: $info;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.lecture-badge {
+  display: inline-block;
+  background-color: $success;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* Feature box */
+.feature-box {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left: 4px solid $primary;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Instructor info */
+.instructor-card {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.instructor-avatar {
+  width: 80px;
+  height: 80px;
+  background: $primary;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+/* Footer styling */
+.footer-text {
+  font-size: 0.9rem;
+  color: #666;
+}

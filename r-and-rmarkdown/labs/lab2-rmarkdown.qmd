@@ -1,0 +1,280 @@
+---
+title: "实验2：R Markdown报告编写"
+subtitle: "创建可重复性数据分析报告"
+---
+
+## 实验目标
+
+完成本实验后，你将能够：
+
+1. 创建规范的R Markdown文档
+2. 掌握YAML元数据配置
+3. 灵活使用代码块选项
+4. 插入图表、表格、公式
+5. 生成多种格式的输出报告
+
+**实验时长**：45分钟  
+**实验类型**：个人完成
+
+---
+
+## 实验准备
+
+### 环境检查
+
+在R中运行以下代码，确保环境就绪：
+
+```r
+# 检查并安装必要包
+packages <- c("rmarkdown", "knitr", "ggplot2", "dplyr", "DT")
+for (pkg in packages) {
+  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    install.packages(pkg)
+    library(pkg, character.only = TRUE)
+  }
+}
+
+cat("✓ 环境检查完成！\n")
+```
+
+### 创建项目
+
+1. 打开RStudio
+2. `File → New Project → New Directory → New Project`
+3. 目录名：`lab2-rmarkdown`
+4. 创建以下子目录：
+
+```
+lab2-rmarkdown/
+├── data/           # 数据文件
+├── figures/        # 输出图片
+├── report.Rmd      # 主报告文件
+└── output/         # 输出目录
+```
+
+---
+
+## 第一部分：创建基础报告 (15分钟)
+
+### 练习1.1：创建R Markdown文件
+
+**任务**：创建一个新的R Markdown文档
+
+1. 点击菜单 `File → New File → R Markdown`
+2. 在弹出的对话框中填写：
+   - **Title**: `鸢尾花数据分析报告`
+   - **Author**: 你的姓名
+   - **Default Output Format**: HTML
+3. 点击 OK
+4. 将文件保存为 `report.Rmd`
+
+**验证**：文件创建成功后，RStudio会显示一个模板文档，包含YAML头部和示例内容。
+
+---
+
+### 练习1.2：配置YAML元数据
+
+**任务**：修改文档的YAML头部，添加多格式输出支持
+
+将文档开头的YAML替换为以下内容：
+
+```yaml
+---
+title: "鸢尾花数据分析报告"
+subtitle: "基于R Markdown的可重复性分析"
+author: 
+  - name: "你的姓名"
+    affiliation: "中南大学 · 生物信息学专业"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    number_sections: true
+    theme: cerulean
+    highlight: tango
+  pdf_document:
+    toc: true
+    number_sections: true
+  word_document:
+    toc: true
+---
+```
+
+**要点说明**：
+- `toc: true` 自动生成目录
+- `toc_float: true` 目录浮动显示
+- `code_folding: show` 代码可折叠
+- `theme` 设置页面主题
+
+---
+
+### 练习1.3：编写文档结构
+
+**任务**：在YAML后添加文档的主体结构
+
+```markdown
+# 摘要
+
+本文对鸢尾花数据集进行了探索性数据分析...
+
+# 1. 简介
+
+## 1.1 数据集介绍
+
+鸢尾花数据集是统计学和机器学习中的经典数据集...
+
+## 1.2 分析目的
+
+- 探索三种鸢尾花的特征差异
+- 可视化特征分布
+- 建立简单的分类模型
+
+# 2. 数据导入与预处理
+
+# 3. 探索性数据分析
+
+# 4. 结论与讨论
+
+# 参考文献
+```
+
+---
+
+## 第二部分：数据与代码 (15分钟)
+
+### 练习2.1：数据导入与检查
+
+**任务**：在"2. 数据导入与预处理"章节中添加代码，加载并检查数据
+
+**要求**：
+1. 设置全局代码块选项
+2. 加载ggplot2、dplyr、knitr包
+3. 加载内置的iris数据集
+4. 显示数据维度和前10行
+5. 检查数据类型和缺失值
+6. 显示基础统计摘要
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 2.1 加载数据
+
+```{r setup, include=FALSE}`r ''`
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 8,
+  fig.height = 6
+)
+
+library(ggplot2)
+library(dplyr)
+library(knitr)
+```
+
+```{r load-data}`r ''`
+# 加载内置数据集
+data(iris)
+
+# 查看数据维度
+sprintf("数据集包含 %d 行, %d 列", nrow(iris), ncol(iris))
+
+# 显示前几行
+head(iris, 10)
+```
+
+## 2.2 数据检查
+
+```{r data-summary}`r ''`
+# 数据类型检查
+str(iris)
+
+# 缺失值检查
+colSums(is.na(iris))
+
+# 基础统计
+summary(iris[, 1:4])
+```
+````
+</details>
+
+---
+
+### 练习2.2：代码块选项实践
+
+**任务**：体验不同的代码块选项，在"2.3 代码块选项演示"章节中添加以下代码块：
+
+1. **默认代码块**：显示代码和执行结果
+2. **隐藏代码**：只显示结果，不显示代码（使用`echo=FALSE`）
+3. **不执行代码**：显示代码但不执行（使用`eval=FALSE`）
+4. **隐藏警告**：执行代码但隐藏警告信息（使用`warning=FALSE`）
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 2.3 代码块选项演示
+
+### 显示代码和结果（默认）
+
+```{r}`r ''`
+mean(iris$Sepal.Length)
+```
+
+### 只显示结果，隐藏代码
+
+```{r, echo=FALSE}`r ''`
+median(iris$Sepal.Length)
+```
+
+### 显示代码，不执行
+
+```{r, eval=FALSE}`r ''`
+# 这段代码不会执行
+expensive_computation <- function() {
+  Sys.sleep(60)
+  return(42)
+}
+```
+
+### 不显示警告信息
+
+```{r, warning=FALSE}`r ''`
+# 可能产生警告的代码
+```
+````
+</details>
+
+---
+
+### 练习2.3：内联代码
+
+**任务**：在文档适当位置（如摘要或简介章节）使用内联代码显示动态结果
+
+**要求**使用内联代码显示以下信息：
+- 数据集样本总数
+- 山鸢尾（setosa）的样本数
+- 花萼长度的平均值和标准差
+- 花萼长度的最大值和最小值
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```markdown
+数据集共包含 `r nrow(iris)` 个样本，
+其中山鸢尾（*Iris setosa*）有 `r sum(iris$Species == "setosa")` 个。
+
+花萼长度的平均值为 `r round(mean(iris$Sepal.Length), 2)` cm，
+标准差为 `r round(sd(iris$Sepal.Length), 2)` cm。
+
+最大花萼长度为 `r max(iris$Sepal.Length)` cm，
+最小为 `r min(iris$Sepal.Length)` cm。
+```
+
+**渲染效果**：
+
+数据集共包含 `r nrow(iris)` 个样本，其中山鸢尾（*Iris setosa*）有 `r sum(iris$Species == 

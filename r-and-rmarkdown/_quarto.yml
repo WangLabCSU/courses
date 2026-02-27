@@ -1,0 +1,100 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "slides/*.qmd"  # 幻灯片也参与渲染
+
+website:
+  title: "R与(R)Markdown基础"
+  description: "中南大学生物医学信息系 - 本科课程"
+  site-url: https://wanglabcsu.github.io/courses/r-and-rmarkdown
+  repo-url: https://github.com/WangLabCSU/courses
+  repo-branch: main
+  
+  navbar:
+    title: "R与(R)Markdown基础"
+    left:
+      - href: ../index.html
+        text: "← 返回课程主页"
+      - href: index.qmd
+        text: 课程首页
+      - href: syllabus.qmd
+        text: 课程大纲
+      - text: 教学资源
+        menu:
+          - text: "---"
+          - text: "幻灯片"
+          - href: slides/slides-r-basics.html
+            text: "📊 幻灯片：R基础"
+          - href: slides/slides-rmarkdown.html
+            text: "📊 幻灯片：R Markdown"
+          - text: "---"
+          - text: "实验指导"
+          - href: labs/lab1-r-basics.qmd
+            text: "🧪 实验1：R基础练习"
+          - href: labs/lab2-rmarkdown.qmd
+            text: "🧪 实验2：R Markdown实践"
+      - href: resources.qmd
+        text: 拓展资源
+    right:
+      - icon: github
+        href: https://github.com/WangLabCSU
+        aria-label: GitHub
+      - text: "中南大学"
+        href: https://www.csu.edu.cn
+
+  sidebar:
+    - title: "课程导航"
+      style: "docked"
+      contents:
+        - section: "课程信息"
+          contents:
+            - index.qmd
+            - syllabus.qmd
+        - section: "教学资源"
+          contents:
+            - text: "📊 幻灯片：R基础"
+              href: slides/slides-r-basics.html
+            - text: "📊 幻灯片：R Markdown"
+              href: slides/slides-rmarkdown.html
+        - section: "实验指导"
+          contents:
+            - labs/lab1-r-basics.qmd
+            - labs/lab2-rmarkdown.qmd
+
+  page-footer:
+    left: "© 2026 王诗翔 - 中南大学 · 生物信息学专业"
+    center: 
+      - text: "WangLabCSU"
+        href: https://github.com/WangLabCSU
+    right:
+      - text: 许可证
+        href: license.qmd
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles/custom.scss]
+      dark: [darkly, styles/custom-dark.scss]
+    css: styles/styles.css
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
+    fig-width: 8
+    fig-height: 6
+    knitr:
+      opts_chunk:
+        message: false
+        warning: false
+
+execute:
+  freeze: auto
+  echo: true
+
+bibliography: references.bib
+
+lang: zh-CN

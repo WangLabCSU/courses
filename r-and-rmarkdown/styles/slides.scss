@@ -1,0 +1,233 @@
+/*-- scss:defaults --*/
+
+/* CSU BMI Course Theme for Reveal.js */
+
+// Colors
+$csu-red: #8B0000;
+$csu-gold: #C5B358;
+$dark-blue: #1a5276;
+$light-gray: #f8f9fa;
+
+// Override reveal.js variables
+$backgroundColor: #ffffff;
+$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+$mainFontSize: 28px;
+$mainColor: #333333;
+$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+$headingColor: #8B0000;
+$headingLineHeight: 1.2;
+$headingLetterSpacing: normal;
+$headingTextTransform: none;
+$headingTextShadow: none;
+$headingFontWeight: 600;
+$linkColor: #1a5276;
+$linkColorHover: darken(#1a5276, 15%);
+$selectionBackgroundColor: #8B0000;
+$selectionColor: #ffffff;
+
+/*-- scss:rules --*/
+
+// Title slide
+.reveal .title-slide {
+  background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
+}
+
+.reveal .title-slide h1,
+.reveal .title-slide h2,
+.reveal .title-slide h3 {
+  color: #ffffff;
+}
+
+// Headings
+.reveal h1 {
+  font-size: 2em;
+  color: $csu-red;
+  border-bottom: 3px solid $csu-red;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 {
+  font-size: 1.5em;
+  color: $csu-red;
+}
+
+.reveal h3 {
+  font-size: 1.2em;
+  color: $dark-blue;
+}
+
+// Code blocks
+.reveal pre {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.reveal pre code {
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  font-size: 0.75em;
+  line-height: 1.5;
+  background: none;
+}
+
+// Inline code
+.reveal code {
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  background-color: #f0f0f0;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  color: #c7254e;
+  font-size: 0.9em;
+}
+
+// Tables
+.reveal table {
+  border-collapse: collapse;
+  margin: 1em auto;
+  font-size: 0.85em;
+}
+
+.reveal table th {
+  background-color: $csu-red;
+  color: white;
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.reveal table td {
+  padding: 8px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.reveal table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+// Callout boxes
+.reveal .callout {
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1em 0;
+  border-left: 4px solid;
+}
+
+.reveal .callout-tip {
+  background-color: #e8f5e9;
+  border-left-color: #4caf50;
+}
+
+.reveal .callout-note {
+  background-color: #e3f2fd;
+  border-left-color: #2196f3;
+}
+
+.reveal .callout-warning {
+  background-color: #fff3e0;
+  border-left-color: #ff9800;
+}
+
+// Columns
+.reveal .columns {
+  display: flex;
+  gap: 2em;
+}
+
+.reveal .column {
+  flex: 1;
+}
+
+// Fragments
+.reveal .fragment {
+  transition: all 0.3s ease;
+}
+
+// Progress bar
+.reveal .progress {
+  background: #e0e0e0;
+  height: 4px;
+}
+
+.reveal .progress span {
+  background: $csu-red;
+}
+
+// Slide number
+.reveal .slide-number {
+  background-color: $csu-red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+// Chalkboard buttons
+.reveal .slide-menu-button,
+.reveal .chalkboard-button {
+  color: $csu-red;
+}
+
+// Center alignment helper
+.reveal .center {
+  text-align: center;
+}
+
+// Quote styling
+.reveal blockquote {
+  background: #f8f9fa;
+  border-left: 4px solid $csu-red;
+  padding: 1em 1.5em;
+  margin: 1em 0;
+  font-style: italic;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+// Lists
+.reveal ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.reveal ul li {
+  position: relative;
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.reveal ul li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: $csu-red;
+  font-weight: bold;
+}
+
+.reveal ol li {
+  margin-bottom: 0.5em;
+}
+
+// Footer
+.reveal .footer {
+  font-size: 0.6em;
+  color: #666;
+}
+
+// Logo positioning
+.reveal .slide-logo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 50px;
+  opacity: 0.8;
+}
+
+// Print styles
+@media print {
+  .reveal .slide-menu-button,
+  .reveal .chalkboard-button,
+  .reveal .slide-number {
+    display: none;
+  }
+}

@@ -1,0 +1,318 @@
+---
+title: "第4讲：现代报告工具"
+subtitle: "Quarto与可重复性研究"
+execute:
+  echo: false
+  eval: false
+---
+
+## 本讲概述
+
+本讲将介绍现代科学研究中的可重复性工具：
+
+- Quarto简介与优势
+- Quarto vs R Markdown
+- 多语言支持
+- 可重复性研究最佳实践
+
+**预计时长**：45分钟理论 + 15分钟演示
+
+---
+
+## 1. Quarto简介
+
+### 1.1 什么是Quarto？
+
+Quarto是Posit（原RStudio）开发的**下一代科学出版系统**。
+
+### 1.2 与R Markdown的关系
+
+```
+R Markdown (2012) → Quarto (2022)
+     ↓                    ↓
+  仅支持R           多语言支持
+  单一引擎          统一平台
+```
+
+### 1.3 核心优势
+
+| 特性 | 说明 |
+|------|------|
+| **多语言** | R、Python、Julia、Observable |
+| **多格式** | 文档、演示、网站、书籍、仪表板 |
+| **现代化** | 响应式设计，美观默认样式 |
+| **一致性** | 统一语法，降低学习成本 |
+
+---
+
+## 2. Quarto基础
+
+### 2.1 安装
+
+```bash
+# 官网下载安装包
+https://quarto.org/docs/get-started/
+
+# 命令行检查
+quarto --version
+```
+
+### 2.2 文档结构
+
+```markdown
+---
+title: "Quarto文档"
+format: html
+---
+
+## 简介
+
+这是正文。
+
+```{python}
+# Python代码
+import pandas as pd
+df = pd.DataFrame({'x': [1, 2, 3]})
+df
+```
+
+```{r}
+# R代码
+library(dplyr)
+mtcars |> head()
+```
+```
+
+### 2.3 代码块选项
+
+**R Markdown风格**：
+
+````markdown
+```{r, echo=FALSE, fig.width=8}`r ''`
+plot(cars)
+```
+````
+
+**Quarto风格**（推荐）：
+
+````markdown
+```{r}`r ''`
+#| echo: false
+#| fig-width: 8
+plot(cars)
+```
+````
+
+---
+
+## 3. 多语言示例
+
+### 3.1 Python + R
+
+````markdown
+---
+title: "多语言分析"
+format: html
+---
+
+## Python数据处理
+
+```python
+import pandas as pd
+import numpy as np
+
+data = pd.DataFrame({
+    'x': np.random.randn(100),
+    'y': np.random.randn(100)
+})
+data.head()
+```
+
+## R可视化
+
+```r
+library(ggplot2)
+library(reticulate)
+
+# 使用Python数据
+py_data <- py$data
+
+ggplot(py_data, aes(x = x, y = y)) +
+  geom_point() +
+  theme_minimal()
+```
+````
+
+---
+
+## 4. 文档类型
+
+### 4.1 HTML文档
+
+```yaml
+---
+title: "分析报告"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+---
+```
+
+### 4.2 演示幻灯片
+
+```yaml
+---
+title: "研究汇报"
+format: revealjs
+---
+```
+
+### 4.3 PDF文档
+
+```yaml
+---
+title: "学术论文"
+format:
+  pdf:
+    documentclass: article
+    papersize: a4
+---
+```
+
+### 4.4 网站
+
+```yaml
+---
+project:
+  type: website
+
+website:
+  title: "项目网站"
+  navbar:
+    left:
+      - href: index.qmd
+        text: 首页
+---
+```
+
+### 4.5 书籍
+
+```yaml
+---
+project:
+  type: book
+
+book:
+  title: "教材"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - chapter1.qmd
+---
+```
+
+---
+
+## 5. 可重复性研究
+
+### 5.1 为什么重要？
+
+> "可重复性是科学方法的基石" —— 《Nature》
+
+### 5.2 最佳实践
+
+| 实践 | 工具 |
+|------|------|
+| 版本控制 | Git/GitHub |
+| 环境管理 | renv/conda |
+| 文档记录 | R Markdown/Quarto |
+| 数据管理 | 数据仓库/DOI |
+| 自动化 | Makefile/GitHub Actions |
+
+### 5.3 renv环境管理
+
+```{r}
+#| eval: false
+
+install.packages("renv")
+
+# 初始化项目环境
+renv::init()
+
+# 安装包（自动记录）
+install.packages("dplyr")
+
+# 保存状态
+renv::snapshot()
+
+# 恢复环境
+renv::restore()
+```
+
+### 5.4 项目结构
+
+```
+project/
+├── data/               # 原始数据（只读）
+├── analysis/           # 分析脚本
+├── output/             # 结果输出
+├── figures/            # 图表
+├── renv/               # 环境锁定
+├── report.qmd          # 主报告
+├── README.md           # 项目说明
+└── renv.lock           # 依赖锁定
+```
+
+---
+
+## 6. 从R Markdown迁移
+
+### 6.1 自动转换
+
+```bash
+quarto convert report.Rmd
+```
+
+### 6.2 主要变化
+
+| R Markdown | Quarto |
+|------------|--------|
+| `knitr::kable()` | 自动美化表格 |
+| `fig.width=8` | `fig-width: 8` |
+| `echo=FALSE` | `echo: false` |
+| 需额外包引用 | 原生交叉引用 |
+
+---
+
+## 关键要点
+
+| 概念 | 要点 |
+|------|------|
+| Quarto | 统一的多语言科学出版平台 |
+| 多格式 | 文档/幻灯片/网站/书籍/仪表板 |
+| 可重复性 | 环境管理 + 版本控制 + 自动化 |
+| 迁移 | 语法相似，增量学习 |
+
+---
+
+## 课堂演示
+
+1. 创建Quarto文档
+2. 运行Python和R代码
+3. 生成多种格式输出
+4. 初始化renv环境
+
+---
+
+## 课后作业
+
+1. 将一份R Markdown转换为Quarto
+2. 尝试在Quarto中运行Python代码
+3. 使用renv管理项目依赖
+
+---
+
+**课程总结**：R + tidyverse + R Markdown/Quarto = 完整的可重复性研究工具链

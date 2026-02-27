@@ -1,1 +1,0 @@
-Sitemap: https://your-domain.com/rmarkdown-fundamentals/sitemap.xml
