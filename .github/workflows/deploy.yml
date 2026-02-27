@@ -16,10 +16,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,36 +52,10 @@ jobs:
           ))
         shell: Rscript {0}
         
-      - name: Render root website
+      - name: Render website
         run: |
-          echo "Rendering root website..."
-          quarto render
-          
-      - name: Render courses
-        run: |
-          for course in */; do
-            course=${course%/}
-            if [ -d "$course" ] && [ -f "$course/_quarto.yml" ]; then
-              echo "Rendering course: $course"
-              cd "$course"
-              quarto render
-              cd ..
-            fi
-          done
-          
-      - name: Organize build output
-        run: |
-          for course in */; do
-            course=${course%/}
-            if [ -d "$course/_site" ]; then
-              echo "Copying $course to _site/"
-              mkdir -p "_site/$course"
-              cp -r "$course/_site"/* "_site/$course/"
-            fi
-          done
-          
-          echo "Build complete. Site structure:"
-          ls -la _site/
+          echo "Rendering website..."
+          bash build.sh
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
