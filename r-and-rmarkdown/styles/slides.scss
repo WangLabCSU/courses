@@ -10,10 +10,10 @@ $light-gray: #f8f9fa;
 
 // Override reveal.js variables
 $backgroundColor: #ffffff;
-$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-$mainFontSize: 28px;
+$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
+$mainFontSize: 32px;
 $mainColor: #333333;
-$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
 $headingColor: #8B0000;
 $headingLineHeight: 1.2;
 $headingLetterSpacing: normal;
@@ -53,7 +53,12 @@ $selectionColor: #ffffff;
 }
 
 .reveal h3 {
-  font-size: 1.2em;
+  font-size: 1.25em;
+  color: $dark-blue;
+}
+
+.reveal h4 {
+  font-size: 1.1em;
   color: $dark-blue;
 }
 
@@ -68,7 +73,7 @@ $selectionColor: #ffffff;
 
 .reveal pre code {
   font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-  font-size: 0.75em;
+  font-size: 0.8em;
   line-height: 1.5;
   background: none;
 }
@@ -87,7 +92,7 @@ $selectionColor: #ffffff;
 .reveal table {
   border-collapse: collapse;
   margin: 1em auto;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
 .reveal table th {
@@ -184,7 +189,7 @@ $selectionColor: #ffffff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-// Lists
+// Lists - larger font for better readability
 .reveal ul {
   list-style-type: none;
   padding-left: 0;
@@ -193,7 +198,8 @@ $selectionColor: #ffffff;
 .reveal ul li {
   position: relative;
   padding-left: 1.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.6em;
+  font-size: 1em;
 }
 
 .reveal ul li::before {
@@ -205,7 +211,8 @@ $selectionColor: #ffffff;
 }
 
 .reveal ol li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.6em;
+  font-size: 1em;
 }
 
 // Footer
@@ -221,6 +228,30 @@ $selectionColor: #ffffff;
   right: 20px;
   height: 50px;
   opacity: 0.8;
+}
+
+// Smaller class - reduce less aggressively
+.reveal .smaller {
+  font-size: 0.85em;
+}
+
+.reveal .smaller ul li,
+.reveal .smaller ol li {
+  font-size: 0.95em;
+}
+
+// Figure images - make them larger
+.reveal .figure {
+  margin: 1em auto;
+}
+
+.reveal .figure img {
+  max-width: 90%;
+  max-height: 70vh;
+}
+
+.reveal img {
+  max-width: 90%;
 }
 
 // Print styles

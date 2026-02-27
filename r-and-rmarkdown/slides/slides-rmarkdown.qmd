@@ -22,7 +22,7 @@ execute:
   message: false
 ---
 
-## 本讲目标 {.smaller}
+## 本讲目标
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -39,21 +39,10 @@ execute:
 ::: {.column width="50%"}
 ### 为什么重要？
 
-::: {.fragment .fade-in}
-🔄 **可重复性** — 分析可完全复现
-:::
-
-::: {.fragment .fade-in}
-📄 **自动化** — 代码与文档同步更新
-:::
-
-::: {.fragment .fade-in}
-🎯 **专业性** — 规范的科研报告
-:::
-
-::: {.fragment .fade-in}
-🚀 **高效性** — 一处修改，全局更新
-:::
+- 🔄 **可重复性** — 分析可完全复现
+- 📄 **自动化** — 代码与文档同步更新
+- 🎯 **专业性** — 规范的科研报告
+- 🚀 **高效性** — 一处修改，全局更新
 
 :::
 :::
@@ -347,12 +336,12 @@ plot(cars$speed, cars$dist,
 ```
 ````
 
-```{r scatter, fig.width=10, fig.height=5.5}
+```{r scatter, fig.width=12, fig.height=6}
 plot(cars$speed, cars$dist, 
      main = "车速与刹车距离",
-     xlab = "速度 (mph)",
-     ylab = "距离 (ft)",
-     pch = 19, col = "blue")
+     xlab = "速度",
+     ylab = "距离",
+     pch = 19, col = "blue", cex = 1.5)
 ```
 
 ---
@@ -373,16 +362,16 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
 ```
 ````
 
-```{r ggplot-example, fig.width=10, fig.height=5.5}
+```{r ggplot-example, fig.width=12, fig.height=6}
 library(ggplot2)
 
 ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
-  geom_point(size = 3) +
+  geom_point(size = 4) +
   labs(title = "汽车重量与油耗关系",
        x = "重量 (1000 lbs)",
        y = "每加仑英里数",
        color = "气缸数") +
-  theme_minimal()
+  theme_minimal(base_size = 16)
 ```
 
 ---

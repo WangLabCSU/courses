@@ -22,7 +22,7 @@ execute:
   message: false
 ---
 
-## 本讲目标 {.smaller}
+## 本讲目标
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -39,21 +39,10 @@ execute:
 ::: {.column width="50%"}
 ### 为什么学R？
 
-::: {.fragment .fade-in}
-💡 **生物统计** — 丰富的统计方法
-:::
-
-::: {.fragment .fade-in}
-📊 **数据可视化** — 高质量的科研图表
-:::
-
-::: {.fragment .fade-in}
-🔬 **生物信息** — Bioconductor生态
-:::
-
-::: {.fragment .fade-in}
-📄 **可重复性** — R Markdown/Quarto
-:::
+- 💡 **生物统计** — 丰富的统计方法
+- 📊 **数据可视化** — 高质量的科研图表
+- 🔬 **生物信息** — Bioconductor生态
+- 📄 **可重复性** — R Markdown/Quarto
 
 :::
 :::
@@ -506,6 +495,7 @@ analyze_gene(expr, gene_name = "TP53", threshold = 8)
 ## 安装与加载
 
 ```{r}
+#| eval: false
 # 从CRAN安装
 install.packages("ggplot2")
 
