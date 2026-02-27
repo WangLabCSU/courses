@@ -1,6 +1,6 @@
 /*-- scss:defaults --*/
 
-/* CSU BMI Course Theme for Reveal.js */
+/* CSU BMI Course Theme for Reveal.js - Optimized */
 
 // Colors
 $csu-red: #8B0000;
@@ -8,18 +8,18 @@ $csu-gold: #C5B358;
 $dark-blue: #1a5276;
 $light-gray: #f8f9fa;
 
-// Override reveal.js variables
+// Override reveal.js variables - 85% of original size
 $backgroundColor: #ffffff;
 $mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
-$mainFontSize: 26px;
+$mainFontSize: 27px;
 $mainColor: #333333;
 $headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
 $headingColor: #8B0000;
-$headingLineHeight: 1.2;
+$headingLineHeight: 1.3;
 $headingLetterSpacing: normal;
 $headingTextTransform: none;
 $headingTextShadow: none;
-$headingFontWeight: 600;
+$headingFontWeight: 700;
 $linkColor: #1a5276;
 $linkColorHover: darken(#1a5276, 15%);
 $selectionBackgroundColor: #8B0000;
@@ -27,43 +27,34 @@ $selectionColor: #ffffff;
 
 /*-- scss:rules --*/
 
-// Title slide - centered layout
+// Title slide
 .reveal .title-slide {
-  background: linear-gradient(135deg, #8B0000 0%, #5c0000 50%, #3d0000 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .reveal .title-slide h1 {
   color: #ffffff;
   font-size: 2em;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  font-weight: 700;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
   border-bottom: none;
-  margin-bottom: 0.5em;
-  margin-top: 0;
+  margin-bottom: 0.3em;
+  margin-top: 1em;
 }
 
 .reveal .title-slide h2 {
   color: #ffffff;
   font-size: 1.2em;
-  opacity: 0.95;
   font-weight: 400;
+  opacity: 0.95;
   margin-bottom: 2em;
 }
 
 .reveal .title-slide h3 {
   color: $csu-gold;
   font-size: 0.95em;
-  margin-top: 0;
   font-weight: 500;
-}
-
-.reveal .title-slide .author {
-  color: #ffffff;
-  font-size: 1em;
   margin-top: 3em;
 }
 
@@ -72,92 +63,94 @@ $selectionColor: #ffffff;
 .reveal section[data-background="#8B0000"] {
   color: white;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .reveal section[data-background-color="#8B0000"] h1,
 .reveal section[data-background="#8B0000"] h1 {
   color: white;
+  font-size: 1.9em;
   border-bottom: none;
-  font-size: 2em;
 }
 
-// Headings - compact
+// Headings - 85% of original
 .reveal h1 {
   font-size: 1.5em;
   color: $csu-red;
-  border-bottom: 2px solid $csu-red;
-  padding-bottom: 0.15em;
-  margin-bottom: 0.4em;
+  border-bottom: 3px solid $csu-red;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.5em;
   margin-top: 0;
+  font-weight: 700;
 }
 
 .reveal h2 {
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: $csu-red;
   margin-bottom: 0.4em;
-  border-left: 3px solid $csu-red;
-  padding-left: 0.4em;
+  font-weight: 600;
 }
 
 .reveal h3 {
-  font-size: 1em;
+  font-size: 1.05em;
   color: $dark-blue;
   margin-bottom: 0.3em;
   font-weight: 600;
 }
 
 .reveal h4 {
-  font-size: 0.9em;
+  font-size: 0.95em;
   color: $dark-blue;
   margin-bottom: 0.25em;
   font-weight: 600;
 }
 
-// Paragraph spacing - compact
+// Paragraph
 .reveal p {
-  margin-bottom: 0.5em;
-  line-height: 1.4;
+  margin-bottom: 0.6em;
+  line-height: 1.5;
+  font-size: 1em;
 }
 
-// Code blocks - compact
+// Code blocks - compact, no overflow
 .reveal pre {
-  background-color: #f8f9fa;
+  background-color: #f5f5f5;
   border: 1px solid #e0e0e0;
+  border-left: 3px solid $csu-red;
   border-radius: 6px;
   padding: 0.4em 0.6em;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   margin: 0.5em 0;
-  border-left: 3px solid $csu-red;
-  max-height: 280px;
-  overflow-y: auto;
+  box-shadow: none;
+  overflow: hidden;
 }
 
 .reveal pre code {
   font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-  font-size: 0.7em;
-  line-height: 1.35;
+  font-size: 0.8em;
+  line-height: 1.4;
   background: none;
+}
+
+// Hide code copy button to prevent overflow
+.reveal .code-copy-button {
+  display: none !important;
 }
 
 // Inline code
 .reveal code {
   font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-  background-color: #f0f0f0;
+  background-color: #fff3cd;
   padding: 0.1em 0.3em;
   border-radius: 3px;
-  color: #c7254e;
+  color: #856404;
   font-size: 0.85em;
+  font-weight: 500;
 }
 
 // Tables - compact
 .reveal table {
   border-collapse: collapse;
-  margin: 0.5em auto;
-  font-size: 0.75em;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin: 0.8em auto;
+  font-size: 0.8em;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -165,13 +158,13 @@ $selectionColor: #ffffff;
 .reveal table th {
   background-color: $csu-red;
   color: white;
-  padding: 6px 10px;
+  padding: 8px 12px;
   text-align: left;
   font-weight: 600;
 }
 
 .reveal table td {
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-bottom: 1px solid #e8e8e8;
 }
 
@@ -179,84 +172,71 @@ $selectionColor: #ffffff;
   background-color: #fafafa;
 }
 
-.reveal table tr:last-child td {
-  border-bottom: none;
-}
-
-// Columns - compact
+// Columns
 .reveal .columns {
   display: flex;
   gap: 1.5em;
-  margin-top: 0.3em;
+  margin-top: 0.4em;
 }
 
 .reveal .column {
   flex: 1;
 }
 
-.reveal .column h3,
-.reveal .column h4 {
-  margin-top: 0;
-}
-
 // Lists - compact
 .reveal ul {
   list-style-type: none;
   padding-left: 0;
-  margin: 0.4em 0;
+  margin: 0.6em 0;
 }
 
 .reveal ul li {
   position: relative;
-  padding-left: 1.2em;
-  margin-bottom: 0.35em;
-  font-size: 0.9em;
-  line-height: 1.35;
+  padding-left: 1.3em;
+  margin-bottom: 0.4em;
+  font-size: 0.95em;
+  line-height: 1.4;
 }
 
 .reveal ul li::before {
-  content: "▸";
+  content: "●";
   position: absolute;
   left: 0;
   color: $csu-red;
-  font-weight: bold;
-  font-size: 1em;
+  font-size: 0.7em;
+  top: 0.2em;
 }
 
 .reveal ol {
-  margin: 0.4em 0;
-  padding-left: 1.4em;
+  margin: 0.6em 0;
+  padding-left: 1.5em;
 }
 
 .reveal ol li {
-  margin-bottom: 0.35em;
-  font-size: 0.9em;
-  line-height: 1.35;
+  margin-bottom: 0.4em;
+  font-size: 0.95em;
+  line-height: 1.4;
 }
 
-// Blockquote - compact
+// Blockquote
 .reveal blockquote {
   background: #f8f9fa;
-  border-left: 3px solid $csu-red;
-  padding: 0.6em 1em;
-  margin: 0.6em 0;
+  border-left: 4px solid $csu-red;
+  padding: 0.8em 1.2em;
+  margin: 0.8em 0;
   font-style: italic;
   border-radius: 0 6px 6px 0;
 }
 
-// Emphasis styling
+// Emphasis
 .reveal strong {
   color: $csu-red;
-  font-weight: 600;
-}
-
-.reveal em {
-  color: $dark-blue;
+  font-weight: 700;
 }
 
 // Progress bar
 .reveal .progress {
-  background: #e8e8e8;
+  background: #e0e0e0;
   height: 3px;
 }
 
@@ -271,90 +251,75 @@ $selectionColor: #ffffff;
   padding: 4px 8px;
   border-radius: 3px;
   font-size: 12px;
+  font-weight: 500;
 }
 
-// Chalkboard buttons
-.reveal .slide-menu-button,
-.reveal .chalkboard-button {
-  color: $csu-red;
-}
-
-// Smaller class
-.reveal .smaller {
-  font-size: 0.85em;
-}
-
-// Figure images - compact
+// Figure images
 .reveal .figure {
-  margin: 0.6em auto;
+  margin: 0.8em auto;
   text-align: center;
 }
 
 .reveal .figure img {
-  max-width: 90%;
+  max-width: 95%;
   max-height: 50vh;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .reveal img {
-  max-width: 90%;
+  max-width: 95%;
   border-radius: 4px;
 }
 
-// Slide layout - prevent overflow
+// Slide layout
 .reveal .slides {
   text-align: left;
 }
 
 .reveal .slides section {
-  padding: 20px 30px;
-  height: calc(100% - 40px);
-  max-height: calc(100% - 40px);
-  overflow: hidden;
+  padding: 25px 35px;
+  height: 100%;
+  max-height: 100%;
   box-sizing: border-box;
+  overflow-y: auto;
+}
+
+// Hide scrollbar
+.reveal .slides section::-webkit-scrollbar {
+  display: none;
+}
+
+.reveal .slides section {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 // Footer
 .reveal .footer {
-  font-size: 0.55em;
+  font-size: 0.6em;
   color: #666;
   border-top: 1px solid #eee;
-  padding-top: 0.3em;
-  margin-top: 0.5em;
+  padding-top: 0.4em;
+  margin-top: 0.8em;
 }
 
-// Logo positioning
+// Logo
 .reveal .slide-logo {
   position: absolute;
   top: 10px;
   right: 10px;
-  height: 35px;
-  opacity: 0.8;
+  height: 40px;
+  opacity: 0.9;
 }
 
-// Highlight box - compact
-.reveal .highlight-box {
-  background: #fff9e6;
-  border-left: 3px solid $csu-gold;
-  padding: 0.6em 1em;
-  margin: 0.6em 0;
-  border-radius: 0 6px 6px 0;
-}
-
-// Info box - compact
+// Info boxes - compact
+.reveal .key-concept,
+.reveal .tip-box,
+.reveal .warning-box,
 .reveal .info-box {
-  background: #e8f4f8;
-  border-left: 3px solid $dark-blue;
-  padding: 0.6em 1em;
-  margin: 0.6em 0;
+  padding: 0.8em 1.2em;
+  margin: 0.8em 0;
   border-radius: 0 6px 6px 0;
-}
-
-// Two-column layout
-.reveal .columns .column:first-child {
-  border-right: 1px solid #eee;
-  padding-right: 0.8em;
 }
 
 // Print styles

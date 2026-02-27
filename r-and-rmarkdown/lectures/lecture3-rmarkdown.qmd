@@ -90,7 +90,7 @@ HTML / PDF / Word
 
 ### 2.2 文档结构
 
-```markdown
+````markdown
 ---
 title: "报告标题"
 author: "作者"
@@ -110,7 +110,7 @@ summary(cars)
 ## 1.1 小节
 
 更多内容...
-```
+````
 
 ### 2.3 YAML元数据
 

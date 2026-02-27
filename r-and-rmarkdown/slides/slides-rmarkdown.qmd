@@ -28,8 +28,6 @@ showtext::showtext_auto()
 
 ## 本讲目标
 
-::: {.columns}
-::: {.column width="50%"}
 ### 你将学会：
 
 - ✅ Markdown基础语法
@@ -39,17 +37,12 @@ showtext::showtext_auto()
 - ✅ 交叉引用
 - ✅ Quarto现代工作流
 
-:::
-::: {.column width="50%"}
 ### 为什么重要？
 
 - 🔄 **可重复性** — 分析可完全复现
 - 📄 **自动化** — 代码与文档同步更新
 - 🎯 **专业性** — 规范的科研报告
 - 🚀 **高效性** — 一处修改，全局更新
-
-:::
-:::
 
 ---
 
@@ -75,11 +68,7 @@ showtext::showtext_auto()
 
 ---
 
-## 基础语法速查 {.smaller}
-
-::: {.columns}
-::: {.column width="50%"}
-### 格式
+## 基础语法：格式
 
 ```markdown
 # 一级标题
@@ -99,9 +88,11 @@ showtext::showtext_auto()
 分割线
 ```
 
-:::
-::: {.column width="50%"}
-### 列表与表格
+---
+
+## 基础语法：列表与表格
+
+### 列表
 
 ```markdown
 - 无序列表
@@ -110,15 +101,16 @@ showtext::showtext_auto()
 
 1. 有序列表
 2. 项目
+```
 
+### 表格
+
+```markdown
 | 列1 | 列2 |
 |-----|-----|
 | A   | 1   |
 | B   | 2   |
 ```
-
-:::
-:::
 
 ### 提示
 
@@ -202,7 +194,7 @@ $$
 
 ## 文档结构
 
-```markdown
+````markdown
 ---
 title: "我的报告"
 author: "王诗翔"
@@ -222,7 +214,7 @@ summary(cars)
 ```
 
 结果会自动插入...
-```
+````
 
 ---
 
@@ -272,9 +264,9 @@ mean(x)
 
 ---
 
-## 代码块演示 {.smaller}
+## 代码块演示：隐藏代码
 
-### 隐藏代码，只显示结果
+### 只显示结果
 
 ````markdown
 ```{r, echo=FALSE}`r ''`
@@ -285,6 +277,10 @@ summary(cars)
 ```{r, echo=FALSE}
 summary(cars)
 ```
+
+---
+
+## 代码块演示：显示代码
 
 ### 显示代码和结果
 
@@ -405,6 +401,8 @@ knitr::kable(
 
 > 使用**参数**创建多版本报告
 
+### 定义参数
+
 ```yaml
 ---
 params:
@@ -414,14 +412,18 @@ params:
 ---
 ```
 
-```markdown
+---
+
+## 参数化报告：使用参数
+
+````markdown
 ```{r}`r ''`
 data <- get(params$dataset)
 if (params$show_plot) {
   hist(data[,1])
 }
 ```
-```
+````
 
 ### 应用场景
 
@@ -498,7 +500,7 @@ mtcars |> head(3)
 
 ---
 
-## 交叉引用 {.smaller}
+## 交叉引用：图表
 
 ### 图表引用
 
@@ -512,6 +514,10 @@ mtcars |> head(3)
 plot(cars)
 ```
 ```
+
+---
+
+## 交叉引用：表格与章节
 
 ### 表格引用
 

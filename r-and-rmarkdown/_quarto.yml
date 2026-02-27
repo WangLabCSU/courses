@@ -24,6 +24,16 @@ website:
       - text: 教学资源
         menu:
           - text: "---"
+          - text: "讲座笔记"
+          - href: lectures/lecture1-r-basics.qmd
+            text: "📖 讲座1：R语言基础"
+          - href: lectures/lecture2-data-viz.qmd
+            text: "📖 讲座2：数据可视化"
+          - href: lectures/lecture3-rmarkdown.qmd
+            text: "📖 讲座3：R Markdown"
+          - href: lectures/lecture4-quarto.qmd
+            text: "📖 讲座4：Quarto入门"
+          - text: "---"
           - text: "幻灯片"
           - href: slides/slides-r-basics.html
             text: "📊 幻灯片：R基础"
@@ -52,6 +62,16 @@ website:
           contents:
             - index.qmd
             - syllabus.qmd
+        - section: "讲座笔记"
+          contents:
+            - text: "📖 讲座1：R语言基础"
+              href: lectures/lecture1-r-basics.qmd
+            - text: "📖 讲座2：数据可视化"
+              href: lectures/lecture2-data-viz.qmd
+            - text: "📖 讲座3：R Markdown"
+              href: lectures/lecture3-rmarkdown.qmd
+            - text: "📖 讲座4：Quarto入门"
+              href: lectures/lecture4-quarto.qmd
         - section: "教学资源"
           contents:
             - text: "📊 幻灯片：R基础"
@@ -90,6 +110,14 @@ format:
       opts_chunk:
         message: false
         warning: false
+    # Pretty print enhancements
+    code-block-bg: true
+    code-block-border-left: "#8B0000"
+    df-print: paged
+    tbl-cap-location: top
+    fig-cap-location: bottom
+    link-external-icon: true
+    link-external-newwindow: true
 
 execute:
   freeze: auto

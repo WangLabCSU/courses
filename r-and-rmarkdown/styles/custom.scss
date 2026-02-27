@@ -170,3 +170,108 @@ $pre-color: #333333;
   font-size: 0.9rem;
   color: #666;
 }
+
+/* Print-friendly styles */
+@media print {
+  /* Hide navigation elements */
+  .navbar,
+  .sidebar,
+  .toc,
+  .quarto-sidebar,
+  .page-navigation,
+  .code-copy-button,
+  .code-tools-button {
+    display: none !important;
+  }
+
+  /* Adjust main content */
+  .page-columns {
+    display: block !important;
+  }
+
+  .page-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* Ensure content is visible */
+  .content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1cm !important;
+  }
+
+  /* Page breaks */
+  h1, h2 {
+    page-break-after: avoid;
+  }
+
+  pre, table, figure {
+    page-break-inside: avoid;
+  }
+
+  /* Code blocks */
+  pre {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9 !important;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  code {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #e0e0e0;
+  }
+
+  /* Links */
+  a {
+    text-decoration: none;
+    color: #000 !important;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Callouts */
+  .callout {
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+
+  /* Page settings */
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
