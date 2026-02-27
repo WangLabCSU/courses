@@ -1,0 +1,600 @@
+---
+title: "R语言基础"
+subtitle: "R and (R)Markdown Fundamentals"
+author: "王诗翔 副教授<br>中南大学生物医学信息系"
+format:
+  revealjs:
+    theme: [default, ../styles/slides.scss]
+    slide-number: true
+    chalkboard: true
+    code-fold: false
+    code-overflow: wrap
+    highlight-style: github
+    width: 1280
+    height: 720
+    margin: 0.1
+    logo: ../images/csu-logo.png
+    footer: "R与(R)Markdown基础 | 中南大学"
+execute:
+  echo: true
+  output: true
+  warning: false
+  message: false
+---
+
+## 本讲目标 {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+### 你将学会：
+
+- ✅ R语言的特点与应用场景
+- ✅ 基础数据类型与结构
+- ✅ 向量化操作
+- ✅ 控制流语句
+- ✅ 自定义函数
+- ✅ R包安装与管理
+
+:::
+::: {.column width="50%"}
+### 为什么学R？
+
+::: {.fragment .fade-in}
+💡 **生物统计** — 丰富的统计方法
+:::
+
+::: {.fragment .fade-in}
+📊 **数据可视化** — 高质量的科研图表
+:::
+
+::: {.fragment .fade-in}
+🔬 **生物信息** — Bioconductor生态
+:::
+
+::: {.fragment .fade-in}
+📄 **可重复性** — R Markdown/Quarto
+:::
+
+:::
+:::
+
+---
+
+# 第1部分：R语言概述
+
+---
+
+## R是什么？
+
+> R是用于**统计计算**和**图形**的编程语言与环境
+
+::: {.fragment .fade-in}
+### 核心特点
+
+| 特点 | 说明 |
+|------|------|
+| **开源免费** | GPL许可证，完全免费 |
+| **跨平台** | Windows、macOS、Linux |
+| **交互式** | 即时反馈，快速探索 |
+| **包生态** | 20,000+ CRAN包 |
+| **社区活跃** | 全球统计学家支持 |
+:::
+
+---
+
+## R在生物医学中的应用
+
+::: {.columns}
+::: {.column width="33%"}
+#### 📊 统计分析
+
+- 临床试验分析
+- 生存分析
+- 多变量统计
+- Meta分析
+:::
+::: {.column width="33%"}
+#### 🧬 生物信息
+
+- RNA-seq分析
+- 基因组学
+- 蛋白质组学
+- 单细胞测序
+:::
+::: {.column width="33%"}
+#### 📈 数据科学
+
+- 数据清洗
+- 机器学习
+- 可视化
+- 可重复研究
+:::
+:::
+
+::: {.fragment .fade-in .callout-tip}
+### R vs Python
+
+R更适合**统计分析**和**科研可视化**，Python更适合**通用编程**和**深度学习**。两者可以互补使用！
+:::
+
+---
+
+## R环境搭建
+
+### 1. 安装R
+
+```bash
+# macOS (使用 Homebrew)
+brew install r
+
+# Ubuntu
+sudo apt-get install r-base
+
+# Windows: 下载安装包
+# https://cran.r-project.org/
+```
+
+### 2. 安装RStudio
+
+```text
+下载地址: https://posit.co/download/rstudio-desktop/
+```
+
+::: {.fragment .fade-in .callout-warning}
+推荐使用 **RStudio** —— 最强大的R IDE，提供代码编辑、调试、可视化、包管理一站式解决方案
+:::
+
+---
+
+## RStudio界面介绍
+
+```
+┌─────────────────┬─────────────────┐
+│   Source        │    Environment  │
+│  (代码编辑器)    │   (变量查看)     │
+│                 ├─────────────────┤
+│                 │  Files/Plots/   │
+│                 │ Packages/Help   │
+├─────────────────┴─────────────────┤
+│           Console (控制台)         │
+│           输入命令，查看输出         │
+└───────────────────────────────────┘
+```
+
+---
+
+# 第2部分：基础数据类型
+
+---
+
+## 五大基本数据类型
+
+| 类型 | 说明 | 示例 |
+|------|------|------|
+| `numeric` | 数值型 | `3.14`, `42` |
+| `integer` | 整数型 | `42L` |
+| `character` | 字符型 | `"hello"` |
+| `logical` | 逻辑型 | `TRUE`, `FALSE` |
+| `complex` | 复数型 | `3+4i` |
+
+```{r}
+# 创建变量
+x <- 3.14          # numeric
+y <- 42L           # integer
+name <- "Alice"    # character
+flag <- TRUE       # logical
+
+# 查看类型
+class(x)
+typeof(y)
+```
+
+---
+
+## 向量（Vector）
+
+> 向量是R中**最基本的数据结构**，所有元素必须是**同一类型**
+
+### 创建向量
+
+```{r}
+# 使用 c() 函数
+nums <- c(1, 2, 3, 4, 5)
+fruits <- c("apple", "banana", "cherry")
+
+# 序列生成
+1:10                    # 1到10
+seq(1, 10, by = 2)      # 步长为2
+rep(1:3, each = 2)      # 重复
+
+nums
+```
+
+---
+
+## 向量操作 {.smaller}
+
+### 索引与切片
+
+```{r}
+x <- c(10, 20, 30, 40, 50)
+
+x[1]          # 第一个元素（R从1开始！）
+x[c(1, 3, 5)] # 多个元素
+x[2:4]        # 范围
+x[x > 25]     # 条件筛选
+```
+
+### 向量化运算
+
+```{r}
+a <- c(1, 2, 3)
+b <- c(4, 5, 6)
+
+a + b         # 逐元素相加
+a * 2         # 标量乘法
+a > 2         # 逐元素比较
+sum(a)        # 求和
+mean(a)       # 均值
+```
+
+---
+
+## 矩阵（Matrix）
+
+```{r}
+# 创建矩阵
+m <- matrix(1:12, nrow = 3, ncol = 4)
+m
+
+# 命名
+dimnames(m) <- list(
+  c("R1", "R2", "R3"),
+  c("C1", "C2", "C3", "C4")
+)
+m
+```
+
+---
+
+## 数据框（Data Frame）
+
+> 最重要的数据结构，类似Excel表格
+
+```{r}
+# 创建数据框
+patients <- data.frame(
+  id = 1:5,
+  name = c("Alice", "Bob", "Carol", "David", "Eve"),
+  age = c(25, 30, 35, 28, 42),
+  gender = c("F", "M", "F", "M", "F"),
+  bp = c(120, 135, 128, 142, 118)
+)
+
+patients
+```
+
+---
+
+## 数据框操作 {.smaller}
+
+### 访问数据
+
+```{r}
+# 列访问
+patients$age           # 使用$
+patients[["age"]]      # 使用双方括号
+patients[, "age"]      # 使用单括号
+patients$age > 30      # 条件判断
+
+# 行访问
+patients[1, ]          # 第一行
+patients[patients$age > 30, ]  # 条件筛选
+```
+
+### 常用函数
+
+```{r}
+str(patients)          # 结构
+summary(patients)      # 摘要统计
+head(patients, 3)      # 前3行
+dim(patients)          # 维度
+```
+
+---
+
+## 列表（List）
+
+> 可以存储**不同类型**的数据，最灵活的结构
+
+```{r}
+# 创建列表
+my_list <- list(
+  name = "实验组A",
+  n = 50,
+  data = patients,
+  scores = c(85, 90, 78, 92),
+  passed = TRUE
+)
+
+# 访问元素
+my_list$name
+my_list[[2]]           # 按位置
+my_list[["data"]]$age  # 嵌套访问
+```
+
+---
+
+# 第3部分：控制流与函数
+
+---
+
+## 条件语句
+
+```{r}
+score <- 85
+
+# if-else
+if (score >= 90) {
+  grade <- "A"
+} else if (score >= 80) {
+  grade <- "B"
+} else if (score >= 60) {
+  grade <- "C"
+} else {
+  grade <- "D"
+}
+grade
+```
+
+### 向量化 ifelse
+
+```{r}
+ages <- c(15, 25, 35, 12, 45)
+group <- ifelse(ages >= 18, "成人", "未成年")
+group
+```
+
+---
+
+## 循环语句
+
+### for 循环
+
+```{r}
+fruits <- c("apple", "banana", "cherry")
+
+for (fruit in fruits) {
+  print(paste("I like", fruit))
+}
+```
+
+### while 循环
+
+```{r}
+count <- 1
+while (count <= 5) {
+  print(count)
+  count <- count + 1
+}
+```
+
+---
+
+## 循环控制
+
+```{r}
+# break: 跳出循环
+for (i in 1:10) {
+  if (i > 5) break
+  print(i)
+}
+
+# next: 跳过当前迭代
+for (i in 1:5) {
+  if (i == 3) next
+  print(i)
+}
+```
+
+::: {.callout-tip}
+### 最佳实践
+
+R中尽量使用**向量化操作**代替循环，效率更高！
+:::
+
+---
+
+## 自定义函数
+
+### 基本结构
+
+```{r}
+# 定义函数
+calculate_bmi <- function(weight_kg, height_m) {
+  bmi <- weight_kg / (height_m ^ 2)
+  
+  # 分类
+  category <- ifelse(bmi < 18.5, "偏瘦",
+              ifelse(bmi < 25, "正常",
+              ifelse(bmi < 30, "超重", "肥胖")))
+  
+  return(list(bmi = round(bmi, 2), category = category))
+}
+
+# 调用函数
+calculate_bmi(70, 1.75)
+```
+
+---
+
+## 函数参数
+
+```{r}
+# 默认参数
+analyze_gene <- function(expression, 
+                         gene_name = "Unknown",
+                         threshold = 10) {
+  mean_exp <- mean(expression)
+  is_expressed <- mean_exp > threshold
+  
+  list(
+    gene = gene_name,
+    mean = mean_exp,
+    expressed = is_expressed
+  )
+}
+
+# 使用
+expr <- c(5, 8, 12, 15, 20)
+analyze_gene(expr, gene_name = "TP53", threshold = 8)
+```
+
+---
+
+# 第4部分：R包管理
+
+---
+
+## 什么是R包？
+
+> R包是**函数、数据和文档**的集合，扩展R的功能
+
+### 主要仓库
+
+| 仓库 | 说明 | 包数量 |
+|------|------|--------|
+| **CRAN** | 综合R档案网络 | 20,000+ |
+| **Bioconductor** | 生物信息专用 | 2,000+ |
+| **GitHub** | 开发版本 | 无数 |
+
+---
+
+## 安装与加载
+
+```{r}
+# 从CRAN安装
+install.packages("ggplot2")
+
+# 从Bioconductor安装
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("DESeq2")
+
+# 从GitHub安装
+install.packages("devtools")
+devtools::install_github("tidyverse/dplyr")
+
+# 加载包
+library(ggplot2)
+require(dplyr)
+```
+
+---
+
+## 必学生物医学R包
+
+::: {.columns}
+::: {.column width="50%"}
+### 数据科学
+
+- `tidyverse` — 数据科学全家桶
+  - `dplyr` — 数据处理
+  - `ggplot2` — 可视化
+  - `readr` — 数据读取
+  - `tidyr` — 数据整理
+- `data.table` — 大数据处理
+:::
+::: {.column width="50%"}
+### 生物信息
+
+- `Biostrings` — 序列分析
+- `GenomicRanges` — 基因组区间
+- `DESeq2` — RNA-seq分析
+- `limma` — 差异表达
+- `biomaRt` — 数据库查询
+:::
+:::
+
+---
+
+## 本讲小结
+
+::: {.columns}
+::: {.column width="50%"}
+### 核心概念
+
+- ✅ R是统计计算与图形语言
+- ✅ 五大基本类型：numeric, integer, character, logical, complex
+- ✅ 主要结构：vector, matrix, data.frame, list
+- ✅ 向量化操作是R的灵魂
+- ✅ 条件与循环控制程序流
+- ✅ 函数封装可重用代码
+:::
+::: {.column width="50%"}
+### 关键技能
+
+```r
+# 创建与索引
+x <- c(1, 2, 3)
+x[1]
+
+# 数据框操作
+df$column
+df[condition, ]
+
+# 函数定义
+my_fun <- function(x) { ... }
+
+# 包管理
+install.packages("pkg")
+library(pkg)
+```
+:::
+:::
+
+---
+
+## 练习与思考
+
+1. **基础练习**
+   - 创建一个包含10个患者信息的数据框
+   - 计算患者的平均年龄
+   - 筛选出年龄大于平均值的患者
+
+2. **编程练习**
+   - 编写一个函数，输入基因表达向量，返回标准化后的值
+   - 使用循环计算1到100中所有偶数的和
+
+3. **思考**
+   - 为什么R的向量从1开始索引？
+   - 向量化操作比循环快多少？（下节课揭晓）
+
+---
+
+## 下节预告
+
+# tidyverse生态与数据可视化
+
+::: {.fragment .fade-in}
+### 我们将学习：
+
+- 管道操作符 `|>` 的魔力
+- dplyr的五大核心动词
+- ggplot2图层语法
+- 制作高质量的科研图表
+:::
+
+---
+
+# 谢谢！
+
+## Questions?
+
+::: {.center}
+王诗翔 副教授  
+中南大学生物医学信息系  
+
+📧 shixiang.wang@csu.edu.cn  
+🏠 https://github.com/ShixiangWang
+:::

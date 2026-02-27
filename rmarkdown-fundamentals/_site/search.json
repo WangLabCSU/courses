@@ -1,0 +1,1115 @@
+[
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "课程大纲",
+    "section": "",
+    "text": "项目\n内容\n\n\n\n\n课程名称\nR与(R)Markdown基础\n\n\n英文名称\nR and (R)Markdown Fundamentals\n\n\n课程代码\nBMI2XXX\n\n\n学分/学时\n1学分 / 16学时（讲授8 + 实验8）\n\n\n授课对象\n生物医学信息学专业 大二本科生\n\n\n先修课程\n计算机基础、生物统计学\n\n\n授课教师\n王诗翔 副教授\n\n\n开课单位\n中南大学生物医学信息系",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#基本信息",
+    "href": "syllabus.html#基本信息",
+    "title": "课程大纲",
+    "section": "",
+    "text": "项目\n内容\n\n\n\n\n课程名称\nR与(R)Markdown基础\n\n\n英文名称\nR and (R)Markdown Fundamentals\n\n\n课程代码\nBMI2XXX\n\n\n学分/学时\n1学分 / 16学时（讲授8 + 实验8）\n\n\n授课对象\n生物医学信息学专业 大二本科生\n\n\n先修课程\n计算机基础、生物统计学\n\n\n授课教师\n王诗翔 副教授\n\n\n开课单位\n中南大学生物医学信息系",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#课程目标",
+    "href": "syllabus.html#课程目标",
+    "title": "课程大纲",
+    "section": "课程目标",
+    "text": "课程目标\n完成本课程后，学生将能够：\n\n知识目标\n\n掌握R语言的基本数据类型、结构及操作方法\n理解R包的生态体系，熟练使用核心包进行数据处理\n掌握Markdown与R Markdown的语法规范\n了解Quarto等现代可重复性研究工具\n\n能力目标\n\n能够独立编写R脚本解决生物医学数据处理问题\n能够使用R Markdown/Quarto撰写规范的科研报告\n具备初步的可重复性研究实践能力\n\n素质目标\n\n建立良好的代码规范意识和版本控制习惯\n培养批判性思维和自主学习能力\n增强团队协作与学术沟通能力",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#教学内容与安排",
+    "href": "syllabus.html#教学内容与安排",
+    "title": "课程大纲",
+    "section": "教学内容与安排",
+    "text": "教学内容与安排\n\n理论讲授（8学时）\n\n\n\n\n\n\n\n\n\n周次\n主题\n内容要点\n学时\n\n\n\n\n1\nR语言基础入门\nR语言简介与安装；RStudio环境；基础数据类型（向量、矩阵、数组、数据框、列表）；基本运算与函数\n2\n\n\n2\nR编程进阶\n控制流（if/else、for、while）；自定义函数；向量化操作；作用域与环境\n2\n\n\n3\ntidyverse生态\ndplyr数据处理；ggplot2可视化；数据读写（readr/readxl）；管道操作符\n2\n\n\n4\nR Markdown与现代工具\nMarkdown语法；R Markdown文档结构；代码块与输出控制；Quarto入门\n2\n\n\n\n\n\n实验教学（8学时）\n\n\n\n\n\n\n\n\n\n周次\n实验名称\n内容\n学时\n\n\n\n\n1\nR基础编程实验\n数据类型操作；条件与循环；函数编写；基础统计计算\n2\n\n\n2\n数据处理与可视化\n使用tidyverse处理真实生物医学数据；ggplot2绘图实践\n2\n\n\n3\nR Markdown报告编写\n创建完整分析报告；表格与图片插入；交叉引用\n2\n\n\n4\n综合项目实践\n从数据导入到报告生成的完整流程；Quarto转换\n2",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#详细教学计划",
+    "href": "syllabus.html#详细教学计划",
+    "title": "课程大纲",
+    "section": "详细教学计划",
+    "text": "详细教学计划\n\n第1讲：R语言基础 (2学时)\n\n\n\n\n\n\n注记学习目标\n\n\n\n\n了解R语言的特点与应用领域\n掌握R的五种基本数据类型\n熟练使用向量化操作\n\n\n\n讲授内容：\n\nR语言概述\n\nR的发展历程与特点\nR在生物医学研究中的应用\nR与Python的比较\n\nR环境搭建\n\nR与RStudio安装\nR包安装与管理（CRAN、Bioconductor）\n工作空间与工作环境\n\n基础数据类型\n\n向量（numeric, character, logical, factor）\n矩阵与数组\n数据框（data.frame）\n列表（list）\n\n基本操作\n\n索引与切片\n向量化运算\n常用内置函数\n\n\n\n\n第2讲：R编程进阶 (2学时)\n\n\n\n\n\n\n注记学习目标\n\n\n\n\n掌握控制流语句\n能够编写自定义函数\n理解向量化编程思想\n\n\n\n讲授内容：\n\n控制流\n\n条件语句：if, else, ifelse\n循环语句：for, while, repeat\n循环控制：break, next\n\n函数编写\n\n函数定义与调用\n参数传递（位置参数、命名参数、默认参数）\n返回值与作用域\n函数式编程基础\n\n向量化与效率\n\napply家族函数\n向量化 vs 循环\n代码性能初步\n\n\n\n\n第3讲：tidyverse生态 (2学时)\n\n\n\n\n\n\n注记学习目标\n\n\n\n\n掌握tidyverse核心包的使用\n能够进行数据清洗与转换\n制作规范的科研图表\n\n\n\n讲授内容：\n\ntidyverse简介\n\ntidy数据概念\n管道操作符 |&gt;\n\ndplyr数据处理\n\n筛选（filter）\n选择（select）\n变换（mutate）\n汇总（summarize）\n分组（group_by）\n连接（join）\n\nggplot2可视化\n\n图层语法\n几何对象与美学映射\n标度与主题\n常见生物医学图表\n\n数据读写\n\nCSV、Excel文件\nBioconductor数据格式简介\n\n\n\n\n第4讲：R Markdown与现代工具 (2学时)\n\n\n\n\n\n\n注记学习目标\n\n\n\n\n掌握Markdown语法\n能够创建R Markdown文档\n了解Quarto及其优势\n\n\n\n讲授内容：\n\nMarkdown基础\n\n标题、段落、列表\n强调、链接、图片\n表格、代码块\nLaTeX公式\n\nR Markdown核心\n\nYAML元数据\nR代码块（chunk options）\n内联代码\n输出格式（HTML、PDF、Word）\n\n进阶功能\n\n参数化报告\n交叉引用\n参考文献管理\n\nQuarto简介\n\nQuarto与R Markdown的关系\n多引擎支持（R、Python、Julia）\n统一文档格式",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#考核方式",
+    "href": "syllabus.html#考核方式",
+    "title": "课程大纲",
+    "section": "考核方式",
+    "text": "考核方式\n\n\n\n考核项目\n比例\n说明\n\n\n\n\n平时表现\n10%\n出勤、课堂参与\n\n\n实验报告\n30%\n4次实验报告（每次7.5%）\n\n\n期中作业\n20%\n独立完成数据分析报告\n\n\n期末项目\n40%\n综合项目：完整分析报告\n\n\n\n\n评分标准\n\n实验报告：代码正确性（40%）、文档规范性（30%）、分析深度（30%）\n期中作业：数据处理能力（30%）、可视化质量（30%）、报告规范性（40%）\n期末项目：选题相关性（20%）、技术运用（30%）、报告质量（30%）、创新性（20%）",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#参考教材与资源",
+    "href": "syllabus.html#参考教材与资源",
+    "title": "课程大纲",
+    "section": "参考教材与资源",
+    "text": "参考教材与资源\n\n主要教材\n\n《R数据科学》 (R for Data Science)\nHadley Wickham, Garrett Grolemund 著；陈光欣 译\n人民邮电出版社，2018\n《R Markdown权威指南》\nYihui Xie 等著\nCRC Press，2020\n《R语言实战》 (R in Action)\nRobert Kabacoff 著；王小宁 等译\n人民邮电出版社，2021\n\n\n\n在线资源\n\nR for Data Science (在线版)\nR Markdown Cookbook\nQuarto官方文档\nBioconductor\n\n\n\n软件环境\n\nR &gt;= 4.3.0\nRStudio &gt;= 2023.06\nQuarto &gt;= 1.3",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#课程拓展",
+    "href": "syllabus.html#课程拓展",
+    "title": "课程大纲",
+    "section": "课程拓展",
+    "text": "课程拓展\n本课程是生物医学信息学专业课程体系的基础模块，后续可衔接：\n\n\n\n后续课程\n衔接内容\n\n\n\n\n转录组数据分析\nRNA-seq数据处理、差异表达分析\n\n\n基因组突变分析\n突变检测、注释与可视化\n\n\n生物信息学算法\nR实现生物信息学算法\n\n\n系统生物学\n网络分析与建模",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#学术诚信",
+    "href": "syllabus.html#学术诚信",
+    "title": "课程大纲",
+    "section": "学术诚信",
+    "text": "学术诚信\n本课程要求严格遵守学术诚信规范：\n\n作业与考试独立完成，禁止抄袭\n代码引用需注明来源\n鼓励合作讨论，但禁止直接复制他人代码\n违反者按学校规定处理",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "课程大纲"
+    ]
+  },
+  {
+    "objectID": "license.html",
+    "href": "license.html",
+    "title": "许可证",
+    "section": "",
+    "text": "本课程网站及相关教学材料采用以下许可：\n\n\n知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议\n(Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International)\n\n\n\nCC BY-NC-SA 4.0\n\n\n\n\n\n\n共享 — 在任何媒介以任何形式复制、发行本材料\n演绎 — 修改、转换或以本材料为基础进行创作\n\n\n\n\n\n署名 — 您必须给出适当的署名，提供指向本许可协议的链接，同时标明是否（对原始材料）作了修改。您可以用任何合理的方式来署名，但不得以任何方式暗示许可人为您或您的使用背书。\n非商业性使用 — 您不得将本材料用于商业目的。\n相同方式共享 — 如果您再混合、转换或者基于本材料进行创作，您必须基于与原先许可协议相同的许可协议分发您贡献的材料。\n没有附加限制 — 您不得适用法律术语或者技术措施从而限制其他人做许可协议允许的事情。\n\n\n\n\n本课程中的示例代码采用 MIT 许可证：\nMIT License\n\nCopyright (c) 2025 王诗翔 - 中南大学生物医学信息系\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT."
+  },
+  {
+    "objectID": "license.html#课程材料许可",
+    "href": "license.html#课程材料许可",
+    "title": "许可证",
+    "section": "",
+    "text": "本课程网站及相关教学材料采用以下许可：\n\n\n知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议\n(Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International)\n\n\n\nCC BY-NC-SA 4.0\n\n\n\n\n\n\n共享 — 在任何媒介以任何形式复制、发行本材料\n演绎 — 修改、转换或以本材料为基础进行创作\n\n\n\n\n\n署名 — 您必须给出适当的署名，提供指向本许可协议的链接，同时标明是否（对原始材料）作了修改。您可以用任何合理的方式来署名，但不得以任何方式暗示许可人为您或您的使用背书。\n非商业性使用 — 您不得将本材料用于商业目的。\n相同方式共享 — 如果您再混合、转换或者基于本材料进行创作，您必须基于与原先许可协议相同的许可协议分发您贡献的材料。\n没有附加限制 — 您不得适用法律术语或者技术措施从而限制其他人做许可协议允许的事情。\n\n\n\n\n本课程中的示例代码采用 MIT 许可证：\nMIT License\n\nCopyright (c) 2025 王诗翔 - 中南大学生物医学信息系\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT."
+  },
+  {
+    "objectID": "license.html#第三方资源",
+    "href": "license.html#第三方资源",
+    "title": "许可证",
+    "section": "第三方资源",
+    "text": "第三方资源\n本课程中使用的第三方资源遵循其各自的许可协议：\n\nQuarto: GPL-2 / MIT\nR: GPL-2 / GPL-3\nRStudio/Posit: AGPL v3"
+  },
+  {
+    "objectID": "license.html#联系与反馈",
+    "href": "license.html#联系与反馈",
+    "title": "许可证",
+    "section": "联系与反馈",
+    "text": "联系与反馈\n如有任何关于许可的问题，请联系：\n📧 shixiang.wang@csu.edu.cn\n\n最后更新：2025年2月"
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html",
+    "href": "lectures/lecture3-rmarkdown.html",
+    "title": "第3讲：R Markdown基础",
+    "section": "",
+    "text": "本讲将介绍如何使用R Markdown创建动态、可重复的研究报告：\n\nMarkdown基础语法\nR Markdown文档结构\n代码块与输出控制\n图表与表格\n参数化报告\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#本讲概述",
+    "href": "lectures/lecture3-rmarkdown.html#本讲概述",
+    "title": "第3讲：R Markdown基础",
+    "section": "",
+    "text": "本讲将介绍如何使用R Markdown创建动态、可重复的研究报告：\n\nMarkdown基础语法\nR Markdown文档结构\n代码块与输出控制\n图表与表格\n参数化报告\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#markdown基础",
+    "href": "lectures/lecture3-rmarkdown.html#markdown基础",
+    "title": "第3讲：R Markdown基础",
+    "section": "1. Markdown基础",
+    "text": "1. Markdown基础\n\n1.1 什么是Markdown？\nMarkdown是John Gruber于2004年创建的轻量级标记语言，设计目标是：\n\n“Readability is the primary design goal”\n\n\n\n1.2 基础语法速查\n\n\n\n语法\n效果\n\n\n\n\n# 标题\n一级标题\n\n\n## 标题\n二级标题\n\n\n**粗体**\n粗体\n\n\n*斜体*\n斜体\n\n\n`代码`\n代码\n\n\n[链接](url)\n链接\n\n\n![图片](url)\n图片\n\n\n- 列表\n无序列表\n\n\n1. 列表\n有序列表\n\n\n\n\n\n1.3 扩展语法\n| 表格 | 列2 |\n|------|-----|\n| 内容 | 内容 |\n\n&gt; 引用文字\n\n---\n\n分割线\n\n~~删除线~~\n\n\n1.4 LaTeX公式\n行内公式: $E = mc^2$\n\n独立公式:\n$$\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n}x_i\n$$",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#r-markdown入门",
+    "href": "lectures/lecture3-rmarkdown.html#r-markdown入门",
+    "title": "第3讲：R Markdown基础",
+    "section": "2. R Markdown入门",
+    "text": "2. R Markdown入门\n\n2.1 什么是R Markdown？\nR Markdown = R代码 + Markdown文本 → 动态报告\n工作流程：\n.Rmd 文件 \n   ↓\nknitr (执行代码)\n   ↓\n.md 文件\n   ↓\npandoc (转换)\n   ↓\nHTML / PDF / Word\n\n\n2.2 文档结构\n---\ntitle: \"报告标题\"\nauthor: \"作者\"\ndate: \"2025-02-27\"\noutput: html_document\n---\n\n# 第一章\n\n正文内容...\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# R代码\nsummary(cars)\n\n     speed           dist       \n Min.   : 4.0   Min.   :  2.00  \n 1st Qu.:12.0   1st Qu.: 26.00  \n Median :15.0   Median : 36.00  \n Mean   :15.4   Mean   : 42.98  \n 3rd Qu.:19.0   3rd Qu.: 56.00  \n Max.   :25.0   Max.   :120.00  \n\n:::",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#小节",
+    "href": "lectures/lecture3-rmarkdown.html#小节",
+    "title": "第3讲：R Markdown基础",
+    "section": "1.1 小节",
+    "text": "1.1 小节\n更多内容…\n\n### 2.3 YAML元数据\n\n```yaml\n---\ntitle: \"研究标题\"\nsubtitle: \"副标题\"\nauthor: \n  - name: \"王诗翔\"\n    affiliation: \"中南大学\"\n  - name: \"合作者\"\n    affiliation: \"其他单位\"\ndate: \"2026-02-27\"\noutput: \n  html_document:\n    toc: true              # 目录\n    toc_float: true        # 浮动目录\n    code_folding: show     # 代码折叠\n    number_sections: true  # 章节编号\n    theme: cerulean        # 主题\n    highlight: tango       # 代码高亮\n  pdf_document:\n    toc: true\n    latex_engine: xelatex\n---",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#代码块",
+    "href": "lectures/lecture3-rmarkdown.html#代码块",
+    "title": "第3讲：R Markdown基础",
+    "section": "3. 代码块",
+    "text": "3. 代码块\n\n3.1 基本语法\n```{r chunk-name, option1=value1, option2=value2}\n# R代码\nx &lt;- 1:10\nmean(x)\n```\n\n\n3.2 常用选项\n\n\n\n选项\n说明\n常用值\n\n\n\n\necho\n显示代码\nTRUE/FALSE\n\n\neval\n执行代码\nTRUE/FALSE\n\n\nresults\n输出处理\n'markup'/'asis'/'hide'\n\n\nfig.width\n图宽\n数字(英寸)\n\n\nfig.height\n图高\n数字(英寸)\n\n\nfig.cap\n图标题\n字符串\n\n\nwarning\n显示警告\nTRUE/FALSE\n\n\nmessage\n显示消息\nTRUE/FALSE\n\n\nerror\n显示错误\nTRUE/FALSE\n\n\n\n\n\n3.3 代码块示例\n显示代码和结果（默认）：\n```{r}\nhead(mtcars, 3)\n```\n只显示结果：\n```{r, echo=FALSE}\nsummary(cars)\n```\n显示代码，不执行：\n```{r, eval=FALSE}\n# 耗时计算\nheavy_computation()\n```\n隐藏警告：\n```{r, warning=FALSE}\nlibrary(tidyverse)  # 抑制加载警告\n```",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#内联代码",
+    "href": "lectures/lecture3-rmarkdown.html#内联代码",
+    "title": "第3讲：R Markdown基础",
+    "section": "4. 内联代码",
+    "text": "4. 内联代码\n\n4.1 语法\n使用 `r 和 ` 包裹R代码：\n数据集包含 50 个观测值，\n平均速度为 15.4 mph。\n\n\n4.2 应用场景\n\n自动更新样本量\n动态插入统计结果\n确保正文与表格数据一致\n\n示例代码（缩进4空格表示代码块）：\n分析显示，处理组的平均表达量为 `r round(mean(treatment_group), 2)`， 显著高于对照组（p = `r format(p_value, digits=2, scientific=TRUE)`）。",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#图表与表格",
+    "href": "lectures/lecture3-rmarkdown.html#图表与表格",
+    "title": "第3讲：R Markdown基础",
+    "section": "5. 图表与表格",
+    "text": "5. 图表与表格\n\n5.1 基础图形\n```{r, fig.width=8, fig.height=6, fig.cap=\"散点图\"}\nplot(cars$speed, cars$dist,\n     main = \"车速与刹车距离\",\n     xlab = \"速度 (mph)\",\n     ylab = \"距离 (ft)\",\n     pch = 19, col = \"blue\")\n```\n\n\n5.2 ggplot2图形\n```{r, fig.cap=\"箱线图\"}\nlibrary(ggplot2)\n\nggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +\n  geom_boxplot() +\n  theme_minimal() +\n  labs(title = \"鸢尾花花萼长度分布\")\n```\n\n\n5.3 表格\n基础表格：\n```{r}\nknitr::kable(\n  head(iris, 5),\n  caption = \"鸢尾花数据前5行\",\n  align = c('l', 'c', 'c', 'c', 'c')\n)\n```\n交互式表格（HTML）：\n```{r}\nDT::datatable(iris, options = list(pageLength = 10))\n```",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#参数化报告",
+    "href": "lectures/lecture3-rmarkdown.html#参数化报告",
+    "title": "第3讲：R Markdown基础",
+    "section": "6. 参数化报告",
+    "text": "6. 参数化报告\n\n6.1 定义参数\n---\nparams:\n  dataset: \"iris\"\n  sample_size: 100\n  show_plot: true\n  output_dir: \"results\"\n---\n\n\n6.2 使用参数\n```{r}\n# 加载指定数据集\ndata &lt;- get(params$dataset)\n\n# 限制样本数\ndata &lt;- head(data, params$sample_size)\n\ncat(\"使用数据集:\", params$dataset, \"\\n\")\ncat(\"样本数:\", nrow(data), \"\\n\")\n```\n\n```{r, eval=params$show_plot}\n# 条件显示图表\nplot(data[, 1:2])\n```\n\n\n6.3 应用场景\n\n批量生成各组/各批次的报告\n不同参数敏感性分析\n多中心研究的分中心报告",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#输出格式",
+    "href": "lectures/lecture3-rmarkdown.html#输出格式",
+    "title": "第3讲：R Markdown基础",
+    "section": "7. 输出格式",
+    "text": "7. 输出格式\n\n7.1 HTML文档\noutput:\n  html_document:\n    toc: true\n    toc_float: true\n    code_folding: show\n    theme: cerulean  # default, bootstrap, cerulean, journal...\n    highlight: tango  # default, tango, pygments, kate...\n\n\n7.2 PDF文档\noutput:\n  pdf_document:\n    toc: true\n    number_sections: true\n    latex_engine: xelatex  # 支持中文\n    template: null  # 可自定义模板\n需要安装LaTeX：\n\n\n代码\ninstall.packages(\"tinytex\")\ntinytex::install_tinytex()\n\n\n\n\n7.3 Word文档\noutput:\n  word_document:\n    toc: true\n    reference_docx: template.docx  # 自定义样式",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#高级技巧",
+    "href": "lectures/lecture3-rmarkdown.html#高级技巧",
+    "title": "第3讲：R Markdown基础",
+    "section": "8. 高级技巧",
+    "text": "8. 高级技巧\n\n8.1 代码重用\n使用 knitr::read_chunk() 引用外部代码文件：\n```{r, include=FALSE}\nknitr::read_chunk('analysis.R')\n```\n\n```{r analysis-setup}\n# 这里会插入 analysis.R 中标记为 ## ----analysis-setup 的代码\n```\n\n\n8.2 条件输出\n```{r, include=knitr::is_html_output()}\n# 仅在HTML输出时包含\nDT::datatable(data)\n```\n\n```{r, include=knitr::is_latex_output()}\n# 仅在PDF输出时包含\nknitr::kable(data)\n```\n\n\n8.3 参考文献\n---\nbibliography: references.bib\ncsl: nature.csl  # 引用样式\n---\n\n详见Smith等人的研究 [@smith2020]。\n\n# 参考文献",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#关键要点",
+    "href": "lectures/lecture3-rmarkdown.html#关键要点",
+    "title": "第3讲：R Markdown基础",
+    "section": "关键要点",
+    "text": "关键要点\n\n\n\n概念\n要点\n\n\n\n\n.Rmd结构\nYAML + Markdown + 代码块\n\n\n代码块选项\n控制代码显示与执行\n\n\n内联代码\n实现动态更新\n\n\n参数化\n一份模板，多份报告\n\n\n多格式\nHTML/PDF/Word一键生成",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#课堂演示",
+    "href": "lectures/lecture3-rmarkdown.html#课堂演示",
+    "title": "第3讲：R Markdown基础",
+    "section": "课堂演示",
+    "text": "课堂演示\n\n创建新R Markdown文档\n配置YAML元数据\n添加代码块并设置选项\n插入图表和表格\nKnit生成HTML和PDF",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture3-rmarkdown.html#课后作业",
+    "href": "lectures/lecture3-rmarkdown.html#课后作业",
+    "title": "第3讲：R Markdown基础",
+    "section": "课后作业",
+    "text": "课后作业\n\n阅读 R Markdown Cookbook\n完成实验手册练习2\n准备自己的第一份R Markdown报告\n\n\n下节预告：Quarto —— 下一代科学出版工具",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第3讲：R Markdown基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html",
+    "href": "lectures/lecture1-r-basics.html",
+    "title": "第1讲：R语言基础",
+    "section": "",
+    "text": "本讲将介绍R语言的核心基础，包括：\n\nR语言的特点与应用领域\n五种基本数据类型\n四种核心数据结构\n向量化操作的优势\nR包管理\n\n预计时长：45分钟理论 + 15分钟练习",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#本讲概述",
+    "href": "lectures/lecture1-r-basics.html#本讲概述",
+    "title": "第1讲：R语言基础",
+    "section": "",
+    "text": "本讲将介绍R语言的核心基础，包括：\n\nR语言的特点与应用领域\n五种基本数据类型\n四种核心数据结构\n向量化操作的优势\nR包管理\n\n预计时长：45分钟理论 + 15分钟练习",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#r语言简介",
+    "href": "lectures/lecture1-r-basics.html#r语言简介",
+    "title": "第1讲：R语言基础",
+    "section": "1. R语言简介",
+    "text": "1. R语言简介\n\n1.1 什么是R？\nR是由Ross Ihaka和Robert Gentleman在1995年开发的统计计算语言。它结合了：\n\nS语言的语法特点\nScheme语言的底层实现\n开源社区的持续贡献\n\n\n\n1.2 R的核心优势\n\n\n\n优势\n说明\n\n\n\n\n开源免费\nGPL许可，无使用限制\n\n\n统计专长\n内置大量统计方法\n\n\n可视化强大\npublication-quality图表\n\n\n扩展性强\n20,000+ 扩展包\n\n\n社区活跃\n全球统计学家支持\n\n\n\n\n\n1.3 生物医学应用\n\n临床试验数据分析\n基因组学/转录组学分析\n医学影像数据处理\n流行病学建模\n药物发现与开发",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#基础数据类型",
+    "href": "lectures/lecture1-r-basics.html#基础数据类型",
+    "title": "第1讲：R语言基础",
+    "section": "2. 基础数据类型",
+    "text": "2. 基础数据类型\n\n2.1 类型系统\nR是动态类型语言，但每个对象都有明确的类型：\n\n\n代码\n# 数值型 (numeric)\nx &lt;- 3.14159\nclass(x)  # \"numeric\"\n\n# 整型 (integer)  \ny &lt;- 42L\nclass(y)  # \"integer\"\n\n# 字符型 (character)\nname &lt;- \"Central South University\"\nclass(name)  # \"character\"\n\n# 逻辑型 (logical)\nflag &lt;- TRUE  # 或 FALSE, T, F\nclass(flag)   # \"logical\"\n\n# 复数型 (complex)\nz &lt;- 3 + 4i\nclass(z)  # \"complex\"\n\n\n\n\n2.2 类型转换\n\n\n代码\nas.numeric(\"42\")      # 字符转数值\nas.character(42)      # 数值转字符\nas.logical(1)         # 1 → TRUE, 0 → FALSE\nas.integer(3.7)       # 截断取整",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#数据结构",
+    "href": "lectures/lecture1-r-basics.html#数据结构",
+    "title": "第1讲：R语言基础",
+    "section": "3. 数据结构",
+    "text": "3. 数据结构\n\n3.1 向量 (Vector)\n向量是R最基础的一维数据结构。\n创建向量：\n\n\n代码\n# c() 函数 (concatenate)\nnums &lt;- c(1, 2, 3, 4, 5)\nchars &lt;- c(\"a\", \"b\", \"c\")\nmixed &lt;- c(1, \"a\")  # 自动转换为字符型\n\n# 序列生成\n1:10                           # 1到10\nseq(1, 10, by = 2)             # 步长为2\nseq(1, 10, length.out = 5)     # 均分5个点\nrep(1:3, each = 2)             # 每个重复2次\nrep(1:3, times = 2)            # 整体重复2次\n\n\n向量操作：\n\n\n代码\nx &lt;- c(10, 20, 30, 40, 50)\n\n# 索引 (R从1开始！)\nx[1]           # 第一个元素\nx[c(1, 3, 5)]  # 第1、3、5个元素\nx[2:4]         # 第2到4个元素\nx[x &gt; 25]      # 条件筛选\nx[-1]          # 排除第一个\n\n# 向量化运算\nx + 10         # 每个元素加10\nx * 2          # 每个元素乘2\nx &gt; 30         # 每个元素比较\n\n\n\n\n3.2 矩阵 (Matrix)\n矩阵是二维数据结构，所有元素类型相同。\n\n\n代码\n# 创建矩阵\nm &lt;- matrix(1:12, nrow = 3, ncol = 4)\nm\n\n# 按行填充\nmatrix(1:12, nrow = 3, byrow = TRUE)\n\n# 索引\nm[1, 2]        # 第1行第2列\nm[1, ]         # 第1行\nm[, 2]         # 第2列\nm[1:2, 2:3]    # 子矩阵\n\n# 矩阵运算\nm + 10         # 标量加法\nm * 2          # 标量乘法\nt(m)           # 转置\nm %*% t(m)     # 矩阵乘法\n\n\n\n\n3.3 数据框 (Data Frame)\n数据框是最重要的数据结构，类似Excel表格。\n\n\n代码\n# 创建数据框\npatients &lt;- data.frame(\n  id = 1:5,\n  name = c(\"张三\", \"李四\", \"王五\", \"赵六\", \"孙七\"),\n  age = c(25, 34, 45, 28, 52),\n  gender = c(\"M\", \"F\", \"M\", \"F\", \"M\"),\n  bp = c(120, 135, 142, 118, 155),\n  stringsAsFactors = FALSE  # 字符不转因子\n)\n\n# 查看\nhead(patients, 3)    # 前3行\ntail(patients)       # 后6行\nstr(patients)        # 结构\nsummary(patients)    # 摘要统计\ndim(patients)        # 维度\nncol(patients)       # 列数\nnrow(patients)       # 行数\n\n\n访问方式：\n\n\n代码\n# 列访问\npatients$age                 # 使用$\npatients[[\"age\"]]            # 使用双方括号\npatients[, \"age\"]            # 使用单括号（返回向量）\npatients[, \"age\", drop = FALSE]  # 保持数据框\n\n# 行访问\npatients[1, ]                # 第1行\npatients[1:3, ]              # 第1-3行\npatients[patients$age &gt; 30, ]  # 条件筛选\n\n# 行列同时\npatients[1:3, c(\"name\", \"age\")]\n\n\n\n\n3.4 列表 (List)\n列表是最灵活的数据结构，可以存储不同类型。\n\n\n代码\n# 创建列表\nexperiment &lt;- list(\n  id = \"EXP001\",\n  date = \"2025-02-27\",\n  samples = patients,\n  measurements = c(12.5, 13.2, 11.8),\n  passed_qc = TRUE\n)\n\n# 访问\nexperiment$id                # 使用$\nexperiment[[\"samples\"]]      # 双方括号\nexperiment[[3]]              # 按位置\nexperiment$samples$age       # 嵌套访问\n\n# 列表操作\nlength(experiment)           # 元素个数\nnames(experiment)            # 获取名称\nexperiment$new_item &lt;- \"value\"  # 添加元素",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#向量化操作",
+    "href": "lectures/lecture1-r-basics.html#向量化操作",
+    "title": "第1讲：R语言基础",
+    "section": "4. 向量化操作",
+    "text": "4. 向量化操作\n\n4.1 向量化 vs 循环\n循环方式：\n\n\n代码\nx &lt;- 1:1000000\nresult &lt;- numeric(length(x))\n\nfor (i in seq_along(x)) {\n  result[i] &lt;- x[i] ^ 2\n}\n\n\n向量化方式：\n\n\n代码\nresult &lt;- x ^ 2\n\n\n向量化代码： - ✅ 更简洁 - ✅ 更易读 - ✅ 更快（C级别优化）\n\n\n4.2 apply家族\n当必须使用循环时，优先使用apply：\n\n\n代码\nm &lt;- matrix(1:12, nrow = 3)\n\n# apply - 矩阵/数组\napply(m, 1, sum)      # 按行求和 (MARGIN=1)\napply(m, 2, mean)     # 按列求均值 (MARGIN=2)\n\n# lapply/sapply - 列表/向量\nl &lt;- list(a = 1:3, b = 4:6)\nlapply(l, sum)        # 返回列表\nsapply(l, sum)        # 返回向量\n\n# tapply - 分组计算\ntapply(patients$age, patients$gender, mean)",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#r包管理",
+    "href": "lectures/lecture1-r-basics.html#r包管理",
+    "title": "第1讲：R语言基础",
+    "section": "5. R包管理",
+    "text": "5. R包管理\n\n5.1 包安装\n\n\n代码\n# 从CRAN安装\ninstall.packages(\"ggplot2\")\n\n# 从Bioconductor安装\nif (!require(\"BiocManager\"))\n    install.packages(\"BiocManager\")\nBiocManager::install(\"DESeq2\")\n\n# 从GitHub安装\ninstall.packages(\"remotes\")\nremotes::install_github(\"tidyverse/dplyr\")\n\n\n\n\n5.2 包加载\n\n\n代码\nlibrary(ggplot2)      # 加载包，失败报错\nrequire(dplyr)        # 加载包，失败返回FALSE\n\n# 使用命名空间\nggplot2::ggplot(mtcars, aes(x = wt, y = mpg))  # 不加载直接使用\n\n\n\n\n5.3 包管理\n\n\n代码\ninstalled.packages()          # 查看已安装包\nupdate.packages()             # 更新所有包\nremove.packages(\"pkg_name\")   # 卸载包",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#关键概念总结",
+    "href": "lectures/lecture1-r-basics.html#关键概念总结",
+    "title": "第1讲：R语言基础",
+    "section": "关键概念总结",
+    "text": "关键概念总结\n\n\n\n概念\n要点\n\n\n\n\n向量\n一维，同类型，最基础\n\n\n矩阵\n二维，同类型，数学运算\n\n\n数据框\n二维，列可不同类型，最重要\n\n\n列表\n递归，最灵活\n\n\n向量化\n优先使用，效率更高\n\n\n包\n扩展功能，CRAN/Bioconductor/GitHub",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#课堂练习",
+    "href": "lectures/lecture1-r-basics.html#课堂练习",
+    "title": "第1讲：R语言基础",
+    "section": "课堂练习",
+    "text": "课堂练习\n\n创建一个包含以下信息的数据框：\n\n5个学生，包含学号、姓名、成绩\n筛选出成绩大于80分的学生\n计算平均成绩\n\n比较循环和向量化计算100万个数的平方：\n\n使用 system.time() 测量时间\n\n安装并加载 tidyverse 包",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture1-r-basics.html#课后作业",
+    "href": "lectures/lecture1-r-basics.html#课后作业",
+    "title": "第1讲：R语言基础",
+    "section": "课后作业",
+    "text": "课后作业\n\n阅读 R for Data Science Chapter 1-3\n完成实验手册练习1\n熟悉RStudio界面和快捷键\n\n\n下节预告：控制流与函数编写",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第1讲：R语言基础"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html",
+    "href": "labs/lab1-r-basics.html",
+    "title": "实验1：R基础编程",
+    "section": "",
+    "text": "完成本实验后，你将能够：\n\n熟练创建和操作R的各种数据结构\n使用控制流语句解决实际问题\n编写自定义函数封装重复代码\n进行基础的数据处理与分析\n\n实验时长：60分钟\n实验类型：个人完成",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#实验目标",
+    "href": "labs/lab1-r-basics.html#实验目标",
+    "title": "实验1：R基础编程",
+    "section": "",
+    "text": "完成本实验后，你将能够：\n\n熟练创建和操作R的各种数据结构\n使用控制流语句解决实际问题\n编写自定义函数封装重复代码\n进行基础的数据处理与分析\n\n实验时长：60分钟\n实验类型：个人完成",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#实验准备",
+    "href": "labs/lab1-r-basics.html#实验准备",
+    "title": "实验1：R基础编程",
+    "section": "实验准备",
+    "text": "实验准备\n\n环境要求\n\nR &gt;= 4.3.0\nRStudio &gt;= 2023.06\n\n\n\n创建新项目\n\n打开RStudio\n菜单：File → New Project → New Directory → New Project\n目录名：lab1-r-basics\n勾选 Create a git repository（如果有Git）\n\n\n\n创建脚本文件\n在RStudio中，创建新脚本：File → New File → R Script，保存为 lab1.R",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#第一部分数据类型与结构-20分钟",
+    "href": "labs/lab1-r-basics.html#第一部分数据类型与结构-20分钟",
+    "title": "实验1：R基础编程",
+    "section": "第一部分：数据类型与结构 (20分钟)",
+    "text": "第一部分：数据类型与结构 (20分钟)\n\n练习1.1：基础类型\n在R脚本中完成以下操作：\n# TODO: 创建以下变量\n# 1. 一个数值型变量，值为 3.14159，命名为 pi_val\n# 2. 一个整型变量，值为 100，命名为 n_samples  \n# 3. 一个字符型变量，值为 \"Biomedical Informatics\"，命名为 dept_name\n# 4. 一个逻辑型变量，值为 TRUE，命名为 is_student\n\n# 你的代码：\n\n\n\n\n# 使用 class() 函数检查每个变量的类型\n\n提示：使用 L 后缀创建整数，如 100L\n\n\n\n\n练习1.2：向量操作\n# TODO: 完成以下向量操作\n\n# 1. 创建一个包含 1 到 20 的向量，命名为 vec1\nvec1 &lt;- ____\n\n# 2. 创建 seq() 生成 0 到 100、步长为 10 的向量\nvec2 &lt;- ____\n\n# 3. 用 rep() 创建 \"A\", \"B\", \"C\" 各重复3次的向量\nvec3 &lt;- ____\n\n# 4. 计算 vec1 的平均值、标准差、最大值\nmean_val &lt;- ____\nsd_val &lt;- ____\nmax_val &lt;- ____\n\n# 5. 提取 vec1 中大于10的元素\nvec1_large &lt;- ____\n\n# 6. 将 vec1 的第 5 到第 10 个元素替换为 99\nvec1[____] &lt;- ____\n\n\n\n练习1.3：数据框创建\n创建一个患者信息数据框：\n# TODO: 创建如下数据框\n# 患者ID: 101, 102, 103, 104, 105\n# 姓名: 张三, 李四, 王五, 赵六, 孙七\n# 年龄: 25, 34, 45, 28, 52\n# 性别: 男, 女, 男, 女, 男\n# 收缩压: 120, 135, 142, 118, 155\n\npatients &lt;- data.frame(\n  # 你的代码：\n  \n  \n  \n  \n  \n)\n\n# 查看数据框结构\nstr(patients)\n\n# 查看摘要统计\nsummary(patients)\n\n\n\n练习1.4：数据框操作\n# TODO: 基于上题的 patients 数据框\n\n# 1. 提取所有女性患者的信息\nfemale_patients &lt;- ____\n\n# 2. 提取年龄大于40岁的患者姓名\nolder_names &lt;- ____\n\n# 3. 计算所有患者的平均年龄\navg_age &lt;- ____\n\n# 4. 找出收缩压最高的患者ID\nhigh_bp_id &lt;- ____\n\n# 5. 添加一列 \"风险等级\"：收缩压&gt;=140为\"高\"，否则为\"正常\"\npatients$risk &lt;- ifelse(____, ____, ____)\n\n提示： - 条件筛选使用 data[condition, ] - which.max() 可以找到最大值的位置",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#第二部分控制流-15分钟",
+    "href": "labs/lab1-r-basics.html#第二部分控制流-15分钟",
+    "title": "实验1：R基础编程",
+    "section": "第二部分：控制流 (15分钟)",
+    "text": "第二部分：控制流 (15分钟)\n\n练习2.1：BMI计算与分类\n完成BMI计算函数：\n# TODO: 完善以下函数\ncalculate_bmi &lt;- function(weight_kg, height_m) {\n  # 1. 计算BMI\n  bmi &lt;- ____\n  \n  # 2. 根据BMI判断分类\n  # &lt; 18.5: 偏瘦\n  # 18.5 - 23.9: 正常\n  # 24 - 27.9: 超重\n  # &gt;= 28: 肥胖\n  if (____) {\n    category &lt;- \"偏瘦\"\n  } else if (____) {\n    category &lt;- \"正常\"\n  } else if (____) {\n    category &lt;- \"超重\"\n  } else {\n    category &lt;- \"肥胖\"\n  }\n  \n  # 3. 返回列表\n  return(list(\n    bmi = round(bmi, 2),\n    category = category\n  ))\n}\n\n# 测试函数\ncalculate_bmi(70, 1.75)\ncalculate_bmi(55, 1.60)\ncalculate_bmi(85, 1.70)\n\n\n\n练习2.2：循环应用\n# TODO: 使用循环完成以下任务\n\n# 1. 用 for 循环计算 1 到 100 的平方和\nsum_squares &lt;- 0\nfor (____) {\n  ____\n}\nsum_squares\n\n# 验证：使用向量化方法\nsum((1:100)^2)\n\n# 2. 用 while 循环找出第一个大于 1000 的斐波那契数\nfib_a &lt;- 1\nfib_b &lt;- 1\nwhile (____) {\n  temp &lt;- fib_a + fib_b\n  fib_a &lt;- fib_b\n  fib_b &lt;- temp\n}\nfib_b  # 第一个大于1000的斐波那契数\n\n# 3. 用循环计算 patients 数据框中每个患者的BMI\n# 假设体重数据如下(kg)：\npatients$weight &lt;- c(65, 58, 72, 55, 80)\npatients$height &lt;- c(1.70, 1.60, 1.75, 1.58, 1.72)\n\n# 初始化BMI列\npatients$bmi &lt;- NA\n\nfor (____) {\n  patients$bmi[i] &lt;- ____\n}\n\npatients",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#第三部分综合应用-20分钟",
+    "href": "labs/lab1-r-basics.html#第三部分综合应用-20分钟",
+    "title": "实验1：R基础编程",
+    "section": "第三部分：综合应用 (20分钟)",
+    "text": "第三部分：综合应用 (20分钟)\n\n练习3.1：基因表达分析\n假设你有一个基因表达矩阵：\n\n\n代码\n# 基因表达数据（行：基因，列：样本）\ngene_exp &lt;- data.frame(\n  gene_id = c(\"TP53\", \"BRCA1\", \"EGFR\", \"MYC\", \"KRAS\"),\n  sample1 = c(12.5, 8.3, 15.2, 20.1, 6.7),\n  sample2 = c(11.8, 9.1, 14.5, 19.3, 7.2),\n  sample3 = c(13.2, 7.9, 16.1, 21.5, 6.1),\n  sample4 = c(10.5, 8.7, 13.8, 18.2, 7.8)\n)\n\nprint(gene_exp)\n\n\n  gene_id sample1 sample2 sample3 sample4\n1    TP53    12.5    11.8    13.2    10.5\n2   BRCA1     8.3     9.1     7.9     8.7\n3    EGFR    15.2    14.5    16.1    13.8\n4     MYC    20.1    19.3    21.5    18.2\n5    KRAS     6.7     7.2     6.1     7.8\n\n\n任务：\n# TODO: 完成以下分析任务\n\n# 1. 创建一个函数，计算每行（基因）的：\n#    - 平均表达量\n#    - 表达量标准差\n#    - 变异系数 (CV = SD / Mean)\nanalyze_gene &lt;- function(exp_values) {\n  # 你的代码：\n  \n}\n\n# 2. 对所有基因应用该函数，结果保存为新数据框\ngene_summary &lt;- data.frame(\n  gene_id = gene_exp$gene_id,\n  mean_exp = NA,\n  sd_exp = NA,\n  cv = NA\n)\n\nfor (i in 1:nrow(gene_exp)) {\n  result &lt;- analyze_gene(____)\n  gene_summary$mean_exp[i] &lt;- ____\n  gene_summary$sd_exp[i] &lt;- ____\n  gene_summary$cv[i] &lt;- ____\n}\n\ngene_summary\n\n# 3. 找出平均表达量最高的基因\nmost_expressed &lt;- ____\n\n# 4. 找出变异系数最大的基因（表达最不稳定）\nmost_variable &lt;- ____\n\n\n\n练习3.2：质控过滤\n# TODO: 基于 gene_summary 进行过滤\n\n# 1. 过滤条件：\n#    - 平均表达量 &gt;= 10\n#    - 变异系数 &lt;= 0.15\n# 保留满足条件的基因\n\nfiltered_genes &lt;- gene_summary[____, ]\nfiltered_genes\n\n# 2. 统计满足条件的基因数量\ncat(\"原始基因数:\", nrow(gene_summary), \"\\n\")\ncat(\"过滤后基因数:\", ____, \"\\n\")\ncat(\"过滤比例:\", ____, \"%\\n\")\n\n\n\n练习3.3：临床数据整合\n# 新的临床数据\nclinical &lt;- data.frame(\n  patient_id = c(101, 102, 103, 104, 105),\n  diagnosis = c(\"Control\", \"Case\", \"Case\", \"Control\", \"Case\"),\n  age = c(25, 34, 45, 28, 52),\n  treatment = c(\"Placebo\", \"Drug\", \"Drug\", \"Placebo\", \"Drug\")\n)\n\n# 将 patients 与 clinical 合并\n# 注意：patients 中的ID列可能需要调整\n\n# TODO:\n# 1. 重命名 patients 的ID列以便匹配\nnames(patients)[____] &lt;- \"patient_id\"\n\n# 2. 使用 merge() 合并两个数据框\nmerged_data &lt;- merge(____, ____, by = ____)\n\n# 3. 按 diagnosis 分组，计算平均年龄\n# 提示：使用 aggregate() 或手动计算\ncontrol_mean_age &lt;- mean(____)\ncase_mean_age &lt;- mean(____)\n\ncat(\"Control组平均年龄:\", control_mean_age, \"\\n\")\ncat(\"Case组平均年龄:\", case_mean_age, \"\\n\")\n\n# 4. 筛选出Case组且年龄&gt;40的患者\ncase_older &lt;- ____\ncase_older",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#第四部分拓展挑战-5分钟",
+    "href": "labs/lab1-r-basics.html#第四部分拓展挑战-5分钟",
+    "title": "实验1：R基础编程",
+    "section": "第四部分：拓展挑战 (5分钟)",
+    "text": "第四部分：拓展挑战 (5分钟)\n\n挑战题：批量处理\n# 批量读取多个样本的数据文件\n# 假设你有文件: sample1.txt, sample2.txt, sample3.txt\n\n# TODO: 编写代码批量读取并合并\n\n# 1. 创建一个函数，读取单个样本文件\n# 格式：两列，gene 和 expression\nread_sample &lt;- function(filename, sample_name) {\n  # 读取数据\n  data &lt;- read.table(filename, header = TRUE, sep = \"\\t\")\n  # 重命名表达列为样本名\n  names(data)[2] &lt;- sample_name\n  return(data)\n}\n\n# 2. 使用循环批量读取多个样本并合并\n# （模拟数据）\nsample_files &lt;- c(\"sample1\", \"sample2\", \"sample3\")\ncombined_data &lt;- NULL\n\nfor (file in sample_files) {\n  # 模拟读取\n  temp_data &lt;- data.frame(\n    gene = c(\"TP53\", \"BRCA1\", \"EGFR\"),\n    expression = runif(3, 5, 20)\n  )\n  names(temp_data)[2] &lt;- file\n  \n  if (is.null(combined_data)) {\n    combined_data &lt;- temp_data\n  } else {\n    combined_data &lt;- merge(combined_data, temp_data, by = \"gene\")\n  }\n}\n\ncombined_data",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#实验提交",
+    "href": "labs/lab1-r-basics.html#实验提交",
+    "title": "实验1：R基础编程",
+    "section": "实验提交",
+    "text": "实验提交\n\n提交内容\n\nR脚本文件 (lab1.R)\n\n包含所有练习的代码\n添加必要注释\n\n实验报告 (PDF或HTML)\n\n使用R Markdown编写\n包含关键代码和结果截图\n回答思考题\n\n\n\n\n评分标准\n\n\n\n项目\n分值\n说明\n\n\n\n\n完成度\n60分\n所有练习完成\n\n\n代码质量\n20分\n规范、有注释\n\n\n报告质量\n15分\n清晰、完整\n\n\n拓展挑战\n5分\n选做",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#思考题",
+    "href": "labs/lab1-r-basics.html#思考题",
+    "title": "实验1：R基础编程",
+    "section": "思考题",
+    "text": "思考题\n\n向量化 vs 循环\n\n为什么R中向量化操作通常比循环更快？\n在什么情况下必须使用循环？\n\n数据类型选择\n\ndata.frame 和 matrix 的主要区别是什么？\n什么时候应该使用 list？\n\n函数设计\n\n如何设计一个”好”的函数？\n参数命名有什么最佳实践？",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#参考答案",
+    "href": "labs/lab1-r-basics.html#参考答案",
+    "title": "实验1：R基础编程",
+    "section": "参考答案",
+    "text": "参考答案\n\n\n点击查看练习1.1答案\n\npi_val &lt;- 3.14159\nn_samples &lt;- 100L\ndept_name &lt;- \"Biomedical Informatics\"\nis_student &lt;- TRUE\n\nclass(pi_val)\nclass(n_samples)\nclass(dept_name)\nclass(is_student)\n\n\n\n点击查看练习1.2答案\n\nvec1 &lt;- 1:20\nvec2 &lt;- seq(0, 100, by = 10)\nvec3 &lt;- rep(c(\"A\", \"B\", \"C\"), each = 3)\n\nmean_val &lt;- mean(vec1)\nsd_val &lt;- sd(vec1)\nmax_val &lt;- max(vec1)\n\nvec1_large &lt;- vec1[vec1 &gt; 10]\nvec1[5:10] &lt;- 99\n\n\n\n点击查看练习1.3答案\n\npatients &lt;- data.frame(\n  id = 101:105,\n  name = c(\"张三\", \"李四\", \"王五\", \"赵六\", \"孙七\"),\n  age = c(25, 34, 45, 28, 52),\n  gender = c(\"男\", \"女\", \"男\", \"女\", \"男\"),\n  bp = c(120, 135, 142, 118, 155),\n  stringsAsFactors = FALSE\n)",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "labs/lab1-r-basics.html#延伸阅读",
+    "href": "labs/lab1-r-basics.html#延伸阅读",
+    "title": "实验1：R基础编程",
+    "section": "延伸阅读",
+    "text": "延伸阅读\n\nR for Data Science - Chapter 5\nAdvanced R - Data Structures\nR Programming for Data Science\n\n\n实验结束，祝学习愉快！ 🎉",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验1：R基础编程"
+    ]
+  },
+  {
+    "objectID": "index.html#r-and-rmarkdown-fundamentals",
+    "href": "index.html#r-and-rmarkdown-fundamentals",
+    "title": "R与(R)Markdown基础",
+    "section": "R and (R)Markdown Fundamentals",
+    "text": "R and (R)Markdown Fundamentals\n\n中南大学生物医学信息系 · 大二本科课程\n\n\n开始课前准备 查看教学资源",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#课程简介",
+    "href": "index.html#课程简介",
+    "title": "R与(R)Markdown基础",
+    "section": "课程简介",
+    "text": "课程简介\n\n\n本课程面向生物医学信息学专业大二本科生，系统讲授 R语言基础语法 与 (R)Markdown文档编写 技术。通过”2学时理论讲授 + 2学时实验操作”的紧凑安排，帮助学生：\n\n掌握R语言核心编程技能\n熟悉生物医学数据处理常用包\n学会使用R Markdown/Quarto撰写可重复性研究报告\n建立良好的计算生物学研究习惯",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#课程模块",
+    "href": "index.html#课程模块",
+    "title": "R与(R)Markdown基础",
+    "section": "课程模块",
+    "text": "课程模块\n\n\n\n📊 理论讲授 (2学时)\n\n\n\n内容\n时长\n要点\n\n\n\n\nR语言基础\n45分钟\n数据类型、结构、控制流、函数\n\n\n核心包与生态\n15分钟\ntidyverse、Bioconductor简介\n\n\nR Markdown基础\n30分钟\n语法、代码块、输出控制\n\n\n现代报告工具\n30分钟\nQuarto、可重复性研究\n\n\n\n查看详细大纲\n\n\n\n\n🧪 实验操作 (2学时)\n\n\n\n实验\n时长\n目标\n\n\n\n\n实验1：R基础\n60分钟\n数据操作、可视化、编程练习\n\n\n实验2：报告撰写\n60分钟\n完整分析报告的R Markdown实现\n\n\n\n配套实验指导手册、示例数据、参考答案\n进入实验指导",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#你将学到什么",
+    "href": "index.html#你将学到什么",
+    "title": "R与(R)Markdown基础",
+    "section": "你将学到什么",
+    "text": "你将学到什么\n\n\n\n💻\nR编程 向量、矩阵、数据框、列表操作；条件判断与循环；自定义函数\n\n\n\n\n📦\n核心包 tidyverse数据处理；ggplot2可视化；生物医学专用包\n\n\n\n\n📝\n文档编写 Markdown语法；R Markdown文档结构；交叉引用与自动化\n\n\n\n\n🚀\n现代工具 Quarto多格式输出；Git版本控制；可重复性研究最佳实践",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#授课教师",
+    "href": "index.html#授课教师",
+    "title": "R与(R)Markdown基础",
+    "section": "授课教师",
+    "text": "授课教师\n\n\n👨‍🏫\n\n\n王诗翔 副教授\n中南大学生物医学信息系\n研究方向：生物信息学、计算生物学、多组学数据分析\n📧 邮箱：shixiang.wang@csu.edu.cn\n🏢 办公室：湘雅医学院…",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#课程特色",
+    "href": "index.html#课程特色",
+    "title": "R与(R)Markdown基础",
+    "section": "课程特色",
+    "text": "课程特色\n\n\n\n🎯 面向实战\n所有内容紧密结合生物医学研究场景，代码示例可直接用于实际项目\n\n\n\n\n🔗 前后衔接\n本课程为后续《转录组分析》《基因组突变分析》等课程奠定基础\n\n\n\n\n📚 资源丰富\n提供完整的幻灯片、实验指导、示例代码、拓展阅读材料",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "index.html#开始学习",
+    "href": "index.html#开始学习",
+    "title": "R与(R)Markdown基础",
+    "section": "开始学习",
+    "text": "开始学习\n\n\n\n📋 课程大纲 📊 幻灯片：R基础 📊 幻灯片：R Markdown 🧪 实验1 🧪 实验2",
+    "crumbs": [
+      "首页",
+      "课程信息",
+      "R与(R)Markdown基础"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html",
+    "href": "labs/lab2-rmarkdown.html",
+    "title": "实验2：R Markdown报告编写",
+    "section": "",
+    "text": "完成本实验后，你将能够：\n\n创建规范的R Markdown文档\n掌握YAML元数据配置\n灵活使用代码块选项\n插入图表、表格、公式\n生成多种格式的输出报告\n\n实验时长：60分钟\n实验类型：个人完成",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#实验目标",
+    "href": "labs/lab2-rmarkdown.html#实验目标",
+    "title": "实验2：R Markdown报告编写",
+    "section": "",
+    "text": "完成本实验后，你将能够：\n\n创建规范的R Markdown文档\n掌握YAML元数据配置\n灵活使用代码块选项\n插入图表、表格、公式\n生成多种格式的输出报告\n\n实验时长：60分钟\n实验类型：个人完成",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#实验准备",
+    "href": "labs/lab2-rmarkdown.html#实验准备",
+    "title": "实验2：R Markdown报告编写",
+    "section": "实验准备",
+    "text": "实验准备\n\n环境检查\n在R中运行以下代码，确保环境就绪：\n\n\n代码\n# 检查并安装必要包\npackages &lt;- c(\"rmarkdown\", \"knitr\", \"ggplot2\", \"dplyr\", \"DT\")\nfor (pkg in packages) {\n  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {\n    install.packages(pkg)\n    library(pkg, character.only = TRUE)\n  }\n}\n\ncat(\"✓ 环境检查完成！\\n\")\n\n\n\n\n创建项目\n\n打开RStudio\nFile → New Project → New Directory → New Project\n目录名：lab2-rmarkdown\n创建以下子目录：\n\nlab2-rmarkdown/\n├── data/           # 数据文件\n├── figures/        # 输出图片\n├── report.Rmd      # 主报告文件\n└── output/         # 输出目录",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#第一部分创建基础报告-15分钟",
+    "href": "labs/lab2-rmarkdown.html#第一部分创建基础报告-15分钟",
+    "title": "实验2：R Markdown报告编写",
+    "section": "第一部分：创建基础报告 (15分钟)",
+    "text": "第一部分：创建基础报告 (15分钟)\n\n练习1.1：创建R Markdown文件\n\nFile → New File → R Markdown\n填写信息：\n\nTitle: 鸢尾花数据分析报告\nAuthor: 你的姓名\nDefault Output Format: HTML\n\n保存为 report.Rmd\n\n\n\n练习1.2：配置YAML\n修改文档开头的YAML：\n---\ntitle: \"鸢尾花数据分析报告\"\nsubtitle: \"基于R Markdown的可重复性分析\"\nauthor: \n  - name: \"你的姓名\"\n    affiliation: \"中南大学生物医学信息系\"\ndate: \"2026-02-27\"\noutput: \n  html_document:\n    toc: true\n    toc_float: true\n    code_folding: show\n    number_sections: true\n    theme: cerulean\n    highlight: tango\n  pdf_document:\n    toc: true\n    number_sections: true\n  word_document:\n    toc: true\n---\n\n\n\n练习1.3：编写文档结构\n在YAML后添加以下内容：\n# 摘要\n\n本文对鸢尾花数据集进行了探索性数据分析...\n\n# 1. 简介\n\n## 1.1 数据集介绍\n\n鸢尾花数据集是统计学和机器学习中的经典数据集...\n\n## 1.2 分析目的\n\n- 探索三种鸢尾花的特征差异\n- 可视化特征分布\n- 建立简单的分类模型\n\n# 2. 数据导入与预处理\n\n# 3. 探索性数据分析\n\n# 4. 结论与讨论\n\n# 参考文献",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#第二部分数据与代码-20分钟",
+    "href": "labs/lab2-rmarkdown.html#第二部分数据与代码-20分钟",
+    "title": "实验2：R Markdown报告编写",
+    "section": "第二部分：数据与代码 (20分钟)",
+    "text": "第二部分：数据与代码 (20分钟)\n\n练习2.1：数据导入\n在”2. 数据导入与预处理”部分添加：\n## 2.1 加载数据\n\n```{r setup, include=FALSE}\nknitr::opts_chunk$set(\n  echo = TRUE,\n  message = FALSE,\n  warning = FALSE,\n  fig.width = 8,\n  fig.height = 6\n)\n\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(knitr)\n```\n\n```{r load-data}\n# 加载内置数据集\ndata(iris)\n\n# 查看数据维度\nsprintf(\"数据集包含 %d 行, %d 列\", nrow(iris), ncol(iris))\n\n# 显示前几行\nhead(iris, 10)\n```\n\n## 2.2 数据检查\n\n```{r data-summary}\n# 数据类型检查\nstr(iris)\n\n# 缺失值检查\ncolSums(is.na(iris))\n\n# 基础统计\nsummary(iris[, 1:4])\n```\n\n\n\n练习2.2：代码块选项实践\n创建不同代码块，体验各种选项：\n## 2.3 代码块选项演示\n\n### 显示代码和结果（默认）\n\n```{r}\nmean(iris$Sepal.Length)\n```\n\n### 只显示结果，隐藏代码\n\n```{r, echo=FALSE}\nmedian(iris$Sepal.Length)\n```\n\n### 显示代码，不执行\n\n```{r, eval=FALSE}\n# 这段代码不会执行\nexpensive_computation &lt;- function() {\n  Sys.sleep(60)\n  return(42)\n}\n```\n\n### 不显示警告信息\n\n```{r, warning=FALSE}\n# 可能产生警告的代码\n```\n\n\n\n练习2.3：内联代码\n在文本中嵌入动态结果：\n数据集共包含 150 个样本，\n其中山鸢尾（*Iris setosa*）有 50 个。\n\n花萼长度的平均值为 5.84 cm，\n标准差为 0.83 cm。\n\n最大花萼长度为 7.9 cm，\n最小为 4.3 cm。",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#第三部分可视化与表格-20分钟",
+    "href": "labs/lab2-rmarkdown.html#第三部分可视化与表格-20分钟",
+    "title": "实验2：R Markdown报告编写",
+    "section": "第三部分：可视化与表格 (20分钟)",
+    "text": "第三部分：可视化与表格 (20分钟)\n\n练习3.1：ggplot2图表\n在”3. 探索性数据分析”部分添加：\n## 3.1 特征分布\n\n### 花萼长度分布\n\n```{r sepal-dist, fig.cap=\"花萼长度分布直方图\"}\nggplot(iris, aes(x = Sepal.Length, fill = Species)) +\n  geom_histogram(alpha = 0.7, bins = 20) +\n  facet_wrap(~Species, ncol = 1) +\n  labs(\n    title = \"三种鸢尾花的花萼长度分布\",\n    x = \"花萼长度 (cm)\",\n    y = \"频数\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")\n```\n\n### 特征散点图\n\n```{r pair-plot, fig.cap=\"花萼长度与宽度关系\"}\nggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +\n  geom_point(size = 3, alpha = 0.7) +\n  geom_smooth(method = \"lm\", se = FALSE) +\n  labs(\n    title = \"花萼长度 vs 花萼宽度\",\n    x = \"花萼长度 (cm)\",\n    y = \"花萼宽度 (cm)\"\n  ) +\n  theme_bw()\n```\n\n\n\n练习3.2：箱线图与小提琴图\n## 3.2 分组比较\n\n```{r boxplot, fig.cap=\"花瓣长度箱线图\"}\nggplot(iris, aes(x = Species, y = Petal.Length, fill = Species)) +\n  geom_boxplot(alpha = 0.7) +\n  geom_jitter(width = 0.2, alpha = 0.3) +\n  labs(\n    title = \"不同种类鸢尾花的花瓣长度\",\n    x = \"种类\",\n    y = \"花瓣长度 (cm)\"\n  ) +\n  theme_classic() +\n  theme(legend.position = \"none\")\n```\n\n```{r violin, fig.cap=\"花瓣宽度小提琴图\"}\nggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +\n  geom_violin(alpha = 0.7) +\n  geom_boxplot(width = 0.1) +\n  labs(\n    title = \"不同种类鸢尾花的花瓣宽度分布\",\n    x = \"种类\",\n    y = \"花瓣宽度 (cm)\"\n  ) +\n  theme_minimal()\n```\n\n\n\n练习3.3：数据表格\n## 3.3 统计表格\n\n### 按种类汇总统计\n\n```{r summary-table}\nsummary_stats &lt;- iris %&gt;%\n  group_by(Species) %&gt;%\n  summarise(\n    样本数 = n(),\n    花萼长均值 = mean(Sepal.Length),\n    花萼长标准差 = sd(Sepal.Length),\n    花瓣长均值 = mean(Petal.Length),\n    花瓣长标准差 = sd(Petal.Length)\n  ) %&gt;%\n  mutate(across(where(is.numeric), ~round(., 2)))\n\nkable(summary_stats, \n      caption = \"鸢尾花数据集按种类汇总统计\",\n      align = c('l', 'c', 'r', 'r', 'r', 'r'))\n```\n\n### 交互式表格（HTML输出）\n\n```{r interactive-table}\nif (knitr::is_html_output()) {\n  DT::datatable(summary_stats, \n                options = list(pageLength = 5),\n                caption = \"交互式数据表\")\n}\n```\n\n\n\n练习3.4：相关系数热图\n## 3.4 特征相关性\n\n```{r correlation, fig.cap=\"特征相关系数热图\"}\n# 计算相关系数矩阵\ncor_matrix &lt;- cor(iris[, 1:4])\n\n# 转换为长格式用于ggplot2\ncor_df &lt;- as.data.frame(as.table(cor_matrix))\nnames(cor_df) &lt;- c(\"Var1\", \"Var2\", \"Correlation\")\n\nggplot(cor_df, aes(x = Var1, y = Var2, fill = Correlation)) +\n  geom_tile() +\n  geom_text(aes(label = round(Correlation, 2))) +\n  scale_fill_gradient2(low = \"blue\", high = \"red\", mid = \"white\",\n                       midpoint = 0, limit = c(-1, 1)) +\n  labs(title = \"特征相关系数矩阵\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n```",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#第四部分公式与参考文献-5分钟",
+    "href": "labs/lab2-rmarkdown.html#第四部分公式与参考文献-5分钟",
+    "title": "实验2：R Markdown报告编写",
+    "section": "第四部分：公式与参考文献 (5分钟)",
+    "text": "第四部分：公式与参考文献 (5分钟)\n\n练习4.1：数学公式\n在适当位置添加公式：\n## 3.5 统计方法\n\n### 变异系数\n\n变异系数（Coefficient of Variation）用于衡量数据的相对离散程度：\n\n$$\nCV = \\\\frac{\\\\sigma}{\\\\mu} \\\\times 100\\\\%\n$$\n\n其中 $\\\\sigma$ 为标准差，$\\\\mu$ 为均值。\n\n### 欧氏距离\n\n两个样本之间的欧氏距离计算公式：\n\n$$\nd(x, y) = \\\\sqrt{\\\\sum_{i=1}^{n}(x_i - y_i)^2}\n$$\n\n\n\n练习4.2：添加参考文献\n\n在文档目录创建 references.bib 文件：\n\n@article{fisher1936use,\n  title={The use of multiple measurements in taxonomic problems},\n  author={Fisher, Ronald A},\n  journal={Annals of eugenics},\n  volume={7},\n  number={2},\n  pages={179--188},\n  year={1936}\n}\n\n@book{wickham2016r,\n  title={R for data science: import, tidy, transform, visualize, and model data},\n  author={Wickham, Hadley and Grolemund, Garrett},\n  year={2016},\n  publisher={O'Reilly Media, Inc.}\n}\n\n在YAML中添加：\n\nbibliography: references.bib\ncsl: https://www.zotero.org/styles/china-national-standard-gb-t-7714-2015-numeric\n\n在正文中引用：\n\n鸢尾花数据集最早由Fisher在1936年发表 [@fisher1936use]。\n数据分析使用R语言完成 [@wickham2016r]。\n\n# 参考文献",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#第五部分多格式输出",
+    "href": "labs/lab2-rmarkdown.html#第五部分多格式输出",
+    "title": "实验2：R Markdown报告编写",
+    "section": "第五部分：多格式输出",
+    "text": "第五部分：多格式输出\n\n练习5.1：Knit输出\n尝试不同的输出格式：\n\n\n\n格式\n操作\n\n\n\n\nHTML\nKnit → Knit to HTML\n\n\nPDF\nKnit → Knit to PDF（需要LaTeX）\n\n\nWord\nKnit → Knit to Word\n\n\n\n\n\n练习5.2：参数化报告\n修改YAML添加参数：\nparams:\n  species_filter: \"all\"\n  show_plots: true\n  sample_size: 150\n在代码中使用参数：\n```{r}\n# 根据参数筛选数据\nif (params$species_filter != \"all\") {\n  iris_filtered &lt;- iris[iris$Species == params$species_filter, ]\n} else {\n  iris_filtered &lt;- iris\n}\n\n# 限制样本数\niris_filtered &lt;- head(iris_filtered, params$sample_size)\n\nnrow(iris_filtered)\n```\n\n```{r, eval=params$show_plots}\n# 条件显示图表\nplot(iris_filtered[, 1:2])\n```",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#实验检查清单",
+    "href": "labs/lab2-rmarkdown.html#实验检查清单",
+    "title": "实验2：R Markdown报告编写",
+    "section": "实验检查清单",
+    "text": "实验检查清单\n完成以下检查，确保报告质量：\n\nYAML配置正确，包含标题、作者、日期\n目录自动生成并可点击跳转\n代码块选项使用合理\n至少包含2个图表\n至少包含1个表格\n使用内联代码显示动态结果\n包含数学公式\n成功生成HTML输出\n代码有适当注释\n文档结构清晰",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#拓展挑战",
+    "href": "labs/lab2-rmarkdown.html#拓展挑战",
+    "title": "实验2：R Markdown报告编写",
+    "section": "拓展挑战",
+    "text": "拓展挑战\n\n挑战1：Quarto转换\n将R Markdown文档转换为Quarto格式：\n\n重命名文件为 report.qmd\n修改代码块选项为YAML格式：\n\n```{r}\n#| label: fig-scatter\n#| fig-cap: \"散点图\"\n#| fig-width: 8\nplot(x, y)\n```\n\n使用 quarto render report.qmd 生成报告\n\n\n\n挑战2：交互式图表\n使用 plotly 包创建可交互的3D散点图：\nlibrary(plotly)\nplot_ly(iris, x = ~Sepal.Length, y = ~Sepal.Width, \n        z = ~Petal.Length, color = ~Species,\n        type = \"scatter3d\", mode = \"markers\")\n\n\n挑战3：Shiny集成\n在R Markdown中添加简单的Shiny交互组件：\n---\noutput: html_document\nruntime: shiny\n---",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#提交要求",
+    "href": "labs/lab2-rmarkdown.html#提交要求",
+    "title": "实验2：R Markdown报告编写",
+    "section": "提交要求",
+    "text": "提交要求\n\n提交文件\n\nreport.Rmd - R Markdown源文件\nreport.html - HTML输出\nreferences.bib - 参考文献（如有）\ndata/ - 数据文件（如使用外部数据）\n\n\n\n评分标准\n\n\n\n项目\n分值\n说明\n\n\n\n\nYAML配置\n10分\n完整、正确\n\n\n数据结构\n15分\n章节清晰\n\n\n代码质量\n25分\n规范、可运行\n\n\n可视化\n25分\n图表美观、有意义\n\n\n文档格式\n15分\n表格、公式、引用\n\n\n创新性\n10分\n额外功能",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#常见问题",
+    "href": "labs/lab2-rmarkdown.html#常见问题",
+    "title": "实验2：R Markdown报告编写",
+    "section": "常见问题",
+    "text": "常见问题\n\nQ1: Knit时出现中文乱码？\n解决：在YAML中添加：\noutput:\n  html_document:\n    df_print: paged\n    encoding: UTF-8\n并在RStudio中设置：Tools → Global Options → Code → Saving → Default Text Encoding: UTF-8\n\n\nQ2: PDF输出失败？\n解决：需要安装LaTeX。推荐安装TinyTeX：\ninstall.packages(\"tinytex\")\ntinytex::install_tinytex()\n\n\nQ3: 图片显示不出来？\n解决：确保图片路径正确，建议使用相对路径：\n![描述](figures/myplot.png)",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#优秀报告示例",
+    "href": "labs/lab2-rmarkdown.html#优秀报告示例",
+    "title": "实验2：R Markdown报告编写",
+    "section": "优秀报告示例",
+    "text": "优秀报告示例\n\n特点：\n\n✅ 清晰的文档结构\n✅ 代码与文字有机结合\n✅ 图表有标题和说明\n✅ 分析有深度\n✅ 排版美观专业\n\n\n\n参考：\n\nR Markdown Gallery\nQuarto Examples",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "labs/lab2-rmarkdown.html#下节课预告",
+    "href": "labs/lab2-rmarkdown.html#下节课预告",
+    "title": "实验2：R Markdown报告编写",
+    "section": "下节课预告",
+    "text": "下节课预告\n\n转录组分析基础\n使用R处理RNA-seq数据\nDESeq2差异表达分析\n\n实验结束，祝学习愉快！ 🎉",
+    "crumbs": [
+      "首页",
+      "实验指导",
+      "实验2：R Markdown报告编写"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html",
+    "href": "lectures/lecture2-data-viz.html",
+    "title": "第2讲：数据处理与可视化",
+    "section": "",
+    "text": "本讲将介绍R中数据处理与可视化的强大工具——tidyverse：\n\ntidyverse生态简介\ndplyr数据处理五动词\nggplot2图层语法\n实战案例\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#本讲概述",
+    "href": "lectures/lecture2-data-viz.html#本讲概述",
+    "title": "第2讲：数据处理与可视化",
+    "section": "",
+    "text": "本讲将介绍R中数据处理与可视化的强大工具——tidyverse：\n\ntidyverse生态简介\ndplyr数据处理五动词\nggplot2图层语法\n实战案例\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#tidyverse简介",
+    "href": "lectures/lecture2-data-viz.html#tidyverse简介",
+    "title": "第2讲：数据处理与可视化",
+    "section": "1. tidyverse简介",
+    "text": "1. tidyverse简介\n\n1.1 什么是tidyverse？\ntidyverse是Hadley Wickham创建的一套统一的数据科学工具包。\n\n\n1.2 核心包\n\n\n\n包名\n功能\n\n\n\n\nggplot2\n数据可视化\n\n\ndplyr\n数据处理\n\n\ntidyr\n数据整理\n\n\nreadr\n数据读取\n\n\npurrr\n函数式编程\n\n\ntibble\n现代数据框\n\n\nstringr\n字符串处理\n\n\nforcats\n因子处理\n\n\n\n\n\n1.3 安装与加载\n\n\n代码\n# 安装整个tidyverse\ninstall.packages(\"tidyverse\")\n\n# 加载\nlibrary(tidyverse)",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#dplyr数据处理",
+    "href": "lectures/lecture2-data-viz.html#dplyr数据处理",
+    "title": "第2讲：数据处理与可视化",
+    "section": "2. dplyr数据处理",
+    "text": "2. dplyr数据处理\n\n2.1 五大核心动词\n\n\n\n函数\n作用\nSQL对应\n\n\n\n\nfilter()\n筛选行\nWHERE\n\n\nselect()\n选择列\nSELECT\n\n\nmutate()\n创建/修改列\n计算字段\n\n\nsummarise()\n汇总统计\n聚合函数\n\n\narrange()\n排序\nORDER BY\n\n\n\n\n\n2.2 filter - 筛选行\n\n\n代码\nlibrary(dplyr)\n\n# 筛选符合条件的数据\niris %&gt;%\n  filter(Species == \"setosa\", Sepal.Length &gt; 5)\n\n# 多条件\niris %&gt;%\n  filter(Species %in% c(\"setosa\", \"versicolor\"),\n         Sepal.Length &gt; 5,\n         Sepal.Width &lt; 4)\n\n\n\n\n2.3 select - 选择列\n\n\n代码\n# 选择指定列\niris %&gt;%\n  select(Sepal.Length, Sepal.Width, Species)\n\n# 排除列\niris %&gt;%\n  select(-Petal.Width)\n\n# 选择范围\niris %&gt;%\n  select(Sepal.Length:Petal.Width)\n\n# 辅助函数\niris %&gt;%\n  select(starts_with(\"Sepal\"))\niris %&gt;%\n  select(ends_with(\"Width\"))\niris %&gt;%\n  select(contains(\"Length\"))\n\n\n\n\n2.4 mutate - 创建新列\n\n\n代码\niris %&gt;%\n  mutate(\n    Sepal.Area = Sepal.Length * Sepal.Width,\n    Petal.Area = Petal.Length * Petal.Width,\n    Area.Ratio = Petal.Area / Sepal.Area\n  )\n\n\n\n\n2.5 summarise - 汇总统计\n\n\n代码\niris %&gt;%\n  summarise(\n    n = n(),\n    mean_sepal = mean(Sepal.Length),\n    sd_sepal = sd(Sepal.Length),\n    median_petal = median(Petal.Length)\n  )\n\n\n\n\n2.6 group_by - 分组操作\n\n\n代码\n# 按种类分组统计\niris %&gt;%\n  group_by(Species) %&gt;%\n  summarise(\n    n = n(),\n    mean_sepal = mean(Sepal.Length),\n    sd_sepal = sd(Sepal.Length)\n  )\n\n\n\n\n2.7 管道操作符 |&gt;\n\n\n代码\n# 传统写法\nresult &lt;- summarise(\n  group_by(\n    filter(iris, Sepal.Length &gt; 5),\n    Species\n  ),\n  mean = mean(Sepal.Length)\n)\n\n# 管道写法\nresult &lt;- iris %&gt;%\n  filter(Sepal.Length &gt; 5) %&gt;%\n  group_by(Species) %&gt;%\n  summarise(mean = mean(Sepal.Length))",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#ggplot2可视化",
+    "href": "lectures/lecture2-data-viz.html#ggplot2可视化",
+    "title": "第2讲：数据处理与可视化",
+    "section": "3. ggplot2可视化",
+    "text": "3. ggplot2可视化\n\n3.1 图层语法\nggplot2的核心思想：图层叠加\n数据 (data) → 映射 (aes) → 几何对象 (geom) → 标度/主题\n\n\n3.2 基础模板\n\n\n代码\nggplot(data = &lt;DATA&gt;) +\n  &lt;GEOM_FUNCTION&gt;(\n    mapping = aes(&lt;MAPPINGS&gt;),\n    stat = &lt;STAT&gt;,\n    position = &lt;POSITION&gt;\n  ) +\n  &lt;COORDINATE_FUNCTION&gt; +\n  &lt;FACET_FUNCTION&gt; +\n  &lt;SCALE_FUNCTION&gt; +\n  &lt;THEME_FUNCTION&gt;\n\n\n\n\n3.3 常见几何对象\n\n\n\n函数\n图形类型\n\n\n\n\ngeom_point()\n散点图\n\n\ngeom_line()\n线图\n\n\ngeom_bar()\n柱状图\n\n\ngeom_histogram()\n直方图\n\n\ngeom_boxplot()\n箱线图\n\n\ngeom_density()\n密度图\n\n\ngeom_smooth()\n平滑曲线\n\n\n\n\n\n3.4 完整示例\n\n\n代码\nlibrary(ggplot2)\n\n# 散点图\nggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +\n  geom_point(size = 3, alpha = 0.7) +\n  geom_smooth(method = \"lm\", se = FALSE) +\n  labs(\n    title = \"鸢尾花花萼特征\",\n    x = \"花萼长度 (cm)\",\n    y = \"花萼宽度 (cm)\"\n  ) +\n  theme_minimal()",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#实战案例",
+    "href": "lectures/lecture2-data-viz.html#实战案例",
+    "title": "第2讲：数据处理与可视化",
+    "section": "4. 实战案例",
+    "text": "4. 实战案例\n\n案例：临床数据分析\n\n\n代码\n# 读取数据\nclinical &lt;- read_csv(\"data/clinical.csv\")\n\n# 数据清洗与分析\nclinical_summary &lt;- clinical %&gt;%\n  filter(!is.na(age)) %&gt;%\n  mutate(\n    age_group = case_when(\n      age &lt; 40 ~ \"青年\",\n      age &lt; 60 ~ \"中年\",\n      TRUE ~ \"老年\"\n    )\n  ) %&gt;%\n  group_by(diagnosis, age_group) %&gt;%\n  summarise(\n    n = n(),\n    mean_survival = mean(survival_months, na.rm = TRUE)\n  )\n\n# 可视化\nggplot(clinical_summary, aes(x = age_group, y = mean_survival, fill = diagnosis)) +\n  geom_bar(stat = \"identity\", position = \"dodge\") +\n  labs(title = \"不同诊断组的平均生存时间\") +\n  theme_bw()",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#关键要点",
+    "href": "lectures/lecture2-data-viz.html#关键要点",
+    "title": "第2讲：数据处理与可视化",
+    "section": "关键要点",
+    "text": "关键要点\n\n\n\n概念\n要点\n\n\n\n\ntidyverse\n统一的数据科学生态\n\n\ndplyr\n五动词：filter/select/mutate/summarise/arrange\n\n\n管道操作\n|&gt; 或 %&gt;% 连接操作\n\n\nggplot2\n图层语法，aes映射",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture2-data-viz.html#课后作业",
+    "href": "lectures/lecture2-data-viz.html#课后作业",
+    "title": "第2讲：数据处理与可视化",
+    "section": "课后作业",
+    "text": "课后作业\n\n阅读 R for Data Science Chapter 3-5\n使用dplyr处理实验数据\n用ggplot2制作3种不同类型的图表\n\n\n下节预告：R Markdown基础",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第2讲：数据处理与可视化"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html",
+    "href": "lectures/lecture4-quarto.html",
+    "title": "第4讲：现代报告工具",
+    "section": "",
+    "text": "本讲将介绍现代科学研究中的可重复性工具：\n\nQuarto简介与优势\nQuarto vs R Markdown\n多语言支持\n可重复性研究最佳实践\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#本讲概述",
+    "href": "lectures/lecture4-quarto.html#本讲概述",
+    "title": "第4讲：现代报告工具",
+    "section": "",
+    "text": "本讲将介绍现代科学研究中的可重复性工具：\n\nQuarto简介与优势\nQuarto vs R Markdown\n多语言支持\n可重复性研究最佳实践\n\n预计时长：45分钟理论 + 15分钟演示",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#quarto简介",
+    "href": "lectures/lecture4-quarto.html#quarto简介",
+    "title": "第4讲：现代报告工具",
+    "section": "1. Quarto简介",
+    "text": "1. Quarto简介\n\n1.1 什么是Quarto？\nQuarto是Posit（原RStudio）开发的下一代科学出版系统。\n\n\n1.2 与R Markdown的关系\nR Markdown (2012) → Quarto (2022)\n     ↓                    ↓\n  仅支持R           多语言支持\n  单一引擎          统一平台\n\n\n1.3 核心优势\n\n\n\n特性\n说明\n\n\n\n\n多语言\nR、Python、Julia、Observable\n\n\n多格式\n文档、演示、网站、书籍、仪表板\n\n\n现代化\n响应式设计，美观默认样式\n\n\n一致性\n统一语法，降低学习成本",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#quarto基础",
+    "href": "lectures/lecture4-quarto.html#quarto基础",
+    "title": "第4讲：现代报告工具",
+    "section": "2. Quarto基础",
+    "text": "2. Quarto基础\n\n2.1 安装\n# 官网下载安装包\nhttps://quarto.org/docs/get-started/\n\n# 命令行检查\nquarto --version\n\n\n2.2 文档结构\n---\ntitle: \"Quarto文档\"\nformat: html\n---\n\n## 简介\n\n这是正文。\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n2.3 代码块选项\nR Markdown风格：\n```{r, echo=FALSE, fig.width=8}\nplot(cars)\n```\nQuarto风格（推荐）：\n```{r}\n#| echo: false\n#| fig-width: 8\nplot(cars)\n```",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#多语言示例",
+    "href": "lectures/lecture4-quarto.html#多语言示例",
+    "title": "第4讲：现代报告工具",
+    "section": "3. 多语言示例",
+    "text": "3. 多语言示例\n\n3.1 Python + R\n---\ntitle: \"多语言分析\"\nformat: html\n---\n\n## Python数据处理\n\n```python\nimport pandas as pd\nimport numpy as np\n\ndata = pd.DataFrame({\n    'x': np.random.randn(100),\n    'y': np.random.randn(100)\n})\ndata.head()\n```\n\n## R可视化\n\n```r\nlibrary(ggplot2)\nlibrary(reticulate)\n\n# 使用Python数据\npy_data &lt;- py$data\n\nggplot(py_data, aes(x = x, y = y)) +\n  geom_point() +\n  theme_minimal()\n```",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#文档类型",
+    "href": "lectures/lecture4-quarto.html#文档类型",
+    "title": "第4讲：现代报告工具",
+    "section": "4. 文档类型",
+    "text": "4. 文档类型\n\n4.1 HTML文档\n---\ntitle: \"分析报告\"\nformat:\n  html:\n    toc: true\n    code-fold: true\n    code-tools: true\n    theme: cosmo\n---\n\n\n4.2 演示幻灯片\n---\ntitle: \"研究汇报\"\nformat: revealjs\n---\n\n\n4.3 PDF文档\n---\ntitle: \"学术论文\"\nformat:\n  pdf:\n    documentclass: article\n    papersize: a4\n---\n\n\n4.4 网站\n---\nproject:\n  type: website\n\nwebsite:\n  title: \"项目网站\"\n  navbar:\n    left:\n      - href: index.qmd\n        text: 首页\n---\n\n\n4.5 书籍\n---\nproject:\n  type: book\n\nbook:\n  title: \"教材\"\n  chapters:\n    - index.qmd\n    - intro.qmd\n    - chapter1.qmd\n---",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#可重复性研究",
+    "href": "lectures/lecture4-quarto.html#可重复性研究",
+    "title": "第4讲：现代报告工具",
+    "section": "5. 可重复性研究",
+    "text": "5. 可重复性研究\n\n5.1 为什么重要？\n\n“可重复性是科学方法的基石” —— 《Nature》\n\n\n\n5.2 最佳实践\n\n\n\n实践\n工具\n\n\n\n\n版本控制\nGit/GitHub\n\n\n环境管理\nrenv/conda\n\n\n文档记录\nR Markdown/Quarto\n\n\n数据管理\n数据仓库/DOI\n\n\n自动化\nMakefile/GitHub Actions\n\n\n\n\n\n5.3 renv环境管理\n\n\n5.4 项目结构\nproject/\n├── data/               # 原始数据（只读）\n├── analysis/           # 分析脚本\n├── output/             # 结果输出\n├── figures/            # 图表\n├── renv/               # 环境锁定\n├── report.qmd          # 主报告\n├── README.md           # 项目说明\n└── renv.lock           # 依赖锁定",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#从r-markdown迁移",
+    "href": "lectures/lecture4-quarto.html#从r-markdown迁移",
+    "title": "第4讲：现代报告工具",
+    "section": "6. 从R Markdown迁移",
+    "text": "6. 从R Markdown迁移\n\n6.1 自动转换\nquarto convert report.Rmd\n\n\n6.2 主要变化\n\n\n\nR Markdown\nQuarto\n\n\n\n\nknitr::kable()\n自动美化表格\n\n\nfig.width=8\nfig-width: 8\n\n\necho=FALSE\necho: false\n\n\n需额外包引用\n原生交叉引用",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#关键要点",
+    "href": "lectures/lecture4-quarto.html#关键要点",
+    "title": "第4讲：现代报告工具",
+    "section": "关键要点",
+    "text": "关键要点\n\n\n\n概念\n要点\n\n\n\n\nQuarto\n统一的多语言科学出版平台\n\n\n多格式\n文档/幻灯片/网站/书籍/仪表板\n\n\n可重复性\n环境管理 + 版本控制 + 自动化\n\n\n迁移\n语法相似，增量学习",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#课堂演示",
+    "href": "lectures/lecture4-quarto.html#课堂演示",
+    "title": "第4讲：现代报告工具",
+    "section": "课堂演示",
+    "text": "课堂演示\n\n创建Quarto文档\n运行Python和R代码\n生成多种格式输出\n初始化renv环境",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "lectures/lecture4-quarto.html#课后作业",
+    "href": "lectures/lecture4-quarto.html#课后作业",
+    "title": "第4讲：现代报告工具",
+    "section": "课后作业",
+    "text": "课后作业\n\n将一份R Markdown转换为Quarto\n尝试在Quarto中运行Python代码\n使用renv管理项目依赖\n\n\n课程总结：R + tidyverse + R Markdown/Quarto = 完整的可重复性研究工具链",
+    "crumbs": [
+      "首页",
+      "理论教学",
+      "第4讲：现代报告工具"
+    ]
+  },
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "拓展资源",
+    "section": "",
+    "text": "R语言官方网站\n下载与安装指南\n新闻与更新\n\n\n\n\n\nRStudio IDE下载\n商业版功能介绍\n云端服务\n\n\n\n\n\n下一代科学出版系统\n官方文档与教程\n丰富的示例库\n\n\n\n\n\nR Markdown官方指南\n示例库\n扩展包介绍"
+  },
+  {
+    "objectID": "resources.html#官方文档",
+    "href": "resources.html#官方文档",
+    "title": "拓展资源",
+    "section": "",
+    "text": "R语言官方网站\n下载与安装指南\n新闻与更新\n\n\n\n\n\nRStudio IDE下载\n商业版功能介绍\n云端服务\n\n\n\n\n\n下一代科学出版系统\n官方文档与教程\n丰富的示例库\n\n\n\n\n\nR Markdown官方指南\n示例库\n扩展包介绍"
+  },
+  {
+    "objectID": "resources.html#经典教材",
+    "href": "resources.html#经典教材",
+    "title": "拓展资源",
+    "section": "经典教材",
+    "text": "经典教材\n\nR语言基础\n\n\n\n书名\n作者\n说明\n\n\n\n\nR数据科学\nHadley Wickham\ntidyverse权威指南，必读\n\n\nR语言实战\nRobert Kabacoff\n全面系统，适合入门\n\n\nAdvanced R\nHadley Wickham\n进阶必读书\n\n\nEfficient R Programming\nColin Gillespie\n高效编程技巧\n\n\n\n\n\nR Markdown与报告\n\n\n\n书名\n作者\n说明\n\n\n\n\nR Markdown Cookbook\nYihui Xie 等\n实用技巧大全\n\n\nbookdown\nYihui Xie\n撰写书籍和文档\n\n\nQuarto指南\nPosit团队\n现代报告工具\n\n\n\n\n\n生物信息学\n\n\n\n\n\n\n\n\n书名\n作者\n说明\n\n\n\n\nBioconductor案例分析\n多位作者\n生信实战\n\n\nBioinformatics with R\nRobert Gentleman\nBioconductor基础\n\n\nModern Statistics for Modern Biology\nHolmes & Huber\n现代统计方法"
+  },
+  {
+    "objectID": "resources.html#在线课程",
+    "href": "resources.html#在线课程",
+    "title": "拓展资源",
+    "section": "在线课程",
+    "text": "在线课程\n\n\n\n中文资源\n\n生信技能树\n生信菜鸟团\n医学方R语言\nDataCamp中文版\n\n\n\n\n英文资源\n\nDataCamp\nCoursera - R Programming\nedX - Data Science with R\nswirl (R内置教程)"
+  },
+  {
+    "objectID": "resources.html#关键r包",
+    "href": "resources.html#关键r包",
+    "title": "拓展资源",
+    "section": "关键R包",
+    "text": "关键R包\n\n数据科学\n\n\n\n包名\n用途\n学习资源\n\n\n\n\ntidyverse\n数据科学全家桶\nR4DS\n\n\ndplyr\n数据处理\ndplyr教程\n\n\nggplot2\n数据可视化\nggplot2书\n\n\ntidyr\n数据整理\ntidyr教程\n\n\nreadr\n数据读取\nreadr教程\n\n\nstringr\n字符串处理\nstringr教程\n\n\nlubridate\n日期时间\nlubridate教程\n\n\n\n\n\n生物信息学\n\n\n\n包名\n用途\n来源\n\n\n\n\nBiostrings\n序列分析\nBioconductor\n\n\nGenomicRanges\n基因组区间\nBioconductor\n\n\nDESeq2\nRNA-seq差异分析\nBioconductor\n\n\nedgeR\nRNA-seq分析\nBioconductor\n\n\nlimma\n微阵列/RNA-seq\nBioconductor\n\n\nComplexHeatmap\n热图绘制\nBioconductor\n\n\nclusterProfiler\n富集分析\nBioconductor\n\n\n\n\n\n报告与文档\n\n\n\n包名\n用途\n\n\n\n\nrmarkdown\n动态报告\n\n\nknitr\n代码编织\n\n\nbookdown\n撰写书籍\n\n\nflexdashboard\n数据看板\n\n\nDT\n交互式表格\n\n\nplotly\n交互式图表\n\n\nhtmlwidgets\nHTML交互组件"
+  },
+  {
+    "objectID": "resources.html#工具与软件",
+    "href": "resources.html#工具与软件",
+    "title": "拓展资源",
+    "section": "工具与软件",
+    "text": "工具与软件\n\nR环境\n\nR - R语言核心\nRStudio - 最佳R IDE\nPositron - 新一代数据科学IDE\n\n\n\n版本控制\n\nGit - 版本控制\nGitHub - 代码托管\nGitHub Desktop - 图形化Git工具\n\n\n\nLaTeX\n\nTinyTeX - 轻量级LaTeX发行版\nTeX Live - 完整LaTeX发行版\nMiKTeX - Windows平台"
+  },
+  {
+    "objectID": "resources.html#社区与论坛",
+    "href": "resources.html#社区与论坛",
+    "title": "拓展资源",
+    "section": "社区与论坛",
+    "text": "社区与论坛\n\n\n\n中文社区\n\n统计之都 - 中国统计学社区\n生信技能树论坛\n知乎 - R语言话题\n简书 - R语言\n\n\n\n\n英文社区\n\nStack Overflow [r]\nRStudio Community\nr/statistics\nBioconductor Support"
+  },
+  {
+    "objectID": "resources.html#速查表",
+    "href": "resources.html#速查表",
+    "title": "拓展资源",
+    "section": "速查表",
+    "text": "速查表\n\nR基础速查\n# 帮助\n?function        # 查看函数帮助\n??keyword       # 搜索关键词\nexample(func)   # 运行示例\n\n# 数据结构\nvector &lt;- c(1, 2, 3)\nmatrix &lt;- matrix(1:9, nrow = 3)\ndf &lt;- data.frame(x = 1:3, y = c(\"a\", \"b\", \"c\"))\nlist &lt;- list(a = 1, b = \"text\")\n\n# 索引\nx[1]            # 第一个元素\nx[c(1, 3)]      # 第1和第3个\ndf$column       # 列访问\ndf[row, col]    # 行列访问\n\n# 常用函数\nlength(x)       # 长度\ndim(df)         # 维度\nstr(df)         # 结构\nsummary(df)     # 摘要\n\n\ndplyr速查\n# 核心动词\ndf %&gt;% filter(x &gt; 5)           # 筛选\ndf %&gt;% select(x, y)            # 选择列\ndf %&gt;% mutate(z = x + y)       # 新建列\ndf %&gt;% summarise(mean_x = mean(x))  # 汇总\ndf %&gt;% group_by(category)      # 分组\n\n# 数据整合\ndf1 %&gt;% left_join(df2, by = \"id\")   # 左连接\ninner_join / full_join / anti_join  # 其他连接\n\n# 数据整理\ndf %&gt;% arrange(desc(x))        # 排序\ndf %&gt;% distinct()              # 去重\ndf %&gt;% slice(1:10)             # 切片\ndf %&gt;% sample_n(100)           # 随机抽样\n\n\nggplot2速查\n# 基本语法\nggplot(data, aes(x = xvar, y = yvar)) +\n  geom_point() +               # 散点\n  geom_line() +                # 线图\n  geom_bar() +                 # 柱状图\n  geom_histogram() +           # 直方图\n  geom_boxplot() +             # 箱线图\n  theme_bw()                   # 主题\n\n# 常用aes\naes(color = group)             # 颜色映射\naes(fill = group)              # 填充映射\n(aes(size = value))            # 大小映射\n(aes(shape = type))            # 形状映射\n\n# 标度与主题\nscale_color_manual()           # 自定义颜色\ntheme_minimal()                # 简约主题\nlabs(title = \"\", x = \"\")       # 标签\nfacet_wrap(~group)             # 分面"
+  },
+  {
+    "objectID": "resources.html#后续课程",
+    "href": "resources.html#后续课程",
+    "title": "拓展资源",
+    "section": "后续课程",
+    "text": "后续课程\n本课程为以下高级课程奠定基础：\n\n\n\n课程\n主要内容\n先修要求\n\n\n\n\n转录组数据分析\nRNA-seq流程、差异表达、功能富集\nR基础\n\n\n基因组突变分析\n突变检测、注释、可视化\nR基础\n\n\n单细胞测序分析\nSeurat流程、降维、聚类\nR基础、tidyverse\n\n\n生物信息学算法\n序列比对、基因组组装\nR/Python基础\n\n\n系统生物学\n网络分析、通路建模\nR基础、统计学"
+  },
+  {
+    "objectID": "resources.html#学习建议",
+    "href": "resources.html#学习建议",
+    "title": "拓展资源",
+    "section": "学习建议",
+    "text": "学习建议\n\n初学者路径\n\n第1-2周：R基础语法与数据结构\n第3-4周：tidyverse数据处理\n第5-6周：ggplot2可视化\n第7-8周：R Markdown报告编写\n\n\n\n进阶路径\n\n学习函数式编程（purrr）\n掌握性能优化技巧\n学习R包开发\n深入了解S3/S4面向对象\n\n\n\n实践建议\n\n每天写代码，保持手感\n阅读优秀项目的源码\n参与开源项目\n记录学习笔记（用R Markdown！）"
+  },
+  {
+    "objectID": "resources.html#贡献与反馈",
+    "href": "resources.html#贡献与反馈",
+    "title": "拓展资源",
+    "section": "贡献与反馈",
+    "text": "贡献与反馈\n发现错误或有建议？欢迎通过以下方式联系：\n\n📧 邮箱：shixiang.wang@csu.edu.cn\n🐙 GitHub Issues：提交Issue\n💬 课程讨论区：进入讨论\n\n\n持续学习，永不止步！ 📚✨"
+  }
+]

@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="slides-r-basics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="slides-r-basics_files/libs/quarto-html/tabby.min.js"></script>
+<script src="slides-r-basics_files/libs/quarto-html/popper.min.js"></script>
+<script src="slides-r-basics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="slides-r-basics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="slides-r-basics_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="slides-r-basics_files/libs/quarto-html/quarto-syntax-highlighting-597958c53c93a607afca12fd375c57ed.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="王诗翔 副教授 中南大学生物医学信息系">
+  <title>R语言基础</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="slides-r-basics_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="slides-r-basics_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="slides-r-basics_files/libs/revealjs/dist/theme/quarto-9eaa7ce444145703a3d6bef3362c809b.css">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="slides-r-basics_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">R语言基础</h1>
+  <p class="subtitle">R and (R)Markdown Fundamentals</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+王诗翔 副教授<br>中南大学生物医学信息系 
+</div>
+</div>
+</div>
+
+</section>
+<section id="本讲目标" class="slide level2 smaller">
+<h2>本讲目标</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="你将学会">你将学会：</h3>
+<ul>
+<li>✅ R语言的特点与应用场景</li>
+<li>✅ 基础数据类型与结构</li>
+<li>✅ 向量化操作</li>
+<li>✅ 控制流语句</li>
+<li>✅ 自定义函数</li>
+<li>✅ R包安装与管理</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="为什么学r">为什么学R？</h3>
+<div class="fragment fade-in">
+<p>💡 <strong>生物统计</strong> — 丰富的统计方法</p>
+</div>
+<div class="fragment fade-in">
+<p>📊 <strong>数据可视化</strong> — 高质量的科研图表</p>
+</div>
+<div class="fragment fade-in">
+<p>🔬 <strong>生物信息</strong> — Bioconductor生态</p>
+</div>
+<div class="fragment fade-in">
+<p>📄 <strong>可重复性</strong> — R Markdown/Quarto</p>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="第1部分r语言概述" class="title-slide slide level1 center">
+<h1>第1部分：R语言概述</h1>
+
+</section>
+<section id="r是什么" class="slide level2">
+<h2>R是什么？</h2>
+<blockquote>
+<p>R是用于<strong>统计计算</strong>和<strong>图形</strong>的编程语言与环境</p>
+</blockquote>
+<div class="fragment fade-in">
+<h3 id="核心特点">核心特点</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>特点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>开源免费</strong></td>
+<td>GPL许可证，完全免费</td>
+</tr>
+<tr class="even">
+<td><strong>跨平台</strong></td>
+<td>Windows、macOS、Linux</td>
+</tr>
+<tr class="odd">
+<td><strong>交互式</strong></td>
+<td>即时反馈，快速探索</td>
+</tr>
+<tr class="even">
+<td><strong>包生态</strong></td>
+<td>20,000+ CRAN包</td>
+</tr>
+<tr class="odd">
+<td><strong>社区活跃</strong></td>
+<td>全球统计学家支持</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="r在生物医学中的应用" class="slide level2">
+<h2>R在生物医学中的应用</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h4 id="统计分析">📊 统计分析</h4>
+<ul>
+<li>临床试验分析</li>
+<li>生存分析</li>
+<li>多变量统计</li>
+<li>Meta分析</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h4 id="生物信息">🧬 生物信息</h4>
+<ul>
+<li>RNA-seq分析</li>
+<li>基因组学</li>
+<li>蛋白质组学</li>
+<li>单细胞测序</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h4 id="数据科学">📈 数据科学</h4>
+<ul>
+<li>数据清洗</li>
+<li>机器学习</li>
+<li>可视化</li>
+<li>可重复研究</li>
+</ul>
+</div></div>
+<div class="fragment fade-in">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>R vs Python</strong></p>
+</div>
+<div class="callout-content">
+<p>R更适合<strong>统计分析</strong>和<strong>科研可视化</strong>，Python更适合<strong>通用编程</strong>和<strong>深度学习</strong>。两者可以互补使用！</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="r环境搭建" class="slide level2">
+<h2>R环境搭建</h2>
+<h3 id="安装r">1. 安装R</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href=""></a><span class="co"># macOS (使用 Homebrew)</span></span>
+<span id="cb1-2"><a href=""></a><span class="ex">brew</span> install r</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="co"># Ubuntu</span></span>
+<span id="cb1-5"><a href=""></a><span class="fu">sudo</span> apt-get install r-base</span>
+<span id="cb1-6"><a href=""></a></span>
+<span id="cb1-7"><a href=""></a><span class="co"># Windows: 下载安装包</span></span>
+<span id="cb1-8"><a href=""></a><span class="co"># https://cran.r-project.org/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="安装rstudio">2. 安装RStudio</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href=""></a>下载地址: https://posit.co/download/rstudio-desktop/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-in">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>推荐使用 <strong>RStudio</strong> —— 最强大的R IDE，提供代码编辑、调试、可视化、包管理一站式解决方案</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rstudio界面介绍" class="slide level2">
+<h2>RStudio界面介绍</h2>
+<pre><code>┌─────────────────┬─────────────────┐
+│   Source        │    Environment  │
+│  (代码编辑器)    │   (变量查看)     │
+│                 ├─────────────────┤
+│                 │  Files/Plots/   │
+│                 │ Packages/Help   │
+├─────────────────┴─────────────────┤
+│           Console (控制台)         │
+│           输入命令，查看输出         │
+└───────────────────────────────────┘</code></pre>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="第2部分基础数据类型" class="title-slide slide level1 center">
+<h1>第2部分：基础数据类型</h1>
+
+</section>
+<section id="五大基本数据类型" class="slide level2">
+<h2>五大基本数据类型</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>numeric</code></td>
+<td>数值型</td>
+<td><code>3.14</code>, <code>42</code></td>
+</tr>
+<tr class="even">
+<td><code>integer</code></td>
+<td>整数型</td>
+<td><code>42L</code></td>
+</tr>
+<tr class="odd">
+<td><code>character</code></td>
+<td>字符型</td>
+<td><code>"hello"</code></td>
+</tr>
+<tr class="even">
+<td><code>logical</code></td>
+<td>逻辑型</td>
+<td><code>TRUE</code>, <code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td><code>complex</code></td>
+<td>复数型</td>
+<td><code>3+4i</code></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># 创建变量</span></span>
+<span id="cb4-2"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fl">3.14</span>          <span class="co"># numeric</span></span>
+<span id="cb4-3"><a href=""></a>y <span class="ot">&lt;-</span> <span class="dv">42</span>L           <span class="co"># integer</span></span>
+<span id="cb4-4"><a href=""></a>name <span class="ot">&lt;-</span> <span class="st">"Alice"</span>    <span class="co"># character</span></span>
+<span id="cb4-5"><a href=""></a>flag <span class="ot">&lt;-</span> <span class="cn">TRUE</span>       <span class="co"># logical</span></span>
+<span id="cb4-6"><a href=""></a></span>
+<span id="cb4-7"><a href=""></a><span class="co"># 查看类型</span></span>
+<span id="cb4-8"><a href=""></a><span class="fu">class</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">typeof</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+</div>
+</section>
+<section id="向量vector" class="slide level2">
+<h2>向量（Vector）</h2>
+<blockquote>
+<p>向量是R中<strong>最基本的数据结构</strong>，所有元素必须是<strong>同一类型</strong></p>
+</blockquote>
+<h3 id="创建向量">创建向量</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># 使用 c() 函数</span></span>
+<span id="cb8-2"><a href=""></a>nums <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb8-3"><a href=""></a>fruits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>)</span>
+<span id="cb8-4"><a href=""></a></span>
+<span id="cb8-5"><a href=""></a><span class="co"># 序列生成</span></span>
+<span id="cb8-6"><a href=""></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>                    <span class="co"># 1到10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)      <span class="co"># 步长为2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 3 5 7 9</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">2</span>)      <span class="co"># 重复</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 1 2 2 3 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>nums</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+</div>
+</section>
+<section id="向量操作" class="slide level2 smaller">
+<h2>向量操作</h2>
+<h3 id="索引与切片">索引与切片</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>)</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a>x[<span class="dv">1</span>]          <span class="co"># 第一个元素（R从1开始！）</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)] <span class="co"># 多个元素</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10 30 50</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]        <span class="co"># 范围</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20 30 40</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>x[x <span class="sc">&gt;</span> <span class="dv">25</span>]     <span class="co"># 条件筛选</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30 40 50</code></pre>
+</div>
+</div>
+<h3 id="向量化运算">向量化运算</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb24-2"><a href=""></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb24-3"><a href=""></a></span>
+<span id="cb24-4"><a href=""></a>a <span class="sc">+</span> b         <span class="co"># 逐元素相加</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5 7 9</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>a <span class="sc">*</span> <span class="dv">2</span>         <span class="co"># 标量乘法</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 4 6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>a <span class="sc">&gt;</span> <span class="dv">2</span>         <span class="co"># 逐元素比较</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE  TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">sum</span>(a)        <span class="co"># 求和</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">mean</span>(a)       <span class="co"># 均值</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+</section>
+<section id="矩阵matrix" class="slide level2">
+<h2>矩阵（Matrix）</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># 创建矩阵</span></span>
+<span id="cb34-2"><a href=""></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb34-3"><a href=""></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="co"># 命名</span></span>
+<span id="cb36-2"><a href=""></a><span class="fu">dimnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb36-3"><a href=""></a>  <span class="fu">c</span>(<span class="st">"R1"</span>, <span class="st">"R2"</span>, <span class="st">"R3"</span>),</span>
+<span id="cb36-4"><a href=""></a>  <span class="fu">c</span>(<span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>)</span>
+<span id="cb36-5"><a href=""></a>)</span>
+<span id="cb36-6"><a href=""></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   C1 C2 C3 C4
+R1  1  4  7 10
+R2  2  5  8 11
+R3  3  6  9 12</code></pre>
+</div>
+</div>
+</section>
+<section id="数据框data-frame" class="slide level2">
+<h2>数据框（Data Frame）</h2>
+<blockquote>
+<p>最重要的数据结构，类似Excel表格</p>
+</blockquote>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="co"># 创建数据框</span></span>
+<span id="cb38-2"><a href=""></a>patients <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb38-3"><a href=""></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb38-4"><a href=""></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>, <span class="st">"David"</span>, <span class="st">"Eve"</span>),</span>
+<span id="cb38-5"><a href=""></a>  <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">28</span>, <span class="dv">42</span>),</span>
+<span id="cb38-6"><a href=""></a>  <span class="at">gender =</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>),</span>
+<span id="cb38-7"><a href=""></a>  <span class="at">bp =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">135</span>, <span class="dv">128</span>, <span class="dv">142</span>, <span class="dv">118</span>)</span>
+<span id="cb38-8"><a href=""></a>)</span>
+<span id="cb38-9"><a href=""></a></span>
+<span id="cb38-10"><a href=""></a>patients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  name age gender  bp
+1  1 Alice  25      F 120
+2  2   Bob  30      M 135
+3  3 Carol  35      F 128
+4  4 David  28      M 142
+5  5   Eve  42      F 118</code></pre>
+</div>
+</div>
+</section>
+<section id="数据框操作" class="slide level2 smaller">
+<h2>数据框操作</h2>
+<h3 id="访问数据">访问数据</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># 列访问</span></span>
+<span id="cb40-2"><a href=""></a>patients<span class="sc">$</span>age           <span class="co"># 使用$</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25 30 35 28 42</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>patients[[<span class="st">"age"</span>]]      <span class="co"># 使用双方括号</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25 30 35 28 42</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>patients[, <span class="st">"age"</span>]      <span class="co"># 使用单括号</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25 30 35 28 42</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>patients<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">30</span>      <span class="co"># 条件判断</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE  TRUE FALSE  TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># 行访问</span></span>
+<span id="cb48-2"><a href=""></a>patients[<span class="dv">1</span>, ]          <span class="co"># 第一行</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  name age gender  bp
+1  1 Alice  25      F 120</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>patients[patients<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">30</span>, ]  <span class="co"># 条件筛选</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  name age gender  bp
+3  3 Carol  35      F 128
+5  5   Eve  42      F 118</code></pre>
+</div>
+</div>
+<h3 id="常用函数">常用函数</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">str</span>(patients)          <span class="co"># 结构</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   5 obs. of  5 variables:
+ $ id    : int  1 2 3 4 5
+ $ name  : chr  "Alice" "Bob" "Carol" "David" ...
+ $ age   : num  25 30 35 28 42
+ $ gender: chr  "F" "M" "F" "M" ...
+ $ bp    : num  120 135 128 142 118</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">summary</span>(patients)      <span class="co"># 摘要统计</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       id        name                age        gender                bp       
+ Min.   :1   Length:5           Min.   :25   Length:5           Min.   :118.0  
+ 1st Qu.:2   Class :character   1st Qu.:28   Class :character   1st Qu.:120.0  
+ Median :3   Mode  :character   Median :30   Mode  :character   Median :128.0  
+ Mean   :3                      Mean   :32                      Mean   :128.6  
+ 3rd Qu.:4                      3rd Qu.:35                      3rd Qu.:135.0  
+ Max.   :5                      Max.   :42                      Max.   :142.0  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">head</span>(patients, <span class="dv">3</span>)      <span class="co"># 前3行</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  name age gender  bp
+1  1 Alice  25      F 120
+2  2   Bob  30      M 135
+3  3 Carol  35      F 128</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">dim</span>(patients)          <span class="co"># 维度</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5 5</code></pre>
+</div>
+</div>
+</section>
+<section id="列表list" class="slide level2">
+<h2>列表（List）</h2>
+<blockquote>
+<p>可以存储<strong>不同类型</strong>的数据，最灵活的结构</p>
+</blockquote>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a><span class="co"># 创建列表</span></span>
+<span id="cb60-2"><a href=""></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb60-3"><a href=""></a>  <span class="at">name =</span> <span class="st">"实验组A"</span>,</span>
+<span id="cb60-4"><a href=""></a>  <span class="at">n =</span> <span class="dv">50</span>,</span>
+<span id="cb60-5"><a href=""></a>  <span class="at">data =</span> patients,</span>
+<span id="cb60-6"><a href=""></a>  <span class="at">scores =</span> <span class="fu">c</span>(<span class="dv">85</span>, <span class="dv">90</span>, <span class="dv">78</span>, <span class="dv">92</span>),</span>
+<span id="cb60-7"><a href=""></a>  <span class="at">passed =</span> <span class="cn">TRUE</span></span>
+<span id="cb60-8"><a href=""></a>)</span>
+<span id="cb60-9"><a href=""></a></span>
+<span id="cb60-10"><a href=""></a><span class="co"># 访问元素</span></span>
+<span id="cb60-11"><a href=""></a>my_list<span class="sc">$</span>name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "实验组A"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href=""></a>my_list[[<span class="dv">2</span>]]           <span class="co"># 按位置</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a>my_list[[<span class="st">"data"</span>]]<span class="sc">$</span>age  <span class="co"># 嵌套访问</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25 30 35 28 42</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="第3部分控制流与函数" class="title-slide slide level1 center">
+<h1>第3部分：控制流与函数</h1>
+
+</section>
+<section id="条件语句" class="slide level2">
+<h2>条件语句</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a>score <span class="ot">&lt;-</span> <span class="dv">85</span></span>
+<span id="cb66-2"><a href=""></a></span>
+<span id="cb66-3"><a href=""></a><span class="co"># if-else</span></span>
+<span id="cb66-4"><a href=""></a><span class="cf">if</span> (score <span class="sc">&gt;=</span> <span class="dv">90</span>) {</span>
+<span id="cb66-5"><a href=""></a>  grade <span class="ot">&lt;-</span> <span class="st">"A"</span></span>
+<span id="cb66-6"><a href=""></a>} <span class="cf">else</span> <span class="cf">if</span> (score <span class="sc">&gt;=</span> <span class="dv">80</span>) {</span>
+<span id="cb66-7"><a href=""></a>  grade <span class="ot">&lt;-</span> <span class="st">"B"</span></span>
+<span id="cb66-8"><a href=""></a>} <span class="cf">else</span> <span class="cf">if</span> (score <span class="sc">&gt;=</span> <span class="dv">60</span>) {</span>
+<span id="cb66-9"><a href=""></a>  grade <span class="ot">&lt;-</span> <span class="st">"C"</span></span>
+<span id="cb66-10"><a href=""></a>} <span class="cf">else</span> {</span>
+<span id="cb66-11"><a href=""></a>  grade <span class="ot">&lt;-</span> <span class="st">"D"</span></span>
+<span id="cb66-12"><a href=""></a>}</span>
+<span id="cb66-13"><a href=""></a>grade</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "B"</code></pre>
+</div>
+</div>
+<h3 id="向量化-ifelse">向量化 ifelse</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">25</span>, <span class="dv">35</span>, <span class="dv">12</span>, <span class="dv">45</span>)</span>
+<span id="cb68-2"><a href=""></a>group <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ages <span class="sc">&gt;=</span> <span class="dv">18</span>, <span class="st">"成人"</span>, <span class="st">"未成年"</span>)</span>
+<span id="cb68-3"><a href=""></a>group</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "未成年" "成人"   "成人"   "未成年" "成人"  </code></pre>
+</div>
+</div>
+</section>
+<section id="循环语句" class="slide level2">
+<h2>循环语句</h2>
+<h3 id="for-循环">for 循环</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a>fruits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>)</span>
+<span id="cb70-2"><a href=""></a></span>
+<span id="cb70-3"><a href=""></a><span class="cf">for</span> (fruit <span class="cf">in</span> fruits) {</span>
+<span id="cb70-4"><a href=""></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"I like"</span>, fruit))</span>
+<span id="cb70-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "I like apple"
+[1] "I like banana"
+[1] "I like cherry"</code></pre>
+</div>
+</div>
+<h3 id="while-循环">while 循环</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>count <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb72-2"><a href=""></a><span class="cf">while</span> (count <span class="sc">&lt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb72-3"><a href=""></a>  <span class="fu">print</span>(count)</span>
+<span id="cb72-4"><a href=""></a>  count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb72-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5</code></pre>
+</div>
+</div>
+</section>
+<section id="循环控制" class="slide level2">
+<h2>循环控制</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href=""></a><span class="co"># break: 跳出循环</span></span>
+<span id="cb74-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb74-3"><a href=""></a>  <span class="cf">if</span> (i <span class="sc">&gt;</span> <span class="dv">5</span>) <span class="cf">break</span></span>
+<span id="cb74-4"><a href=""></a>  <span class="fu">print</span>(i)</span>
+<span id="cb74-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href=""></a><span class="co"># next: 跳过当前迭代</span></span>
+<span id="cb76-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb76-3"><a href=""></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) <span class="cf">next</span></span>
+<span id="cb76-4"><a href=""></a>  <span class="fu">print</span>(i)</span>
+<span id="cb76-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 4
+[1] 5</code></pre>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>最佳实践</strong></p>
+</div>
+<div class="callout-content">
+<p>R中尽量使用<strong>向量化操作</strong>代替循环，效率更高！</p>
+</div>
+</div>
+</div>
+</section>
+<section id="自定义函数" class="slide level2">
+<h2>自定义函数</h2>
+<h3 id="基本结构">基本结构</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href=""></a><span class="co"># 定义函数</span></span>
+<span id="cb78-2"><a href=""></a>calculate_bmi <span class="ot">&lt;-</span> <span class="cf">function</span>(weight_kg, height_m) {</span>
+<span id="cb78-3"><a href=""></a>  bmi <span class="ot">&lt;-</span> weight_kg <span class="sc">/</span> (height_m <span class="sc">^</span> <span class="dv">2</span>)</span>
+<span id="cb78-4"><a href=""></a>  </span>
+<span id="cb78-5"><a href=""></a>  <span class="co"># 分类</span></span>
+<span id="cb78-6"><a href=""></a>  category <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(bmi <span class="sc">&lt;</span> <span class="fl">18.5</span>, <span class="st">"偏瘦"</span>,</span>
+<span id="cb78-7"><a href=""></a>              <span class="fu">ifelse</span>(bmi <span class="sc">&lt;</span> <span class="dv">25</span>, <span class="st">"正常"</span>,</span>
+<span id="cb78-8"><a href=""></a>              <span class="fu">ifelse</span>(bmi <span class="sc">&lt;</span> <span class="dv">30</span>, <span class="st">"超重"</span>, <span class="st">"肥胖"</span>)))</span>
+<span id="cb78-9"><a href=""></a>  </span>
+<span id="cb78-10"><a href=""></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">bmi =</span> <span class="fu">round</span>(bmi, <span class="dv">2</span>), <span class="at">category =</span> category))</span>
+<span id="cb78-11"><a href=""></a>}</span>
+<span id="cb78-12"><a href=""></a></span>
+<span id="cb78-13"><a href=""></a><span class="co"># 调用函数</span></span>
+<span id="cb78-14"><a href=""></a><span class="fu">calculate_bmi</span>(<span class="dv">70</span>, <span class="fl">1.75</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$bmi
+[1] 22.86
+
+$category
+[1] "正常"</code></pre>
+</div>
+</div>
+</section>
+<section id="函数参数" class="slide level2">
+<h2>函数参数</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href=""></a><span class="co"># 默认参数</span></span>
+<span id="cb80-2"><a href=""></a>analyze_gene <span class="ot">&lt;-</span> <span class="cf">function</span>(expression, </span>
+<span id="cb80-3"><a href=""></a>                         <span class="at">gene_name =</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb80-4"><a href=""></a>                         <span class="at">threshold =</span> <span class="dv">10</span>) {</span>
+<span id="cb80-5"><a href=""></a>  mean_exp <span class="ot">&lt;-</span> <span class="fu">mean</span>(expression)</span>
+<span id="cb80-6"><a href=""></a>  is_expressed <span class="ot">&lt;-</span> mean_exp <span class="sc">&gt;</span> threshold</span>
+<span id="cb80-7"><a href=""></a>  </span>
+<span id="cb80-8"><a href=""></a>  <span class="fu">list</span>(</span>
+<span id="cb80-9"><a href=""></a>    <span class="at">gene =</span> gene_name,</span>
+<span id="cb80-10"><a href=""></a>    <span class="at">mean =</span> mean_exp,</span>
+<span id="cb80-11"><a href=""></a>    <span class="at">expressed =</span> is_expressed</span>
+<span id="cb80-12"><a href=""></a>  )</span>
+<span id="cb80-13"><a href=""></a>}</span>
+<span id="cb80-14"><a href=""></a></span>
+<span id="cb80-15"><a href=""></a><span class="co"># 使用</span></span>
+<span id="cb80-16"><a href=""></a>expr <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">20</span>)</span>
+<span id="cb80-17"><a href=""></a><span class="fu">analyze_gene</span>(expr, <span class="at">gene_name =</span> <span class="st">"TP53"</span>, <span class="at">threshold =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$gene
+[1] "TP53"
+
+$mean
+[1] 12
+
+$expressed
+[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="第4部分r包管理" class="title-slide slide level1 center">
+<h1>第4部分：R包管理</h1>
+
+</section>
+<section id="什么是r包" class="slide level2">
+<h2>什么是R包？</h2>
+<blockquote>
+<p>R包是<strong>函数、数据和文档</strong>的集合，扩展R的功能</p>
+</blockquote>
+<h3 id="主要仓库">主要仓库</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>仓库</th>
+<th>说明</th>
+<th>包数量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>CRAN</strong></td>
+<td>综合R档案网络</td>
+<td>20,000+</td>
+</tr>
+<tr class="even">
+<td><strong>Bioconductor</strong></td>
+<td>生物信息专用</td>
+<td>2,000+</td>
+</tr>
+<tr class="odd">
+<td><strong>GitHub</strong></td>
+<td>开发版本</td>
+<td>无数</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="安装与加载" class="slide level2">
+<h2>安装与加载</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href=""></a><span class="co"># 从CRAN安装</span></span>
+<span id="cb82-2"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+下载的二进制程序包在
+    /var/folders/1w/371ktd8j0fv8mp_dsgtvssnw0000gn/T//RtmpP0R9zN/downloaded_packages里</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href=""></a><span class="co"># 从Bioconductor安装</span></span>
+<span id="cb84-2"><a href=""></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>))</span>
+<span id="cb84-3"><a href=""></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb84-4"><a href=""></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DESeq2"</span>)</span>
+<span id="cb84-5"><a href=""></a></span>
+<span id="cb84-6"><a href=""></a><span class="co"># 从GitHub安装</span></span>
+<span id="cb84-7"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+下载的二进制程序包在
+    /var/folders/1w/371ktd8j0fv8mp_dsgtvssnw0000gn/T//RtmpP0R9zN/downloaded_packages里</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href=""></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tidyverse/dplyr"</span>)</span>
+<span id="cb86-2"><a href=""></a></span>
+<span id="cb86-3"><a href=""></a><span class="co"># 加载包</span></span>
+<span id="cb86-4"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb86-5"><a href=""></a><span class="fu">require</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="必学生物医学r包" class="slide level2">
+<h2>必学生物医学R包</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="数据科学-1">数据科学</h3>
+<ul>
+<li><code>tidyverse</code> — 数据科学全家桶
+<ul>
+<li><code>dplyr</code> — 数据处理</li>
+<li><code>ggplot2</code> — 可视化</li>
+<li><code>readr</code> — 数据读取</li>
+<li><code>tidyr</code> — 数据整理</li>
+</ul></li>
+<li><code>data.table</code> — 大数据处理</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="生物信息-1">生物信息</h3>
+<ul>
+<li><code>Biostrings</code> — 序列分析</li>
+<li><code>GenomicRanges</code> — 基因组区间</li>
+<li><code>DESeq2</code> — RNA-seq分析</li>
+<li><code>limma</code> — 差异表达</li>
+<li><code>biomaRt</code> — 数据库查询</li>
+</ul>
+</div></div>
+</section>
+<section id="本讲小结" class="slide level2">
+<h2>本讲小结</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="核心概念">核心概念</h3>
+<ul>
+<li>✅ R是统计计算与图形语言</li>
+<li>✅ 五大基本类型：numeric, integer, character, logical, complex</li>
+<li>✅ 主要结构：vector, matrix, data.frame, list</li>
+<li>✅ 向量化操作是R的灵魂</li>
+<li>✅ 条件与循环控制程序流</li>
+<li>✅ 函数封装可重用代码</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="关键技能">关键技能</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href=""></a><span class="co"># 创建与索引</span></span>
+<span id="cb87-2"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb87-3"><a href=""></a>x[<span class="dv">1</span>]</span>
+<span id="cb87-4"><a href=""></a></span>
+<span id="cb87-5"><a href=""></a><span class="co"># 数据框操作</span></span>
+<span id="cb87-6"><a href=""></a>df<span class="sc">$</span>column</span>
+<span id="cb87-7"><a href=""></a>df[condition, ]</span>
+<span id="cb87-8"><a href=""></a></span>
+<span id="cb87-9"><a href=""></a><span class="co"># 函数定义</span></span>
+<span id="cb87-10"><a href=""></a>my_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { ... }</span>
+<span id="cb87-11"><a href=""></a></span>
+<span id="cb87-12"><a href=""></a><span class="co"># 包管理</span></span>
+<span id="cb87-13"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"pkg"</span>)</span>
+<span id="cb87-14"><a href=""></a><span class="fu">library</span>(pkg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+</section>
+<section id="练习与思考" class="slide level2">
+<h2>练习与思考</h2>
+<ol type="1">
+<li><strong>基础练习</strong>
+<ul>
+<li>创建一个包含10个患者信息的数据框</li>
+<li>计算患者的平均年龄</li>
+<li>筛选出年龄大于平均值的患者</li>
+</ul></li>
+<li><strong>编程练习</strong>
+<ul>
+<li>编写一个函数，输入基因表达向量，返回标准化后的值</li>
+<li>使用循环计算1到100中所有偶数的和</li>
+</ul></li>
+<li><strong>思考</strong>
+<ul>
+<li>为什么R的向量从1开始索引？</li>
+<li>向量化操作比循环快多少？（下节课揭晓）</li>
+</ul></li>
+</ol>
+</section>
+<section id="下节预告" class="slide level2">
+<h2>下节预告</h2>
+</section></section>
+<section>
+<section id="tidyverse生态与数据可视化" class="title-slide slide level1 center">
+<h1>tidyverse生态与数据可视化</h1>
+
+</section>
+<div class="fragment fade-in">
+<h3 id="我们将学习">我们将学习：</h3>
+<ul>
+<li>管道操作符 <code>|&gt;</code> 的魔力</li>
+<li>dplyr的五大核心动词</li>
+<li>ggplot2图层语法</li>
+<li>制作高质量的科研图表</li>
+</ul>
+</div>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="谢谢" class="title-slide slide level1 center">
+<h1>谢谢！</h1>
+
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+<div class="center">
+<p>王诗翔 副教授<br>
+中南大学生物医学信息系</p>
+<p>📧 shixiang.wang@csu.edu.cn<br>
+🏠 https://github.com/ShixiangWang</p>
+</div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/csu-logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>R与(R)Markdown基础 | 中南大学</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="slides-r-basics_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="slides-r-basics_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="slides-r-basics_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="slides-r-basics_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

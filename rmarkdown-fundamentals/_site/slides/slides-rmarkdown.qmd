@@ -1,0 +1,717 @@
+---
+title: "R Markdown与现代报告工具"
+subtitle: "撰写可重复性研究报告"
+author: "王诗翔 副教授<br>中南大学生物医学信息系"
+format:
+  revealjs:
+    theme: [default, ../styles/slides.scss]
+    slide-number: true
+    chalkboard: true
+    code-fold: false
+    code-overflow: wrap
+    highlight-style: github
+    width: 1280
+    height: 720
+    margin: 0.1
+    logo: ../images/csu-logo.png
+    footer: "R与(R)Markdown基础 | 中南大学"
+execute:
+  echo: true
+  output: true
+  warning: false
+  message: false
+---
+
+## 本讲目标 {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+### 你将学会：
+
+- ✅ Markdown基础语法
+- ✅ R Markdown文档结构
+- ✅ 代码块与输出控制
+- ✅ 图表与表格插入
+- ✅ 交叉引用
+- ✅ Quarto现代工作流
+
+:::
+::: {.column width="50%"}
+### 为什么重要？
+
+::: {.fragment .fade-in}
+🔄 **可重复性** — 分析可完全复现
+:::
+
+::: {.fragment .fade-in}
+📄 **自动化** — 代码与文档同步更新
+:::
+
+::: {.fragment .fade-in}
+🎯 **专业性** — 规范的科研报告
+:::
+
+::: {.fragment .fade-in}
+🚀 **高效性** — 一处修改，全局更新
+:::
+
+:::
+:::
+
+---
+
+# 第1部分：Markdown基础
+
+---
+
+## 什么是Markdown？
+
+> Markdown是一种**轻量级标记语言**，让你用纯文本编写格式化的文档
+
+### 设计哲学
+
+::: {.quote}
+"The overriding design goal for Markdown's formatting syntax is to make it as **readable** as possible."
+
+— John Gruber
+:::
+
+### 优势
+
+- ✅ 纯文本，随处可编辑
+- ✅ 易读易写
+- ✅ 转换为HTML、PDF、Word等
+
+---
+
+## 基础语法速查 {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+### 格式
+
+```markdown
+# 一级标题
+## 二级标题
+### 三级标题
+
+**粗体**  *斜体*  ~~删除线~~
+
+[链接](https://example.com)
+
+![图片](image.png)
+
+> 引用文字
+
+---
+
+分割线
+```
+
+:::
+::: {.column width="50%"}
+### 列表与表格
+
+```markdown
+- 无序列表
+- 项目
+  - 子项目
+
+1. 有序列表
+2. 项目
+
+| 列1 | 列2 |
+|-----|-----|
+| A   | 1   |
+| B   | 2   |
+```
+
+:::
+:::
+
+::: {.callout-tip}
+### 提示
+
+Markdown有**标准语法**和**扩展语法**（如GFM、Pandoc），R Markdown支持大多数扩展
+:::
+
+---
+
+## 代码块
+
+### 行内代码
+
+```markdown
+使用 `print()` 函数输出结果
+```
+
+使用 `print()` 函数输出结果
+
+### 代码块
+
+````markdown
+```python
+def hello():
+    print("Hello, World!")
+```
+````
+
+```python
+def hello():
+    print("Hello, World!")
+```
+
+---
+
+## LaTeX公式
+
+### 行内公式
+
+```markdown
+$E = mc^2$
+```
+
+$E = mc^2$
+
+### 独立公式
+
+```markdown
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+```
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+
+---
+
+# 第2部分：R Markdown入门
+
+---
+
+## 什么是R Markdown？
+
+> R Markdown = **R代码** + **Markdown文本** → **动态报告**
+
+### 工作流程
+
+```
+.Rmd 文件 → knitr → Markdown → pandoc → HTML/PDF/Word
+    ↑_________________________________________|
+         (数据更新后重新编译)
+```
+
+### 核心优势
+
+1. **动态报告** — 数据变化，报告自动更新
+2. **可重复性** — 他人可完全复现你的分析
+3. **多格式输出** — 一份源码，多种格式
+
+---
+
+## 文档结构
+
+```markdown
+---
+title: "我的报告"
+author: "王诗翔"
+date: "2025-02-27"
+output: html_document
+---
+
+# 简介
+
+这是正文内容...
+
+## 数据分析
+
+```{r}
+# 这是R代码块
+summary(cars)
+```
+
+结果会自动插入...
+```
+
+---
+
+## YAML元数据
+
+```yaml
+---
+title: "研究标题"
+subtitle: "副标题"
+author: 
+  - "王诗翔"
+  - "李四"
+date: "2025-02-27"
+output: 
+  html_document:
+    toc: true
+    code_folding: hide
+    theme: cerulean
+---
+```
+
+::: {.callout-note}
+YAML位于文档开头，用 `---` 包围，控制文档的全局设置
+:::
+
+---
+
+## R代码块
+
+### 基本语法
+
+````markdown
+```{r chunk-name, options}`r ''`
+# R代码
+x <- 1:10
+mean(x)
+```
+````
+
+### 常用选项
+
+| 选项 | 说明 | 示例 |
+|------|------|------|
+| `echo` | 显示代码 | `echo=TRUE` |
+| `eval` | 执行代码 | `eval=TRUE` |
+| `results` | 输出方式 | `results='markup'` |
+| `fig.width` | 图宽 | `fig.width=8` |
+| `warning` | 显示警告 | `warning=FALSE` |
+
+---
+
+## 代码块演示 {.smaller}
+
+### 隐藏代码，只显示结果
+
+````markdown
+```{r, echo=FALSE}`r ''`
+summary(cars)
+```
+````
+
+```{r, echo=FALSE}
+summary(cars)
+```
+
+### 显示代码和结果
+
+````markdown
+```{r, echo=TRUE}`r ''`
+head(cars, 3)
+```
+````
+
+```{r, echo=TRUE}
+head(cars, 3)
+```
+
+---
+
+## 内联代码
+
+> 在文本中嵌入R代码结果，实现**动态更新**
+
+```markdown
+数据集包含 `r nrow(cars)` 个观测值，
+平均速度为 `r mean(cars$speed)` mph。
+```
+
+数据集包含 `r nrow(cars)` 个观测值，
+平均速度为 `r mean(cars$speed)` mph。
+
+::: {.callout-tip}
+### 应用场景
+
+- 自动更新样本量、P值、统计量
+- 确保正文与表格数据一致
+- 多组比较时自动调整描述
+:::
+
+---
+
+## 图表输出
+
+### 基础图形
+
+````markdown
+```{r scatter, fig.width=8, fig.height=5}`r ''`
+plot(cars$speed, cars$dist, 
+     main = "车速与刹车距离",
+     xlab = "速度 (mph)",
+     ylab = "距离 (ft)",
+     pch = 19, col = "blue")
+```
+````
+
+```{r scatter, fig.width=8, fig.height=4.5}
+plot(cars$speed, cars$dist, 
+     main = "车速与刹车距离",
+     xlab = "速度 (mph)",
+     ylab = "距离 (ft)",
+     pch = 19, col = "blue")
+```
+
+---
+
+## ggplot2 图形
+
+````markdown
+```{r ggplot-example}`r ''`
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(title = "汽车重量与油耗关系",
+       x = "重量 (1000 lbs)",
+       y = "每加仑英里数",
+       color = "气缸数") +
+  theme_minimal()
+```
+````
+
+```{r ggplot-example, fig.width=9, fig.height=5}
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(title = "汽车重量与油耗关系",
+       x = "重量 (1000 lbs)",
+       y = "每加仑英里数",
+       color = "气缸数") +
+  theme_minimal()
+```
+
+---
+
+## 表格制作
+
+### knitr::kable
+
+```{r}
+knitr::kable(
+  head(mtcars[, 1:5], 5),
+  caption = "mtcars数据集前5行",
+  align = c('l', 'c', 'c', 'c', 'c')
+)
+```
+
+---
+
+## 参数化报告
+
+> 使用**参数**创建多版本报告
+
+```yaml
+---
+params:
+  dataset: "cars"
+  show_plot: true
+  threshold: 10
+---
+```
+
+```markdown
+```{r}`r ''`
+data <- get(params$dataset)
+if (params$show_plot) {
+  hist(data[,1])
+}
+```
+```
+
+### 应用场景
+
+- 不同批次数据的相同分析
+- 不同参数敏感性分析
+- 多中心研究的各中心报告
+
+---
+
+# 第3部分：Quarto —— 下一代工具
+
+---
+
+## 什么是Quarto？
+
+> Quarto是Posit开发的**开源科学出版系统**，统一R Markdown、Jupyter等格式
+
+### 与R Markdown的关系
+
+```
+R Markdown → Quarto → 统一的多语言平台
+   ↓              ↓
+仅支持R      R + Python + Julia + Observable
+```
+
+### 核心优势
+
+- 🌐 **多语言支持** — 不限于R
+- 📱 **响应式设计** — 移动端友好
+- 🎨 **现代外观** — 更美观的默认样式
+- 🔧 **统一语法** — 简化学习成本
+
+---
+
+## Quarto文档结构
+
+```markdown
+---
+title: "Quarto演示"
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+jupyter: python3  # 可以是 python3, ir, julia-1.9
+---
+
+## Python代码
+
+```{python}
+import pandas as pd
+df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
+df
+```
+
+## R代码
+
+```{r}
+library(dplyr)
+mtcars %>% head(3)
+```
+```
+
+---
+
+## Quarto vs R Markdown 语法对比
+
+| 功能 | R Markdown | Quarto |
+|------|------------|--------|
+| 代码块选项 | `{r, echo=FALSE}` | `#| echo: false` |
+| 图宽 | `fig.width=8` | `#| fig-width: 8` |
+| 表格 | `knitr::kable()` | 自动美化 |
+| 交叉引用 | 需要包 | 原生支持 |
+| Callout | 需自定义 | 原生 `.callout` |
+
+---
+
+## 交叉引用 {.smaller}
+
+### 图表引用
+
+```markdown
+见 @fig-scatter 显示了速度与距离的关系。
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "车速与刹车距离散点图"
+
+plot(cars)
+```
+```
+
+### 表格引用
+
+```markdown
+如 @tbl-summary 所示...
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "描述统计"
+
+knitr::kable(summary(cars))
+```
+```
+
+### 章节引用
+
+```markdown
+详见 @sec-methods 方法部分。
+
+## 方法 {#sec-methods}
+```
+
+---
+
+## 文档类型
+
+Quarto支持多种文档类型：
+
+| 类型 | 命令 | 用途 |
+|------|------|------|
+| **Document** | `format: html/pdf/docx` | 科研论文 |
+| **Presentation** | `format: revealjs/beamer` | 幻灯片 |
+| **Website** | `quarto render` | 项目网站 |
+| **Book** | `project: type: book` | 专著/教材 |
+| **Dashboard** | `format: dashboard` | 数据看板 |
+
+---
+
+# 第4部分：最佳实践
+
+---
+
+## 可重复性研究原则
+
+### 1. 环境记录
+
+```r
+# 记录会话信息
+sessionInfo()
+
+# 使用 renv 包管理依赖
+renv::init()    # 初始化
+renv::snapshot() # 保存状态
+```
+
+### 2. 项目结构
+
+```
+project/
+├── data/          # 原始数据
+├── analysis/      # 分析脚本
+├── output/        # 结果输出
+├── figures/       # 图表
+├── report.qmd     # 主报告
+└── renv.lock      # 环境锁定
+```
+
+---
+
+## 代码规范
+
+### 命名规范
+
+```r
+# ✅ 好
+patient_age <- 25
+calculate_bmi <- function() {}
+
+# ❌ 避免
+x <- 25
+myfunction <- function() {}
+```
+
+### 文档注释
+
+```r
+#' 计算BMI
+#' 
+#' @param weight 体重(kg)
+#' @param height 身高(m)
+#' @return BMI值和分类
+#' @export
+calculate_bmi <- function(weight, height) {
+  # 实现...
+}
+```
+
+---
+
+## 本讲小结
+
+::: {.columns}
+::: {.column width="50%"}
+### Markdown
+
+- 轻量级标记语言
+- 标题、格式、列表、表格
+- 代码块、LaTeX公式
+:::
+::: {.column width="50%"}
+### R Markdown
+
+- `.Rmd` = 代码 + 文本
+- YAML元数据
+- 代码块选项
+- 内联代码
+- 参数化报告
+:::
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+### Quarto
+
+- 下一代科学出版系统
+- 多语言支持
+- 原生交叉引用
+- 现代美观
+:::
+::: {.column width="50%"}
+### 最佳实践
+
+- 可重复性原则
+- 版本控制 (Git)
+- 环境管理 (renv)
+- 规范的项目结构
+:::
+:::
+
+---
+
+## 练习与思考
+
+1. **Markdown练习**
+   - 用Markdown写一段自我介绍
+   - 包含列表、链接、代码块
+
+2. **R Markdown练习**
+   - 创建一个分析mtcars数据的报告
+   - 包含代码、图表、表格
+   - 使用内联代码显示统计结果
+
+3. **Quarto探索**
+   - 将R Markdown转换为Quarto
+   - 尝试添加交叉引用
+
+4. **思考**
+   - 如何保证分析的可重复性？
+   - 在什么情况下选择Quarto而非R Markdown？
+
+---
+
+## 课程总结
+
+# 从数据到报告
+
+::: {.fragment .fade-in}
+## 完整流程
+
+```
+数据导入 → 清洗处理 → 统计分析 → 可视化 → R Markdown/Quarto → 专业报告
+```
+:::
+
+::: {.fragment .fade-in}
+### 核心能力
+
+- 用 **R** 处理和分析数据
+- 用 **tidyverse** 高效编程
+- 用 **R Markdown/Quarto** 撰写报告
+- 遵循 **可重复性** 研究原则
+:::
+
+---
+
+# 谢谢！
+
+## 开始你的实验吧！
+
+::: {.center}
+王诗翔 副教授  
+中南大学生物医学信息系  
+
+📧 shixiang.wang@csu.edu.cn  
+🐙 https://github.com/ShixiangWang
+
+### 下节课预告：实验指导
+
+- R基础编程练习
+- R Markdown报告编写
+:::

@@ -1,0 +1,32 @@
+{
+  "index.qmd": {
+    "index.html": "c79470a0"
+  },
+  "labs/lab1-r-basics.qmd": {
+    "lab1-r-basics.html": "da064746"
+  },
+  "labs/lab2-rmarkdown.qmd": {
+    "lab2-rmarkdown.html": "69e1c8e2"
+  },
+  "lectures/lecture1-r-basics.qmd": {
+    "lecture1-r-basics.html": "03891ba9"
+  },
+  "lectures/lecture3-rmarkdown.qmd": {
+    "lecture3-rmarkdown.html": "45b28cfd"
+  },
+  "license.qmd": {
+    "license.html": "dc862bac"
+  },
+  "resources.qmd": {
+    "resources.html": "044f5035"
+  },
+  "syllabus.qmd": {
+    "syllabus.html": "66945724"
+  },
+  "lectures/lecture2-data-viz.qmd": {
+    "lecture2-data-viz.html": "348662db"
+  },
+  "lectures/lecture4-quarto.qmd": {
+    "lecture4-quarto.html": "9ab10bf9"
+  }
+}
