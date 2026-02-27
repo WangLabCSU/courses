@@ -16,7 +16,7 @@ rm -rf _site
 # 渲染根目录
 echo ""
 echo "1. 渲染根目录网站..."
-quarto render index.qmd
+quarto render
 
 # 渲染各个课程
 echo ""
@@ -40,7 +40,7 @@ if [ -f "index.html" ]; then
   cp index.html _site/
 fi
 
-for file in license.html resources.html syllabus.html robots.txt sitemap.xml search.json; do
+for file in license.html resources.html syllabus.html learning-resources.html robots.txt sitemap.xml search.json; do
   if [ -f "$file" ]; then
     cp "$file" _site/
   fi

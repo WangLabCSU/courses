@@ -20,6 +20,8 @@ website:
         menu:
           - href: r-and-rmarkdown/index.qmd
             text: "R与(R)Markdown基础"
+      - href: learning-resources.qmd
+        text: 学习资源
     right:
       - icon: github
         href: https://github.com/WangLabCSU

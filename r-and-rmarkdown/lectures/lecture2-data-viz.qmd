@@ -64,7 +64,7 @@ library(tidyverse)
 ### 2.2 filter - 筛选行
 
 ```{r}
-#| eval: false
+#| eval: true
 
 library(dplyr)
 
@@ -82,7 +82,7 @@ iris |>
 ### 2.3 select - 选择列
 
 ```{r}
-#| eval: false
+#| eval: true
 
 # 选择指定列
 iris |>
@@ -108,7 +108,7 @@ iris |>
 ### 2.4 mutate - 创建新列
 
 ```{r}
-#| eval: false
+#| eval: true
 
 iris |>
   mutate(
@@ -121,7 +121,7 @@ iris |>
 ### 2.5 summarise - 汇总统计
 
 ```{r}
-#| eval: false
+#| eval: true
 
 iris |>
   summarise(
@@ -135,7 +135,7 @@ iris |>
 ### 2.6 group_by - 分组操作
 
 ```{r}
-#| eval: false
+#| eval: true
 
 # 按种类分组统计
 iris |>
@@ -150,7 +150,7 @@ iris |>
 ### 2.7 管道操作符 |>
 
 ```{r}
-#| eval: false
+#| eval: true
 
 # 传统写法
 result <- summarise(
@@ -212,7 +212,7 @@ ggplot(data = <DATA>) +
 ### 3.4 完整示例
 
 ```{r}
-#| eval: false
+#| eval: true
 
 library(ggplot2)
 
@@ -235,10 +235,15 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
 ### 案例：临床数据分析
 
 ```{r}
-#| eval: false
+#| eval: true
+
+# 加载必要的包
+library(readr)
+library(dplyr)
+library(ggplot2)
 
 # 读取数据
-clinical <- read_csv("data/clinical.csv")
+clinical <- read_csv("../data/clinical.csv")
 
 # 数据清洗与分析
 clinical_summary <- clinical |>

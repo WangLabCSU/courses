@@ -162,6 +162,24 @@ rsync -avz _site/ user@server:/var/www/html/courses/
 4. 在根目录 `index.qmd` 中添加课程卡片
 5. 更新 `build.sh` 中的课程列表
 
+## 外部课程资料
+
+- https://sunpast.github.io/r4ds/
+- https://github.com/WangLabCSU/R_for_Data_Science https://bookdown.org/wangminjie/R4DS/
+- https://github.com/WangLabCSU/Curated-List
+- https://github.com/WangLabCSU/raukr-2024
+- https://github.com/NBISweden/raukr-2025
+- https://github.com/NBISweden/raukr-2026
+- https://github.com/NBISweden/workshop-ngsintro
+- https://github.com/NBISweden/workshop-RNAseq
+- https://github.com/NBISweden/workshop-scRNAseq
+- https://github.com/WangLabCSU/bioc-rnaseq
+- https://github.com/WangLabCSU/workshop-RNAseq
+- https://github.com/WangLabCSU/bioc-project
+- https://github.com/WangLabCSU/RBiocBook
+- https://github.com/WangLabCSU/BS831
+- https://github.com/WangLabCSU/lincs-workshop-2020
+
 ## 📄 许可证
 
 本仓库内容采用双许可：

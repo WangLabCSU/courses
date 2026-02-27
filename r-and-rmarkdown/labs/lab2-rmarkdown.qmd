@@ -1,6 +1,6 @@
 ---
 title: "实验2：R Markdown报告编写"
-subtitle: "创建可重复性数据分析报告"
+subtitle: "创建可重复性基因表达分析报告"
 ---
 
 ## 实验目标
@@ -62,7 +62,7 @@ lab2-rmarkdown/
 
 1. 点击菜单 `File → New File → R Markdown`
 2. 在弹出的对话框中填写：
-   - **Title**: `鸢尾花数据分析报告`
+   - **Title**: `TP53基因表达分析报告`
    - **Author**: 你的姓名
    - **Default Output Format**: HTML
 3. 点击 OK
@@ -80,8 +80,8 @@ lab2-rmarkdown/
 
 ```yaml
 ---
-title: "鸢尾花数据分析报告"
-subtitle: "基于R Markdown的可重复性分析"
+title: "TP53基因表达分析报告"
+subtitle: "基于TCGA数据的肿瘤vs正常差异表达分析"
 author: 
   - name: "你的姓名"
     affiliation: "中南大学 · 生物信息学专业"
@@ -117,19 +117,19 @@ output:
 ```markdown
 # 摘要
 
-本文对鸢尾花数据集进行了探索性数据分析...
+本文对TP53基因在肿瘤和正常组织中的表达差异进行了分析...
 
 # 1. 简介
 
-## 1.1 数据集介绍
+## 1.1 研究背景
 
-鸢尾花数据集是统计学和机器学习中的经典数据集...
+TP53是重要的抑癌基因，编码p53蛋白...
 
 ## 1.2 分析目的
 
-- 探索三种鸢尾花的特征差异
-- 可视化特征分布
-- 建立简单的分类模型
+- 比较TP53在肿瘤和正常组织中的表达差异
+- 可视化基因表达分布
+- 进行统计显著性检验
 
 # 2. 数据导入与预处理
 
@@ -146,12 +146,12 @@ output:
 
 ### 练习2.1：数据导入与检查
 
-**任务**：在"2. 数据导入与预处理"章节中添加代码，加载并检查数据
+**任务**：在"2. 数据导入与预处理"章节中添加代码，创建并检查TP53表达数据
 
 **要求**：
 1. 设置全局代码块选项
 2. 加载ggplot2、dplyr、knitr包
-3. 加载内置的iris数据集
+3. 创建TP53表达数据框（模拟肿瘤vs正常样本）
 4. 显示数据维度和前10行
 5. 检查数据类型和缺失值
 6. 显示基础统计摘要
@@ -176,28 +176,41 @@ library(dplyr)
 library(knitr)
 ```
 
-```{r load-data}`r ''`
-# 加载内置数据集
-data(iris)
+```{r create-data}`r ''`
+# 创建模拟的TP53表达数据
+set.seed(42)
+n_tumor <- 50
+n_normal <- 50
+
+tp53_data <- data.frame(
+  sample_id = paste0("S", 1:(n_tumor + n_normal)),
+  group = c(rep("Tumor", n_tumor), rep("Normal", n_normal)),
+  tp53_expression = c(
+    rnorm(n_tumor, mean = 8.5, sd = 1.2),    # 肿瘤组表达较高
+    rnorm(n_normal, mean = 5.2, sd = 0.8)     # 正常组表达较低
+  ),
+  age = sample(30:75, n_tumor + n_normal, replace = TRUE),
+  gender = sample(c("M", "F"), n_tumor + n_normal, replace = TRUE)
+)
 
 # 查看数据维度
-sprintf("数据集包含 %d 行, %d 列", nrow(iris), ncol(iris))
+sprintf("数据集包含 %d 行, %d 列", nrow(tp53_data), ncol(tp53_data))
 
 # 显示前几行
-head(iris, 10)
+head(tp53_data, 10)
 ```
 
 ## 2.2 数据检查
 
 ```{r data-summary}`r ''`
 # 数据类型检查
-str(iris)
+str(tp53_data)
 
 # 缺失值检查
-colSums(is.na(iris))
+colSums(is.na(tp53_data))
 
 # 基础统计
-summary(iris[, 1:4])
+summary(tp53_data$tp53_expression)
 ```
 ````
 </details>
@@ -222,29 +235,30 @@ summary(iris[, 1:4])
 ### 显示代码和结果（默认）
 
 ```{r}`r ''`
-mean(iris$Sepal.Length)
+mean(tp53_data$tp53_expression)
 ```
 
 ### 只显示结果，隐藏代码
 
 ```{r, echo=FALSE}`r ''`
-median(iris$Sepal.Length)
+median(tp53_data$tp53_expression)
 ```
 
 ### 显示代码，不执行
 
 ```{r, eval=FALSE}`r ''`
 # 这段代码不会执行
-expensive_computation <- function() {
-  Sys.sleep(60)
-  return(42)
-}
+# 模拟DESeq2差异表达分析（耗时长）
+dds <- DESeqDataSetFromMatrix(countData, colData, design = ~ condition)
+dds <- DESeq(dds)
+results <- results(dds)
 ```
 
 ### 不显示警告信息
 
 ```{r, warning=FALSE}`r ''`
 # 可能产生警告的代码
+library(tidyverse)
 ```
 ````
 </details>
@@ -257,24 +271,321 @@ expensive_computation <- function() {
 
 **要求**使用内联代码显示以下信息：
 - 数据集样本总数
-- 山鸢尾（setosa）的样本数
-- 花萼长度的平均值和标准差
-- 花萼长度的最大值和最小值
+- 肿瘤组样本数
+- TP53表达的平均值和标准差
+- 肿瘤组和正常组的平均表达量
 
 <details>
 <summary>点击查看参考答案</summary>
 
 ```markdown
-数据集共包含 `r nrow(iris)` 个样本，
-其中山鸢尾（*Iris setosa*）有 `r sum(iris$Species == "setosa")` 个。
+数据集共包含 `r nrow(tp53_data)` 个样本，
+其中肿瘤组有 `r sum(tp53_data$group == "Tumor")` 个，
+正常组有 `r sum(tp53_data$group == "Normal")` 个。
 
-花萼长度的平均值为 `r round(mean(iris$Sepal.Length), 2)` cm，
-标准差为 `r round(sd(iris$Sepal.Length), 2)` cm。
+TP53基因的整体平均表达量为 `r round(mean(tp53_data$tp53_expression), 2)`，
+标准差为 `r round(sd(tp53_data$tp53_expression), 2)`。
 
-最大花萼长度为 `r max(iris$Sepal.Length)` cm，
-最小为 `r min(iris$Sepal.Length)` cm。
+肿瘤组的平均TP53表达为 `r round(mean(tp53_data$tp53_expression[tp53_data$group == "Tumor"]), 2)`，
+正常组为 `r round(mean(tp53_data$tp53_expression[tp53_data$group == "Normal"]), 2)`。
 ```
 
-**渲染效果**：
+**渲染效果**（示例）：
 
-数据集共包含 `r nrow(iris)` 个样本，其中山鸢尾（*Iris setosa*）有 `r sum(iris$Species == 
+数据集共包含 100 个样本，其中肿瘤组有 50 个，正常组有 50 个。
+
+TP53基因的整体平均表达量为 6.85，标准差为 1.92。
+
+肿瘤组的平均TP53表达为 8.52，正常组为 5.18。
+</details>
+
+---
+
+## 第三部分：图表与表格 (15分钟)
+
+### 练习3.1：基础图形
+
+**任务**：在"3. 探索性数据分析"章节中添加箱线图比较两组TP53表达
+
+**要求**：
+1. 使用基础graphics绘制箱线图
+2. 添加标题和轴标签
+3. 使用不同颜色区分两组
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 3.1 基础箱线图
+
+```{r boxplot-basic, fig.cap="TP53基因表达箱线图"}`r ''`
+boxplot(tp53_expression ~ group, data = tp53_data,
+        main = "TP53基因在肿瘤和正常组织中的表达",
+        xlab = "样本类型",
+        ylab = "TP53表达量 (log2)",
+        col = c("lightblue", "lightcoral"),
+        border = "darkblue")
+```
+````
+</details>
+
+---
+
+### 练习3.2：ggplot2图形
+
+**任务**：使用ggplot2创建更美观的可视化
+
+**要求**：
+1. 创建小提琴图+箱线图组合
+2. 添加散点显示原始数据
+3. 使用主题美化
+4. 添加统计检验结果
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 3.2 ggplot2高级可视化
+
+```{r ggplot-violin, fig.cap="TP53表达小提琴图"}`r ''`
+library(ggplot2)
+
+# 进行t检验
+ttest_result <- t.test(tp53_expression ~ group, data = tp53_data)
+p_value <- ttest_result$p.value
+
+ggplot(tp53_data, aes(x = group, y = tp53_expression, fill = group)) +
+  geom_violin(alpha = 0.5) +
+  geom_boxplot(width = 0.2, alpha = 0.8) +
+  geom_jitter(width = 0.2, alpha = 0.5, size = 2) +
+  scale_fill_manual(values = c("Normal" = "#3498db", "Tumor" = "#e74c3c")) +
+  labs(
+    title = "TP53基因表达差异分析",
+    subtitle = paste("t检验 p值 =", format(p_value, digits = 2, scientific = TRUE)),
+    x = "样本类型",
+    y = "TP53表达量 (log2)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+````
+</details>
+
+---
+
+### 练习3.3：创建表格
+
+**任务**：使用knitr::kable()创建统计汇总表
+
+**要求**：
+1. 按组计算统计量（均值、标准差、中位数）
+2. 使用kable()创建美观表格
+3. 添加表格标题
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 3.3 统计汇总表
+
+```{r summary-table}`r ''`
+# 按组计算统计量
+summary_stats <- tp53_data %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    mean = round(mean(tp53_expression), 2),
+    sd = round(sd(tp53_expression), 2),
+    median = round(median(tp53_expression), 2),
+    min = round(min(tp53_expression), 2),
+    max = round(max(tp53_expression), 2)
+  )
+
+# 创建表格
+knitr::kable(
+  summary_stats,
+  caption = "TP53基因表达统计汇总",
+  col.names = c("组别", "样本数", "均值", "标准差", "中位数", "最小值", "最大值"),
+  align = c('l', 'c', 'c', 'c', 'c', 'c', 'c')
+)
+```
+````
+</details>
+
+---
+
+## 第四部分：统计分析与结论 (10分钟)
+
+### 练习4.1：差异表达检验
+
+**任务**：进行t检验并报告结果
+
+**要求**：
+1. 使用t.test()进行两组比较
+2. 提取并显示关键统计量
+3. 使用内联代码在正文中报告结果
+
+<details>
+<summary>点击查看参考答案</summary>
+
+````markdown
+## 4.1 统计检验
+
+```{r t-test}`r ''`
+# 进行独立样本t检验
+ttest_result <- t.test(tp53_expression ~ group, data = tp53_data)
+
+# 显示完整结果
+ttest_result
+
+# 提取关键统计量
+cat("\n关键统计量:\n")
+cat("t值:", round(ttest_result$statistic, 3), "\n")
+cat("自由度:", ttest_result$parameter, "\n")
+cat("p值:", format(ttest_result$p.value, digits = 2, scientific = TRUE), "\n")
+cat("95%置信区间:", round(ttest_result$conf.int[1], 3), "to", 
+    round(ttest_result$conf.int[2], 3), "\n")
+```
+
+在正文中报告结果：
+
+> 独立样本t检验结果显示，TP53基因在肿瘤组的表达显著高于正常组
+> (t(`r ttest_result$parameter`) = `r round(ttest_result$statistic, 2)`,
+> p `r ifelse(ttest_result$p.value < 0.001, "< 0.001", paste("=", round(ttest_result$p.value, 3)))`)，
+> 均数差值为 `r round(diff(ttest_result$estimate), 2)`。
+````
+</details>
+
+---
+
+### 练习4.2：撰写结论
+
+**任务**：在"4. 结论与讨论"章节中撰写分析结论
+
+**参考模板**：
+
+```markdown
+# 4. 结论与讨论
+
+## 4.1 主要发现
+
+本研究分析了TP53基因在`r sum(tp53_data$group == "Tumor")`例肿瘤样本和
+`r sum(tp53_data$group == "Normal")`例正常样本中的表达差异。
+
+主要发现包括：
+
+1. **表达差异**：肿瘤组TP53平均表达量为 `r round(mean(tp53_data$tp53_expression[tp53_data$group == "Tumor"]), 2)`，
+   显著高于正常组的 `r round(mean(tp53_data$tp53_expression[tp53_data$group == "Normal"]), 2)`。
+
+2. **统计显著性**：t检验结果显示两组差异具有统计学意义
+   (p `r ifelse(ttest_result$p.value < 0.001, "< 0.001", paste("=", round(ttest_result$p.value, 3)))`)。
+
+3. **生物学意义**：TP53作为抑癌基因，其在肿瘤中的高表达可能反映了...
+
+## 4.2 研究局限
+
+- 样本量相对较小
+- 为模拟数据，非真实临床数据
+- 未考虑其他临床因素的影响
+
+## 4.3 后续方向
+
+- 扩大样本量进行验证
+- 结合其他基因进行通路分析
+- 探索TP53表达与预后的关系
+```
+
+---
+
+## 第五部分：多格式输出 (5分钟)
+
+### 练习5.1：生成不同格式
+
+**任务**：测试生成HTML、PDF和Word三种格式
+
+1. **HTML**：点击 Knit → Knit to HTML
+2. **PDF**：点击 Knit → Knit to PDF（需安装tinytex）
+3. **Word**：点击 Knit → Knit to Word
+
+### 练习5.2：参数化报告（进阶）
+
+**任务**：添加参数使报告可复用于不同基因
+
+在YAML中添加：
+
+```yaml
+params:
+  gene_name: "TP53"
+  fc_threshold: 2
+  pvalue_threshold: 0.05
+```
+
+在代码中使用参数：
+
+````markdown
+```{r}`r ''`
+cat("分析基因:", params$gene_name, "\n")
+cat("差异倍数阈值:", params$fc_threshold, "\n")
+cat("p值阈值:", params$pvalue_threshold, "\n")
+```
+````
+
+---
+
+## 实验总结
+
+### 关键技能清单
+
+- [ ] 创建R Markdown文档
+- [ ] 配置YAML元数据
+- [ ] 使用代码块选项控制输出
+- [ ] 使用内联代码动态更新内容
+- [ ] 创建ggplot2可视化
+- [ ] 生成统计表格
+- [ ] 生成多格式报告
+
+### 常见问题
+
+**Q1: 中文显示乱码？**
+确保文件保存为UTF-8编码，或在YAML中添加：
+```yaml
+encoding: UTF-8
+```
+
+**Q2: PDF生成失败？**
+安装tinytex：
+```r
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
+
+**Q3: 图表不显示？**
+检查代码块选项，确保没有`eval=FALSE`或`include=FALSE`
+
+---
+
+## 课后作业
+
+1. 完善本实验的报告，添加更多可视化（如相关性热图）
+2. 尝试分析另一个基因（如BRCA1、EGFR）
+3. 阅读 [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
+4. 准备一份自己的基因表达分析报告
+
+---
+
+## 参考资源
+
+- [R Markdown官方文档](https://rmarkdown.rstudio.com/)
+- [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
+- [ggplot2文档](https://ggplot2.tidyverse.org/)
+- [knitr文档](https://yihui.org/knitr/)
+
+---
+
+## 联系信息
+
+- 授课教师：王诗翔 副教授
+- 单位：中南大学 · 生物信息学专业
+- 实验室主页：https://wanglabcsu.github.io/
+- 邮箱：wangshx@csu.edu.cn
+- GitHub：https://github.com/WangLabCSU

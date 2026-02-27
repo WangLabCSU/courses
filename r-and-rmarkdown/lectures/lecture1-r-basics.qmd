@@ -1,17 +1,17 @@
 ---
 title: "第1讲：R语言基础"
-subtitle: "数据类型、结构与基础操作"
+subtitle: "从入门到生物医学数据分析"
 ---
 
 ## 本讲概述
 
-本讲将介绍R语言的核心基础，包括：
+本讲将介绍R语言的核心基础，结合生物医学信息学实际案例：
 
 - R语言的特点与应用领域
-- 五种基本数据类型
-- 四种核心数据结构
-- 向量化操作的优势
-- R包管理
+- 五种基本数据类型与生物医学应用
+- 四种核心数据结构（向量、矩阵、数据框、列表）
+- 向量化操作的优势与实战
+- R包管理与Bioconductor生态
 
 **预计时长**：45分钟理论 + 15分钟练习
 
@@ -21,60 +21,57 @@ subtitle: "数据类型、结构与基础操作"
 
 ### 1.1 什么是R？
 
-R是由Ross Ihaka和Robert Gentleman在1995年开发的统计计算语言。它结合了：
-
-- **S语言**的语法特点
-- **Scheme语言**的底层实现
-- **开源社区**的持续贡献
+R是由Ross Ihaka和Robert Gentleman在1995年开发的统计计算语言，现已成为**生物医学数据分析的标准工具**。
 
 ### 1.2 R的核心优势
 
-| 优势 | 说明 |
-|------|------|
-| 开源免费 | GPL许可，无使用限制 |
-| 统计专长 | 内置大量统计方法 |
-| 可视化强大 |  publication-quality图表 |
-| 扩展性强 | 20,000+ 扩展包 |
-| 社区活跃 | 全球统计学家支持 |
+| 优势 | 说明 | 生信应用 |
+|------|------|----------|
+| 开源免费 | GPL许可，无使用限制 | 学术界广泛使用 |
+| 统计专长 | 内置大量统计方法 | 差异表达、生存分析 |
+| 可视化强大 | publication-quality图表 | 火山图、热图 |
+| 扩展性强 | 20,000+ CRAN包 | 通用数据分析 |
+| Bioconductor | 2,000+生信专用包 | RNA-seq、基因组学 |
 
 ### 1.3 生物医学应用
 
-- 临床试验数据分析
-- 基因组学/转录组学分析
-- 医学影像数据处理
-- 流行病学建模
-- 药物发现与开发
+- **临床试验**：生存分析、疗效评估
+- **基因组学**：RNA-seq (DESeq2)、ChIP-seq
+- **单细胞测序**：细胞聚类、轨迹分析 (Seurat)
+- **流行病学**：疾病建模、预测
+- **药物发现**：靶点预测、分子对接
 
 ---
 
 ## 2. 基础数据类型
 
-### 2.1 类型系统
+### 2.1 类型系统与生物医学应用
 
-R是**动态类型**语言，但每个对象都有明确的类型：
+R是**动态类型**语言，每个对象都有明确的类型：
 
 ```{r}
 #| eval: false
 
-# 数值型 (numeric)
-x <- 3.14159
-class(x)  # "numeric"
+# 数值型 (numeric) - 基因表达量
+expression <- 8.5
+class(expression)  # "numeric"
 
-# 整型 (integer)  
-y <- 42L
-class(y)  # "integer"
+# 整型 (integer) - 测序读数计数  
+read_count <- 1000L
+class(read_count)  # "integer"
 
-# 字符型 (character)
-name <- "Central South University"
-class(name)  # "character"
+# 字符型 (character) - 基因名、样本ID
+gene_name <- "TP53"
+sample_id <- "Tumor_001"
+class(gene_name)  # "character"
 
-# 逻辑型 (logical)
-flag <- TRUE  # 或 FALSE, T, F
-class(flag)   # "logical"
+# 逻辑型 (logical) - 差异表达标志
+is_de <- TRUE  # 是否差异表达
+class(is_de)   # "logical"
 
-# 复数型 (complex)
-z <- 3 + 4i
-class(z)  # "complex"
+# 复数型 (complex) - 傅里叶变换
+fft_result <- 3 + 4i
+class(fft_result)  # "complex"
 ```
 
 ### 2.2 类型转换
@@ -82,36 +79,35 @@ class(z)  # "complex"
 ```{r}
 #| eval: false
 
-as.numeric("42")      # 字符转数值
-as.character(42)      # 数值转字符
-as.logical(1)         # 1 → TRUE, 0 → FALSE
-as.integer(3.7)       # 截断取整
+# 常见转换场景
+as.numeric("8.5")         # 字符转数值：解析表达量
+as.character(42)          # 数值转字符：生成样本名
+as.logical(1)             # 1 → TRUE, 0 → FALSE
+as.integer(3.7)           # 截断取整
 ```
 
 ---
 
 ## 3. 数据结构
 
-### 3.1 向量 (Vector)
+### 3.1 向量 (Vector) - 基因表达数据
 
-向量是R最基础的**一维**数据结构。
+向量是R最基础的**一维**数据结构，用于存储一组基因的表达值。
 
 **创建向量**：
 
 ```{r}
 #| eval: false
 
-# c() 函数 (concatenate)
-nums <- c(1, 2, 3, 4, 5)
-chars <- c("a", "b", "c")
-mixed <- c(1, "a")  # 自动转换为字符型
+# TP53基因在10个样本中的表达值
+tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1, 11.5, 7.8, 13.2, 10.4, 14.6)
+sample_names <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
 
-# 序列生成
-1:10                           # 1到10
-seq(1, 10, by = 2)             # 步长为2
-seq(1, 10, length.out = 5)     # 均分5个点
-rep(1:3, each = 2)             # 每个重复2次
-rep(1:3, times = 2)            # 整体重复2次
+# 序列生成：生成染色体位置
+chr_positions <- seq(1, 1000000, by = 1000)
+
+# 重复：创建分组标签
+groups <- rep(c("Tumor", "Normal"), each = 5)
 ```
 
 **向量操作**：
@@ -119,266 +115,357 @@ rep(1:3, times = 2)            # 整体重复2次
 ```{r}
 #| eval: false
 
-x <- c(10, 20, 30, 40, 50)
+tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1)
 
 # 索引 (R从1开始！)
-x[1]           # 第一个元素
-x[c(1, 3, 5)]  # 第1、3、5个元素
-x[2:4]         # 第2到4个元素
-x[x > 25]      # 条件筛选
-x[-1]          # 排除第一个
+tp53_expr[1]                    # 第一个样本
+tp53_expr[c(1, 3, 5)]           # 第1、3、5个样本
+tp53_expr[2:4]                  # 第2到4个样本
+tp53_expr[tp53_expr > 10]       # 高表达样本（>10）
 
 # 向量化运算
-x + 10         # 每个元素加10
-x * 2          # 每个元素乘2
-x > 30         # 每个元素比较
+tp53_expr + 1                   # 标准化（加1）
+tp53_expr * 2                   # 放大2倍
+tp53_expr > 10                  # 判断是否高表达
+mean(tp53_expr)                 # 计算平均值
+sd(tp53_expr)                   # 计算标准差
 ```
 
-### 3.2 矩阵 (Matrix)
+---
 
-矩阵是**二维**数据结构，所有元素类型相同。
+### 3.2 矩阵 (Matrix) - 表达矩阵
+
+矩阵是**二维**数据结构，用于存储多个基因在多个样本中的表达值。
 
 ```{r}
 #| eval: false
 
-# 创建矩阵
-m <- matrix(1:12, nrow = 3, ncol = 4)
-m
-
-# 按行填充
-matrix(1:12, nrow = 3, byrow = TRUE)
-
-# 索引
-m[1, 2]        # 第1行第2列
-m[1, ]         # 第1行
-m[, 2]         # 第2列
-m[1:2, 2:3]    # 子矩阵
-
-# 矩阵运算
-m + 10         # 标量加法
-m * 2          # 标量乘法
-t(m)           # 转置
-m %*% t(m)     # 矩阵乘法
-```
-
-### 3.3 数据框 (Data Frame)
-
-数据框是**最重要的**数据结构，类似Excel表格。
-
-```{r}
-#| eval: false
-
-# 创建数据框
-patients <- data.frame(
-  id = 1:5,
-  name = c("张三", "李四", "王五", "赵六", "孙七"),
-  age = c(25, 34, 45, 28, 52),
-  gender = c("M", "F", "M", "F", "M"),
-  bp = c(120, 135, 142, 118, 155),
-  stringsAsFactors = FALSE  # 字符不转因子
+# 创建表达矩阵（3个基因 × 4个样本）
+expr_matrix <- matrix(
+  c(8.5, 12.3, 6.7, 15.2,
+    5.2, 7.8, 9.1, 6.5,
+    3.1, 4.5, 8.2, 7.9),
+  nrow = 3, byrow = TRUE
 )
 
-# 查看
-head(patients, 3)    # 前3行
-tail(patients)       # 后6行
-str(patients)        # 结构
-summary(patients)    # 摘要统计
-dim(patients)        # 维度
-ncol(patients)       # 列数
-nrow(patients)       # 行数
+# 命名：基因名和样本名
+dimnames(expr_matrix) <- list(
+  c("TP53", "KRAS", "BRCA1"),      # 基因名
+  c("S1", "S2", "S3", "S4")         # 样本名
+)
+expr_matrix
+
+# 矩阵运算
+expr_matrix[1, ]                # TP53在所有样本中的表达
+expr_matrix[, 2]                # 所有基因在S2中的表达
+rowMeans(expr_matrix)           # 每个基因的平均表达
+colMeans(expr_matrix)           # 每个样本的平均表达
 ```
 
-**访问方式**：
+---
+
+### 3.3 数据框 (Data Frame) - 临床数据
+
+数据框是**最重要的**数据结构，用于存储患者临床信息和基因表达数据。
+
+```{r}
+#| eval: false
+
+# 创建患者临床数据框
+patients <- data.frame(
+  patient_id = c("P001", "P002", "P003", "P004", "P005"),
+  age = c(45, 52, 38, 61, 29),
+  gender = c("M", "F", "F", "M", "F"),
+  tumor_stage = c("II", "III", "I", "IV", "II"),
+  tp53_expr = c(8.5, 12.3, 6.7, 15.2, 9.1),
+  stringsAsFactors = FALSE
+)
+
+# 查看数据
+head(patients, 3)               # 前3行
+str(patients)                   # 数据结构
+summary(patients)               # 统计摘要
+```
+
+**数据框操作**：
 
 ```{r}
 #| eval: false
 
 # 列访问
-patients$age                 # 使用$
-patients[["age"]]            # 使用双方括号
-patients[, "age"]            # 使用单括号（返回向量）
-patients[, "age", drop = FALSE]  # 保持数据框
+patients$tp53_expr              # 使用$访问表达量
+patients[["age"]]               # 使用双方括号
+patients[, c("age", "gender")]  # 选择多列
 
-# 行访问
-patients[1, ]                # 第1行
-patients[1:3, ]              # 第1-3行
-patients[patients$age > 30, ]  # 条件筛选
+# 行筛选
+patients[patients$age > 50, ]                    # 老年患者
+patients[patients$tumor_stage == "IV", ]         # 晚期患者
+subset(patients, tp53_expr > 10)                 # TP53高表达患者
 
-# 行列同时
-patients[1:3, c("name", "age")]
+# 分组统计
+aggregate(tp53_expr ~ gender, data = patients, FUN = mean)
 ```
 
-### 3.4 列表 (List)
+---
 
-列表是最**灵活**的数据结构，可以存储不同类型。
+### 3.4 列表 (List) - 分析结果
+
+列表是最**灵活**的数据结构，用于存储复杂的分析结果。
 
 ```{r}
 #| eval: false
 
-# 创建列表
-experiment <- list(
-  id = "EXP001",
-  date = "2025-02-27",
-  samples = patients,
-  measurements = c(12.5, 13.2, 11.8),
-  passed_qc = TRUE
+# 存储差异表达分析结果
+de_analysis <- list(
+  gene = "TP53",
+  group_comparison = "Tumor vs Normal",
+  expression_values = c(12.5, 15.2, 8.7, 18.3, 11.9, 6.2, 7.5, 5.8, 8.1, 6.9),
+  statistics = list(
+    mean_tumor = 13.32,
+    mean_normal = 6.90,
+    fold_change = 1.93,
+    p_value = 0.002,
+    significant = TRUE
+  ),
+  samples = patients
 )
 
-# 访问
-experiment$id                # 使用$
-experiment[["samples"]]      # 双方括号
-experiment[[3]]              # 按位置
-experiment$samples$age       # 嵌套访问
-
-# 列表操作
-length(experiment)           # 元素个数
-names(experiment)            # 获取名称
-experiment$new_item <- "value"  # 添加元素
+# 访问元素
+de_analysis$gene                           # 基因名
+de_analysis$statistics$p_value             # p值
+de_analysis[["statistics"]]["fold_change"] # Fold Change
 ```
 
 ---
 
 ## 4. 向量化操作
 
-### 4.1 向量化 vs 循环
+### 4.1 向量化 vs 循环：性能对比
 
-**循环方式**：
-
-```{r}
-#| eval: false
-
-x <- 1:1000000
-result <- numeric(length(x))
-
-for (i in seq_along(x)) {
-  result[i] <- x[i] ^ 2
-}
-```
-
-**向量化方式**：
+**循环方式**（慢）：
 
 ```{r}
 #| eval: false
 
-result <- x ^ 2
+# 计算100万个基因的标准化值（循环版）
+genes <- rnorm(1000000, mean = 10, sd = 2)
+result <- numeric(length(genes))
+
+system.time({
+  for (i in seq_along(genes)) {
+    result[i] <- (genes[i] - mean(genes)) / sd(genes)
+  }
+})
+# 用户 系统 流逝 
+# 0.5   0.0   0.5 
 ```
 
-向量化代码：
-- ✅ 更简洁
-- ✅ 更易读
-- ✅ **更快**（C级别优化）
+**向量化方式**（快10-100倍）：
+
+```{r}
+#| eval: false
+
+system.time({
+  result <- (genes - mean(genes)) / sd(genes)
+})
+# 用户 系统 流逝 
+# 0.01  0.00  0.01 
+```
 
 ### 4.2 apply家族
 
-当必须使用循环时，优先使用apply：
+当必须使用循环时，优先使用apply函数：
 
 ```{r}
 #| eval: false
 
-m <- matrix(1:12, nrow = 3)
+# 表达矩阵（基因 × 样本）
+expr_mat <- matrix(rnorm(100), nrow = 10)
+rownames(expr_mat) <- paste0("Gene", 1:10)
 
-# apply - 矩阵/数组
-apply(m, 1, sum)      # 按行求和 (MARGIN=1)
-apply(m, 2, mean)     # 按列求均值 (MARGIN=2)
+# apply - 矩阵运算
+rowMeans(expr_mat)              # 每个基因的平均表达
+apply(expr_mat, 2, sd)          # 每个样本的表达标准差
 
-# lapply/sapply - 列表/向量
-l <- list(a = 1:3, b = 4:6)
-lapply(l, sum)        # 返回列表
-sapply(l, sum)        # 返回向量
+# lapply/sapply - 列表操作
+gene_list <- list(
+  TP53 = c(8.5, 12.3, 6.7),
+  KRAS = c(5.2, 7.8, 9.1)
+)
+sapply(gene_list, mean)         # 每个基因的平均值
 
 # tapply - 分组计算
-tapply(patients$age, patients$gender, mean)
+tapply(patients$tp53_expr, patients$gender, mean)
 ```
 
 ---
 
 ## 5. R包管理
 
-### 5.1 包安装
+### 5.1 三大仓库
+
+| 仓库 | 定位 | 生信代表包 |
+|------|------|------------|
+| **CRAN** | 综合R包 | ggplot2, dplyr, tidyr |
+| **Bioconductor** | 生物信息 | DESeq2, Seurat, GenomicRanges |
+| **GitHub** | 开发版本 | 最新功能测试 |
+
+### 5.2 包安装
 
 ```{r}
 #| eval: false
 
-# 从CRAN安装
-install.packages("ggplot2")
+# 从CRAN安装（数据科学）
+install.packages("tidyverse")   # 数据科学全家桶
+install.packages("ggplot2")     # 可视化
 
-# 从Bioconductor安装
+# 从Bioconductor安装（生物信息）
 if (!require("BiocManager"))
     install.packages("BiocManager")
-BiocManager::install("DESeq2")
 
-# 从GitHub安装
+BiocManager::install("DESeq2")        # RNA-seq差异表达
+BiocManager::install("Seurat")        # 单细胞分析
+BiocManager::install("GenomicRanges") # 基因组区间
+
+# 从GitHub安装（开发版本）
 install.packages("remotes")
-remotes::install_github("tidyverse/dplyr")
+remotes::install_github("satijalab/seurat")
 ```
 
-### 5.2 包加载
+### 5.3 包加载与使用
 
 ```{r}
 #| eval: false
 
-library(ggplot2)      # 加载包，失败报错
-require(dplyr)        # 加载包，失败返回FALSE
+library(ggplot2)                # 加载包
+require(dplyr)                  # 另一种加载方式
 
-# 使用命名空间
-ggplot2::ggplot(mtcars, aes(x = wt, y = mpg))  # 不加载直接使用
+# 使用命名空间（不加载包）
+ggplot2::ggplot(mtcars, aes(x = wt, y = mpg))
+
+# 查看包信息
+sessionInfo()                   # 当前会话信息
+installed.packages()            # 已安装包
 ```
 
-### 5.3 包管理
+---
+
+## 6. 综合案例：TP53基因表达分析
+
+### 案例背景
+
+分析TP53基因在肿瘤组织和正常组织中的表达差异。
+
+### 数据准备
 
 ```{r}
 #| eval: false
 
-installed.packages()          # 查看已安装包
-update.packages()             # 更新所有包
-remove.packages("pkg_name")   # 卸载包
+# 创建示例数据
+samples <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
+groups <- c(rep("Tumor", 5), rep("Normal", 5))
+tp53_expr <- c(12.5, 15.2, 8.7, 18.3, 11.9,
+               6.2, 7.5, 5.8, 8.1, 6.9)
+
+# 创建数据框
+data <- data.frame(
+  sample = samples,
+  group = groups,
+  expression = tp53_expr
+)
+
+head(data)
+```
+
+### 数据分析
+
+```{r}
+#| eval: false
+
+# 1. 分组统计
+aggregate(expression ~ group, data = data, FUN = mean)
+
+# 2. 差异分析（t检验）
+tumor <- data$expression[data$group == "Tumor"]
+normal <- data$expression[data$group == "Normal"]
+t_test_result <- t.test(tumor, normal)
+
+# 3. 计算Fold Change
+fc <- mean(tumor) / mean(normal)
+log2fc <- log2(fc)
+
+# 4. 结果汇总
+cat("肿瘤组均值:", mean(tumor), "\n")
+cat("正常组均值:", mean(normal), "\n")
+cat("Fold Change:", round(fc, 2), "\n")
+cat("Log2 Fold Change:", round(log2fc, 2), "\n")
+cat("P-value:", t_test_result$p.value, "\n")
 ```
 
 ---
 
 ## 关键概念总结
 
-| 概念 | 要点 |
-|------|------|
-| 向量 | 一维，同类型，最基础 |
-| 矩阵 | 二维，同类型，数学运算 |
-| 数据框 | 二维，列可不同类型，最重要 |
-| 列表 | 递归，最灵活 |
-| 向量化 | 优先使用，效率更高 |
-| 包 | 扩展功能，CRAN/Bioconductor/GitHub |
+| 概念 | 要点 | 生信应用 |
+|------|------|----------|
+| 向量 | 一维，同类型 | 存储单个基因的表达值 |
+| 矩阵 | 二维，同类型 | 表达矩阵（基因×样本） |
+| 数据框 | 二维，列可不同类型 | 临床数据（患者信息+表达） |
+| 列表 | 递归，最灵活 | 存储复杂分析结果 |
+| 向量化 | 优先使用，效率更高 | 批量计算标准化值 |
+| 包 | CRAN/Bioconductor/GitHub | 扩展生信分析功能 |
 
 ---
 
 ## 课堂练习
 
-1. 创建一个包含以下信息的数据框：
-   - 5个学生，包含学号、姓名、成绩
-   - 筛选出成绩大于80分的学生
-   - 计算平均成绩
+### 练习1：数据框操作
 
-2. 比较循环和向量化计算100万个数的平方：
-   - 使用 `system.time()` 测量时间
+创建一个包含以下信息的数据框：
+- 10个患者，包含ID、年龄、性别、肿瘤分期、生存状态
+- 筛选出III-IV期患者
+- 计算不同分期的患者数量
 
-3. 安装并加载 `tidyverse` 包
+### 练习2：向量化计算
+
+比较循环和向量化计算10万个数的对数转换：
+- 使用 `system.time()` 测量时间
+- 计算速度提升倍数
+
+### 练习3：函数编写
+
+编写一个函数，输入基因表达向量，返回：
+- 平均值、标准差
+- 最小值、最大值
+- 中位数
 
 ---
 
 ## 课后作业
 
-1. 阅读 [R for Data Science Chapter 1-3](https://r4ds.had.co.nz/)
-2. 完成实验手册练习1
-3. 熟悉RStudio界面和快捷键
+1. **阅读材料**
+   - [R for Data Science Chapter 1-3](https://r4ds.had.co.nz/)
+   - [Bioconductor Workflows](https://www.bioconductor.org/packages/release/workflows/)
+
+2. **编程练习**
+   - 完成实验手册练习1
+   - 编写一个计算Fold Change的函数
+   - 使用向量化操作处理表达矩阵
+
+3. **探索学习**
+   - 安装Bioconductor的DESeq2包
+   - 浏览Bioconductor官网了解生信工具
 
 ---
 
-**下节预告**：数据处理与可视化
+**下节预告**：数据处理与可视化（ggplot2实战）
 
 ---
 
 ## 联系信息
 
 - 授课教师：王诗翔 副教授
-- 单位：中南大学 · 生物信息学专业
+- 单位：中南大学 · 生物医学信息系
 - 实验室主页：https://wanglabcsu.github.io/
 - 邮箱：wangshx@csu.edu.cn
 - GitHub：https://github.com/WangLabCSU

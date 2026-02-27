@@ -31,6 +31,7 @@ format:
 [📋 课程大纲](syllabus.qmd){.btn .btn-primary .btn-lg .me-2}
 [🧪 实验1：R基础](labs/lab1-r-basics.qmd){.btn .btn-success .btn-lg .me-2}
 [🧪 实验2：R Markdown](labs/lab2-rmarkdown.qmd){.btn .btn-success .btn-lg .me-2}
+[📚 学习资源](../learning-resources.html){.btn .btn-info .btn-lg}
 :::
 
 ::: {.mt-3 .text-center}

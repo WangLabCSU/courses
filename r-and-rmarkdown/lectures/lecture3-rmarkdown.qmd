@@ -210,8 +210,8 @@ library(tidyverse)  # 抑制加载警告
 使用 `` `r `` 和 `` ` `` 包裹R代码：
 
 ```markdown
-数据集包含 `r nrow(cars)` 个观测值，
-平均速度为 `r mean(cars$speed)` mph。
+数据集包含 `r nrow(mtcars)` 个观测值，
+平均油耗为 `r mean(mtcars$mpg)` mpg。
 ```
 
 ### 4.2 应用场景
@@ -222,9 +222,9 @@ library(tidyverse)  # 抑制加载警告
 
 示例代码（缩进4空格表示代码块）：
 
-分析显示，处理组的平均表达量为
-&#96;r round(mean(treatment_group), 2)&#96;，
-显著高于对照组（p = &#96;r format(p_value, digits=2, scientific=TRUE)&#96;）。
+分析显示，TP53基因在肿瘤组的平均表达量为
+&#96;r round(mean(tp53_tumor), 2)&#96;，
+显著高于正常组（p = &#96;r format(p_value, digits=2, scientific=TRUE)&#96;）。
 
 ---
 
@@ -233,25 +233,27 @@ library(tidyverse)  # 抑制加载警告
 ### 5.1 基础图形
 
 ````markdown
-```{r, fig.width=8, fig.height=6, fig.cap="散点图"}`r ''`
-plot(cars$speed, cars$dist,
-     main = "车速与刹车距离",
-     xlab = "速度 (mph)",
-     ylab = "距离 (ft)",
-     pch = 19, col = "blue")
+```{r, fig.width=8, fig.height=6, fig.cap="基因表达散点图"}`r ''`
+plot(tp53_expr, p53_protein,
+     main = "TP53 mRNA与蛋白表达相关性",
+     xlab = "TP53 mRNA表达量",
+     ylab = "p53蛋白水平",
+     pch = 19, col = "steelblue")
 ```
 ````
 
 ### 5.2 ggplot2图形
 
 ````markdown
-```{r, fig.cap="箱线图"}`r ''`
+```{r, fig.cap="差异表达基因火山图"}`r ''`
 library(ggplot2)
 
-ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
-  geom_boxplot() +
+ggplot(de_results, aes(x = log2FoldChange, y = -log10(pvalue))) +
+  geom_point(aes(color = abs(log2FoldChange) > 1 & pvalue < 0.05)) +
   theme_minimal() +
-  labs(title = "鸢尾花花萼长度分布")
+  labs(title = "差异表达基因火山图",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)")
 ```
 ````
 
@@ -262,9 +264,9 @@ ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
 ````markdown
 ```{r}`r ''`
 knitr::kable(
-  head(iris, 5),
-  caption = "鸢尾花数据前5行",
-  align = c('l', 'c', 'c', 'c', 'c')
+  head(gene_expr_summary, 5),
+  caption = "基因表达统计摘要（前5个基因）",
+  align = c('l', 'c', 'c', 'c')
 )
 ```
 ````
@@ -273,7 +275,7 @@ knitr::kable(
 
 ````markdown
 ```{r}`r ''`
-DT::datatable(iris, options = list(pageLength = 10))
+DT::datatable(de_results, options = list(pageLength = 10))
 ```
 ````
 
@@ -286,10 +288,11 @@ DT::datatable(iris, options = list(pageLength = 10))
 ```yaml
 ---
 params:
-  dataset: "iris"
-  sample_size: 100
-  show_plot: true
-  output_dir: "results"
+  cancer_type: "BRCA"
+  gene_of_interest: "TP53"
+  fc_threshold: 2
+  pvalue_threshold: 0.05
+  show_volcano: true
 ---
 ```
 
@@ -297,25 +300,26 @@ params:
 
 ````markdown
 ```{r}`r ''`
-# 加载指定数据集
-data <- get(params$dataset)
+# 筛选差异表达基因
+de_genes <- de_results[
+  abs(de_results$log2FoldChange) > params$fc_threshold &
+  de_results$pvalue < params$pvalue_threshold,
+]
 
-# 限制样本数
-data <- head(data, params$sample_size)
-
-cat("使用数据集:", params$dataset, "\n")
-cat("样本数:", nrow(data), "\n")
+cat("癌症类型:", params$cancer_type, "\n")
+cat("目标基因:", params$gene_of_interest, "\n")
+cat("差异表达基因数:", nrow(de_genes), "\n")
 ```
 
-```{r, eval=params$show_plot}`r ''`
-# 条件显示图表
-plot(data[, 1:2])
+```{r, eval=params$show_volcano}`r ''`
+# 条件显示火山图
+plot_volcano(de_results, params$fc_threshold, params$pvalue_threshold)
 ```
 ````
 
 ### 6.3 应用场景
 
-- 批量生成各组/各批次的报告
+- 批量生成各癌症类型的分析报告
 - 不同参数敏感性分析
 - 多中心研究的分中心报告
 
@@ -385,12 +389,12 @@ knitr::read_chunk('analysis.R')
 ````markdown
 ```{r, include=knitr::is_html_output()}`r ''`
 # 仅在HTML输出时包含
-DT::datatable(data)
+DT::datatable(de_results)
 ```
 
 ```{r, include=knitr::is_latex_output()}`r ''`
 # 仅在PDF输出时包含
-knitr::kable(data)
+knitr::kable(head(de_results, 20))
 ```
 ````
 
@@ -435,7 +439,7 @@ csl: nature.csl  # 引用样式
 
 1. 阅读 [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
 2. 完成实验手册练习2
-3. 准备自己的第一份R Markdown报告
+3. 准备自己的第一份R Markdown报告（基因表达分析报告）
 
 ---
 

@@ -19,6 +19,7 @@ format:
 
 ::: {.mt-4}
 [查看课程列表](#courses){.btn .btn-light .btn-lg .me-2}
+[📚 学习资源](learning-resources.qmd){.btn .btn-info .btn-lg .me-2}
 [实验室主页](https://wanglabcsu.github.io/){.btn .btn-outline-light .btn-lg}
 :::
 

@@ -1,6 +1,6 @@
 ---
 title: "R语言基础"
-subtitle: "R and (R)Markdown Fundamentals"
+subtitle: "从入门到生物医学数据分析"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
 format:
   revealjs:
@@ -14,7 +14,7 @@ format:
     height: 720
     margin: 0.1
     logo: ../logo.png
-    footer: "R与(R)Markdown基础 | 中南大学"
+    footer: "R语言基础 | 中南大学"
 execute:
   echo: true
   output: true
@@ -26,85 +26,104 @@ execute:
 showtext::showtext_auto()
 ```
 
-## 本讲目标
+# 课程介绍
+
+## 为什么学习R？
 
 ::: {.columns}
 ::: {.column width="50%"}
-### 你将学会：
+### 生物医学数据分析必备
 
-- ✅ R语言的特点与应用场景
-- ✅ 基础数据类型与结构
-- ✅ 向量化操作
-- ✅ 控制流语句
-- ✅ 自定义函数
-- ✅ R包安装与管理
-
+- 📊 **统计分析** — 临床试验、生存分析
+- 🧬 **生物信息** — RNA-seq、基因组学
+- 📈 **可视化** — 发表级科研图表
+- 📝 **可重复性** — R Markdown/Quarto
 :::
 ::: {.column width="50%"}
-### 为什么学R？
+### R语言优势
 
-- 💡 **生物统计** — 丰富的统计方法
-- 📊 **数据可视化** — 高质量的科研图表
-- 🔬 **生物信息** — Bioconductor生态
-- 📄 **可重复性** — R Markdown/Quarto
-
+- 💰 **开源免费** — 学术界首选
+- 📦 **包生态丰富** — 20,000+ CRAN包
+- 🔬 **Bioconductor** — 生信专用2,000+包
+- 👥 **社区活跃** — 全球统计学家支持
 :::
 :::
+
+---
+
+## 本讲目标
+
+### 你将掌握
+
+| 技能 | 应用场景 |
+|------|----------|
+| ✅ 数据类型与结构 | 存储患者信息、基因表达数据 |
+| ✅ 向量化操作 | 批量处理基因组数据 |
+| ✅ 控制流与函数 | 自动化分析流程 |
+| ✅ R包管理 | 安装Bioconductor工具 |
 
 ---
 
 # 第1部分：R语言概述
 
----
-
 ## R是什么？
 
 > R是用于**统计计算**和**图形**的编程语言与环境
 
-### 核心特点
+### 核心特点 {.smaller}
 
-| 特点 | 说明 |
-|------|------|
-| **开源免费** | GPL许可证，完全免费 |
-| **跨平台** | Windows、macOS、Linux |
-| **交互式** | 即时反馈，快速探索 |
-| **包生态** | 20,000+ CRAN包 |
-| **社区活跃** | 全球统计学家支持 |
+| 特点 | 说明 | 生信应用 |
+|------|------|----------|
+| **开源免费** | GPL许可证 | 学术界广泛使用 |
+| **跨平台** | Win/Mac/Linux | 服务器/本地均可运行 |
+| **交互式** | 即时反馈 | 快速探索数据 |
+| **包生态** | 20,000+包 | Bioconductor生信专用 |
 
 ---
 
 ## R在生物医学中的应用
 
+### 三大核心领域
+
 ::: {.columns}
 ::: {.column width="33%"}
 #### 📊 统计分析
-
-- 临床试验分析
-- 生存分析
-- 多变量统计
-- Meta分析
+- 临床试验设计
+- 生存分析 (Survival)
+- 多组学整合
 :::
 ::: {.column width="33%"}
 #### 🧬 生物信息
-
-- RNA-seq分析
-- 基因组学
-- 蛋白质组学
-- 单细胞测序
+- RNA-seq (DESeq2)
+- 单细胞测序 (Seurat)
+- 基因组变异分析
 :::
 ::: {.column width="33%"}
 #### 📈 数据科学
-
-- 数据清洗
-- 机器学习
-- 可视化
+- 数据清洗 (tidyverse)
+- 机器学习 (caret)
 - 可重复研究
 :::
 :::
 
-### R vs Python
+---
 
-R更适合**统计分析**和**科研可视化**，Python更适合**通用编程**和**深度学习**。两者可以互补使用！
+## R vs Python 选择指南
+
+### 何时选择R？
+
+- ✅ 统计分析为主的研究
+- ✅ 需要发表级可视化
+- ✅ 生物信息学分析
+- ✅ 与统计学家协作
+
+### 何时选择Python？
+
+- ✅ 通用编程和深度学习
+- ✅ 大规模数据处理
+- ✅ 生产环境部署
+
+> 💡 **建议**：两者互补！R做统计可视化，Python做深度学习
 
 ---
 
@@ -113,34 +132,31 @@ R更适合**统计分析**和**科研可视化**，Python更适合**通用编程
 ### 1. 安装R
 
 ```bash
-# macOS (使用 Homebrew)
+# macOS
 brew install r
 
 # Ubuntu
 sudo apt-get install r-base
 
-# Windows: 下载安装包
-# https://cran.r-project.org/
+# Windows: https://cran.r-project.org/
 ```
 
 ### 2. 安装RStudio
 
-```text
-下载地址: https://posit.co/download/rstudio-desktop/
 ```
-
-推荐使用 **RStudio** —— 最强大的R IDE，提供代码编辑、调试、可视化、包管理一站式解决方案
+https://posit.co/download/rstudio-desktop/
+```
 
 ---
 
-## RStudio界面介绍
+## RStudio界面
 
 ```
 ┌─────────────────┬─────────────────┐
 │   Source        │    Environment  │
 │  (代码编辑器)    │   (变量查看)     │
 │                 ├─────────────────┤
-│                 │  Files/Plots/   │
+│                 │ Files/Plots/    │
 │                 │ Packages/Help   │
 ├─────────────────┴─────────────────┤
 │           Console (控制台)         │
@@ -152,225 +168,246 @@ sudo apt-get install r-base
 
 # 第2部分：基础数据类型
 
----
-
 ## 五大基本数据类型
 
-| 类型 | 说明 | 示例 |
-|------|------|------|
-| `numeric` | 数值型 | `3.14`, `42` |
-| `integer` | 整数型 | `42L` |
-| `character` | 字符型 | `"hello"` |
-| `logical` | 逻辑型 | `TRUE`, `FALSE` |
-| `complex` | 复数型 | `3+4i` |
+| 类型 | 说明 | 示例 | 生信应用 |
+|------|------|------|----------|
+| `numeric` | 数值型 | `3.14` | 基因表达量 |
+| `integer` | 整数型 | `42L` | 读数计数 |
+| `character` | 字符型 | `"TP53"` | 基因名 |
+| `logical` | 逻辑型 | `TRUE` | 差异表达标志 |
+| `complex` | 复数型 | `3+4i` | 傅里叶变换 |
+
+---
+
+## 创建变量与查看类型
 
 ```{r}
-# 创建变量
-x <- 3.14          # numeric
-y <- 42L           # integer
-name <- "Alice"    # character
-flag <- TRUE       # logical
+# 基因表达数据示例
+gene_name <- "TP53"          # 字符型
+expression <- 8.5            # 数值型
+is_significant <- TRUE       # 逻辑型
+sample_count <- 100L         # 整数型
 
 # 查看类型
-class(x)
-typeof(y)
+class(expression)
+typeof(sample_count)
 ```
 
 ---
 
-## 向量（Vector）
+## 向量：R的核心数据结构
 
 > 向量是R中**最基本的数据结构**，所有元素必须是**同一类型**
 
 ### 创建向量
 
 ```{r}
-# 使用 c() 函数
-nums <- c(1, 2, 3, 4, 5)
-fruits <- c("apple", "banana", "cherry")
+# 基因表达值
+tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+samples <- c("Tumor_1", "Tumor_2", "Normal_1", "Normal_2", "Tumor_3")
 
 # 序列生成
-1:10                    # 1到10
-seq(1, 10, by = 2)      # 步长为2
-rep(1:3, each = 2)      # 重复
-
-nums
+1:10                       # 1到10
+seq(1, 100, by = 10)       # 步长为10
+rep(c("Tumor", "Normal"), each = 3)  # 重复
 ```
 
 ---
 
-## 向量：索引与切片
+## 向量索引与筛选
 
 ```{r}
-x <- c(10, 20, 30, 40, 50)
+# 基因表达数据
+tp53 <- c(8.5, 12.3, 6.7, 15.2, 9.1)
 
-x[1]          # 第一个元素（R从1开始！）
-x[c(1, 3, 5)] # 多个元素
-x[2:4]        # 范围
-x[x > 25]     # 条件筛选
+# 索引（R从1开始！）
+tp53[1]              # 第一个样本
+tp53[c(1, 3, 5)]     # 多个样本
+tp53[2:4]            # 范围
+
+# 条件筛选
+tp53[tp53 > 10]      # 高表达样本
+which(tp53 > 10)     # 返回位置
 ```
 
 ---
 
-## 向量：向量化运算
+## 向量化运算：R的灵魂
 
 ```{r}
-a <- c(1, 2, 3)
-b <- c(4, 5, 6)
+# 两个基因的表达值
+tp53 <- c(8.5, 12.3, 6.7, 15.2)
+kras <- c(5.2, 7.8, 9.1, 6.5)
 
-a + b         # 逐元素相加
-a * 2         # 标量乘法
-a > 2         # 逐元素比较
-sum(a)        # 求和
-mean(a)       # 均值
+# 逐元素运算
+tp53 + kras               # 表达量之和
+tp53 * 2                  # 标准化
+tp53 > 10                 # 高表达判断
+
+# 统计函数
+mean(tp53)                # 平均值
+sd(tp53)                  # 标准差
+sum(tp53 > 10)            # 高表达样本数
 ```
 
-### 最佳实践
-
-R中尽量使用**向量化操作**代替循环，效率更高！
+> 💡 **最佳实践**：用向量化代替循环，速度提升10-100倍！
 
 ---
 
-## 矩阵（Matrix）
+## 矩阵：二维数据结构
 
 ```{r}
-# 创建矩阵
-m <- matrix(1:12, nrow = 3, ncol = 4)
-m
+# 创建表达矩阵（基因 × 样本）
+expr_matrix <- matrix(
+  c(8.5, 12.3, 6.7, 15.2,
+    5.2, 7.8, 9.1, 6.5,
+    3.1, 4.5, 8.2, 7.9),
+  nrow = 3, byrow = TRUE
+)
 
 # 命名
-dimnames(m) <- list(
-  c("R1", "R2", "R3"),
-  c("C1", "C2", "C3", "C4")
+dimnames(expr_matrix) <- list(
+  c("TP53", "KRAS", "BRCA1"),      # 基因名
+  c("S1", "S2", "S3", "S4")         # 样本名
 )
-m
+expr_matrix
 ```
 
 ---
 
-## 数据框（Data Frame）
-
-> 最重要的数据结构，类似Excel表格
+## 数据框：最重要的结构
 
 ```{r}
-# 创建数据框
+# 患者临床数据
 patients <- data.frame(
-  id = 1:5,
-  name = c("Alice", "Bob", "Carol", "David", "Eve"),
-  age = c(25, 30, 35, 28, 42),
-  gender = c("F", "M", "F", "M", "F"),
-  bp = c(120, 135, 128, 142, 118)
+  patient_id = c("P001", "P002", "P003", "P004", "P005"),
+  age = c(45, 52, 38, 61, 29),
+  gender = c("M", "F", "F", "M", "F"),
+  tumor_stage = c("II", "III", "I", "IV", "II"),
+  tp53_expr = c(8.5, 12.3, 6.7, 15.2, 9.1)
 )
-
 patients
 ```
 
 ---
 
-## 数据框：访问数据
+## 数据框操作
 
-### 列访问
+### 访问列
 
 ```{r}
-patients$age           # 使用$
-patients[["age"]]      # 使用双方括号
-patients[, "age"]      # 使用单括号
-patients$age > 30      # 条件判断
+patients$tp53_expr              # $符号访问
+patients[["age"]]               # 双括号访问
+patients[, c("age", "gender")]  # 多列选择
 ```
 
-### 行访问
+### 筛选行
 
 ```{r}
-patients[1, ]          # 第一行
-patients[patients$age > 30, ]  # 条件筛选
-```
-
----
-
-## 数据框：常用函数
-
-```{r}
-str(patients)          # 结构
-summary(patients)      # 摘要统计
-head(patients, 3)      # 前3行
-dim(patients)          # 维度
+patients[patients$age > 50, ]           # 老年患者
+patients[patients$tumor_stage == "IV", ] # 晚期患者
+subset(patients, tp53_expr > 10)        # 高表达患者
 ```
 
 ---
 
-## 列表（List）
-
-> 可以存储**不同类型**的数据，最灵活的结构
+## 数据框常用函数
 
 ```{r}
-# 创建列表
-my_list <- list(
-  name = "实验组A",
-  n = 50,
-  data = patients,
-  scores = c(85, 90, 78, 92),
-  passed = TRUE
+str(patients)              # 数据结构
+summary(patients)          # 统计摘要
+head(patients, 3)          # 前3行
+dim(patients)              # 行列数
+nrow(patients)             # 行数
+colnames(patients)         # 列名
+```
+
+---
+
+## 列表：灵活的数据容器
+
+```{r}
+# 存储分析结果
+analysis_result <- list(
+  gene = "TP53",
+  expression = c(8.5, 12.3, 6.7, 15.2),
+  statistics = list(
+    mean = 10.675,
+    sd = 3.82,
+    p_value = 0.001
+  ),
+  significant = TRUE
 )
 
 # 访问元素
-my_list$name
-my_list[[2]]           # 按位置
-my_list[["data"]]$age  # 嵌套访问
+analysis_result$statistics$mean
+analysis_result[["expression"]]
 ```
 
 ---
 
 # 第3部分：控制流与函数
 
----
-
 ## 条件语句
 
 ```{r}
-score <- 85
+# 根据表达量分类
+tp53_mean <- mean(tp53_expr)
 
-# if-else
-if (score >= 90) {
-  grade <- "A"
-} else if (score >= 80) {
-  grade <- "B"
-} else if (score >= 60) {
-  grade <- "C"
+if (tp53_mean > 15) {
+  category <- "高表达"
+} else if (tp53_mean > 10) {
+  category <- "中表达"
 } else {
-  grade <- "D"
+  category <- "低表达"
 }
-grade
+category
 ```
 
-### 向量化 ifelse
+---
+
+## 向量化条件：ifelse
 
 ```{r}
-ages <- c(15, 25, 35, 12, 45)
-group <- ifelse(ages >= 18, "成人", "未成年")
-group
+# 批量分类多个基因
+expression <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+
+# 二分类
+high_expr <- ifelse(expression > 10, "高", "低")
+
+# 多分类
+grade <- ifelse(expression > 15, "A",
+         ifelse(expression > 10, "B", "C"))
 ```
 
 ---
 
 ## 循环语句
 
-### for 循环
+### for循环示例
 
 ```{r}
-fruits <- c("apple", "banana", "cherry")
+# 计算每个样本的总表达量
+genes <- c("TP53", "KRAS", "BRCA1")
+total_expr <- 0
 
-for (fruit in fruits) {
-  print(paste("I like", fruit))
+for (gene in genes) {
+  expr <- sample(5:15, 1)
+  total_expr <- total_expr + expr
+  print(paste(gene, ":", expr))
 }
 ```
 
-### while 循环
+### while循环
 
 ```{r}
-count <- 1
-while (count <= 5) {
-  print(count)
-  count <- count + 1
+# 迭代直到收敛
+diff <- 1.0
+iter <- 0
+while (diff > 0.01) {
+  diff <- diff * 0.5
+  iter <- iter + 1
 }
 ```
 
@@ -379,215 +416,284 @@ while (count <= 5) {
 ## 循环控制
 
 ```{r}
-# break: 跳出循环
-for (i in 1:10) {
-  if (i > 5) break
-  print(i)
+# break: 找到第一个高表达基因
+for (i in 1:length(expression)) {
+  if (expression[i] > 12) {
+    print(paste("找到高表达基因，位置:", i))
+    break
+  }
 }
 
-# next: 跳过当前迭代
-for (i in 1:5) {
-  if (i == 3) next
-  print(i)
+# next: 跳过缺失值
+for (val in c(8.5, NA, 12.3, NA, 6.7)) {
+  if (is.na(val)) next
+  print(val)
 }
 ```
-
-### 最佳实践
-
-R中尽量使用**向量化操作**代替循环，效率更高！
 
 ---
 
 ## 自定义函数
 
-### 基本结构
+### 计算BMI
 
 ```{r}
-# 定义函数
 calculate_bmi <- function(weight_kg, height_m) {
   bmi <- weight_kg / (height_m ^ 2)
   
-  # 分类
   category <- ifelse(bmi < 18.5, "偏瘦",
               ifelse(bmi < 25, "正常",
               ifelse(bmi < 30, "超重", "肥胖")))
   
-  return(list(bmi = round(bmi, 2), category = category))
+  return(list(
+    bmi = round(bmi, 2),
+    category = category
+  ))
 }
 
-# 调用函数
 calculate_bmi(70, 1.75)
 ```
 
 ---
 
-## 函数参数
+## 生信专用函数示例
+
+### 计算Fold Change
 
 ```{r}
-# 默认参数
-analyze_gene <- function(expression, 
-                         gene_name = "Unknown",
-                         threshold = 10) {
-  mean_exp <- mean(expression)
-  is_expressed <- mean_exp > threshold
+calculate_fc <- function(tumor, normal, log2 = TRUE) {
+  # 计算均值
+  mean_tumor <- mean(tumor)
+  mean_normal <- mean(normal)
   
-  list(
-    gene = gene_name,
-    mean = mean_exp,
-    expressed = is_expressed
-  )
+  # 计算Fold Change
+  fc <- mean_tumor / mean_normal
+  
+  if (log2) {
+    fc <- log2(fc)
+  }
+  
+  return(fc)
 }
 
-# 使用
-expr <- c(5, 8, 12, 15, 20)
-analyze_gene(expr, gene_name = "TP53", threshold = 8)
+# 使用示例
+tumor_expr <- c(12.3, 15.2, 18.5, 14.1)
+normal_expr <- c(6.7, 7.8, 8.2, 7.5)
+calculate_fc(tumor_expr, normal_expr)
 ```
 
 ---
 
-# 第4部分：R包生态与管理
+## 函数参数与默认值
+
+```{r}
+# 差异表达分析函数
+analyze_de <- function(expression, 
+                       group,
+                       method = "t-test",
+                       alpha = 0.05) {
+  # 分组
+  group1 <- expression[group == "Tumor"]
+  group2 <- expression[group == "Normal"]
+  
+  # t检验
+  result <- t.test(group1, group2)
+  
+  list(
+    p_value = result$p.value,
+    significant = result$p.value < alpha,
+    method = method
+  )
+}
+
+# 使用
+expr <- c(12.3, 15.2, 18.5, 6.7, 7.8, 8.2)
+group <- c("Tumor", "Tumor", "Tumor", "Normal", "Normal", "Normal")
+analyze_de(expr, group)
+```
 
 ---
+
+# 第4部分：R包生态
 
 ## R包生态概览
 
-> R的强大在于其**丰富的包生态系统**
-
 ### 两大核心仓库
 
-| 仓库 | 定位 | 特点 |
-|------|------|------|
-| **CRAN** | 综合R包 | 20,000+ 包，严格审核 |
-| **Bioconductor** | 生物信息 | 2,000+ 包，生物数据专用 |
-
-### 核心包家族
-
-::: {.columns}
-::: {.column width="50%"}
-#### tidyverse生态
-
-- `dplyr` — 数据处理
-- `ggplot2` — 可视化
-- `readr` — 数据读取
-- `tidyr` — 数据整理
-:::
-::: {.column width="50%"}
-#### Bioconductor生态
-
-- `Biostrings` — 序列分析
-- `GenomicRanges` — 基因组区间
-- `DESeq2` — RNA-seq分析
-:::
-:::
+| 仓库 | 定位 | 包数量 | 生信代表 |
+|------|------|--------|----------|
+| **CRAN** | 综合R包 | 20,000+ | ggplot2, dplyr |
+| **Bioconductor** | 生物信息 | 2,000+ | DESeq2, Seurat |
 
 ---
 
-## 什么是R包？
+## 安装R包
 
-> R包是**函数、数据和文档**的集合，扩展R的功能
+### 从CRAN安装
 
-### 主要仓库
-
-| 仓库 | 说明 | 包数量 |
-|------|------|--------|
-| **CRAN** | 综合R档案网络 | 20,000+ |
-| **Bioconductor** | 生物信息专用 | 2,000+ |
-| **GitHub** | 开发版本 | 无数 |
-
----
-
-## 安装与加载
-
-```{r}
-#| eval: false
-# 从CRAN安装
+```{r, eval=FALSE}
 install.packages("ggplot2")
+install.packages(c("dplyr", "tidyr", "readr"))
+```
 
-# 从Bioconductor安装
+### 从Bioconductor安装
+
+```{r, eval=FALSE}
 if (!require("BiocManager"))
     install.packages("BiocManager")
+
 BiocManager::install("DESeq2")
+BiocManager::install(c("GenomicRanges", "Biostrings"))
+```
 
-# 从GitHub安装
-install.packages("devtools")
-devtools::install_github("tidyverse/dplyr")
+---
 
+## 加载与使用
+
+```{r, eval=FALSE}
 # 加载包
 library(ggplot2)
 require(dplyr)
+
+# 查看包帮助
+?ggplot
+help(package = "ggplot2")
+
+# 列出已加载包
+search()
 ```
 
 ---
 
 ## 必学生物医学R包
 
-::: {.columns}
-::: {.column width="50%"}
-### 数据科学
+### tidyverse生态（数据科学）
 
-- `tidyverse` — 数据科学全家桶
-  - `dplyr` — 数据处理
-  - `ggplot2` — 可视化
-  - `readr` — 数据读取
-  - `tidyr` — 数据整理
-- `data.table` — 大数据处理
-:::
-::: {.column width="50%"}
-### 生物信息
+| 包 | 功能 | 生信应用 |
+|----|------|----------|
+| `dplyr` | 数据处理 | 筛选基因、分组统计 |
+| `ggplot2` | 可视化 | 火山图、热图 |
+| `readr` | 数据读取 | 读取表达矩阵 |
+| `tidyr` | 数据整理 | 长宽格式转换 |
 
-- `Biostrings` — 序列分析
-- `GenomicRanges` — 基因组区间
-- `DESeq2` — RNA-seq分析
-- `limma` — 差异表达
-- `biomaRt` — 数据库查询
-:::
-:::
+### Bioconductor生态（生物信息）
+
+| 包 | 功能 | 应用场景 |
+|----|------|----------|
+| `DESeq2` | RNA-seq分析 | 差异表达 |
+| `Seurat` | 单细胞分析 | 细胞聚类 |
+| `GenomicRanges` | 基因组区间 | 注释分析 |
 
 ---
 
-## 本讲小结
+# 第5部分：综合案例
+
+## 案例：TP53基因表达分析
+
+### 背景
+
+分析5个肿瘤样本和5个正常样本的TP53基因表达数据
+
+```{r}
+# 创建数据
+samples <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
+groups <- c(rep("Tumor", 5), rep("Normal", 5))
+tp53_expr <- c(12.5, 15.2, 8.7, 18.3, 11.9,
+               6.2, 7.5, 5.8, 8.1, 6.9)
+
+# 创建数据框
+data <- data.frame(
+  sample = samples,
+  group = groups,
+  expression = tp53_expr
+)
+```
+
+---
+
+## 数据分析流程
+
+```{r}
+# 1. 查看数据
+head(data)
+str(data)
+
+# 2. 分组统计
+aggregate(expression ~ group, data = data, FUN = mean)
+
+# 3. 差异分析
+tumor <- data$expression[data$group == "Tumor"]
+normal <- data$expression[data$group == "Normal"]
+result <- t.test(tumor, normal)
+result$p.value
+```
+
+---
+
+## 结果解读
+
+### 统计结果
+
+| 指标 | 数值 | 解释 |
+|------|------|------|
+| 肿瘤组均值 | 13.32 | 高表达 |
+| 正常组均值 | 6.90 | 低表达 |
+| Fold Change | 1.93 | 上调近2倍 |
+| p-value | < 0.05 | 显著差异 |
+
+### 生物学意义
+
+TP53在肿瘤组中显著上调，提示可能参与肿瘤发生发展
+
+---
+
+# 总结与展望
+
+## 本讲要点
 
 ### 核心概念
 - R是统计计算与图形语言
-- 五大基本类型：numeric, integer, character, logical, complex
-- 主要结构：vector, matrix, data.frame, list
+- 五大类型：numeric, integer, character, logical, complex
+- 核心结构：vector, matrix, data.frame, list
 - 向量化操作是R的灵魂
 
-### 关键技能
-- 创建与索引：`x <- c(1, 2, 3); x[1]`
-- 数据框操作：`df$column; df[condition, ]`
-- 函数定义：`my_fun <- function(x) { ... }`
-- 包管理：`install.packages("pkg"); library(pkg)`
+### 生信技能
+- 数据框操作：`df$gene`, `df[condition, ]`
+- 统计分析：`t.test()`, `mean()`, `cor()`
+- 函数编写：自动化分析流程
+- 包管理：`BiocManager::install()`
 
 ---
 
-## 练习与思考
+## 练习作业
 
-1. **基础练习**
-   - 创建一个包含10个患者信息的数据框
-   - 计算患者的平均年龄
-   - 筛选出年龄大于平均值的患者
+### 基础练习
+1. 创建一个包含10个患者信息的数据框（ID、年龄、性别、分期、生存时间）
+2. 计算不同分期的平均年龄
+3. 筛选出III-IV期患者
 
-2. **编程练习**
-   - 编写一个函数，输入基因表达向量，返回标准化后的值
-   - 使用循环计算1到100中所有偶数的和
+### 编程练习
+1. 编写函数计算基因表达的标准化值（Z-score）
+2. 使用向量化操作计算1000个基因的平均表达量
+3. 比较向量化 vs 循环的性能差异
 
-3. **思考**
-   - 为什么R的向量从1开始索引？
-   - 向量化操作比循环快多少？（下节课揭晓）
+### 思考
+- 为什么R的向量从1开始索引？（对比Python的0索引）
+- 在什么情况下需要使用list而不是data.frame？
 
 ---
 
 ## 下节预告
 
-# R Markdown与现代报告工具
+# R Markdown与可重复研究
 
-### 我们将学习：
+### 我们将学习
 
 - Markdown基础语法
 - R Markdown文档结构
 - 代码块与输出控制
 - Quarto现代工作流
+- 生信报告自动化
 
 ---
 
@@ -596,7 +702,7 @@ require(dplyr)
 ## Questions?
 
 王诗翔 副教授  
-中南大学生物医学信息系  
+中南大学生物医学信息系
 
 📧 wangshx@csu.edu.cn  
 🐙 https://github.com/WangLabCSU

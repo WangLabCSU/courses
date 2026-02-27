@@ -1,6 +1,6 @@
 ---
-title: "实验1：R基础编程"
-subtitle: "掌握R语言核心语法与数据处理"
+title: "实验1：R基础编程与生物医学数据分析"
+subtitle: "掌握R语言核心语法与生信数据处理"
 ---
 
 ## 实验目标
@@ -8,11 +8,12 @@ subtitle: "掌握R语言核心语法与数据处理"
 完成本实验后，你将能够：
 
 1. 熟练创建和操作R的各种数据结构
-2. 使用控制流语句解决实际问题
-3. 编写自定义函数封装重复代码
-4. 进行基础的数据处理与分析
+2. 使用向量化操作处理基因表达数据
+3. 编写自定义函数封装生信分析流程
+4. 进行基础的数据处理与统计分析
+5. 安装和管理Bioconductor生信包
 
-**实验时长**：60分钟  
+**实验时长**：90分钟  
 **实验类型**：个人完成
 
 ---
@@ -37,20 +38,21 @@ subtitle: "掌握R语言核心语法与数据处理"
 
 ---
 
-## 第一部分：数据类型与结构 (20分钟)
+## 第一部分：数据类型与结构 (25分钟)
 
-### 练习1.1：基础类型
+### 练习1.1：基础类型与生物医学应用
 
 在R脚本中完成以下操作：
 
 ```r
-# TODO: 创建以下变量
-# 1. 一个数值型变量，值为 3.14159，命名为 pi_val
-# 2. 一个整型变量，值为 100，命名为 n_samples  
-# 3. 一个字符型变量，值为 "Biomedical Informatics"，命名为 dept_name
-# 4. 一个逻辑型变量，值为 TRUE，命名为 is_student
+# TODO: 创建以下变量（结合生信场景）
+# 1. 一个数值型变量，存储TP53基因的表达量 8.5，命名为 tp53_expr
+# 2. 一个整型变量，存储测序读数 10000，命名为 read_count  
+# 3. 一个字符型变量，存储基因名 "BRCA1"，命名为 gene_name
+# 4. 一个逻辑型变量，表示是否差异表达 TRUE，命名为 is_de
 
 # 你的代码：
+
 
 
 
@@ -60,7 +62,7 @@ subtitle: "掌握R语言核心语法与数据处理"
 ```
 
 ::: {.hint-box}
-**提示**：使用 `L` 后缀创建整数，如 `100L`
+**提示**：使用 `L` 后缀创建整数，如 `10000L`
 :::
 
 <details>
@@ -71,45 +73,46 @@ subtitle: "掌握R语言核心语法与数据处理"
 #| echo: true
 
 # 创建变量
-pi_val <- 3.14159
-n_samples <- 100L
-dept_name <- "Biomedical Informatics"
-is_student <- TRUE
+ tp53_expr <- 8.5
+read_count <- 10000L
+gene_name <- "BRCA1"
+is_de <- TRUE
 
 # 检查类型
-cat("pi_val 类型:", class(pi_val), "\n")
-cat("n_samples 类型:", class(n_samples), "\n")
-cat("dept_name 类型:", class(dept_name), "\n")
-cat("is_student 类型:", class(is_student), "\n")
+cat("tp53_expr 类型:", class(tp53_expr), "- 基因表达量\n")
+cat("read_count 类型:", class(read_count), "- 测序读数\n")
+cat("gene_name 类型:", class(gene_name), "- 基因名\n")
+cat("is_de 类型:", class(is_de), "- 差异表达标志\n")
 ```
 </details>
 
 ---
 
-### 练习1.2：向量操作
+### 练习1.2：基因表达向量操作
 
 ```r
-# TODO: 完成以下向量操作
+# TODO: 完成以下基因表达向量操作
 
-# 1. 创建一个包含 1 到 20 的向量，命名为 vec1
-vec1 <- ____
+# 1. 创建TP53基因在10个样本中的表达值向量
+#    值：12.5, 15.2, 8.7, 18.3, 11.9, 6.2, 7.5, 5.8, 8.1, 6.9
+#    命名为 tp53_expression
+tp53_expression <- ____
 
-# 2. 创建 seq() 生成 0 到 100、步长为 10 的向量
-vec2 <- ____
+# 2. 创建样本名称向量：Tumor_1到Tumor_5，Normal_1到Normal_5
+sample_names <- ____
 
-# 3. 用 rep() 创建 "A", "B", "C" 各重复3次的向量
-vec3 <- ____
+# 3. 计算TP53的平均表达量和标准差
+mean_expr <- ____
+sd_expr <- ____
 
-# 4. 计算 vec1 的平均值、标准差、最大值
-mean_val <- ____
-sd_val <- ____
-max_val <- ____
+# 4. 提取高表达样本（表达量 > 10）
+high_expr <- ____
 
-# 5. 提取 vec1 中大于10的元素
-vec1_large <- ____
+# 5. 计算高表达样本的数量
+n_high <- ____
 
-# 6. 将 vec1 的第 5 到第 10 个元素替换为 99
-vec1[____] <- ____
+# 6. 找出表达量最高的样本位置
+max_pos <- ____
 ```
 
 <details>
@@ -119,47 +122,47 @@ vec1[____] <- ____
 #| eval: true
 #| echo: true
 
-# 1. 创建向量
-vec1 <- 1:20
-cat("vec1:", vec1, "\n\n")
+# 1. 创建表达向量
+tp53_expression <- c(12.5, 15.2, 8.7, 18.3, 11.9, 6.2, 7.5, 5.8, 8.1, 6.9)
+cat("TP53表达值:", tp53_expression, "\n\n")
 
-# 2. seq生成序列
-vec2 <- seq(0, 100, by = 10)
-cat("vec2:", vec2, "\n\n")
+# 2. 创建样本名
+sample_names <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
+cat("样本名:", sample_names, "\n\n")
 
-# 3. rep重复
-vec3 <- rep(c("A", "B", "C"), each = 3)
-cat("vec3:", vec3, "\n\n")
+# 3. 统计计算
+mean_expr <- mean(tp53_expression)
+sd_expr <- sd(tp53_expression)
+cat("平均表达量:", round(mean_expr, 2), "\n")
+cat("标准差:", round(sd_expr, 2), "\n\n")
 
-# 4. 统计计算
-mean_val <- mean(vec1)
-sd_val <- sd(vec1)
-max_val <- max(vec1)
-cat("平均值:", mean_val, "标准差:", sd_val, "最大值:", max_val, "\n\n")
+# 4. 高表达样本
+high_expr <- tp53_expression[tp53_expression > 10]
+cat("高表达样本值:", high_expr, "\n\n")
 
-# 5. 条件筛选
-vec1_large <- vec1[vec1 > 10]
-cat("大于10的元素:", vec1_large, "\n\n")
+# 5. 高表达样本数
+n_high <- sum(tp53_expression > 10)
+cat("高表达样本数:", n_high, "\n\n")
 
-# 6. 元素替换
-vec1[5:10] <- 99
-cat("替换后的vec1:", vec1, "\n")
+# 6. 最高表达位置
+max_pos <- which.max(tp53_expression)
+cat("最高表达样本位置:", max_pos, "-", sample_names[max_pos], "\n")
 ```
 </details>
 
 ---
 
-### 练习1.3：数据框创建
+### 练习1.3：患者临床数据框
 
-创建一个患者信息数据框：
+创建一个包含患者临床信息和基因表达的数据框：
 
 ```r
 # TODO: 创建如下数据框
-# 患者ID: 101, 102, 103, 104, 105
-# 姓名: 张三, 李四, 王五, 赵六, 孙七
-# 年龄: 25, 34, 45, 28, 52
-# 性别: 男, 女, 男, 女, 男
-# 收缩压: 120, 135, 142, 118, 155
+# 患者ID: P001, P002, P003, P004, P005
+# 年龄: 45, 52, 38, 61, 29
+# 性别: M, F, F, M, F
+# 肿瘤分期: II, III, I, IV, II
+# TP53表达量: 12.5, 15.2, 8.7, 18.3, 11.9
 
 patients <- data.frame(
   # 你的代码：
@@ -168,6 +171,7 @@ patients <- data.frame(
   
   
   
+  stringsAsFactors = FALSE
 )
 
 # 查看数据框结构
@@ -186,11 +190,11 @@ summary(patients)
 
 # 创建数据框
 patients <- data.frame(
-  id = 101:105,
-  name = c("张三", "李四", "王五", "赵六", "孙七"),
-  age = c(25, 34, 45, 28, 52),
-  gender = c("男", "女", "男", "女", "男"),
-  bp = c(120, 135, 142, 118, 155),
+  patient_id = c("P001", "P002", "P003", "P004", "P005"),
+  age = c(45, 52, 38, 61, 29),
+  gender = c("M", "F", "F", "M", "F"),
+  tumor_stage = c("II", "III", "I", "IV", "II"),
+  tp53_expr = c(12.5, 15.2, 8.7, 18.3, 11.9),
   stringsAsFactors = FALSE
 )
 
@@ -208,31 +212,39 @@ print(patients)
 
 ---
 
-### 练习1.4：数据框操作
+### 练习1.4：临床数据筛选与分析
 
 ```r
-# TODO: 基于上题的 patients 数据框
+# TODO: 基于 patients 数据框进行分析
 
 # 1. 提取所有女性患者的信息
 female_patients <- ____
 
-# 2. 提取年龄大于40岁的患者姓名
-older_names <- ____
+# 2. 提取年龄大于50岁的患者ID和TP53表达量
+older_patients <- ____
 
-# 3. 计算所有患者的平均年龄
-avg_age <- ____
+# 3. 计算不同性别患者的平均TP53表达量
+# 提示：使用 aggregate() 函数
+avg_by_gender <- ____
 
-# 4. 找出收缩压最高的患者ID
-high_bp_id <- ____
+# 4. 找出TP53表达量最高的患者信息
+high_tp53 <- ____
 
-# 5. 添加一列 "风险等级"：收缩压>=140为"高"，否则为"正常"
-patients$risk <- ifelse(____, ____, ____)
+# 5. 添加一列 "风险等级"：
+#    TP53表达量 >= 15 为 "高风险"
+#    TP53表达量 10-15 为 "中风险"
+#    TP53表达量 < 10 为 "低风险"
+patients$risk <- ifelse(____, "高风险",
+                 ifelse(____, "中风险", "低风险"))
+
+patients
 ```
 
 ::: {.hint-box}
 **提示**：
 - 条件筛选使用 `data[condition, ]`
 - `which.max()` 可以找到最大值的位置
+- `aggregate()` 用于分组统计
 :::
 
 <details>
@@ -244,33 +256,37 @@ patients$risk <- ifelse(____, ____, ____)
 
 # 重新创建数据框（确保存在）
 patients <- data.frame(
-  id = 101:105,
-  name = c("张三", "李四", "王五", "赵六", "孙七"),
-  age = c(25, 34, 45, 28, 52),
-  gender = c("男", "女", "男", "女", "男"),
-  bp = c(120, 135, 142, 118, 155),
+  patient_id = c("P001", "P002", "P003", "P004", "P005"),
+  age = c(45, 52, 38, 61, 29),
+  gender = c("M", "F", "F", "M", "F"),
+  tumor_stage = c("II", "III", "I", "IV", "II"),
+  tp53_expr = c(12.5, 15.2, 8.7, 18.3, 11.9),
   stringsAsFactors = FALSE
 )
 
 # 1. 提取女性患者
-female_patients <- patients[patients$gender == "女", ]
+female_patients <- patients[patients$gender == "F", ]
 cat("女性患者:\n")
 print(female_patients)
 
-# 2. 提取年龄大于40岁的患者姓名
-older_names <- patients$name[patients$age > 40]
-cat("\n年龄大于40岁的患者:", older_names, "\n")
+# 2. 提取年龄大于50岁的患者
+older_patients <- patients[patients$age > 50, c("patient_id", "tp53_expr")]
+cat("\n年龄大于50岁的患者:\n")
+print(older_patients)
 
-# 3. 计算平均年龄
-avg_age <- mean(patients$age)
-cat("平均年龄:", avg_age, "\n")
+# 3. 按性别计算平均TP53表达量
+avg_by_gender <- aggregate(tp53_expr ~ gender, data = patients, FUN = mean)
+cat("\n不同性别平均TP53表达量:\n")
+print(avg_by_gender)
 
-# 4. 找出收缩压最高的患者ID
-high_bp_id <- patients$id[which.max(patients$bp)]
-cat("收缩压最高的患者ID:", high_bp_id, "\n")
+# 4. TP53表达量最高的患者
+high_tp53 <- patients[which.max(patients$tp53_expr), ]
+cat("\nTP53表达量最高的患者:\n")
+print(high_tp53)
 
-# 5. 添加风险等级列
-patients$risk <- ifelse(patients$bp >= 140, "高", "正常")
+# 5. 添加风险等级
+patients$risk <- ifelse(patients$tp53_expr >= 15, "高风险",
+                 ifelse(patients$tp53_expr >= 10, "中风险", "低风险"))
 cat("\n添加风险等级后的数据框:\n")
 print(patients)
 ```
@@ -278,19 +294,187 @@ print(patients)
 
 ---
 
-## 第二部分：控制流 (15分钟)
+## 第二部分：向量化操作与函数 (25分钟)
 
-### 练习2.1：BMI计算与分类
+### 练习2.1：向量化 vs 循环性能对比
 
-完成BMI计算函数：
+比较循环和向量化计算的性能差异：
 
 ```r
-# TODO: 完善以下函数
+# TODO: 比较循环和向量化计算10万个基因的标准化值
+
+# 生成10万个基因的表达值
+set.seed(123)
+gene_expression <- rnorm(100000, mean = 10, sd = 2)
+
+# 方法1：使用循环（慢）
+result_loop <- numeric(length(gene_expression))
+
+system.time({
+  for (i in 1:length(gene_expression)) {
+    result_loop[i] <- (gene_expression[i] - mean(gene_expression)) / sd(gene_expression)
+  }
+})
+
+# 方法2：使用向量化（快）
+system.time({
+  result_vectorized <- ____
+})
+
+# 验证结果是否相同
+all.equal(result_loop, result_vectorized)
+
+# 计算速度提升倍数
+# 提示：比较两个system.time的输出
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: true
+#| echo: true
+
+# 生成数据
+set.seed(123)
+gene_expression <- rnorm(100000, mean = 10, sd = 2)
+
+# 方法1：循环
+cat("=== 循环方法 ===\n")
+result_loop <- numeric(length(gene_expression))
+
+time_loop <- system.time({
+  for (i in 1:length(gene_expression)) {
+    result_loop[i] <- (gene_expression[i] - mean(gene_expression)) / sd(gene_expression)
+  }
+})
+print(time_loop)
+
+# 方法2：向量化
+cat("\n=== 向量化方法 ===\n")
+time_vec <- system.time({
+  result_vectorized <- (gene_expression - mean(gene_expression)) / sd(gene_expression)
+})
+print(time_vec)
+
+# 验证
+cat("\n结果是否相同:", all.equal(result_loop, result_vectorized), "\n")
+
+# 计算速度提升
+speedup <- time_loop["elapsed"] / time_vec["elapsed"]
+cat("速度提升:", round(speedup, 1), "倍\n")
+```
+</details>
+
+---
+
+### 练习2.2：生信分析函数
+
+完成差异表达分析相关函数：
+
+```r
+# TODO: 完善以下生信分析函数
+
+# 1. 计算Fold Change的函数
+calculate_fc <- function(tumor_expr, normal_expr, log2 = TRUE) {
+  # 计算均值
+  mean_tumor <- ____
+  mean_normal <- ____
+  
+  # 计算Fold Change
+  fc <- ____
+  
+  # 如果log2=TRUE，返回log2 Fold Change
+  if (log2) {
+    fc <- ____
+  }
+  
+  return(fc)
+}
+
+# 2. 基因表达统计函数
+analyze_expression <- function(expression_values) {
+  # 返回列表，包含：
+  # - mean: 平均值
+  # - sd: 标准差
+  # - min: 最小值
+  # - max: 最大值
+  # - cv: 变异系数 (sd/mean)
+  
+  return(list(
+    mean = ____,
+    sd = ____,
+    min = ____,
+    max = ____,
+    cv = ____
+  ))
+}
+
+# 测试函数
+tumor <- c(12.5, 15.2, 18.3, 14.1, 16.7)
+normal <- c(6.2, 7.5, 5.8, 8.1, 6.9)
+
+calculate_fc(tumor, normal)
+analyze_expression(c(tumor, normal))
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: true
+#| echo: true
+
+# 1. Fold Change计算函数
+calculate_fc <- function(tumor_expr, normal_expr, log2 = TRUE) {
+  mean_tumor <- mean(tumor_expr)
+  mean_normal <- mean(normal_expr)
+  
+  fc <- mean_tumor / mean_normal
+  
+  if (log2) {
+    fc <- log2(fc)
+  }
+  
+  return(fc)
+}
+
+# 2. 表达统计函数
+analyze_expression <- function(expression_values) {
+  return(list(
+    mean = mean(expression_values),
+    sd = sd(expression_values),
+    min = min(expression_values),
+    max = max(expression_values),
+    cv = sd(expression_values) / mean(expression_values)
+  ))
+}
+
+# 测试
+tumor <- c(12.5, 15.2, 18.3, 14.1, 16.7)
+normal <- c(6.2, 7.5, 5.8, 8.1, 6.9)
+
+cat("Fold Change (log2):", round(calculate_fc(tumor, normal), 2), "\n\n")
+
+cat("表达统计:\n")
+stats <- analyze_expression(c(tumor, normal))
+print(stats)
+```
+</details>
+
+---
+
+### 练习2.3：BMI计算与分类
+
+完成BMI计算函数（临床常用）：
+
+```r
+# TODO: 完善BMI计算函数
 calculate_bmi <- function(weight_kg, height_m) {
   # 1. 计算BMI
   bmi <- ____
   
-  # 2. 根据BMI判断分类
+  # 2. 根据BMI判断分类（中国标准）
   # < 18.5: 偏瘦
   # 18.5 - 23.9: 正常
   # 24 - 27.9: 超重
@@ -327,10 +511,8 @@ calculate_bmi(85, 1.70)
 
 # BMI计算函数
 calculate_bmi <- function(weight_kg, height_m) {
-  # 1. 计算BMI
   bmi <- weight_kg / (height_m ^ 2)
   
-  # 2. 根据BMI判断分类
   if (bmi < 18.5) {
     category <- "偏瘦"
   } else if (bmi < 24) {
@@ -341,14 +523,13 @@ calculate_bmi <- function(weight_kg, height_m) {
     category <- "肥胖"
   }
   
-  # 3. 返回列表
   return(list(
     bmi = round(bmi, 2),
     category = category
   ))
 }
 
-# 测试函数
+# 测试
 cat("测试1 (70kg, 1.75m):\n")
 result1 <- calculate_bmi(70, 1.75)
 print(result1)
@@ -365,150 +546,68 @@ print(result3)
 
 ---
 
-### 练习2.2：循环应用
+## 第三部分：综合生信分析 (30分钟)
 
-```r
-# TODO: 使用循环完成以下任务
+### 练习3.1：TP53基因表达差异分析
 
-# 1. 用 for 循环计算 1 到 100 的平方和
-sum_squares <- 0
-for (____) {
-  ____
-}
-sum_squares
-
-# 验证：使用向量化方法
-sum((1:100)^2)
-
-# 2. 用 while 循环找出第一个大于 1000 的斐波那契数
-fib_a <- 1
-fib_b <- 1
-while (____) {
-  temp <- fib_a + fib_b
-  fib_a <- fib_b
-  fib_b <- temp
-}
-fib_b  # 第一个大于1000的斐波那契数
-
-# 3. 用循环计算 patients 数据框中每个患者的BMI
-# 假设体重数据如下(kg)：
-patients$weight <- c(65, 58, 72, 55, 80)
-patients$height <- c(1.70, 1.60, 1.75, 1.58, 1.72)
-
-# 初始化BMI列
-patients$bmi <- NA
-
-for (____) {
-  patients$bmi[i] <- ____
-}
-
-patients
-```
-
-<details>
-<summary>点击查看参考答案</summary>
-
-```{r}
-#| eval: true
-#| echo: true
-
-# 1. for循环计算平方和
-sum_squares <- 0
-for (i in 1:100) {
-  sum_squares <- sum_squares + i^2
-}
-cat("1到100的平方和(循环):", sum_squares, "\n")
-cat("1到100的平方和(向量化):", sum((1:100)^2), "\n\n")
-
-# 2. while循环找斐波那契数
-fib_a <- 1
-fib_b <- 1
-while (fib_b <= 1000) {
-  temp <- fib_a + fib_b
-  fib_a <- fib_b
-  fib_b <- temp
-}
-cat("第一个大于1000的斐波那契数:", fib_b, "\n\n")
-
-# 3. 循环计算BMI
-patients <- data.frame(
-  id = 101:105,
-  name = c("张三", "李四", "王五", "赵六", "孙七"),
-  weight = c(65, 58, 72, 55, 80),
-  height = c(1.70, 1.60, 1.75, 1.58, 1.72),
-  stringsAsFactors = FALSE
-)
-patients$bmi <- NA
-
-for (i in 1:nrow(patients)) {
-  patients$bmi[i] <- round(patients$weight[i] / (patients$height[i] ^ 2), 2)
-}
-
-cat("患者BMI计算结果:\n")
-print(patients)
-```
-</details>
-
----
-
-## 第三部分：综合应用 (20分钟)
-
-### 练习3.1：基因表达分析
-
-假设你有一个基因表达矩阵：
+完成完整的差异表达分析流程：
 
 ```{r}
 #| echo: true
 #| eval: true
 
-# 基因表达数据（行：基因，列：样本）
-gene_exp <- data.frame(
-  gene_id = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
-  sample1 = c(12.5, 8.3, 15.2, 20.1, 6.7),
-  sample2 = c(11.8, 9.1, 14.5, 19.3, 7.2),
-  sample3 = c(13.2, 7.9, 16.1, 21.5, 6.1),
-  sample4 = c(10.5, 8.7, 13.8, 18.2, 7.8)
+# 创建示例数据
+samples <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
+groups <- c(rep("Tumor", 5), rep("Normal", 5))
+tp53_expr <- c(12.5, 15.2, 8.7, 18.3, 11.9,
+               6.2, 7.5, 5.8, 8.1, 6.9)
+
+# 创建数据框
+data <- data.frame(
+  sample = samples,
+  group = groups,
+  expression = tp53_expr
 )
 
-print(gene_exp)
+print(data)
 ```
 
 **任务**：
 
 ```r
-# TODO: 完成以下分析任务
+# TODO: 完成差异表达分析
 
-# 1. 创建一个函数，计算每行（基因）的：
-#    - 平均表达量
-#    - 表达量标准差
-#    - 变异系数 (CV = SD / Mean)
-analyze_gene <- function(exp_values) {
-  # 你的代码：
-  
-}
+# 1. 分组统计：计算Tumor和Normal组的均值和标准差
+# 提示：使用 aggregate() 函数
+group_stats <- ____
+group_stats
 
-# 2. 对所有基因应用该函数，结果保存为新数据框
-gene_summary <- data.frame(
-  gene_id = gene_exp$gene_id,
-  mean_exp = NA,
-  sd_exp = NA,
-  cv = NA
+# 2. 差异分析：使用t检验比较两组
+# 提示：使用 t.test() 函数
+tumor <- data$expression[data$group == "Tumor"]
+normal <- data$expression[data$group == "Normal"]
+t_test_result <- ____
+
+# 3. 计算Fold Change（使用之前定义的函数）
+fc <- calculate_fc(tumor, normal)
+
+# 4. 结果汇总
+results <- list(
+  gene = "TP53",
+  mean_tumor = ____,
+  mean_normal = ____,
+  fold_change = ____,
+  p_value = ____,
+  significant = ____  # p < 0.05?
 )
 
-for (i in 1:nrow(gene_exp)) {
-  result <- analyze_gene(____)
-  gene_summary$mean_exp[i] <- ____
-  gene_summary$sd_exp[i] <- ____
-  gene_summary$cv[i] <- ____
-}
-
-gene_summary
-
-# 3. 找出平均表达量最高的基因
-most_expressed <- ____
-
-# 4. 找出变异系数最大的基因（表达最不稳定）
-most_variable <- ____
+# 打印结果
+cat("=== TP53差异表达分析结果 ===\n")
+cat("肿瘤组均值:", round(results$mean_tumor, 2), "\n")
+cat("正常组均值:", round(results$mean_normal, 2), "\n")
+cat("Log2 Fold Change:", round(results$fold_change, 2), "\n")
+cat("P-value:", format(results$p_value, scientific = TRUE, digits = 3), "\n")
+cat("显著性:", ifelse(results$significant, "显著", "不显著"), "\n")
 ```
 
 <details>
@@ -519,77 +618,187 @@ most_variable <- ____
 #| echo: true
 
 # 重新创建数据
-gene_exp <- data.frame(
-  gene_id = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
-  sample1 = c(12.5, 8.3, 15.2, 20.1, 6.7),
-  sample2 = c(11.8, 9.1, 14.5, 19.3, 7.2),
-  sample3 = c(13.2, 7.9, 16.1, 21.5, 6.1),
-  sample4 = c(10.5, 8.7, 13.8, 18.2, 7.8)
+samples <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
+groups <- c(rep("Tumor", 5), rep("Normal", 5))
+tp53_expr <- c(12.5, 15.2, 8.7, 18.3, 11.9, 6.2, 7.5, 5.8, 8.1, 6.9)
+
+data <- data.frame(
+  sample = samples,
+  group = groups,
+  expression = tp53_expr
 )
 
-# 1. 创建分析函数
-analyze_gene <- function(exp_values) {
-  mean_val <- mean(exp_values)
-  sd_val <- sd(exp_values)
-  cv_val <- sd_val / mean_val
-  
-  return(list(
-    mean = mean_val,
-    sd = sd_val,
-    cv = cv_val
-  ))
-}
+# 1. 分组统计
+group_stats <- aggregate(expression ~ group, data = data, 
+                        FUN = function(x) c(mean = mean(x), sd = sd(x)))
+cat("分组统计:\n")
+print(group_stats)
 
-# 2. 应用到所有基因
-gene_summary <- data.frame(
-  gene_id = gene_exp$gene_id,
-  mean_exp = NA,
-  sd_exp = NA,
-  cv = NA
+# 2. t检验
+tumor <- data$expression[data$group == "Tumor"]
+normal <- data$expression[data$group == "Normal"]
+t_test_result <- t.test(tumor, normal)
+
+# 3. Fold Change
+fc <- calculate_fc(tumor, normal)
+
+# 4. 结果汇总
+results <- list(
+  gene = "TP53",
+  mean_tumor = mean(tumor),
+  mean_normal = mean(normal),
+  fold_change = fc,
+  p_value = t_test_result$p.value,
+  significant = t_test_result$p.value < 0.05
 )
 
-for (i in 1:nrow(gene_exp)) {
-  # 提取表达值（排除gene_id列）
-  exp_values <- as.numeric(gene_exp[i, -1])
-  result <- analyze_gene(exp_values)
-  
-  gene_summary$mean_exp[i] <- round(result$mean, 2)
-  gene_summary$sd_exp[i] <- round(result$sd, 2)
-  gene_summary$cv[i] <- round(result$cv, 4)
-}
-
-cat("基因表达分析结果:\n")
-print(gene_summary)
-
-# 3. 平均表达量最高的基因
-most_expressed <- gene_summary$gene_id[which.max(gene_summary$mean_exp)]
-cat("\n平均表达量最高的基因:", most_expressed, "\n")
-
-# 4. 变异系数最大的基因
-most_variable <- gene_summary$gene_id[which.max(gene_summary$cv)]
-cat("变异系数最大的基因:", most_variable, "\n")
+# 打印
+cat("\n=== TP53差异表达分析结果 ===\n")
+cat("肿瘤组均值:", round(results$mean_tumor, 2), "\n")
+cat("正常组均值:", round(results$mean_normal, 2), "\n")
+cat("Log2 Fold Change:", round(results$fold_change, 2), "\n")
+cat("P-value:", format(results$p_value, scientific = TRUE, digits = 3), "\n")
+cat("显著性:", ifelse(results$significant, "显著", "不显著"), "\n")
 ```
 </details>
 
 ---
 
-### 练习3.2：质控过滤
+### 练习3.2：多基因表达矩阵分析
+
+```{r}
+#| echo: true
+#| eval: true
+
+# 基因表达矩阵（5个基因 × 4个样本）
+expr_matrix <- matrix(
+  c(12.5, 15.2, 8.7, 18.3,
+    8.3, 9.1, 7.9, 8.7,
+    15.2, 14.5, 16.1, 13.8,
+    20.1, 19.3, 21.5, 18.2,
+    6.7, 7.2, 6.1, 7.8),
+  nrow = 5, byrow = TRUE
+)
+
+dimnames(expr_matrix) <- list(
+  c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
+  c("S1", "S2", "S3", "S4")
+)
+
+print(expr_matrix)
+```
+
+**任务**：
 
 ```r
-# TODO: 基于 gene_summary 进行过滤
+# TODO: 分析表达矩阵
 
-# 1. 过滤条件：
-#    - 平均表达量 >= 10
-#    - 变异系数 <= 0.15
-# 保留满足条件的基因
+# 1. 计算每个基因在所有样本中的平均表达量
+gene_means <- ____
 
+# 2. 计算每个样本中所有基因的平均表达量
+sample_means <- ____
+
+# 3. 找出平均表达量最高的基因
+most_expressed_gene <- ____
+
+# 4. 计算每个基因的表达标准差
+gene_sds <- ____
+
+# 5. 找出表达最稳定的基因（标准差最小）
+most_stable_gene <- ____
+
+# 6. 创建基因统计汇总表
+gene_summary <- data.frame(
+  gene = rownames(expr_matrix),
+  mean = ____,
+  sd = ____,
+  cv = ____  # 变异系数 = sd/mean
+)
+
+# 按平均表达量排序
+gene_summary <- gene_summary[order(____, decreasing = TRUE), ]
+gene_summary
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: true
+#| echo: true
+
+# 重新创建矩阵
+expr_matrix <- matrix(
+  c(12.5, 15.2, 8.7, 18.3,
+    8.3, 9.1, 7.9, 8.7,
+    15.2, 14.5, 16.1, 13.8,
+    20.1, 19.3, 21.5, 18.2,
+    6.7, 7.2, 6.1, 7.8),
+  nrow = 5, byrow = TRUE
+)
+dimnames(expr_matrix) <- list(
+  c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
+  c("S1", "S2", "S3", "S4")
+)
+
+# 1. 每个基因的平均表达
+gene_means <- rowMeans(expr_matrix)
+cat("每个基因的平均表达:\n")
+print(round(gene_means, 2))
+
+# 2. 每个样本的平均表达
+sample_means <- colMeans(expr_matrix)
+cat("\n每个样本的平均表达:\n")
+print(round(sample_means, 2))
+
+# 3. 表达量最高的基因
+most_expressed_gene <- names(which.max(gene_means))
+cat("\n表达量最高的基因:", most_expressed_gene, "\n")
+
+# 4. 每个基因的标准差
+gene_sds <- apply(expr_matrix, 1, sd)
+
+# 5. 表达最稳定的基因
+most_stable_gene <- names(which.min(gene_sds))
+cat("表达最稳定的基因:", most_stable_gene, "\n")
+
+# 6. 基因统计汇总
+gene_summary <- data.frame(
+  gene = rownames(expr_matrix),
+  mean = gene_means,
+  sd = gene_sds,
+  cv = gene_sds / gene_means
+)
+
+gene_summary <- gene_summary[order(gene_summary$mean, decreasing = TRUE), ]
+cat("\n基因表达统计汇总:\n")
+print(gene_summary)
+```
+</details>
+
+---
+
+### 练习3.3：质控过滤
+
+```r
+# TODO: 基于 gene_summary 进行质控过滤
+
+# 过滤条件：
+# 1. 平均表达量 >= 10
+# 2. 变异系数 <= 0.15
+
+# 1. 应用过滤条件
 filtered_genes <- gene_summary[____, ]
-filtered_genes
 
-# 2. 统计满足条件的基因数量
+# 2. 统计信息
 cat("原始基因数:", nrow(gene_summary), "\n")
-cat("过滤后基因数:", ____, "\n")
-cat("过滤比例:", ____, "%\n")
+cat("过滤后基因数:", nrow(filtered_genes), "\n")
+cat("过滤比例:", round((1 - nrow(filtered_genes)/nrow(gene_summary)) * 100, 1), "%\n")
+
+# 3. 查看通过的基因
+cat("\n通过质控的基因:\n")
+print(filtered_genes)
 ```
 
 <details>
@@ -600,198 +809,71 @@ cat("过滤比例:", ____, "%\n")
 #| echo: true
 
 # 重新创建 gene_summary
-gene_exp <- data.frame(
-  gene_id = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
-  sample1 = c(12.5, 8.3, 15.2, 20.1, 6.7),
-  sample2 = c(11.8, 9.1, 14.5, 19.3, 7.2),
-  sample3 = c(13.2, 7.9, 16.1, 21.5, 6.1),
-  sample4 = c(10.5, 8.7, 13.8, 18.2, 7.8)
-)
-
 gene_summary <- data.frame(
-  gene_id = gene_exp$gene_id,
-  mean_exp = c(12.0, 8.5, 14.9, 19.78, 6.95),
-  sd_exp = c(1.14, 0.69, 1.12, 1.37, 0.72),
-  cv = c(0.095, 0.081, 0.075, 0.069, 0.104)
+  gene = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
+  mean = c(13.68, 8.50, 14.90, 19.78, 6.95),
+  sd = c(4.03, 0.69, 1.12, 1.37, 0.72),
+  cv = c(0.2945, 0.0812, 0.0752, 0.0693, 0.1036)
 )
 
-# 1. 质控过滤
-filtered_genes <- gene_summary[gene_summary$mean_exp >= 10 & gene_summary$cv <= 0.15, ]
+# 质控过滤
+filtered_genes <- gene_summary[gene_summary$mean >= 10 & gene_summary$cv <= 0.15, ]
+
 cat("通过质控的基因:\n")
 print(filtered_genes)
 
-# 2. 统计信息
-original_count <- nrow(gene_summary)
-filtered_count <- nrow(filtered_genes)
-filter_ratio <- (1 - filtered_count / original_count) * 100
-
-cat("\n原始基因数:", original_count, "\n")
-cat("过滤后基因数:", filtered_count, "\n")
-cat("过滤比例:", round(filter_ratio, 1), "%\n")
+cat("\n原始基因数:", nrow(gene_summary), "\n")
+cat("过滤后基因数:", nrow(filtered_genes), "\n")
+cat("过滤比例:", round((1 - nrow(filtered_genes)/nrow(gene_summary)) * 100, 1), "%\n")
 ```
 </details>
 
 ---
 
-### 练习3.3：临床数据整合
+## 第四部分：R包管理 (10分钟)
+
+### 练习4.1：安装Bioconductor包
 
 ```r
-# 新的临床数据
-clinical <- data.frame(
-  patient_id = c(101, 102, 103, 104, 105),
-  diagnosis = c("Control", "Case", "Case", "Control", "Case"),
-  age = c(25, 34, 45, 28, 52),
-  treatment = c("Placebo", "Drug", "Drug", "Placebo", "Drug")
-)
+# TODO: 安装Bioconductor包
 
-# 将 patients 与 clinical 合并
-# 注意：patients 中的ID列可能需要调整
+# 1. 安装BiocManager（如果尚未安装）
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-# TODO:
-# 1. 重命名 patients 的ID列以便匹配
-names(patients)[____] <- "patient_id"
+# 2. 安装DESeq2包（RNA-seq差异表达分析）
+# BiocManager::install("DESeq2")
 
-# 2. 使用 merge() 合并两个数据框
-merged_data <- merge(____, ____, by = ____)
+# 3. 查看已安装的包
+installed_packages <- ____
+head(installed_packages[, c("Package", "Version")], 10)
 
-# 3. 按 diagnosis 分组，计算平均年龄
-# 提示：使用 aggregate() 或手动计算
-control_mean_age <- mean(____)
-case_mean_age <- mean(____)
-
-cat("Control组平均年龄:", control_mean_age, "\n")
-cat("Case组平均年龄:", case_mean_age, "\n")
-
-# 4. 筛选出Case组且年龄>40的患者
-case_older <- ____
-case_older
+# 4. 加载包并查看帮助
+library(ggplot2)
+help(____)  # 查看ggplot函数的帮助
 ```
 
 <details>
 <summary>点击查看参考答案</summary>
 
 ```{r}
-#| eval: true
+#| eval: false
 #| echo: true
 
-# 重新创建数据
-patients <- data.frame(
-  id = 101:105,
-  name = c("张三", "李四", "王五", "赵六", "孙七"),
-  age = c(25, 34, 45, 28, 52),
-  gender = c("男", "女", "男", "女", "男"),
-  bp = c(120, 135, 142, 118, 155),
-  stringsAsFactors = FALSE
-)
+# 1. 安装BiocManager
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-clinical <- data.frame(
-  patient_id = c(101, 102, 103, 104, 105),
-  diagnosis = c("Control", "Case", "Case", "Control", "Case"),
-  age = c(25, 34, 45, 28, 52),
-  treatment = c("Placebo", "Drug", "Drug", "Placebo", "Drug")
-)
+# 2. 安装DESeq2（取消注释运行）
+# BiocManager::install("DESeq2")
 
-# 1. 重命名ID列
-names(patients)[names(patients) == "id"] <- "patient_id"
+# 3. 查看已安装包
+installed_packages <- installed.packages()
+head(installed_packages[, c("Package", "Version")], 10)
 
-# 2. 合并数据框
-merged_data <- merge(patients, clinical, by = "patient_id")
-cat("合并后的数据:\n")
-print(merged_data)
-
-# 3. 分组计算平均年龄
-control_mean_age <- mean(merged_data$age.y[merged_data$diagnosis == "Control"])
-case_mean_age <- mean(merged_data$age.y[merged_data$diagnosis == "Case"])
-
-cat("\nControl组平均年龄:", control_mean_age, "\n")
-cat("Case组平均年龄:", case_mean_age, "\n")
-
-# 4. 筛选Case组且年龄>40的患者
-case_older <- merged_data[merged_data$diagnosis == "Case" & merged_data$age.y > 40, ]
-cat("\nCase组且年龄>40的患者:\n")
-print(case_older)
-```
-</details>
-
----
-
-## 第四部分：拓展挑战 (5分钟)
-
-### 挑战题：批量处理
-
-```r
-# 批量读取多个样本的数据文件
-# 假设你有文件: sample1.txt, sample2.txt, sample3.txt
-
-# TODO: 编写代码批量读取并合并
-
-# 1. 创建一个函数，读取单个样本文件
-# 格式：两列，gene 和 expression
-read_sample <- function(filename, sample_name) {
-  # 读取数据
-  data <- read.table(filename, header = TRUE, sep = "\t")
-  # 重命名表达列为样本名
-  names(data)[2] <- sample_name
-  return(data)
-}
-
-# 2. 使用循环批量读取多个样本并合并
-# （模拟数据）
-sample_files <- c("sample1", "sample2", "sample3")
-combined_data <- NULL
-
-for (file in sample_files) {
-  # 模拟读取
-  temp_data <- data.frame(
-    gene = c("TP53", "BRCA1", "EGFR"),
-    expression = runif(3, 5, 20)
-  )
-  names(temp_data)[2] <- file
-  
-  if (is.null(combined_data)) {
-    combined_data <- temp_data
-  } else {
-    combined_data <- merge(combined_data, temp_data, by = "gene")
-  }
-}
-
-combined_data
-```
-
-<details>
-<summary>点击查看参考答案</summary>
-
-```{r}
-#| eval: true
-#| echo: true
-
-# 模拟批量读取函数
-read_sample <- function(filename, sample_name) {
-  # 模拟读取数据
-  data <- data.frame(
-    gene = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
-    expression = round(runif(5, 5, 20), 2)
-  )
-  names(data)[2] <- sample_name
-  return(data)
-}
-
-# 批量读取并合并
-sample_files <- c("sample1", "sample2", "sample3")
-combined_data <- NULL
-
-for (file in sample_files) {
-  temp_data <- read_sample(file, file)
-  
-  if (is.null(combined_data)) {
-    combined_data <- temp_data
-  } else {
-    combined_data <- merge(combined_data, temp_data, by = "gene")
-  }
-}
-
-cat("合并后的表达矩阵:\n")
-print(combined_data)
+# 4. 加载和查看帮助
+library(ggplot2)
+help(ggplot)
 ```
 </details>
 
@@ -804,11 +886,12 @@ print(combined_data)
 1. **R脚本文件** (`lab1.R`)
    - 包含所有练习的代码
    - 添加必要注释
+   - 确保代码可运行
 
-2. **实验报告** (PDF或HTML)
-   - 使用R Markdown编写
+2. **实验报告** (PDF或HTML，使用R Markdown编写)
    - 包含关键代码和结果截图
    - 回答思考题
+   - 总结学习心得
 
 ---
 
@@ -826,13 +909,18 @@ print(combined_data)
    - 如何设计一个"好"的函数？
    - 参数命名有什么最佳实践？
 
+4. **生信应用**
+   - 在差异表达分析中，Fold Change和P值分别代表什么？
+   - 为什么要进行质控过滤？
+
 ---
 
 ## 延伸阅读
 
 - [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
 - [Advanced R - Data Structures](https://adv-r.hadley.nz/vectors-chap.html)
-- [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/)
+- [Bioconductor Workflows](https://www.bioconductor.org/packages/release/workflows/)
+- [DESeq2 Vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
 
 ---
 

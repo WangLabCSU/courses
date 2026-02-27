@@ -44,10 +44,7 @@ jobs:
             "rmarkdown",
             "knitr",
             "showtext",
-            "ggplot2",
-            "dplyr",
-            "tidyr",
-            "readr",
+            "tidyverse",
             "DT",
             "reticulate"
           ))

@@ -1,0 +1,108 @@
+---
+title: "学习资源"
+subtitle: "R语言与生物信息学学习资料汇总"
+description: "精选的R语言学习资源、生物信息学教程和相关工具"
+---
+
+## 概述
+
+本页面整理了R语言学习、生物信息学分析和数据科学相关的优质资源，帮助你在课程之外继续深入学习。
+
+---
+
+## 📚 R语言基础与数据科学
+
+### 中文资源
+
+| 资源名称 | 链接 | 说明 |
+|---------|------|------|
+| R for Data Science (中文版) | [sunpast.github.io/r4ds](https://sunpast.github.io/r4ds/) | R数据科学经典教材的中文翻译版 |
+| R for Data Science (WangLab版) | [GitHub](https://github.com/WangLabCSU/R_for_Data_Science) / [在线阅读](https://bookdown.org/wangminjie/R4DS/) | 实验室维护的R4DS中文版 |
+
+### 推荐学习路径
+
+1. **初学者**：从 [R for Data Science](https://sunpast.github.io/r4ds/) 开始，掌握 tidyverse 生态
+2. **进阶者**：阅读实验室版本的 [R4DS扩展内容](https://bookdown.org/wangminjie/R4DS/)
+3. **实践者**：参考本课程的实验指导进行动手练习
+
+---
+
+## 🧬 生物信息学资源
+
+### 实验室课程与教程
+
+| 资源名称 | 链接 | 说明 |
+|---------|------|------|
+| Curated-List | [GitHub](https://github.com/WangLabCSU/Curated-List) | 生物信息学资源精选列表 |
+| Bioconductor RNAseq | [GitHub](https://github.com/WangLabCSU/bioc-rnaseq) | Bioconductor RNA-seq分析教程 |
+| Workshop RNAseq | [GitHub](https://github.com/WangLabCSU/workshop-RNAseq) | RNA-seq分析工作坊 |
+| Bioconductor Project | [GitHub](https://github.com/WangLabCSU/bioc-project) | Bioconductor项目模板 |
+| RBiocBook | [GitHub](https://github.com/WangLabCSU/RBiocBook) | R与Bioconductor书籍 |
+| BS831 | [GitHub](https://github.com/WangLabCSU/BS831) | 生物信息学算法课程 |
+| LINCS Workshop 2020 | [GitHub](https://github.com/WangLabCSU/lincs-workshop-2020) | LINCS项目工作坊 |
+
+### 特色资源
+
+::: {.callout-tip}
+## 推荐学习顺序
+
+1. **R基础** → 本课程 + [R4DS](https://sunpast.github.io/r4ds/)
+2. **Bioconductor入门** → [bioc-project](https://github.com/WangLabCSU/bioc-project)
+3. **RNA-seq分析** → [bioc-rnaseq](https://github.com/WangLabCSU/bioc-rnaseq)
+4. **综合应用** → [RBiocBook](https://github.com/WangLabCSU/RBiocBook)
+:::
+
+---
+
+## 🎓 国际工作坊与课程
+
+### RAUKR (RaukR)
+
+瑞典生物信息学高级R编程课程：
+
+| 年份 | 链接 | 说明 |
+|------|------|------|
+| RAUKR 2024 | [GitHub](https://github.com/NBISweden/raukr-2024) | 2024年课程资料 |
+| RAUKR 2025 | [GitHub](https://github.com/NBISweden/raukr-2025) | 2025年课程资料 |
+| RAUKR 2026 | [GitHub](https://github.com/NBISweden/raukr-2026) | 2026年课程资料 |
+
+### NBIS Workshops
+
+瑞典国家生物信息学基础设施(NBIS)提供的高质量工作坊：
+
+| 工作坊 | 链接 | 内容 |
+|--------|------|------|
+| NGS Intro | [GitHub](https://github.com/NBISweden/workshop-ngsintro) | NGS数据分析入门 |
+| RNA-seq | [GitHub](https://github.com/NBISweden/workshop-RNAseq) | RNA-seq数据分析 |
+| scRNA-seq | [GitHub](https://github.com/NBISweden/workshop-scRNAseq) | 单细胞RNA-seq分析 |
+
+---
+
+## 🔧 工具与平台
+
+### 开发工具
+
+- **RStudio**: [posit.co](https://posit.co/) - R语言最佳IDE
+- **Quarto**: [quarto.org](https://quarto.org/) - 现代科学出版工具
+- **GitHub**: [github.com](https://github.com) - 代码托管与协作
+
+### Bioconductor
+
+- **官网**: [bioconductor.org](https://bioconductor.org/)
+- **学习资源**: [bioc-rnaseq](https://github.com/WangLabCSU/bioc-rnaseq)
+- **包搜索**: 使用 `BiocManager::available()`
+
+---
+
+## 🤝 社区与支持
+
+- **GitHub Discussions**: 在资源仓库中提问
+- **实验室主页**: [wanglabcsu.github.io](https://wanglabcsu.github.io/)
+- **联系教师**: wangshx@csu.edu.cn
+
+---
+
+::: {.text-center .mt-5}
+**持续更新中...**  
+最后更新：2026年2月
+:::
