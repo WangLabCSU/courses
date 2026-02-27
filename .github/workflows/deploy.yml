@@ -28,8 +28,8 @@ jobs:
         
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: '1.4'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
