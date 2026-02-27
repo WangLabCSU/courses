@@ -18,14 +18,29 @@ format:
 中南大学 · 生物信息学专业 · 本科课程
 :::
 
-::: {.mt-4}
-[开始课前准备](syllabus.qmd){.btn .btn-light .btn-lg .me-2}
-[查看教学资源](resources.qmd){.btn .btn-outline-light .btn-lg}
-:::
-
 :::
 
 ::: {.container .py-4}
+
+## 开始学习 {.text-center .mt-4 .mb-5}
+
+::: {.row .justify-content-center}
+::: {.col-md-10}
+
+::: {.d-grid .gap-2 .d-md-flex .justify-content-md-center}
+[📋 课程大纲](syllabus.qmd){.btn .btn-primary .btn-lg .me-2}
+[🧪 实验1：R基础](labs/lab1-r-basics.qmd){.btn .btn-success .btn-lg .me-2}
+[🧪 实验2：R Markdown](labs/lab2-rmarkdown.qmd){.btn .btn-success .btn-lg .me-2}
+:::
+
+::: {.mt-3 .text-center}
+**幻灯片**：
+[📊 R语言基础](slides/slides-r-basics.html){.btn .btn-outline-secondary .btn-sm .me-1}
+[📊 R Markdown与现代报告工具](slides/slides-rmarkdown.html){.btn .btn-outline-secondary .btn-sm}
+:::
+
+:::
+:::
 
 ## 课程简介 {.text-center .mb-5}
 
@@ -114,7 +129,7 @@ Quarto多格式输出；Git版本控制；可重复性研究最佳实践
 
 ::: {.instructor-card}
 ::: {.instructor-avatar style="width: 100px; height: 100px; overflow: hidden; padding: 0;"}
-![](http://biotree.top:38123/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
+![](../logo/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
 :::
 ::: {.instructor-info}
 ### 王诗翔 副教授
@@ -149,22 +164,6 @@ Quarto多格式输出；Git版本控制；可重复性研究最佳实践
 #### 📚 资源丰富
 提供完整的幻灯片、实验指导、示例代码、拓展阅读材料
 :::
-:::
-:::
-
-## 开始学习 {.text-center .mt-5}
-
-::: {.row .justify-content-center}
-::: {.col-md-10}
-
-::: {.d-grid .gap-2 .d-md-block}
-[📋 课程大纲](syllabus.qmd){.btn .btn-primary .btn-lg .me-2}
-[📊 幻灯片：R基础](slides/slides-r-basics.html){.btn .btn-secondary .btn-lg .me-2}
-[📊 幻灯片：R Markdown](slides/slides-rmarkdown.html){.btn .btn-secondary .btn-lg .me-2}
-[🧪 实验1](labs/lab1-r-basics.qmd){.btn .btn-success .btn-lg .me-2}
-[🧪 实验2](labs/lab2-rmarkdown.qmd){.btn .btn-success .btn-lg}
-:::
-
 :::
 :::
 

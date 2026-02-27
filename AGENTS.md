@@ -197,7 +197,7 @@ $dark-blue: #1a5276;    // 强调色
 ```markdown
 ::: {.instructor-card}
 ::: {.instructor-avatar style="width: 100px; height: 100px; overflow: hidden; padding: 0;"}
-![](http://biotree.top:38123/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
+![](logo/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
 :::
 ::: {.instructor-info}
 ### 王诗翔 副教授
@@ -224,45 +224,7 @@ $dark-blue: #1a5276;    // 强调色
 - [ ] 外部资源链接（R文档、Quarto等）
 - [ ] 课程间交叉引用链接
 
-## 6. GitHub Actions部署
-
-所有课程共享相同的部署工作流：
-
-```yaml
-# .github/workflows/deploy.yml
-name: Deploy Courses
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
-
-jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: quarto-dev/quarto-actions/setup@v2
-      - uses: r-lib/actions/setup-r@v2
-      - name: Install R packages
-        run: |
-          install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr"))
-        shell: Rscript {0}
-      - name: Render Courses
-        run: |
-          for dir in r-and-rmarkdown transcriptomics genomics-mutation; do
-            if [ -d "$dir" ]; then
-              cd "$dir" && quarto render && cd ..
-            fi
-          done
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./r-and-rmarkdown/_site
-```
-
-## 7. 新增课程流程
+## 6. 新增课程流程
 
 AI协助创建新课程时，按以下步骤执行：
 

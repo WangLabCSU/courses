@@ -13,7 +13,7 @@
 <table>
 <tr>
 <td width="120">
-<img src="http://biotree.top:38123/wsx.jpeg" width="100" style="border-radius: 50%;" alt="王诗翔">
+<img src="logo/wsx.jpeg" width="100" style="border-radius: 50%;" alt="王诗翔">
 </td>
 <td>
 
