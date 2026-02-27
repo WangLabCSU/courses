@@ -22,6 +22,10 @@ execute:
   message: false
 ---
 
+```{r, eval=TRUE, echo=FALSE, output=FALSE}
+showtext::showtext_auto()
+```
+
 ## 本讲目标
 
 ::: {.columns}

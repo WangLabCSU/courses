@@ -43,6 +43,7 @@ jobs:
           install.packages(c(
             "rmarkdown",
             "knitr",
+            "showtext",
             "ggplot2",
             "dplyr",
             "tidyr",

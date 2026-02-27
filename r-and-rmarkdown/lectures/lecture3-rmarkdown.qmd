@@ -348,9 +348,7 @@ output:
 
 需要安装LaTeX：
 
-```{r}
-#| eval: false
-
+```{r, eval=FALSE}
 install.packages("tinytex")
 tinytex::install_tinytex()
 ```
