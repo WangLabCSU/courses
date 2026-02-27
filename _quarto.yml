@@ -3,14 +3,6 @@ project:
   output-dir: _site
   render:
     - "*.qmd"
-  exclude:
-    - "AGENTS.md"
-    - "README.md"
-    - "CHECKLIST.md"
-    - "LICENSE"
-    - "build.sh"
-    - ".gitignore"
-    - ".gitattributes"
 
 website:
   title: "CSU生物信息学课程"
