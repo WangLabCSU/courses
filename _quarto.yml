@@ -51,4 +51,8 @@ format:
     toc: true
     code-copy: true
 
+execute:
+  freeze: false
+  echo: true
+
 lang: zh

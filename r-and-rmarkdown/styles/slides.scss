@@ -1,85 +1,126 @@
 /*-- scss:defaults --*/
 
-/* CSU BMI Course Theme for Reveal.js - Optimized with Specky-inspired features */
+/* CSU BMI Course Theme for Reveal.js - Modern Academic Design */
 
-// Colors - Enhanced palette
+// Enhanced Color Palette
 $csu-red: #8B0000;
+$csu-red-light: #B22222;
+$csu-red-dark: #5c0000;
 $csu-gold: #C5B358;
+$csu-gold-light: #D4C47A;
 $dark-blue: #1a5276;
+$dark-blue-light: #2980b9;
+$slate: #2c3e50;
+$slate-light: #34495e;
 $light-gray: #f8f9fa;
-$code-bg: #f5f5f5;
-$text-muted: #5a6570;
+$code-bg: #fafafa;
+$text-primary: #1a1a2e;
+$text-secondary: #4a5568;
+$text-muted: #718096;
+$border-color: #e2e8f0;
 
-// Typography - Specky-inspired font stack with Chinese support
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&family=Nunito:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+// Typography - Distinctive Academic Font Stack
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 // Override reveal.js variables
 $backgroundColor: #ffffff;
-$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Nunito", "Source Sans Pro", sans-serif;
-$mainFontSize: 27px;
-$mainColor: #333333;
-$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Nunito", "Source Sans Pro", sans-serif;
-$headingColor: #8B0000;
-$headingLineHeight: 1.3;
-$headingLetterSpacing: normal;
+$mainFont: "Inter", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+$mainFontSize: 26px;
+$mainColor: $text-primary;
+$headingFont: "Source Serif 4", "Noto Serif SC", "Songti SC", Georgia, serif;
+$headingColor: $csu-red;
+$headingLineHeight: 1.2;
+$headingLetterSpacing: -0.02em;
 $headingTextTransform: none;
 $headingTextShadow: none;
-$headingFontWeight: 700;
-$linkColor: #1a5276;
-$linkColorHover: darken(#1a5276, 15%);
-$selectionBackgroundColor: #8B0000;
+$headingFontWeight: 600;
+$linkColor: $dark-blue;
+$linkColorHover: $dark-blue-light;
+$selectionBackgroundColor: $csu-red;
 $selectionColor: #ffffff;
 
-// Presentation sizing - Specky-inspired modular scale
-$presentation-font-size-root: 27px;
-$presentation-line-height: 1.3;
-$presentation-h1-font-size: 1.802em;
-$presentation-h2-font-size: 1.602em;
-$presentation-h3-font-size: 1.424em;
-$presentation-h4-font-size: 1.266em;
-$presentation-h5-font-size: 1.125em;
-$presentation-h6-font-size: 1em;
+// Presentation sizing - Refined modular scale
+$presentation-font-size-root: 26px;
+$presentation-line-height: 1.5;
+$presentation-h1-font-size: 2.074em;
+$presentation-h2-font-size: 1.728em;
+$presentation-h3-font-size: 1.44em;
+$presentation-h4-font-size: 1.2em;
+$presentation-h5-font-size: 1em;
+$presentation-h6-font-size: 0.833em;
 
-// Code styling - Specky-inspired
-$code-color: #3b4819;
+// Code styling
+$code-color: #d6336c;
 $code-block-bg: $code-bg;
 $code-block-border-color: transparent;
-$font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
+$font-family-monospace: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-base: 200ms ease;
+$transition-slow: 300ms ease;
 
 /*-- scss:rules --*/
 
-// Title slide - Enhanced with better centering
+// ============================================
+// Title Slide - Dramatic Academic Opening
+// ============================================
+
 .reveal .title-slide {
-  background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
+  background: linear-gradient(135deg, $csu-red 0%, $csu-red-dark 50%, $slate 100%);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba($csu-gold, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(white, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+  }
 }
 
 .reveal .title-slide h1 {
   color: #ffffff;
-  font-size: 1.9em;
+  font-size: 2.2em;
   font-weight: 700;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
   border-bottom: none;
-  margin-bottom: 0.3em;
-  margin-top: 0.5em;
+  margin-bottom: 0.25em;
+  margin-top: 0.3em;
+  letter-spacing: -0.03em;
+  position: relative;
+  z-index: 1;
 }
 
 .reveal .title-slide h2 {
-  color: #ffffff;
-  font-size: 1.2em;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.15em;
   font-weight: 400;
-  opacity: 0.95;
-  margin-bottom: 2em;
+  margin-bottom: 1.8em;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
 }
 
 .reveal .title-slide h3 {
   color: $csu-gold;
-  font-size: 0.95em;
+  font-size: 0.92em;
   font-weight: 500;
-  margin-top: 2em;
+  margin-top: 1.5em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
 }
 
-// Specky-inspired title container layout
+// Title container layout
 #title-slide .title-container {
   display: flex;
   align-items: center;
@@ -95,105 +136,143 @@ $font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
   grid-column-gap: 2em;
 }
 
-// Section divider slides
+// ============================================
+// Section Divider Slides
+// ============================================
+
 .reveal section[data-background-color="#8B0000"],
 .reveal section[data-background="#8B0000"] {
   color: white;
   text-align: center;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba($csu-gold, 0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
 }
 
 .reveal section[data-background-color="#8B0000"] h1,
 .reveal section[data-background="#8B0000"] h1 {
   color: white;
-  font-size: 1.9em;
+  font-size: 2em;
   border-bottom: none;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-// Headings - Specky-inspired modular scale
+// ============================================
+// Headings - Refined Typography
+// ============================================
+
 .reveal h1 {
   font-size: $presentation-h1-font-size;
   color: $csu-red;
   border-bottom: 3px solid $csu-red;
-  padding-bottom: 0.2em;
-  margin-bottom: 0.5em;
+  padding-bottom: 0.15em;
+  margin-bottom: 0.4em;
   margin-top: 0;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: $headingLetterSpacing;
+  
+  &::first-letter {
+    font-weight: 700;
+  }
 }
 
 .reveal h2 {
   font-size: $presentation-h2-font-size;
   color: $csu-red;
-  margin-bottom: 0.4em;
+  margin-bottom: 0.35em;
   font-weight: 600;
+  letter-spacing: $headingLetterSpacing;
 }
 
 .reveal h3 {
   font-size: $presentation-h3-font-size;
   color: $dark-blue;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.25em;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .reveal h4 {
   font-size: $presentation-h4-font-size;
-  color: $dark-blue;
-  margin-bottom: 0.25em;
+  color: $slate;
+  margin-bottom: 0.2em;
   font-weight: 600;
 }
 
-// Paragraph - Improved readability
+// ============================================
+// Paragraph & Text
+// ============================================
+
 .reveal p {
-  margin-bottom: 0.6em;
-  line-height: 1.5;
+  margin-bottom: 0.5em;
+  line-height: 1.6;
   font-size: 1em;
+  color: $text-primary;
 }
 
-// Code blocks - Specky-inspired styling
+// ============================================
+// Code Blocks - Modern Developer Aesthetic
+// ============================================
+
 .reveal pre {
-  background-color: $code-bg;
-  border: 1px solid #e0e0e0;
-  border-left: 3px solid $csu-red;
-  border-radius: 6px;
-  padding: 0.4em 0.6em;
+  background: linear-gradient(135deg, $code-bg 0%, #f0f0f0 100%);
+  border: 1px solid $border-color;
+  border-left: 4px solid $csu-red;
+  border-radius: 8px;
+  padding: 0.5em 0.7em;
   margin: 0.5em 0;
-  box-shadow: none;
+  box-shadow: 
+    0 1px 3px rgba(0,0,0,0.04),
+    0 4px 12px rgba(0,0,0,0.03);
   overflow: hidden;
-  font-size: 1.75rem !important;
-  line-height: 1.3;
+  font-size: 1.6rem !important;
+  line-height: 1.35;
 }
 
 .reveal pre code {
   font-family: $font-family-monospace;
-  font-size: 0.8em !important;
-  line-height: 1.4;
+  font-size: 0.82em !important;
+  line-height: 1.45;
   background: none;
   border-radius: 6px;
   padding-left: 4px;
   padding-right: 4px;
+  color: $text-primary;
 }
 
 .reveal code {
   font-family: $font-family-monospace;
-  background-color: #fff3cd;
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
-  color: #856404;
-  font-size: 0.85em;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+  color: $csu-red;
+  font-size: 0.88em;
   font-weight: 500;
+  border: 1px solid rgba($csu-red, 0.15);
 }
 
-// Hide code copy button to prevent overflow
 .reveal .code-copy-button {
   display: none !important;
 }
 
 .reveal div.sourceCode {
   border: 0 !important;
-  border-radius: 6px;
-  margin-bottom: 0.6em !important;
+  border-radius: 8px;
+  margin-bottom: 0.5em !important;
 }
 
-// Specky-inspired font size utilities
+// ============================================
+// Font Size Utilities
+// ============================================
+
 .largest { font-size: 1.953em; }
 .larger { font-size: 1.563em; }
 .large { font-size: 1.25em; }
@@ -201,168 +280,236 @@ $font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
 .smaller { font-size: 0.64em; }
 .smallest { font-size: 0.512em; }
 
-.reveal .largest pre { font-size: 3.41rem !important; }
-.reveal .larger pre { font-size: 2.73rem !important; }
-.reveal .large pre { font-size: 2.19rem !important; }
-.reveal .small pre { font-size: 1.40rem !important; }
-.reveal .smaller pre { font-size: 1.12rem !important; }
-.reveal .smallest pre { font-size: 0.986rem !important; }
+.reveal .largest pre { font-size: 3.2rem !important; }
+.reveal .larger pre { font-size: 2.6rem !important; }
+.reveal .large pre { font-size: 2.1rem !important; }
+.reveal .small pre { font-size: 1.3rem !important; }
+.reveal .smaller pre { font-size: 1.05rem !important; }
+.reveal .smallest pre { font-size: 0.9rem !important; }
 
-.reveal .largest code { font-size: 1.56em !important; }
-.reveal .larger code { font-size: 1.25em !important; }
+.reveal .largest code { font-size: 1.5em !important; }
+.reveal .larger code { font-size: 1.2em !important; }
 .reveal .large code { font-size: 1em !important; }
-.reveal .small code { font-size: 0.64em !important; }
-.reveal .smaller code { font-size: 0.51em !important; }
-.reveal .smallest code { font-size: 0.41em !important; }
+.reveal .small code { font-size: 0.65em !important; }
+.reveal .smaller code { font-size: 0.52em !important; }
+.reveal .smallest code { font-size: 0.42em !important; }
 
-// Tables - Specky-inspired compact styling
+// ============================================
+// Tables - Elegant Data Presentation
+// ============================================
+
 .reveal table {
   border-collapse: collapse;
-  margin: 0.8em auto;
-  font-size: 0.8em !important;
-  border-radius: 6px;
+  margin: 0.7em auto;
+  font-size: 0.78em !important;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .reveal table th {
-  background-color: $csu-red;
+  background: linear-gradient(135deg, $csu-red 0%, $csu-red-dark 100%);
   color: white;
-  padding: 8px 12px;
+  padding: 10px 14px;
   text-align: left;
   font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .reveal table td {
-  padding: 6px 12px;
-  border-bottom: 1px solid #e8e8e8;
+  padding: 8px 14px;
+  border-bottom: 1px solid $border-color;
+  color: $text-primary;
 }
 
 .reveal table tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: #fafbfc;
 }
 
-// Columns - Improved gap
+.reveal table tr:hover {
+  background-color: rgba($csu-red, 0.03);
+}
+
+// ============================================
+// Columns Layout
+// ============================================
+
 .reveal .columns {
   display: flex;
-  gap: 1.5em;
-  margin-top: 0.4em;
+  gap: 1.8em;
+  margin-top: 0.3em;
 }
 
 .reveal .column {
   flex: 1;
 }
 
-// Lists - Specky-inspired compact styling
+// ============================================
+// Lists - Clean & Organized
+// ============================================
+
 .reveal ul {
   list-style-type: none;
   padding-left: 0;
-  margin: 0.6em 0;
-  line-height: 1.2;
+  margin: 0.5em 0;
+  line-height: 1.3;
 }
 
 .reveal ul li {
   position: relative;
-  padding-left: 1.3em;
-  margin-bottom: 0.4em;
+  padding-left: 1.4em;
+  margin-bottom: 0.35em;
   font-size: 0.95em;
-  line-height: 1.4;
-  margin-top: 0.05em !important;
-  margin-bottom: 0.05em !important;
-}
-
-.reveal ul li::before {
-  content: "●";
-  position: absolute;
-  left: 0;
-  color: $csu-red;
-  font-size: 0.7em;
-  top: 0.2em;
+  line-height: 1.45;
+  margin-top: 0.03em !important;
+  margin-bottom: 0.03em !important;
+  color: $text-primary;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0.3em;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    background: $csu-red;
+    border-radius: 50%;
+  }
 }
 
 .reveal ol {
-  margin: 0.6em 0;
-  padding-left: 1.5em;
-  line-height: 1.2;
+  margin: 0.5em 0;
+  padding-left: 1.6em;
+  line-height: 1.3;
 }
 
 .reveal ol li {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.35em;
   font-size: 0.95em;
-  line-height: 1.4;
-  margin-top: 0.05em !important;
-  margin-bottom: 0.05em !important;
+  line-height: 1.45;
+  margin-top: 0.03em !important;
+  margin-bottom: 0.03em !important;
+  color: $text-primary;
 }
 
-// Blockquote - Enhanced styling
+// ============================================
+// Blockquote - Academic Citation Style
+// ============================================
+
 .reveal blockquote {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #fafbfc 0%, #f1f5f9 100%);
   border-left: 4px solid $csu-red;
-  padding: 0.8em 1.2em;
-  margin: 0.8em 0;
+  padding: 0.7em 1.2em;
+  margin: 0.7em 0;
   font-style: italic;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 8px 8px 0;
   font-size: inherit;
-  color: $text-muted;
+  color: $text-secondary;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  
+  &::before {
+    content: '"';
+    font-size: 2em;
+    color: $csu-red;
+    opacity: 0.3;
+    line-height: 0;
+    vertical-align: -0.3em;
+    margin-right: 0.1em;
+  }
 }
 
-// Emphasis
+// ============================================
+// Emphasis & Strong
+// ============================================
+
 .reveal strong {
   color: $csu-red;
   font-weight: 700;
 }
 
-// Progress bar
+.reveal em {
+  color: $dark-blue;
+  font-style: italic;
+}
+
+// ============================================
+// Progress Bar
+// ============================================
+
 .reveal .progress {
-  background: #e0e0e0;
+  background: linear-gradient(90deg, $border-color 0%, #e2e8f0 100%);
   height: 3px;
 }
 
 .reveal .progress span {
-  background: $csu-red;
+  background: linear-gradient(90deg, $csu-red 0%, $csu-red-light 100%);
 }
 
-// Slide number - Enhanced
-.reveal .slide-number {
-  background-color: $csu-red;
+// ============================================
+// Slide Number - Right Bottom Corner
+// ============================================
+
+.reveal .slide-number { 
+  bottom: 1em !important; 
+  right: 1em !important; 
+  top: auto !important; 
+  left: auto !important; 
+  font-size: 0.8em; 
+  background: linear-gradient(135deg, $csu-red 0%, $csu-red-dark 100%);
   color: white;
-  padding: 4px 8px;
-  border-radius: 3px;
-  font-size: 12px;
-  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
   font-family: $mainFont;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba($csu-red, 0.35);
+  z-index: 100;
 }
 
-// Figure images
+// Override footer.css rule that moves slide-number to top when logo exists
+.reveal.has-logo .slide-number {
+  bottom: 1em !important;
+  top: auto !important;
+  right: 1em !important;
+}
+
+// ============================================
+// Figures & Images
+// ============================================
+
 .reveal .figure {
-  margin: 0.8em auto;
+  margin: 0.7em auto;
   text-align: center;
 }
 
 .reveal .figure img {
-  max-width: 95%;
-  max-height: 50vh;
-  border-radius: 6px;
+  max-width: 94%;
+  max-height: 48vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
 .reveal img {
-  max-width: 95%;
-  border-radius: 4px;
+  max-width: 94%;
+  border-radius: 6px;
 }
 
-// Slide layout - Enhanced
+// ============================================
+// Slide Layout
+// ============================================
+
 .reveal .slides {
   text-align: left;
 }
 
 .reveal .slides section {
-  padding: 25px 35px;
+  padding: 22px 32px;
   height: 100%;
   max-height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
 }
 
-// Hide scrollbar
 .reveal .slides section::-webkit-scrollbar {
   display: none;
 }
@@ -372,25 +519,35 @@ $font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
   scrollbar-width: none;
 }
 
+// ============================================
 // Footer
+// ============================================
+
 .reveal .footer {
-  font-size: 0.6em;
-  color: #666;
-  border-top: 1px solid #eee;
-  padding-top: 0.4em;
-  margin-top: 0.8em;
+  font-size: 0.58em;
+  color: $text-muted;
+  border-top: 1px solid $border-color;
+  padding-top: 0.35em;
+  margin-top: 0.7em;
 }
 
+// ============================================
 // Logo
+// ============================================
+
 .reveal .slide-logo {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 40px;
-  opacity: 0.9;
+  top: 12px;
+  right: 12px;
+  height: 38px;
+  opacity: 0.85;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-// Text alignment utilities - Specky-inspired
+// ============================================
+// Text Alignment Utilities
+// ============================================
+
 .reveal .left {
   display: block;
   text-align: left;
@@ -406,7 +563,10 @@ $font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
   text-align: right;
 }
 
-// Vertical alignment utilities - Specky-inspired
+// ============================================
+// Vertical Alignment Utilities
+// ============================================
+
 .reveal .v-center {
   display: grid;
   align-items: center;
@@ -425,113 +585,163 @@ $font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
   height: 90%;
 }
 
-// Slide alignment - Specky-inspired
 .reveal .slides section[data-vertical-align-top] {
   top: 0 !important;
 }
 
-// Badge - Specky-inspired
+// ============================================
+// Badges
+// ============================================
+
 .badge {
-  font-size: 0.85em;
-  background-color: $csu-red;
+  font-size: 0.82em;
+  background: linear-gradient(135deg, $csu-red 0%, $csu-red-dark 100%);
   color: white;
-  padding: 0.05em 0.3em;
+  padding: 0.08em 0.4em;
   border-radius: 4px;
   vertical-align: baseline;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .badge-primary {
-  background-color: $csu-red;
+  background: linear-gradient(135deg, $csu-red 0%, $csu-red-dark 100%);
 }
 
 .badge-secondary {
-  background-color: $csu-gold;
-  color: #333;
+  background: linear-gradient(135deg, $csu-gold 0%, $csu-gold-light 100%);
+  color: $slate;
 }
 
-// Callout - Specky-inspired enhanced styling
+// ============================================
+// Callouts
+// ============================================
+
 .reveal .callout {
-  border-radius: 0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .reveal .callout-style-default,
 .reveal .callout-style-simple {
-  border: solid silver 1px !important;
+  border: 1px solid $border-color !important;
 }
 
 .reveal .callout.callout-style-simple .callout-title,
 .reveal .callout.callout-style-default .callout-title {
-  font-size: 1.6rem !important;
+  font-size: 1.5rem !important;
 }
 
 .reveal .callout.callout-style-simple .callout-content,
 .reveal .callout.callout-style-default .callout-content {
-  font-size: 1.4rem !important;
+  font-size: 1.3rem !important;
 }
 
 .reveal div.callout.callout-style-simple div.callout-title p,
 .reveal div.callout.callout-style-default div.callout-title p {
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .reveal div.callout.callout-style-simple .callout-icon::before,
 .reveal div.callout.callout-style-default .callout-icon::before {
-  height: 1.4rem;
-  width: 1.5rem;
-  background-size: 1.4rem 1.4rem;
+  height: 1.3rem;
+  width: 1.4rem;
+  background-size: 1.3rem 1.3rem;
 }
 
 .reveal .callout.callout-titled .callout-icon::before {
-  margin-top: 0.55rem;
+  margin-top: 0.5rem;
 }
 
-// Panel tabset - Specky-inspired
+// ============================================
+// Panel Tabset
+// ============================================
+
 .reveal .panel-tabset [role="tab"][aria-selected="true"] {
-  border: lightgray 2px solid;
-  border-radius: 6px 6px 0px 0px;
+  border: 2px solid $border-color;
+  border-radius: 8px 8px 0 0;
   border-bottom: none;
+  background: white;
 }
 
 .reveal .panel-tabset .tab-content {
-  border-top: lightgray 2px solid;
+  border-top: 2px solid $border-color;
 }
 
 .reveal .panel-tabset .panel-tabset-tabby {
   margin-bottom: 0;
 }
 
-// Citation - Specky-inspired
+// ============================================
+// Citations
+// ============================================
+
 .reveal .citation,
 .reveal .citation a:hover {
-  font-size: 0.8em;
-  color: lightgray;
+  font-size: 0.78em;
+  color: $text-muted;
 }
 
 .reveal .citation a {
-  font-size: 0.8em;
-  color: gray;
+  font-size: 0.78em;
+  color: $text-secondary;
 }
 
 .references {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 }
 
-// Info boxes - compact
+// ============================================
+// Info Boxes
+// ============================================
+
 .reveal .key-concept,
 .reveal .tip-box,
 .reveal .warning-box,
 .reveal .info-box {
-  padding: 0.8em 1.2em;
-  margin: 0.8em 0;
-  border-radius: 0 6px 6px 0;
+  padding: 0.7em 1.1em;
+  margin: 0.7em 0;
+  border-radius: 0 8px 8px 0;
 }
 
-// Print styles
+// ============================================
+// Print Styles
+// ============================================
+
 @media print {
   .reveal .slide-menu-button,
   .reveal .chalkboard-button,
   .reveal .slide-number {
     display: none;
+  }
+}
+
+// ============================================
+// Animations - Subtle & Professional
+// ============================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal .slides section.present {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+// ============================================
+// Dark Mode Support (for future)
+// ============================================
+
+@media (prefers-color-scheme: dark) {
+  .reveal .slides section {
+    // Dark mode adjustments can be added here
   }
 }
