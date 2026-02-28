@@ -115,7 +115,7 @@ showtext::showtext_auto()
 
 ### 行内代码与代码块
 
-```markdown
+`````markdown
 使用 `filter()` 函数筛选数据
 
 ```r
@@ -123,18 +123,18 @@ showtext::showtext_auto()
 library(dplyr)
 data |> filter(age > 50)
 ```
-```
+`````
 
 ### LaTeX公式
 
-```markdown
+`````markdown
 行内：$E = mc^2$
 
 独立：
 $$
 \bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
 $$
-```
+`````
 
 ---
 
@@ -162,7 +162,7 @@ $$
 
 ## 文档结构
 
-````markdown
+`````markdown
 ---
 title: "TP53基因表达分析"
 author: "王诗翔"
@@ -176,14 +176,14 @@ TP53是重要的肿瘤抑制基因...
 
 ## 数据分析
 
-```{r}`r ''`
+```r
 # 读取数据
 expr_data <- read.csv("tp53_expression.csv")
 summary(expr_data)
 ```
 
 表达量分布如上图所示...
-````
+`````
 
 ---
 
@@ -211,13 +211,13 @@ output:
 
 ### 基本语法
 
-````markdown
-```{r chunk-name, echo=TRUE, eval=TRUE}`r ''`
+`````markdown
+```{r chunk-name, echo=TRUE, eval=TRUE}
 # R代码
 x <- 1:10
 mean(x)
 ```
-````
+`````
 
 ### 常用选项
 
@@ -235,11 +235,11 @@ mean(x)
 
 ### 只显示结果（隐藏代码）
 
-````markdown
-```{r, echo=FALSE}`r ''`
+`````markdown
+```{r, echo=FALSE}
 summary(cars)
 ```
-````
+`````
 
 ```{r, echo=FALSE}
 summary(cars)
@@ -251,11 +251,11 @@ summary(cars)
 
 ### 显示代码和结果
 
-````markdown
-```{r, echo=TRUE}`r ''`
+`````markdown
+```{r, echo=TRUE}
 head(cars, 3)
 ```
-````
+`````
 
 ```{r, echo=TRUE}
 head(cars, 3)
@@ -267,10 +267,10 @@ head(cars, 3)
 
 > 在文本中嵌入R代码结果，实现**动态更新**
 
-```markdown
+`````markdown
 数据集包含 `r nrow(cars)` 个观测值，
 平均速度为 `r round(mean(cars$speed), 1)` mph。
-```
+`````
 
 数据集包含 `r nrow(cars)` 个观测值，
 平均速度为 `r round(mean(cars$speed), 1)` mph。
@@ -346,8 +346,8 @@ params:
 
 ### 使用参数
 
-````markdown
-```{r}`r ''`
+`````markdown
+```r
 # 根据参数筛选数据
 gene_data <- expr_data[expr_data$gene == params$gene, ]
 mean_expr <- mean(gene_data$expression)
@@ -356,7 +356,7 @@ if (params$show_plot) {
   hist(gene_data$expression, main = params$gene)
 }
 ```
-````
+`````
 
 ---
 
@@ -385,7 +385,7 @@ R Markdown → Quarto → 统一的多语言平台
 
 ## Quarto文档结构
 
-```markdown
+`````markdown
 ---
 title: "Quarto演示"
 format: 
@@ -410,7 +410,7 @@ df.describe()
 
 ## R可视化
 
-```{r}
+```r
 library(ggplot2)
 
 # 使用R内置数据
@@ -418,7 +418,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point(color = "steelblue", size = 3) +
   theme_minimal()
 ```
-```
+`````
 
 ---
 
@@ -437,10 +437,10 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
 ### 图表引用
 
-```markdown
+`````markdown
 见 @fig-tp53 显示了TP53表达分布。
 
-```{r}
+```r
 #| label: fig-tp53
 #| fig-cap: "TP53基因表达分布"
 
@@ -448,14 +448,14 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1, 11.5, 7.8, 13.2)
 hist(tp53_expr, main = "TP53基因表达分布", xlab = "表达量", col = "steelblue")
 ```
-```
+`````
 
 ### 表格引用
 
-```markdown
+`````markdown
 如 @tbl-summary 所示，差异表达基因共50个。
 
-```{r}
+```r
 #| label: tbl-summary
 #| tbl-cap: "差异表达基因汇总"
 
@@ -467,7 +467,7 @@ de_results <- data.frame(
 )
 knitr::kable(de_results)
 ```
-```
+`````
 
 ---
 
