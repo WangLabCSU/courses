@@ -87,21 +87,21 @@ mtcars |> head()
 
 **R Markdown风格**：
 
-````markdown
-```{r, echo=FALSE, fig.width=8}`r ''`
+`````markdown
+```{r, echo=FALSE, fig.width=8}
 plot(cars)
 ```
-````
+`````
 
 **Quarto风格**（推荐）：
 
-````markdown
-```{r}`r ''`
+`````markdown
+```{r}
 #| echo: false
 #| fig-width: 8
 plot(cars)
 ```
-````
+`````
 
 ---
 

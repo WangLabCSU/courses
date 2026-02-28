@@ -144,13 +144,13 @@ output:
 
 ### 3.1 基本语法
 
-````markdown
-```{r chunk-name, option1=value1, option2=value2}`r ''`
+`````markdown
+```{r chunk-name, echo=TRUE, eval=TRUE}
 # R代码
 x <- 1:10
 mean(x)
 ```
-````
+`````
 
 ### 3.2 常用选项
 
@@ -170,36 +170,36 @@ mean(x)
 
 **显示代码和结果（默认）**：
 
-````markdown
-```{r}`r ''`
+`````markdown
+```{r}
 head(mtcars, 3)
 ```
-````
+`````
 
 **只显示结果**：
 
-````markdown
-```{r, echo=FALSE}`r ''`
+`````markdown
+```{r, echo=FALSE}
 summary(cars)
 ```
-````
+`````
 
 **显示代码，不执行**：
 
-````markdown
-```{r, eval=FALSE}`r ''`
+`````markdown
+```{r, eval=FALSE}
 # 耗时计算
 heavy_computation()
 ```
-````
+`````
 
 **隐藏警告**：
 
-````markdown
-```{r, warning=FALSE}`r ''`
+`````markdown
+```{r, warning=FALSE}
 library(tidyverse)  # 抑制加载警告
 ```
-````
+`````
 
 ---
 
@@ -232,20 +232,24 @@ library(tidyverse)  # 抑制加载警告
 
 ### 5.1 基础图形
 
-````markdown
-```{r, fig.width=8, fig.height=6, fig.cap="基因表达散点图"}`r ''`
+`````markdown
+```r
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "基因表达散点图"
 plot(tp53_expr, p53_protein,
      main = "TP53 mRNA与蛋白表达相关性",
      xlab = "TP53 mRNA表达量",
      ylab = "p53蛋白水平",
      pch = 19, col = "steelblue")
 ```
-````
+`````
 
 ### 5.2 ggplot2图形
 
-````markdown
-```{r, fig.cap="差异表达基因火山图"}`r ''`
+`````markdown
+```r
+#| fig-cap: "差异表达基因火山图"
 library(ggplot2)
 
 ggplot(de_results, aes(x = log2FoldChange, y = -log10(pvalue))) +
@@ -255,29 +259,29 @@ ggplot(de_results, aes(x = log2FoldChange, y = -log10(pvalue))) +
        x = "log2 Fold Change",
        y = "-log10(p-value)")
 ```
-````
+`````
 
 ### 5.3 表格
 
 **基础表格**：
 
-````markdown
-```{r}`r ''`
+`````markdown
+```r
 knitr::kable(
   head(gene_expr_summary, 5),
   caption = "基因表达统计摘要（前5个基因）",
   align = c('l', 'c', 'c', 'c')
 )
 ```
-````
+`````
 
 **交互式表格（HTML）**：
 
-````markdown
-```{r}`r ''`
+`````markdown
+```r
 DT::datatable(de_results, options = list(pageLength = 10))
 ```
-````
+`````
 
 ---
 
@@ -298,8 +302,8 @@ params:
 
 ### 6.2 使用参数
 
-````markdown
-```{r}`r ''`
+`````markdown
+```r
 # 筛选差异表达基因
 de_genes <- de_results[
   abs(de_results$log2FoldChange) > params$fc_threshold &
@@ -311,11 +315,12 @@ cat("目标基因:", params$gene_of_interest, "\n")
 cat("差异表达基因数:", nrow(de_genes), "\n")
 ```
 
-```{r, eval=params$show_volcano}`r ''`
+```r
+#| eval: params$show_volcano
 # 条件显示火山图
 plot_volcano(de_results, params$fc_threshold, params$pvalue_threshold)
 ```
-````
+`````
 
 ### 6.3 应用场景
 
@@ -374,29 +379,33 @@ output:
 
 使用 `knitr::read_chunk()` 引用外部代码文件：
 
-````markdown
-```{r, include=FALSE}`r ''`
+`````markdown
+```r
+#| include: false
 knitr::read_chunk('analysis.R')
 ```
 
-```{r analysis-setup}`r ''`
+```r
+#| label: analysis-setup
 # 这里会插入 analysis.R 中标记为 ## ----analysis-setup 的代码
 ```
-````
+`````
 
 ### 8.2 条件输出
 
-````markdown
-```{r, include=knitr::is_html_output()}`r ''`
+`````markdown
+```r
+#| include: knitr::is_html_output()
 # 仅在HTML输出时包含
 DT::datatable(de_results)
 ```
 
-```{r, include=knitr::is_latex_output()}`r ''`
+```r
+#| include: knitr::is_latex_output()
 # 仅在PDF输出时包含
 knitr::kable(head(de_results, 20))
 ```
-````
+`````
 
 ### 8.3 参考文献
 
