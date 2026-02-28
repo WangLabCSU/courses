@@ -36,7 +36,7 @@ title: "许可证"
 ```
 MIT License
 
-Copyright (c) 2026 王诗翔 - 中南大学 · 生物信息学专业
+Copyright (c) 2026 王诗翔 - 中南大学 · 生物医学信息系
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

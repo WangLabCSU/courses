@@ -16,6 +16,10 @@ subtitle: "创建可重复性基因表达分析报告"
 **实验时长**：45分钟  
 **实验类型**：个人完成
 
+::: {.callout-note appearance="simple" title="关于示例代码块"}
+本实验中的参考答案使用 ` ```r ` 格式展示代码（仅语法高亮）。在实际 R Markdown 文档中，请使用 ` ```{r} ` 格式来创建可执行的代码块。同理，Python 使用 ` ```{python} `，其他语言类似。
+:::
+
 ---
 
 ## 实验准备
@@ -597,7 +601,7 @@ tinytex::install_tinytex()
 ## 联系信息
 
 - 授课教师：王诗翔 副教授
-- 单位：中南大学 · 生物信息学专业
+- 单位：中南大学 · 生物医学信息系
 - 实验室主页：https://wanglabcsu.github.io/
 - 邮箱：wangshx@csu.edu.cn
 - GitHub：https://github.com/WangLabCSU

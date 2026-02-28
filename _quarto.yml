@@ -5,8 +5,8 @@ project:
     - "*.qmd"
 
 website:
-  title: "CSU生物信息学课程"
-  description: "中南大学生物信息学专业课程网站"
+  title: "CSU生物医学信息系课程"
+  description: "中南大学生物医学信息系课程网站"
   site-url: https://wanglabcsu.github.io/courses
   repo-url: https://github.com/WangLabCSU/courses
   repo-branch: main
@@ -34,7 +34,7 @@ website:
         href: https://wanglabcsu.github.io/
 
   page-footer:
-    left: "© 2026 王诗翔 - 中南大学 · 生物信息学专业"
+    left: "© 2026 王诗翔 - 中南大学 · 生物医学信息系"
     center: 
       - text: "WangLabCSU"
         href: https://github.com/WangLabCSU

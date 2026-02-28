@@ -1,6 +1,6 @@
 ---
 title: "R与(R)Markdown基础"
-subtitle: "中南大学 生物信息学专业 本科课程"
+subtitle: "中南大学 生物医学信息系 本科/研究生课程"
 description: "掌握R语言核心语法与可重复性研究报告撰写技能"
 format:
   html:
@@ -15,7 +15,7 @@ format:
 ## R and (R)Markdown Fundamentals
 
 ::: {.lead .mt-3}
-中南大学 · 生物信息学专业 · 本科课程
+中南大学 · 生物医学信息系 · 本科/研究生课程
 :::
 
 :::
@@ -48,7 +48,7 @@ format:
 ::: {.row .justify-content-center}
 ::: {.col-lg-10}
 
-本课程面向**生物信息学专业**大二本科生，系统讲授 **R语言基础语法** 与 **(R)Markdown文档编写** 技术。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生：
+本课程面向**生物医学信息系**本科生/研究生，系统讲授 **R语言基础语法** 与 **(R)Markdown文档编写** 技术。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生：
 
 - 掌握R语言核心编程技能
 - 熟悉生物医学数据处理常用包
@@ -135,7 +135,7 @@ Quarto多格式输出；Git版本控制；可重复性研究最佳实践
 ::: {.instructor-info}
 ### 王诗翔 副教授
 
-**中南大学 · 生物信息学专业**
+**中南大学 · 生物医学信息系**
 
 研究方向：生物信息学、计算生物学、多组学数据分析
 
@@ -172,7 +172,7 @@ Quarto多格式输出；Git版本控制；可重复性研究最佳实践
 
 ::: {.text-center .py-4 .mt-5 style="background: #f8f9fa;"}
 
-**中南大学 · 生物信息学专业**  
+**中南大学 · 生物医学信息系**  
 *Department of Biomedical Informatics, Central South University*
 
 本课程网站使用 [Quarto](https://quarto.org) 构建 · 

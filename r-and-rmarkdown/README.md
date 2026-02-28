@@ -1,16 +1,16 @@
 # R与(R)Markdown基础
 
-> 中南大学 · 生物信息学专业 · 本科课程 · 4学时
+> 中南大学 · 生物医学信息系 · 本科生/研究生课程 · 4学时
 
 ## 课程简介
 
-本课程面向**生物信息学专业**大二本科生，系统讲授 **R语言基础语法** 与 **(R)Markdown文档编写** 技术。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生掌握R编程核心技能与可重复性研究报告撰写能力。
+本课程面向**生物医学信息系**本科生/研究生，系统讲授 **R语言基础语法** 与 **(R)Markdown文档编写** 技术。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生掌握R编程核心技能与可重复性研究报告撰写能力。
 
 ## 授课教师
 
 **王诗翔 副教授**
 
-- 单位：中南大学 · 生物信息学专业
+- 单位：中南大学 · 生物医学信息系
 - 实验室主页：https://wanglabcsu.github.io/
 - 邮箱：wangshx@csu.edu.cn
 - GitHub：[@WangLabCSU](https://github.com/WangLabCSU)
@@ -120,7 +120,7 @@ r-and-rmarkdown/
 
 ## 后续课程
 
-本课程是生物信息学专业课程体系的基础模块，后续可衔接：
+本课程是生物医学信息系课程体系的基础模块，后续可衔接：
 
 | 课程 | 内容 |
 |------|------|
@@ -149,7 +149,7 @@ r-and-rmarkdown/
 ---
 
 <p align="center">
-  <strong>中南大学 · 生物信息学专业</strong><br>
+  <strong>中南大学 · 生物医学信息系</strong><br>
   <em>Department of Biomedical Informatics, Central South University</em>
 </p>
 

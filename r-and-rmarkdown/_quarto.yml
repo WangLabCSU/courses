@@ -7,7 +7,7 @@ project:
 
 website:
   title: "R与(R)Markdown基础"
-  description: "中南大学生物医学信息系 - 本科课程"
+  description: "中南大学生物医学信息系 - 本科/研究生课程"
   site-url: https://wanglabcsu.github.io/courses/r-and-rmarkdown
   repo-url: https://github.com/WangLabCSU/courses
   repo-branch: main
@@ -96,7 +96,7 @@ website:
               href: ../learning-resources.html
 
   page-footer:
-    left: "© 2026 王诗翔 - 中南大学 · 生物信息学专业"
+    left: "© 2026 王诗翔 - 中南大学 · 生物医学信息系"
     center: 
       - text: "WangLabCSU"
         href: https://github.com/WangLabCSU

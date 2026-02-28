@@ -4,7 +4,7 @@
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![Deploy](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml/badge.svg)](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml)
 
-> 本仓库用于存放王诗翔副教授在中南大学生物信息学专业的课程材料。
+> 本仓库用于存放王诗翔副教授在中南大学生物医学信息系的课程材料。
 
 🌐 **在线访问**: https://wanglabcsu.github.io/courses/
 
@@ -33,7 +33,7 @@
 
 | 课程 | 学时 | 对象 | 链接 |
 |------|:----:|------|------|
-| **R与(R)Markdown基础** | 4学时 | 大二本科 | [进入课程](r-and-rmarkdown/) |
+| **R与(R)Markdown基础** | 4学时 | 本科生/研究生 | [进入课程](r-and-rmarkdown/) |
 
 ## 🚀 快速开始
 

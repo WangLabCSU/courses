@@ -142,6 +142,10 @@ output:
 
 ## 3. 代码块
 
+::: {.callout-note appearance="simple" title="关于示例代码格式"}
+本讲座中的示例代码使用 ` ```r ` 格式（仅语法高亮展示）。在实际 R Markdown 文档中，请使用 ` ```{r} ` 格式创建可执行代码块。Python 使用 ` ```{python} `，其他语言类似。
+:::
+
 ### 3.1 基本语法
 
 `````markdown
@@ -459,7 +463,7 @@ csl: nature.csl  # 引用样式
 ## 联系信息
 
 - 授课教师：王诗翔 副教授
-- 单位：中南大学 · 生物信息学专业
+- 单位：中南大学 · 生物信息学 专业
 - 实验室主页：https://wanglabcsu.github.io/
 - 邮箱：wangshx@csu.edu.cn
 - GitHub：https://github.com/WangLabCSU

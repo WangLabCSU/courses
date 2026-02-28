@@ -1,5 +1,5 @@
 ---
-title: "中南大学 - 生物信息学课程"
+title: "中南大学 - 生物医学信息系课程"
 subtitle: "Department of Biomedical Informatics, Central South University"
 format:
   html:
@@ -9,12 +9,12 @@ format:
 
 ::: {.hero-banner .text-center .py-5 .mb-4 style="background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%); color: white;"}
 
-# 生物信息学课程
+# 生物医学信息系课程
 
-## Bioinformatics Courses
+## Biomedical Informatics Courses
 
 ::: {.lead .mt-3}
-中南大学 · 生物信息学专业 · 本科课程
+中南大学 · 生物医学信息系 · 本科生/研究生课程
 :::
 
 ::: {.mt-4}
@@ -61,7 +61,7 @@ format:
 ### 📊 R与(R)Markdown基础
 
 **学时**: 4学时（理论2 + 实验2）  
-**对象**: 生物信息学专业 大二本科生
+**对象**: 生物医学信息系 本科生/研究生
 
 掌握R语言核心语法与可重复性研究报告撰写技能。
 
@@ -79,7 +79,7 @@ format:
 ### 🧬 转录组数据分析
 
 **学时**: 4学时（理论2 + 实验2）  
-**对象**: 生物信息学专业 大二本科生
+**对象**: 生物医学信息系 本科生/研究生
 
 RNA-seq数据处理与差异表达分析。
 
