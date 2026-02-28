@@ -44,15 +44,5 @@ venv/
 *.html
 *.pdf
 *.docx
-!slides/*.html  # Keep rendered slides
-
-# Data (large files)
-*.csv
-*.tsv
-*.xlsx
-*.rds
-*.rda
-*.RData
-!data/*.csv     # Keep small example data
 
 **/*.quarto_ipynb
