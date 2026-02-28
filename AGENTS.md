@@ -152,6 +152,8 @@ format:
 
 ### 3.3 代码块规范
 
+#### 可执行代码块
+
 实验手册中的代码块必须使用可执行的R代码：
 
 ````markdown
@@ -165,9 +167,63 @@ print(result)
 ```
 ````
 
+#### 示例代码块（不执行）
+
+当需要展示代码块语法本身时（如教程、幻灯片中展示R Markdown语法），使用以下技巧：
+
+**方法：4个反引号 + `{{r}}` 双大括号语法**
+
+````markdown
+````markdown
+```{{r chunk-name, echo=TRUE}}
+# 这段代码不会被实际执行
+# 仅作为语法示例展示
+x <- 1:10
+mean(x)
+```
+````
+````
+
+**原理说明**：
+
+1. **4个反引号**（````）用于包裹整个示例块，比内部代码块多一个反引号
+2. **`{{r}}` 双大括号**：Quarto会将 `{{r}}` 转换为 `{r}` 进行渲染，但不会解析执行
+3. 这样示例代码块只会被语法高亮显示，不会被实际运行
+
+**适用场景**：
+- 讲座笔记中展示R Markdown/Quarto语法
+- 幻灯片中演示代码块选项
+- 教程文档中说明代码块写法
+
+**R Markdown vs Quarto 语法区分**：
+
+在介绍R Markdown时，应使用R Markdown传统语法：
+````markdown
+````markdown
+```{{r chunk-name, echo=TRUE, eval=TRUE}}
+# R代码
+```
+````
+````
+
+在介绍Quarto时，才使用Quarto风格的 `#|` 语法：
+````markdown
+````markdown
+```{{r}}
+#| label: chunk-name
+#| echo: true
+#| eval: true
+
+# R代码
+```
+````
+````
+
+#### 参考答案格式
+
 参考答案使用 `<details>` 标签包裹：
 
-```markdown
+````markdown
 <details>
 <summary>点击查看参考答案</summary>
 
@@ -175,7 +231,7 @@ print(result)
 # 参考答案代码
 ```
 </details>
-```
+````
 
 ## 4. 样式规范
 

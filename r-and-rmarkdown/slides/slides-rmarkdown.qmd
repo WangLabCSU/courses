@@ -115,7 +115,7 @@ showtext::showtext_auto()
 
 ### 行内代码与代码块
 
-`````markdown
+````markdown
 使用 `filter()` 函数筛选数据
 
 ```r
@@ -123,18 +123,18 @@ showtext::showtext_auto()
 library(dplyr)
 data |> filter(age > 50)
 ```
-`````
+````
 
 ### LaTeX公式
 
-`````markdown
+````markdown
 行内：$E = mc^2$
 
 独立：
 $$
 \bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
 $$
-`````
+````
 
 ---
 
@@ -162,7 +162,7 @@ $$
 
 ## 文档结构
 
-`````markdown
+````markdown
 ---
 title: "TP53基因表达分析"
 author: "王诗翔"
@@ -176,14 +176,14 @@ TP53是重要的肿瘤抑制基因...
 
 ## 数据分析
 
-```r
+```{{r}}
 # 读取数据
 expr_data <- read.csv("tp53_expression.csv")
 summary(expr_data)
 ```
 
 表达量分布如上图所示...
-`````
+````
 
 ---
 
@@ -209,19 +209,15 @@ output:
 
 ## 代码块选项
 
-::: {.callout-note appearance="simple" title="关于示例代码格式"}
-本幻灯片中的示例代码使用 ` ```r ` 格式（仅展示）。实际使用时请用 ` ```{r} ` 创建可执行代码块。
-:::
-
 ### 基本语法
 
-`````markdown
-```{r chunk-name, echo=TRUE, eval=TRUE}
+````markdown
+```{{r chunk-name, echo=TRUE, eval=TRUE}}
 # R代码
 x <- 1:10
 mean(x)
 ```
-`````
+````
 
 ### 常用选项
 
@@ -229,9 +225,12 @@ mean(x)
 |------|------|--------|
 | `echo` | 显示代码 | `TRUE/FALSE` |
 | `eval` | 执行代码 | `TRUE/FALSE` |
-| `results` | 输出格式 | `'markup'/'asis'` |
-| `warning` | 显示警告 | `FALSE` |
-| `message` | 显示信息 | `FALSE` |
+| `results` | 输出处理 | `'markup'/'hide'` |
+| `warning` | 显示警告 | `TRUE/FALSE` |
+| `message` | 显示消息 | `TRUE/FALSE` |
+| `fig.width` | 图宽 | 数字 |
+| `fig.height` | 图高 | 数字 |
+| `fig.cap` | 图标题 | 字符串 |
 
 ---
 
@@ -239,11 +238,11 @@ mean(x)
 
 ### 只显示结果（隐藏代码）
 
-`````markdown
-```{r, echo=FALSE}
+````markdown
+```{{r, echo=FALSE}}
 summary(cars)
 ```
-`````
+````
 
 ```{r, echo=FALSE}
 summary(cars)
@@ -255,11 +254,11 @@ summary(cars)
 
 ### 显示代码和结果
 
-`````markdown
-```{r, echo=TRUE}
+````markdown
+```{{r}}
 head(cars, 3)
 ```
-`````
+````
 
 ```{r, echo=TRUE}
 head(cars, 3)
@@ -271,10 +270,10 @@ head(cars, 3)
 
 > 在文本中嵌入R代码结果，实现**动态更新**
 
-`````markdown
+````markdown
 数据集包含 `r nrow(cars)` 个观测值，
 平均速度为 `r round(mean(cars$speed), 1)` mph。
-`````
+````
 
 数据集包含 `r nrow(cars)` 个观测值，
 平均速度为 `r round(mean(cars$speed), 1)` mph。
@@ -291,11 +290,11 @@ head(cars, 3)
 
 ### 基础图形
 
-```{r, fig.width=10, fig.height=6}
+```{r, fig.width=10, fig.height=6, fig.cap="车速与刹车距离"}
 plot(cars$speed, cars$dist, 
      main = "车速与刹车距离",
-     xlab = "速度 (mph)",
-     ylab = "距离 (ft)",
+     xlab = "速度",
+     ylab = "距离",
      pch = 19, col = "steelblue", cex = 1.5)
 ```
 
@@ -350,8 +349,8 @@ params:
 
 ### 使用参数
 
-`````markdown
-```r
+````markdown
+```{{r}}
 # 根据参数筛选数据
 gene_data <- expr_data[expr_data$gene == params$gene, ]
 mean_expr <- mean(gene_data$expression)
@@ -360,7 +359,7 @@ if (params$show_plot) {
   hist(gene_data$expression, main = params$gene)
 }
 ```
-`````
+````
 
 ---
 
@@ -389,7 +388,7 @@ R Markdown → Quarto → 统一的多语言平台
 
 ## Quarto文档结构
 
-`````markdown
+````markdown
 ---
 title: "Quarto演示"
 format: 
@@ -400,11 +399,10 @@ format:
 
 ## Python分析
 
-```python
+```{{python}}
 import pandas as pd
 import numpy as np
 
-# 创建示例数据
 df = pd.DataFrame({
     'x': np.random.randn(100),
     'y': np.random.randn(100)
@@ -414,15 +412,13 @@ df.describe()
 
 ## R可视化
 
-```r
+```{{r}}
 library(ggplot2)
-
-# 使用R内置数据
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point(color = "steelblue", size = 3) +
   theme_minimal()
 ```
-`````
+````
 
 ---
 
@@ -437,41 +433,39 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
 ---
 
-## 交叉引用
+## Quarto代码块选项
 
-### 图表引用
+### 基本语法（Quarto风格）
 
-`````markdown
+````markdown
+```{{r}}
+#| label: chunk-name
+#| echo: false
+#| eval: true
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "图表标题"
+
+# R代码
+x <- 1:10
+mean(x)
+```
+````
+
+### 交叉引用
+
+````markdown
 见 @fig-tp53 显示了TP53表达分布。
 
-```r
+```{{r}}
 #| label: fig-tp53
 #| fig-cap: "TP53基因表达分布"
 
-# 创建示例数据
 tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1, 11.5, 7.8, 13.2)
-hist(tp53_expr, main = "TP53基因表达分布", xlab = "表达量", col = "steelblue")
+hist(tp53_expr, main = "TP53基因表达分布", 
+     xlab = "表达量", col = "steelblue")
 ```
-`````
-
-### 表格引用
-
-`````markdown
-如 @tbl-summary 所示，差异表达基因共50个。
-
-```r
-#| label: tbl-summary
-#| tbl-cap: "差异表达基因汇总"
-
-# 创建示例差异表达结果
-de_results <- data.frame(
-  gene = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),
-  log2FoldChange = c(2.3, -1.5, 3.2, 1.8, -2.1),
-  pvalue = c(0.001, 0.01, 0.0001, 0.005, 0.002)
-)
-knitr::kable(de_results)
-```
-`````
+````
 
 ---
 
@@ -606,10 +600,6 @@ find_de_genes <- function(expr_matrix, group, method = "t-test") {
 
 ## 课程总结
 
-# 从数据到发表
-
-## 完整科研流程
-
 ```
 实验设计 → 数据采集 → 质量控制 → 
 统计分析 → 可视化 → R Markdown/Quarto → 
@@ -625,8 +615,6 @@ find_de_genes <- function(expr_matrix, group, method = "t-test") {
 
 ---
 
-# 谢谢！
-
 ## 开始你的可重复研究之旅！
 
 王诗翔 副教授  
@@ -639,3 +627,6 @@ find_de_genes <- function(expr_matrix, group, method = "t-test") {
 
 - 实验指导：R Markdown实战
 - 撰写你的第一份生信分析报告
+
+# 谢谢！
+

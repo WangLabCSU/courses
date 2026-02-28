@@ -142,68 +142,89 @@ output:
 
 ## 3. 代码块
 
-::: {.callout-note appearance="simple" title="关于示例代码格式"}
-本讲座中的示例代码使用 ` ```r ` 格式（仅语法高亮展示）。在实际 R Markdown 文档中，请使用 ` ```{r} ` 格式创建可执行代码块。Python 使用 ` ```{python} `，其他语言类似。
-:::
-
 ### 3.1 基本语法
 
-`````markdown
-```{r chunk-name, echo=TRUE, eval=TRUE}
+````markdown
+```{{r}}
+#| label: chunk-name
+#| echo: true
+#| eval: true
+
 # R代码
 x <- 1:10
 mean(x)
 ```
-`````
+````
 
 ### 3.2 常用选项
 
 | 选项 | 说明 | 常用值 |
 |------|------|--------|
-| `echo` | 显示代码 | `TRUE/FALSE` |
-| `eval` | 执行代码 | `TRUE/FALSE` |
-| `results` | 输出处理 | `'markup'/'asis'/'hide'` |
-| `fig.width` | 图宽 | 数字(英寸) |
-| `fig.height` | 图高 | 数字(英寸) |
-| `fig.cap` | 图标题 | 字符串 |
-| `warning` | 显示警告 | `TRUE/FALSE` |
-| `message` | 显示消息 | `TRUE/FALSE` |
-| `error` | 显示错误 | `TRUE/FALSE` |
+| `echo` | 显示代码 | `true/false` |
+| `eval` | 执行代码 | `true/false` |
+| `output` | 显示结果 | `true/false` |
+| `fig-width` | 图宽 | 数字(英寸) |
+| `fig-height` | 图高 | 数字(英寸) |
+| `fig-cap` | 图标题 | 字符串 |
+| `warning` | 显示警告 | `true/false` |
+| `message` | 显示消息 | `true/false` |
 
 ### 3.3 代码块示例
 
 **显示代码和结果（默认）**：
 
-`````markdown
-```{r}
+````markdown
+```{{r}}
 head(mtcars, 3)
 ```
-`````
+````
 
 **只显示结果**：
 
-`````markdown
-```{r, echo=FALSE}
+````markdown
+```{{r}}
+#| echo: false
 summary(cars)
+```
+````
+
+**显示代码，不执行**：
+
+````markdown
+```{{r}}
+#| eval: false
+# 耗时计算
+heavy_computation()
+```
+````
+
+**隐藏警告**：
+
+````markdown
+```{{r}}
+#| warning: false
+library(tidyverse)  # 抑制加载警告
 ```
 `````
 
 **显示代码，不执行**：
 
-`````markdown
-```{r, eval=FALSE}
+````markdown
+```{{r}}
+#| eval: false
 # 耗时计算
 heavy_computation()
 ```
-`````
+````
 
 **隐藏警告**：
 
-`````markdown
-```{r, warning=FALSE}
+````markdown
+```{{r}}
+#| warning: false
 library(tidyverse)  # 抑制加载警告
 ```
-`````
+````
 
 ---
 
@@ -236,8 +257,8 @@ library(tidyverse)  # 抑制加载警告
 
 ### 5.1 基础图形
 
-`````markdown
-```r
+````markdown
+```{{r}}
 #| fig-width: 8
 #| fig-height: 6
 #| fig-cap: "基因表达散点图"
@@ -247,12 +268,12 @@ plot(tp53_expr, p53_protein,
      ylab = "p53蛋白水平",
      pch = 19, col = "steelblue")
 ```
-`````
+````
 
 ### 5.2 ggplot2图形
 
-`````markdown
-```r
+````markdown
+```{{r}}
 #| fig-cap: "差异表达基因火山图"
 library(ggplot2)
 
@@ -263,29 +284,29 @@ ggplot(de_results, aes(x = log2FoldChange, y = -log10(pvalue))) +
        x = "log2 Fold Change",
        y = "-log10(p-value)")
 ```
-`````
+````
 
 ### 5.3 表格
 
 **基础表格**：
 
-`````markdown
-```r
+````markdown
+```{{r}}
 knitr::kable(
   head(gene_expr_summary, 5),
   caption = "基因表达统计摘要（前5个基因）",
   align = c('l', 'c', 'c', 'c')
 )
 ```
-`````
+````
 
 **交互式表格（HTML）**：
 
-`````markdown
-```r
+````markdown
+```{{r}}
 DT::datatable(de_results, options = list(pageLength = 10))
 ```
-`````
+````
 
 ---
 
@@ -306,8 +327,8 @@ params:
 
 ### 6.2 使用参数
 
-`````markdown
-```r
+````markdown
+```{{r}}
 # 筛选差异表达基因
 de_genes <- de_results[
   abs(de_results$log2FoldChange) > params$fc_threshold &
@@ -319,12 +340,12 @@ cat("目标基因:", params$gene_of_interest, "\n")
 cat("差异表达基因数:", nrow(de_genes), "\n")
 ```
 
-```r
+```{{r}}
 #| eval: params$show_volcano
 # 条件显示火山图
 plot_volcano(de_results, params$fc_threshold, params$pvalue_threshold)
 ```
-`````
+````
 
 ### 6.3 应用场景
 
@@ -383,33 +404,33 @@ output:
 
 使用 `knitr::read_chunk()` 引用外部代码文件：
 
-`````markdown
-```r
+````markdown
+```{{r}}
 #| include: false
 knitr::read_chunk('analysis.R')
 ```
 
-```r
+```{{r}}
 #| label: analysis-setup
 # 这里会插入 analysis.R 中标记为 ## ----analysis-setup 的代码
 ```
-`````
+````
 
 ### 8.2 条件输出
 
-`````markdown
-```r
+````markdown
+```{{r}}
 #| include: knitr::is_html_output()
 # 仅在HTML输出时包含
 DT::datatable(de_results)
 ```
 
-```r
+```{{r}}
 #| include: knitr::is_latex_output()
 # 仅在PDF输出时包含
 knitr::kable(head(de_results, 20))
 ```
-`````
+````
 
 ### 8.3 参考文献
 

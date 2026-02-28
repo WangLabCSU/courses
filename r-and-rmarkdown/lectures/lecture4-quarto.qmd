@@ -87,21 +87,23 @@ mtcars |> head()
 
 **R Markdown风格**：
 
-`````markdown
-```{r, echo=FALSE, fig.width=8}
-plot(cars)
-```
-`````
-
-**Quarto风格**（推荐）：
-
-`````markdown
-```{r}
+````markdown
+```{{r}}
 #| echo: false
 #| fig-width: 8
 plot(cars)
 ```
-`````
+````
+
+**Quarto风格**（推荐）：
+
+````markdown
+```{{r}}
+#| echo: false
+#| fig-width: 8
+plot(cars)
+```
+````
 
 ---
 
@@ -117,7 +119,7 @@ format: html
 
 ## Python数据处理
 
-```python
+```{{python}}
 import pandas as pd
 import numpy as np
 
@@ -130,7 +132,7 @@ data.head()
 
 ## R可视化
 
-```r
+```{{r}}
 library(ggplot2)
 library(reticulate)
 
