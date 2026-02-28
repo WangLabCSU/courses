@@ -1,19 +1,24 @@
 /*-- scss:defaults --*/
 
-/* CSU BMI Course Theme for Reveal.js - Optimized */
+/* CSU BMI Course Theme for Reveal.js - Optimized with Specky-inspired features */
 
-// Colors
+// Colors - Enhanced palette
 $csu-red: #8B0000;
 $csu-gold: #C5B358;
 $dark-blue: #1a5276;
 $light-gray: #f8f9fa;
+$code-bg: #f5f5f5;
+$text-muted: #5a6570;
 
-// Override reveal.js variables - 85% of original size
+// Typography - Specky-inspired font stack with Chinese support
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&family=Nunito:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+
+// Override reveal.js variables
 $backgroundColor: #ffffff;
-$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
+$mainFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Nunito", "Source Sans Pro", sans-serif;
 $mainFontSize: 27px;
 $mainColor: #333333;
-$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "SimHei", sans-serif;
+$headingFont: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Nunito", "Source Sans Pro", sans-serif;
 $headingColor: #8B0000;
 $headingLineHeight: 1.3;
 $headingLetterSpacing: normal;
@@ -25,9 +30,25 @@ $linkColorHover: darken(#1a5276, 15%);
 $selectionBackgroundColor: #8B0000;
 $selectionColor: #ffffff;
 
+// Presentation sizing - Specky-inspired modular scale
+$presentation-font-size-root: 27px;
+$presentation-line-height: 1.3;
+$presentation-h1-font-size: 1.802em;
+$presentation-h2-font-size: 1.602em;
+$presentation-h3-font-size: 1.424em;
+$presentation-h4-font-size: 1.266em;
+$presentation-h5-font-size: 1.125em;
+$presentation-h6-font-size: 1em;
+
+// Code styling - Specky-inspired
+$code-color: #3b4819;
+$code-block-bg: $code-bg;
+$code-block-border-color: transparent;
+$font-family-monospace: "JetBrains Mono", "Fira Mono", "Fira Code", monospace;
+
 /*-- scss:rules --*/
 
-// Title slide
+// Title slide - Enhanced with better centering
 .reveal .title-slide {
   background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
   text-align: center;
@@ -35,12 +56,12 @@ $selectionColor: #ffffff;
 
 .reveal .title-slide h1 {
   color: #ffffff;
-  font-size: 2em;
+  font-size: 1.9em;
   font-weight: 700;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
   border-bottom: none;
   margin-bottom: 0.3em;
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .reveal .title-slide h2 {
@@ -55,7 +76,23 @@ $selectionColor: #ffffff;
   color: $csu-gold;
   font-size: 0.95em;
   font-weight: 500;
-  margin-top: 3em;
+  margin-top: 2em;
+}
+
+// Specky-inspired title container layout
+#title-slide .title-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+#title-slide .title-parent {
+  display: grid;
+  margin: auto;
+  padding: 2em;
+  align-items: center;
+  grid-column-gap: 2em;
 }
 
 // Section divider slides
@@ -72,9 +109,9 @@ $selectionColor: #ffffff;
   border-bottom: none;
 }
 
-// Headings - 85% of original
+// Headings - Specky-inspired modular scale
 .reveal h1 {
-  font-size: 1.5em;
+  font-size: $presentation-h1-font-size;
   color: $csu-red;
   border-bottom: 3px solid $csu-red;
   padding-bottom: 0.2em;
@@ -84,36 +121,36 @@ $selectionColor: #ffffff;
 }
 
 .reveal h2 {
-  font-size: 1.3em;
+  font-size: $presentation-h2-font-size;
   color: $csu-red;
   margin-bottom: 0.4em;
   font-weight: 600;
 }
 
 .reveal h3 {
-  font-size: 1.05em;
+  font-size: $presentation-h3-font-size;
   color: $dark-blue;
   margin-bottom: 0.3em;
   font-weight: 600;
 }
 
 .reveal h4 {
-  font-size: 0.95em;
+  font-size: $presentation-h4-font-size;
   color: $dark-blue;
   margin-bottom: 0.25em;
   font-weight: 600;
 }
 
-// Paragraph
+// Paragraph - Improved readability
 .reveal p {
   margin-bottom: 0.6em;
   line-height: 1.5;
   font-size: 1em;
 }
 
-// Code blocks - compact, no overflow
+// Code blocks - Specky-inspired styling
 .reveal pre {
-  background-color: #f5f5f5;
+  background-color: $code-bg;
   border: 1px solid #e0e0e0;
   border-left: 3px solid $csu-red;
   border-radius: 6px;
@@ -121,23 +158,22 @@ $selectionColor: #ffffff;
   margin: 0.5em 0;
   box-shadow: none;
   overflow: hidden;
+  font-size: 1.75rem !important;
+  line-height: 1.3;
 }
 
 .reveal pre code {
-  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-  font-size: 0.8em;
+  font-family: $font-family-monospace;
+  font-size: 0.8em !important;
   line-height: 1.4;
   background: none;
+  border-radius: 6px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
-// Hide code copy button to prevent overflow
-.reveal .code-copy-button {
-  display: none !important;
-}
-
-// Inline code
 .reveal code {
-  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  font-family: $font-family-monospace;
   background-color: #fff3cd;
   padding: 0.1em 0.3em;
   border-radius: 3px;
@@ -146,11 +182,44 @@ $selectionColor: #ffffff;
   font-weight: 500;
 }
 
-// Tables - compact
+// Hide code copy button to prevent overflow
+.reveal .code-copy-button {
+  display: none !important;
+}
+
+.reveal div.sourceCode {
+  border: 0 !important;
+  border-radius: 6px;
+  margin-bottom: 0.6em !important;
+}
+
+// Specky-inspired font size utilities
+.largest { font-size: 1.953em; }
+.larger { font-size: 1.563em; }
+.large { font-size: 1.25em; }
+.small { font-size: 0.8em; }
+.smaller { font-size: 0.64em; }
+.smallest { font-size: 0.512em; }
+
+.reveal .largest pre { font-size: 3.41rem !important; }
+.reveal .larger pre { font-size: 2.73rem !important; }
+.reveal .large pre { font-size: 2.19rem !important; }
+.reveal .small pre { font-size: 1.40rem !important; }
+.reveal .smaller pre { font-size: 1.12rem !important; }
+.reveal .smallest pre { font-size: 0.986rem !important; }
+
+.reveal .largest code { font-size: 1.56em !important; }
+.reveal .larger code { font-size: 1.25em !important; }
+.reveal .large code { font-size: 1em !important; }
+.reveal .small code { font-size: 0.64em !important; }
+.reveal .smaller code { font-size: 0.51em !important; }
+.reveal .smallest code { font-size: 0.41em !important; }
+
+// Tables - Specky-inspired compact styling
 .reveal table {
   border-collapse: collapse;
   margin: 0.8em auto;
-  font-size: 0.8em;
+  font-size: 0.8em !important;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -172,7 +241,7 @@ $selectionColor: #ffffff;
   background-color: #fafafa;
 }
 
-// Columns
+// Columns - Improved gap
 .reveal .columns {
   display: flex;
   gap: 1.5em;
@@ -183,11 +252,12 @@ $selectionColor: #ffffff;
   flex: 1;
 }
 
-// Lists - compact
+// Lists - Specky-inspired compact styling
 .reveal ul {
   list-style-type: none;
   padding-left: 0;
   margin: 0.6em 0;
+  line-height: 1.2;
 }
 
 .reveal ul li {
@@ -196,6 +266,8 @@ $selectionColor: #ffffff;
   margin-bottom: 0.4em;
   font-size: 0.95em;
   line-height: 1.4;
+  margin-top: 0.05em !important;
+  margin-bottom: 0.05em !important;
 }
 
 .reveal ul li::before {
@@ -210,15 +282,18 @@ $selectionColor: #ffffff;
 .reveal ol {
   margin: 0.6em 0;
   padding-left: 1.5em;
+  line-height: 1.2;
 }
 
 .reveal ol li {
   margin-bottom: 0.4em;
   font-size: 0.95em;
   line-height: 1.4;
+  margin-top: 0.05em !important;
+  margin-bottom: 0.05em !important;
 }
 
-// Blockquote
+// Blockquote - Enhanced styling
 .reveal blockquote {
   background: #f8f9fa;
   border-left: 4px solid $csu-red;
@@ -226,6 +301,8 @@ $selectionColor: #ffffff;
   margin: 0.8em 0;
   font-style: italic;
   border-radius: 0 6px 6px 0;
+  font-size: inherit;
+  color: $text-muted;
 }
 
 // Emphasis
@@ -244,7 +321,7 @@ $selectionColor: #ffffff;
   background: $csu-red;
 }
 
-// Slide number
+// Slide number - Enhanced
 .reveal .slide-number {
   background-color: $csu-red;
   color: white;
@@ -252,6 +329,7 @@ $selectionColor: #ffffff;
   border-radius: 3px;
   font-size: 12px;
   font-weight: 500;
+  font-family: $mainFont;
 }
 
 // Figure images
@@ -271,7 +349,7 @@ $selectionColor: #ffffff;
   border-radius: 4px;
 }
 
-// Slide layout
+// Slide layout - Enhanced
 .reveal .slides {
   text-align: left;
 }
@@ -310,6 +388,133 @@ $selectionColor: #ffffff;
   right: 10px;
   height: 40px;
   opacity: 0.9;
+}
+
+// Text alignment utilities - Specky-inspired
+.reveal .left {
+  display: block;
+  text-align: left;
+}
+
+.reveal .center {
+  display: block;
+  text-align: center;
+}
+
+.reveal .right {
+  display: block;
+  text-align: right;
+}
+
+// Vertical alignment utilities - Specky-inspired
+.reveal .v-center {
+  display: grid;
+  align-items: center;
+  height: 90%;
+}
+
+.reveal .v-top {
+  display: grid;
+  align-items: start;
+  height: 90%;
+}
+
+.reveal .v-bottom {
+  display: grid;
+  align-items: end;
+  height: 90%;
+}
+
+// Slide alignment - Specky-inspired
+.reveal .slides section[data-vertical-align-top] {
+  top: 0 !important;
+}
+
+// Badge - Specky-inspired
+.badge {
+  font-size: 0.85em;
+  background-color: $csu-red;
+  color: white;
+  padding: 0.05em 0.3em;
+  border-radius: 4px;
+  vertical-align: baseline;
+}
+
+.badge-primary {
+  background-color: $csu-red;
+}
+
+.badge-secondary {
+  background-color: $csu-gold;
+  color: #333;
+}
+
+// Callout - Specky-inspired enhanced styling
+.reveal .callout {
+  border-radius: 0 !important;
+}
+
+.reveal .callout-style-default,
+.reveal .callout-style-simple {
+  border: solid silver 1px !important;
+}
+
+.reveal .callout.callout-style-simple .callout-title,
+.reveal .callout.callout-style-default .callout-title {
+  font-size: 1.6rem !important;
+}
+
+.reveal .callout.callout-style-simple .callout-content,
+.reveal .callout.callout-style-default .callout-content {
+  font-size: 1.4rem !important;
+}
+
+.reveal div.callout.callout-style-simple div.callout-title p,
+.reveal div.callout.callout-style-default div.callout-title p {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.reveal div.callout.callout-style-simple .callout-icon::before,
+.reveal div.callout.callout-style-default .callout-icon::before {
+  height: 1.4rem;
+  width: 1.5rem;
+  background-size: 1.4rem 1.4rem;
+}
+
+.reveal .callout.callout-titled .callout-icon::before {
+  margin-top: 0.55rem;
+}
+
+// Panel tabset - Specky-inspired
+.reveal .panel-tabset [role="tab"][aria-selected="true"] {
+  border: lightgray 2px solid;
+  border-radius: 6px 6px 0px 0px;
+  border-bottom: none;
+}
+
+.reveal .panel-tabset .tab-content {
+  border-top: lightgray 2px solid;
+}
+
+.reveal .panel-tabset .panel-tabset-tabby {
+  margin-bottom: 0;
+}
+
+// Citation - Specky-inspired
+.reveal .citation,
+.reveal .citation a:hover {
+  font-size: 0.8em;
+  color: lightgray;
+}
+
+.reveal .citation a {
+  font-size: 0.8em;
+  color: gray;
+}
+
+.references {
+  font-size: 0.7rem;
 }
 
 // Info boxes - compact
