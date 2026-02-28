@@ -47,6 +47,11 @@ install.packages("tidyverse")
 library(tidyverse)
 ```
 
+```{r}
+# 支持图片显示中文字体
+showtext::showtext_auto()
+```
+
 ---
 
 ## 2. dplyr数据处理

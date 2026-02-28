@@ -132,7 +132,7 @@ format:
     link-external-newwindow: true
 
 execute:
-  freeze: false
+  freeze: true
   echo: true
 
 bibliography: references.bib
