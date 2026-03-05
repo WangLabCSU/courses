@@ -50,6 +50,10 @@ website:
       - href: ../learning-resources.html
         text: 学习资源
     right:
+      - text: "🤖 AI问答"
+        href: https://deepwiki.com/WangLabCSU/courses
+        target: _blank
+        aria-label: AI问答
       - icon: bug
         text: "报告问题"
         href: https://github.com/WangLabCSU/courses/issues/new

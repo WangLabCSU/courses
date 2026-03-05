@@ -2,7 +2,8 @@
 
 [![Quarto](https://img.shields.io/badge/Built%20with-Quarto-blue)](https://quarto.org/)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
-[![Deploy](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml/badge.svg)](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml/badge.svg)](https://github.com/WangLabCSU/courses/actions/workflows/deploy.yml) 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/WangLabCSU/courses)
 
 > 本仓库用于存放王诗翔副教授在中南大学生物医学信息系的课程材料。
 
