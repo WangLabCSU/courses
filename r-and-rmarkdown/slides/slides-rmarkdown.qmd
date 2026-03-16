@@ -2,6 +2,7 @@
 title: "R Markdown与可重复研究"
 subtitle: "从代码到专业科研报告"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
+date: "2025"
 format:
   revealjs:
     theme: [default, ../styles/slides.scss]
@@ -26,92 +27,153 @@ execute:
 showtext::showtext_auto()
 ```
 
-# 课程介绍
+# 课程大纲
 
-## 为什么需要R Markdown？
-
-### 传统科研工作流程的痛点
+## 本讲内容
 
 ::: {.columns}
 ::: {.column width="50%"}
-#### ❌ 传统方式
-- Excel + Word + PPT 分离
-- 数据更新后手动改图
-- 代码和文档不同步
-- 难以复现分析过程
+1. **什么是R Markdown**
+2. **Markdown基本语法**
+3. **R Markdown文档结构**
 :::
 ::: {.column width="50%"}
-#### ✅ R Markdown方式
-- 代码+文档一体化
-- 数据更新自动刷新
-- 一处修改全局更新
-- 完全可重复的分析
+4. **代码块选项**
+5. **Quarto：下一代工作流**
+6. **可重复性研究最佳实践**
 :::
 :::
 
 ---
 
-## 本讲目标
+# 第1部分：什么是R Markdown？
 
-### 你将掌握
+## 1.1 传统科研流程的痛点
 
-| 技能 | 应用场景 |
-|------|----------|
-| ✅ Markdown语法 | 撰写README、文档 |
-| ✅ R Markdown结构 | 生信分析报告 |
-| ✅ 代码块控制 | 展示/隐藏分析过程 |
-| ✅ 图表表格 | 发表级可视化 |
-| ✅ Quarto工作流 | 现代科研写作 |
+::: {.columns}
+::: {.column width="50%"}
+### ❌ 传统方式
+
+- Excel + Word + PPT **分离**
+- 数据更新后**手动**重绘图表
+- 代码和文档**不同步**
+- 难以**复现**分析过程
+- 合作者看不懂分析步骤
+:::
+::: {.column width="50%"}
+### ✅ R Markdown方式
+
+- 代码 + 文档 **一体化**
+- 数据更新**自动**刷新图表
+- **一处修改**，全局更新
+- 完全**可重复**的分析
+- 生成HTML / PDF / Word多格式
+:::
+:::
+
+> 💡 R Markdown实现了**文学编程（Literate Programming）**的理念
 
 ---
 
-# 第1部分：Markdown基础
+## 1.2 R Markdown的核心价值
 
-## 什么是Markdown？
+```
+.Rmd文件 → knitr执行R代码 → Markdown → pandoc渲染 → HTML/PDF/Word
+     ↑______________________________________________|
+               （数据更新后重新knit即可）
+```
 
-> Markdown是**轻量级标记语言**，用纯文本编写格式化文档
+### 三大核心优势
+
+1. **动态报告** — 数据变化，报告自动更新
+2. **可重复性** — 他人可完全复现分析过程
+3. **多格式输出** — 一份源码，生成多种格式
+
+> 参考：Yihui Xie 的 *R Markdown: The Definitive Guide*  
+> <https://bookdown.org/yihui/rmarkdown/>
+
+---
+
+# 第2部分：Markdown基本语法
+
+## 2.1 什么是Markdown？
+
+> Markdown是**轻量级标记语言**，用纯文本格式编写，一键转换为格式化文档
 
 ### 设计哲学
 
 > "让格式语法尽可能**可读**"
-> — John Gruber
+> — John Gruber（Markdown创始人）
 
 ### 优势
 
-- ✅ 纯文本，版本控制友好
-- ✅ 易读易写，专注内容
-- ✅ 一键转换为HTML/PDF/Word
+- ✅ 纯文本，**版本控制**友好（Git追踪变化）
+- ✅ 易读易写，**专注内容**
+- ✅ 一键转换为 HTML / PDF / Word / 幻灯片
 
 ---
 
-## 基础语法速查
+## 2.2 标题与文本格式
 
-### 标题与格式
+````markdown
+# 一级标题（H1）
+## 二级标题（H2）
+### 三级标题（H3）
 
-```markdown
-# 一级标题
-## 二级标题
-**粗体**  *斜体*  ~~删除线~~
-[链接](https://example.com)
-![图片](image.png)
-> 引用文字
-```
+**粗体文字**   *斜体文字*   ~~删除线~~
 
-### 列表与表格
+> 这是一段引用文字（blockquote）
 
-```markdown
-- 无序列表
-  - 子项目
-1. 有序列表
+---  （水平分隔线）
+````
 
-| 基因 | 表达量 | 显著性 |
-|------|--------|--------|
-| TP53 | 12.5 | *** |
-```
+**粗体文字**   *斜体文字*   ~~删除线~~
+
+> 这是一段引用文字（blockquote）
 
 ---
 
-## 代码与公式
+## 2.3 列表与链接
+
+````markdown
+- 无序列表项目一
+  - 子项目（缩进2个空格）
+- 无序列表项目二
+
+1. 有序列表第一条
+2. 有序列表第二条
+
+[链接文字](https://www.r-project.org/)
+![图片描述](image.png)
+````
+
+- 无序列表项目一
+  - 子项目（缩进2个空格）
+- 无序列表项目二
+
+[R官网](https://www.r-project.org/)
+
+---
+
+## 2.4 表格语法
+
+````markdown
+| 基因 | 表达量 | 显著性 | 调控方向 |
+|------|--------|--------|---------|
+| TP53 | 12.5 | *** | 上调 |
+| KRAS | 8.3  | *   | 上调 |
+| BRCA1 | 3.1 | ns  | 下调 |
+````
+
+| 基因 | 表达量 | 显著性 | 调控方向 |
+|------|--------|--------|---------|
+| TP53 | 12.5 | *** | 上调 |
+| KRAS | 8.3  | *   | 上调 |
+| BRCA1 | 3.1 | ns  | 下调 |
+
+---
+
+## 2.5 代码与公式
 
 ### 行内代码与代码块
 
@@ -119,124 +181,116 @@ showtext::showtext_auto()
 使用 `filter()` 函数筛选数据
 
 ```r
-# R代码块
+# R代码块（语法高亮）
 library(dplyr)
-data |> filter(age > 50)
+data |> filter(age > 50) |> select(id, age)
 ```
 ````
 
-### LaTeX公式
+### LaTeX数学公式
 
 ````markdown
-行内：$E = mc^2$
+行内公式：$BMI = \frac{weight}{height^2}$
 
-独立：
+独立公式：
 $$
-\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i,\quad
+s = \sqrt{\frac{\sum(x_i - \bar{x})^2}{n-1}}
 $$
 ````
 
 ---
 
-# 第2部分：R Markdown核心
+# 第3部分：R Markdown文档结构
 
-## R Markdown是什么？
+## 3.1 R Markdown的组成
 
-> R Markdown = **R代码** + **Markdown文本** → **动态报告**
-
-### 工作流程
-
-```
-.Rmd文件 → knitr执行 → Markdown → pandoc → HTML/PDF/Word
-    ↑______________________________________________|
-              (数据更新后重新编译)
-```
-
-### 核心优势
-
-1. **动态报告** — 数据变化，报告自动更新
-2. **可重复性** — 他人可完全复现分析
-3. **多格式输出** — 一份源码，多种格式
-
----
-
-## 文档结构
+> 在RStudio中创建：**File → New File → R Markdown**
 
 ````markdown
 ---
-title: "TP53基因表达分析"
+title: "TP53基因表达分析报告"
 author: "王诗翔"
-date: "2025-02-27"
+date: "2025-03-16"
 output: html_document
 ---
 
-# 简介
+## 简介
 
-TP53是重要的肿瘤抑制基因...
+TP53是重要的**肿瘤抑制基因**...
 
 ## 数据分析
 
-```{{r}}
-# 读取数据
+```{{r load-data}}
 expr_data <- read.csv("tp53_expression.csv")
 summary(expr_data)
 ```
 
-表达量分布如上图所示...
+根据上述统计摘要，数据包含 `r nrow(expr_data)` 个样本。
 ````
+
+三大组成：
+1. **YAML元数据**（`---`包围的头部）
+2. **Markdown文本**（叙述性内容）
+3. **R代码块**（以` ```{r} ` 开始）
 
 ---
 
-## YAML元数据配置
+## 3.2 YAML元数据配置
 
 ```yaml
 ---
-title: "研究标题"
-subtitle: "副标题"
+title: "RNA-seq差异表达分析"
+subtitle: "基于DESeq2的肿瘤vs正常分析"
 author: "王诗翔"
-date: "2025-02-27"
+date: "`r Sys.Date()`"
 output: 
   html_document:
-    toc: true              # 目录
-    code_folding: hide     # 折叠代码
-    theme: cerulean        # 主题
-    fig_width: 8           # 图宽
-    fig_height: 6          # 图高
+    toc: true            # 显示目录
+    toc_float: true      # 浮动目录
+    code_folding: hide   # 代码默认折叠
+    theme: cosmo         # 文档主题
+    fig_width: 8         # 图宽（英寸）
+    fig_height: 6        # 图高（英寸）
+    df_print: paged      # 分页显示数据框
 ---
 ```
 
+> 💡 `date: "\`r Sys.Date()\`"` 会自动插入今天的日期
+
 ---
 
-## 代码块选项
+## 3.3 代码块基本语法
 
-### 基本语法
+### R Markdown传统语法
 
 ````markdown
-```{{r chunk-name, echo=TRUE, eval=TRUE}}
-# R代码
-x <- 1:10
-mean(x)
+```{{r chunk-name, echo=TRUE, eval=TRUE, fig.width=8}}
+# 代码块名称唯一，方便导航和引用
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
 ```
 ````
 
-### 常用选项
+### 常用选项速查
 
-| 选项 | 说明 | 常用值 |
+| 选项 | 说明 | 默认值 |
 |------|------|--------|
-| `echo` | 显示代码 | `TRUE/FALSE` |
-| `eval` | 执行代码 | `TRUE/FALSE` |
-| `results` | 输出处理 | `'markup'/'hide'` |
-| `warning` | 显示警告 | `TRUE/FALSE` |
-| `message` | 显示消息 | `TRUE/FALSE` |
-| `fig.width` | 图宽 | 数字 |
-| `fig.height` | 图高 | 数字 |
-| `fig.cap` | 图标题 | 字符串 |
+| `echo` | 是否显示代码 | `TRUE` |
+| `eval` | 是否执行代码 | `TRUE` |
+| `results` | 输出处理方式 | `'markup'` |
+| `warning` | 是否显示警告 | `TRUE` |
+| `message` | 是否显示消息 | `TRUE` |
+| `fig.width` | 图宽（英寸）| `7` |
+| `fig.height` | 图高（英寸）| `5` |
+| `fig.cap` | 图片标题 | `NULL` |
 
 ---
 
-## 代码块演示
+## 3.4 代码块演示
 
-### 只显示结果（隐藏代码）
+### ① 只显示结果（隐藏代码）
 
 ````markdown
 ```{{r, echo=FALSE}}
@@ -250,110 +304,129 @@ summary(cars)
 
 ---
 
-## 代码块演示
+## 3.4 代码块演示（续）
 
-### 显示代码和结果
+### ② 只显示代码（不执行）
 
 ````markdown
-```{{r}}
-head(cars, 3)
+```{{r, eval=FALSE}}
+BiocManager::install("DESeq2")  # 安装包（不执行）
 ```
 ````
 
-```{r, echo=TRUE}
-head(cars, 3)
-```
-
----
-
-## 内联代码
-
-> 在文本中嵌入R代码结果，实现**动态更新**
+### ③ 隐藏一切（后台运行）
 
 ````markdown
-数据集包含 `r nrow(cars)` 个观测值，
-平均速度为 `r round(mean(cars$speed), 1)` mph。
+```{{r setup, include=FALSE}}
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+```
 ````
-
-数据集包含 `r nrow(cars)` 个观测值，
-平均速度为 `r round(mean(cars$speed), 1)` mph。
-
-### 生信应用
-
-- 自动更新样本量、P值
-- 确保正文与表格一致
-- 多组比较自动调整描述
 
 ---
 
-## 图表输出
+## 3.5 内联代码（Inline Code）
 
-### 基础图形
+> 在文本中嵌入R计算结果，实现**动态更新**
 
-```{r, fig.width=10, fig.height=6, fig.cap="车速与刹车距离"}
-plot(cars$speed, cars$dist, 
-     main = "车速与刹车距离",
-     xlab = "速度",
-     ylab = "距离",
-     pch = 19, col = "steelblue", cex = 1.5)
+````markdown
+本次分析共 `r nrow(cars)` 个样本，
+平均速度 `r round(mean(cars$speed), 1)` mph，
+中位刹车距离 `r median(cars$dist)` 英尺。
+````
+
+本次分析共 `r nrow(cars)` 个样本，
+平均速度 `r round(mean(cars$speed), 1)` mph，
+中位刹车距离 `r median(cars$dist)` 英尺。
+
+### 生信应用场景
+
+- 正文中自动更新**样本量、P值**
+- 确保**正文与表格一致**（避免手动填错）
+- 比较结果描述随数据自动调整
+
+---
+
+## 3.6 图表输出
+
+```{r, fig.width=10, fig.height=6, fig.cap="TP53在肿瘤与正常组织中的表达"}
+# 创建演示数据
+set.seed(42)
+df <- data.frame(
+  group      = rep(c("Tumor", "Normal"), each = 20),
+  expression = c(rnorm(20, 12, 2), rnorm(20, 7, 1.5))
+)
+
+boxplot(expression ~ group, data = df,
+        main = "TP53基因表达",
+        ylab = "表达量（log2 FPKM）",
+        col  = c("#E74C3C", "#3498DB"))
 ```
 
 ---
 
-## ggplot2高级可视化
+## 3.7 ggplot2可视化
 
-```{r, fig.width=12, fig.height=7}
+```{r, fig.width=11, fig.height=6}
 library(ggplot2)
 
-ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
-  geom_point(size = 4, alpha = 0.7) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "汽车重量与油耗关系",
-       subtitle = "按气缸数分组",
-       x = "重量 (1000 lbs)",
-       y = "每加仑英里数",
-       color = "气缸数") +
-  theme_minimal(base_size = 14)
+ggplot(df, aes(x = group, y = expression, fill = group)) +
+  geom_boxplot(alpha = 0.7, outlier.shape = NA) +
+  geom_jitter(width = 0.2, size = 2, alpha = 0.6) +
+  scale_fill_manual(values = c("Normal" = "#3498DB", "Tumor" = "#E74C3C")) +
+  labs(title = "TP53基因表达：肿瘤 vs 正常",
+       x = "样本分组", y = "表达量（log2 FPKM）") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
 ```
 
 ---
 
-## 表格制作
+## 3.8 表格输出
 
-### 使用knitr::kable
+### 使用 `knitr::kable`
 
 ```{r}
+result_df <- data.frame(
+  Gene   = c("TP53", "KRAS", "BRCA1", "MYC"),
+  log2FC = c(1.93, -0.82, 2.15, 1.47),
+  pvalue = c(0.0012, 0.0435, 0.0003, 0.0089),
+  padj   = c(0.0048, 0.1305, 0.0012, 0.0267)
+)
+
 knitr::kable(
-  head(mtcars[, 1:5], 5),
-  caption = "mtcars数据集前5行",
-  align = c('l', 'c', 'c', 'c', 'c'),
-  format = "html"
+  result_df,
+  caption = "差异表达基因汇总",
+  col.names = c("基因", "log2 FC", "P值", "校正P值"),
+  digits = 4
 )
 ```
 
 ---
 
-## 参数化报告
+## 3.9 参数化报告
 
-### 定义参数
+### 定义参数（在YAML中）
 
 ```yaml
 ---
 params:
-  gene: "TP53"
+  gene:       "TP53"
   tumor_type: "BRCA"
-  threshold: 10
-  show_plot: true
+  threshold:  10
+  show_plot:  true
 ---
 ```
 
-### 使用参数
+### 在代码块中使用参数
 
 ````markdown
 ```{{r}}
-# 根据参数筛选数据
+# 根据参数动态分析
 gene_data <- expr_data[expr_data$gene == params$gene, ]
-mean_expr <- mean(gene_data$expression)
+cat("分析基因:", params$gene, "\n")
+cat("样本量:", nrow(gene_data), "\n")
 
 if (params$show_plot) {
   hist(gene_data$expression, main = params$gene)
@@ -363,50 +436,88 @@ if (params$show_plot) {
 
 ---
 
-# 第3部分：Quarto现代工作流
+# 第4部分：Quarto：下一代工作流
 
-## 什么是Quarto？
+## 4.1 什么是Quarto？
 
-> Quarto是**下一代科学出版系统**，统一R Markdown、Jupyter等格式
+> Quarto是**下一代开源科学出版系统**，统一支持R、Python、Julia等多语言
 
+::: {.columns}
+::: {.column width="50%"}
 ### 与R Markdown的关系
 
 ```
-R Markdown → Quarto → 统一的多语言平台
-   ↓              ↓
-仅支持R      R + Python + Julia
+R Markdown  →  Quarto
+   R专属    →  多语言统一平台
 ```
 
+- R Markdown仍然受支持
+- Quarto是面向未来的选择
+- 官网：<https://quarto.org/>
+:::
+::: {.column width="50%"}
 ### 核心优势
 
-- 🌐 **多语言支持** — 不限于R
-- 📱 **响应式设计** — 移动端友好
-- 🎨 **现代外观** — 更美观的默认样式
-- 🔗 **原生交叉引用** — 无需额外包
+- 🌐 **多语言**：R + Python + Julia + Observable
+- 📱 **响应式设计**：移动端友好
+- 🎨 **现代外观**：更美观的默认样式
+- 🔗 **原生交叉引用**：无需bookdown
+- 📚 **多格式**：网站/书籍/幻灯片/论文
+:::
+:::
 
 ---
 
-## Quarto文档结构
+## 4.2 Quarto vs R Markdown
+
+| 功能 | R Markdown | Quarto |
+|------|------------|--------|
+| **代码块选项** | `{r, echo=FALSE}` | `#\| echo: false` |
+| **图宽** | `fig.width=8` | `#\| fig-width: 8` |
+| **图标题** | `fig.cap="..."` | `#\| fig-cap: "..."` |
+| **交叉引用** | 需bookdown | 原生支持 |
+| **多语言** | 主要是R | R/Python/Julia |
+| **网站** | blogdown/pkgdown | 原生支持 |
+| **幻灯片** | xaringan/ioslides | revealjs原生支持 |
+
+---
+
+## 4.3 Quarto代码块语法
+
+### Quarto风格（推荐）
 
 ````markdown
----
-title: "Quarto演示"
-format: 
-  html:
-    code-fold: true
-    code-tools: true
+```{{r}}
+#| label: fig-tp53
+#| echo: false
+#| fig-width: 8
+#| fig-height: 5
+#| fig-cap: "TP53基因表达分布"
+
+hist(rnorm(100, 10, 2), main = "TP53表达", xlab = "表达量")
+```
+````
+
+### 交叉引用
+
+````markdown
+如 @fig-tp53 所示，TP53在肿瘤组中显著上调。
+
+见 @tbl-results 的差异基因汇总结果。
+````
+
 ---
 
+## 4.4 Quarto多语言支持
+
+````markdown
 ## Python分析
 
 ```{{python}}
 import pandas as pd
 import numpy as np
 
-df = pd.DataFrame({
-    'x': np.random.randn(100),
-    'y': np.random.randn(100)
-})
+df = pd.DataFrame({'expr': np.random.normal(10, 2, 100)})
 df.describe()
 ```
 
@@ -414,7 +525,7 @@ df.describe()
 
 ```{{r}}
 library(ggplot2)
-ggplot(mtcars, aes(x = wt, y = mpg)) + 
+ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point(color = "steelblue", size = 3) +
   theme_minimal()
 ```
@@ -422,211 +533,214 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
 ---
 
-## Quarto vs R Markdown
+# 第5部分：可重复性研究最佳实践
 
-| 功能 | R Markdown | Quarto |
-|------|------------|--------|
-| 代码选项 | `{r, echo=FALSE}` | `#| echo: false` |
-| 图宽 | `fig.width=8` | `#| fig-width: 8` |
-| 交叉引用 | 需bookdown | 原生支持 |
-| 多语言 | 仅R | R/Python/Julia |
+## 5.1 可重复性研究原则
 
----
+### 为什么重要？
 
-## Quarto代码块选项
+> "科学的进步建立在**可重复验证**的基础上"
 
-### 基本语法（Quarto风格）
-
-````markdown
-```{{r}}
-#| label: chunk-name
-#| echo: false
-#| eval: true
-#| fig-width: 8
-#| fig-height: 6
-#| fig-cap: "图表标题"
-
-# R代码
-x <- 1:10
-mean(x)
-```
-````
-
-### 交叉引用
-
-````markdown
-见 @fig-tp53 显示了TP53表达分布。
-
-```{{r}}
-#| label: fig-tp53
-#| fig-cap: "TP53基因表达分布"
-
-tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1, 11.5, 7.8, 13.2)
-hist(tp53_expr, main = "TP53基因表达分布", 
-     xlab = "表达量", col = "steelblue")
-```
-````
-
----
-
-# 第4部分：最佳实践
-
-## 可重复性研究原则
-
-### 1. 环境记录
+::: {.columns}
+::: {.column width="50%"}
+### 环境记录
 
 ```r
-# 记录会话信息
+# 记录会话信息（放在报告末尾）
 sessionInfo()
 
-# 使用renv管理依赖
-renv::init()      # 初始化
-renv::snapshot()  # 保存状态
-renv::restore()   # 恢复环境
+# 使用renv管理依赖（推荐）
+renv::init()       # 初始化项目
+renv::snapshot()   # 保存包版本
+renv::restore()    # 还原环境
 ```
-
-### 2. 项目结构
+:::
+::: {.column width="50%"}
+### 项目标准结构
 
 ```
 project/
-├── data/          # 原始数据（只读）
-├── analysis/      # 分析脚本
-├── output/        # 结果输出
-├── figures/       # 图表
-├── report.qmd     # 主报告
-└── renv.lock      # 环境锁定
+├── data/       # 原始数据（只读）
+├── analysis/   # 分析脚本
+├── output/     # 结果输出
+├── figures/    # 图表
+├── report.qmd  # 主报告
+└── renv.lock   # 环境锁定文件
 ```
+:::
+:::
 
 ---
 
-## 代码规范
+## 5.2 代码书写规范
 
 ### 命名规范
 
 ```r
-# ✅ 推荐
-calculate_bmi <- function(weight_kg, height_m) {}
-patient_age <- 25
+# ✅ 推荐：描述清晰，小写+下划线
+calculate_bmi <- function(weight_kg, height_m) { }
 tumor_samples <- c("T1", "T2", "T3")
+mean_expression <- mean(expr)
 
-# ❌ 避免
-calc <- function(w, h) {}
-x <- 25
-samples <- c("T1", "T2", "T3")
+# ❌ 避免：含糊简写
+calc <- function(w, h) { }
+x <- c("T1", "T2", "T3")
+m <- mean(expr)
 ```
 
-### 文档注释
+### 函数文档（roxygen2风格）
 
 ```r
 #' 计算差异表达基因
-#' 
-#' @param expr_matrix 表达矩阵
-#' @param group 分组信息
-#' @param method 检验方法
-#' @return 差异表达结果数据框
-#' @export
-find_de_genes <- function(expr_matrix, group, method = "t-test") {
+#'
+#' @param expr_matrix 表达矩阵（基因×样本）
+#' @param group 分组向量
+#' @param alpha 显著性阈值，默认0.05
+#' @return 包含log2FC和p值的数据框
+find_de_genes <- function(expr_matrix, group, alpha = 0.05) {
   # 实现...
 }
 ```
 
 ---
 
-## 生信报告模板
+## 5.3 生信分析报告模板
 
-### 标准结构
+### 标准报告结构
 
 ```markdown
-# 标题
-
-## 1. 背景介绍
-研究背景、目的
+## 1. 研究背景
+研究目的、数据来源、分析策略
 
 ## 2. 数据与方法
-- 数据来源
-- 分析方法
-- 软件版本
+- 数据集描述（样本数、基因数）
+- 分析流程（质控→标准化→差异分析）
+- 软件版本：`sessionInfo()`
 
 ## 3. 结果
 ### 3.1 数据质控
-### 3.2 差异分析
-### 3.3 功能富集
+### 3.2 差异表达分析
+### 3.3 功能富集分析（GO/KEGG）
 
 ## 4. 讨论与结论
 
 ## 5. 附录
-- 代码
-- 会话信息
+- 完整代码
+- 会话信息（`sessionInfo()`）
 ```
 
 ---
 
-# 总结与展望
+## 5.4 输出格式选择
 
-## 本讲要点
+### 根据场景选择格式
 
+| 场景 | 推荐格式 | 配置 |
+|------|---------|------|
+| 实验室内部汇报 | HTML | `output: html_document` |
+| 论文附件/投稿 | PDF | `output: pdf_document` |
+| 与非R用户协作 | Word | `output: word_document` |
+| 展示汇报 | Reveal.js幻灯片 | `format: revealjs` |
+| 在线课程/教材 | Quarto网站 | `project: website` |
+
+```yaml
+# 同时生成多种格式
+output:
+  html_document: default
+  pdf_document:
+    toc: true
+  word_document: default
+```
+
+---
+
+# 课程总结
+
+## 本讲要点回顾
+
+::: {.columns}
+::: {.column width="50%"}
 ### Markdown
 - 轻量级标记语言，专注内容
-- 支持标题、列表、表格、代码、公式
+- 标题（`#`）、粗体（`**`）、斜体（`*`）
+- 列表、表格、链接、公式
 
 ### R Markdown
-- 代码+文本=动态报告
-- YAML配置、代码块选项、内联代码
-- 参数化报告实现自动化
-
+- 三要素：YAML + Markdown + 代码块
+- 代码块选项控制输出
+- 内联代码实现动态报告
+- 参数化报告批量生成
+:::
+::: {.column width="50%"}
 ### Quarto
 - 下一代科学出版系统
-- 多语言支持、原生交叉引用
+- 多语言支持（R/Python/Julia）
+- 原生交叉引用和多种格式
+
+### 最佳实践
+- renv管理依赖环境
+- 规范的项目目录结构
+- sessionInfo()记录环境
+- 代码命名清晰规范
+:::
+:::
 
 ---
 
 ## 练习作业
 
-### 基础练习
-1. 用Markdown写一段实验方法描述
-2. 创建包含代码、图表的R Markdown报告
-3. 使用内联代码显示统计结果
+### 基础任务（必做）
 
-### 进阶练习
-1. 创建参数化报告（分析不同基因）
-2. 将R Markdown转换为Quarto
-3. 添加交叉引用和目录
+1. 用R Markdown创建一份**TP53基因表达分析报告**，包含：
+   - 研究背景（Markdown文本）
+   - 数据生成（R代码块）
+   - 箱线图（ggplot2）
+   - 差异分析结果（knitr::kable表格）
+   - 内联代码描述结果
 
-### 思考
-- 如何保证分析的可重复性？
-- 在什么情况下选择Quarto而非R Markdown？
+### 进阶任务（选做）
 
----
-
-## 课程总结
-
-```
-实验设计 → 数据采集 → 质量控制 → 
-统计分析 → 可视化 → R Markdown/Quarto → 
-可重复性报告 → 投稿发表
-```
-
-### 核心能力
-
-- 用 **R** 处理和分析数据
-- 用 **tidyverse** 高效编程
-- 用 **R Markdown/Quarto** 撰写报告
-- 遵循 **可重复性** 研究原则
+2. 将R Markdown报告转换为**Quarto格式**（使用`#|`选项）
+3. 创建**参数化报告**，支持切换分析不同基因
 
 ---
 
-## 开始你的可重复研究之旅！
+## 速查表资源
+
+::: {.columns}
+::: {.column width="50%"}
+### 官方文档
+- R Markdown速查表  
+  <https://rstudio.github.io/cheatsheets/html/rmarkdown.html>
+- Quarto官方文档  
+  <https://quarto.org/docs/guide/>
+- R Markdown权威指南  
+  <https://bookdown.org/yihui/rmarkdown/>
+:::
+::: {.column width="50%"}
+### 延伸阅读
+- *R Markdown Cookbook*  
+  <https://bookdown.org/yihui/rmarkdown-cookbook/>
+- Posit全套速查表  
+  <https://posit.co/resources/cheatsheets/>
+- 王敏杰《数据科学中的R语言》  
+  <https://bookdown.org/wangminjie/R4DS/>
+:::
+:::
+
+---
+
+## Questions?
 
 王诗翔 副教授  
 中南大学生物医学信息系
 
 📧 wangshx@csu.edu.cn  
-🐙 https://github.com/WangLabCSU
+🐙 <https://github.com/WangLabCSU>
 
 ### 下节课预告
 
-- 实验指导：R Markdown实战
-- 撰写你的第一份生信分析报告
+- 🔬 实验指导：R Markdown实战
+- 📊 撰写你的第一份生信分析报告
 
 # 谢谢！
-
