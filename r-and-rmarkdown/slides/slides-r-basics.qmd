@@ -1,7 +1,8 @@
 ---
 title: "R语言基础"
-subtitle: "从入门到生物医学数据分析"
+subtitle: "R语言在生物信息学中的应用"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
+date: "2025"
 format:
   revealjs:
     theme: [default, ../styles/slides.scss]
@@ -26,265 +27,457 @@ execute:
 showtext::showtext_auto()
 ```
 
-# 课程介绍
+# 课程大纲
 
-## 为什么学习R？
+## 本讲内容
 
 ::: {.columns}
 ::: {.column width="50%"}
-### 生物医学数据分析必备
-
-- 📊 **统计分析** — 临床试验、生存分析
-- 🧬 **生物信息** — RNA-seq、基因组学
-- 📈 **可视化** — 发表级科研图表
-- 📝 **可重复性** — R Markdown/Quarto
+1. **数据科学与R语言**
+2. **R对象**
+3. **R向量**
+4. **R常见数据结构**
 :::
 ::: {.column width="50%"}
-### R语言优势
-
-- 💰 **开源免费** — 学术界首选
-- 📦 **包生态丰富** — 20,000+ CRAN包
-- 🔬 **Bioconductor** — 生信专用2,000+包
-- 👥 **社区活跃** — 全球统计学家支持
+5. **运算符与向量运算**
+6. **R编程**
+7. **函数及应用**
+8. **取子集**
 :::
 :::
 
 ---
 
-## 本讲目标
+# 第1部分：数据科学与R语言
 
-### 你将掌握
+## 1.1 什么是数据科学？
 
-| 技能 | 应用场景 |
-|------|----------|
-| ✅ 数据类型与结构 | 存储患者信息、基因表达数据 |
-| ✅ 向量化操作 | 批量处理基因组数据 |
-| ✅ 控制流与函数 | 自动化分析流程 |
-| ✅ R包管理 | 安装Bioconductor工具 |
-
----
-
-# 第1部分：R语言概述
-
-## R是什么？
-
-> R是用于**统计计算**和**图形**的编程语言与环境
-
-### 核心特点 {.smaller}
-
-| 特点 | 说明 | 生信应用 |
-|------|------|----------|
-| **开源免费** | GPL许可证 | 学术界广泛使用 |
-| **跨平台** | Win/Mac/Linux | 服务器/本地均可运行 |
-| **交互式** | 即时反馈 | 快速探索数据 |
-| **包生态** | 20,000+包 | Bioconductor生信专用 |
-
----
-
-## R在生物医学中的应用
-
-### 三大核心领域
+> 数据科学是利用**编程**、**统计**和**专业知识**从数据中提取价值的学科
 
 ::: {.columns}
-::: {.column width="33%"}
-#### 📊 统计分析
-- 临床试验设计
-- 生存分析 (Survival)
-- 多组学整合
+::: {.column width="55%"}
+### 数据科学三要素
+- 🧮 **编程**：工具（R / Python）
+- 📊 **统计**：灵魂
+- 🔬 **专业**：核心（生物医学）
+
+> 目的不是培养程序员，而是用数据推动学科发展
 :::
-::: {.column width="33%"}
-#### 🧬 生物信息
-- RNA-seq (DESeq2)
-- 单细胞测序 (Seurat)
-- 基因组变异分析
-:::
-::: {.column width="33%"}
-#### 📈 数据科学
-- 数据清洗 (tidyverse)
-- 机器学习 (caret)
-- 可重复研究
+::: {.column width="45%"}
+### Hadley Wickham的数据科学流程
+1. 数据导入
+2. 数据规整（清洗）
+3. 数据处理
+4. 可视化
+5. 建模
+6. 可重复性报告
 :::
 :::
 
 ---
 
-## R vs Python 选择指南
+## 1.2 R是什么？
 
-### 何时选择R？
+> 1992年，新西兰奥克兰大学 **Ross Ihaka** 和 **Robert Gentleman** 开发了R语言
 
-- ✅ 统计分析为主的研究
-- ✅ 需要发表级可视化
-- ✅ 生物信息学分析
-- ✅ 与统计学家协作
-
-### 何时选择Python？
-
-- ✅ 通用编程和深度学习
-- ✅ 大规模数据处理
-- ✅ 生产环境部署
-
-> 💡 **建议**：两者互补！R做统计可视化，Python做深度学习
-
----
-
-## R环境搭建
-
-### 1. 安装R
-
-```bash
-# macOS
-brew install r
-
-# Ubuntu
-sudo apt-get install r-base
-
-# Windows: https://cran.r-project.org/
-```
-
-### 2. 安装RStudio
-
-```
-https://posit.co/download/rstudio-desktop/
-```
+::: {.columns}
+::: {.column width="50%"}
+### 核心特点
+- 🌐 官网：<https://www.r-project.org/>
+- 📊 统计计算与图形可视化
+- 💻 跨平台：Windows / Mac / Linux
+- 💰 开源免费（GPL协议）
+- 📦 丰富的包生态系统
+- 👥 活跃的社区支持
+:::
+::: {.column width="50%"}
+### R在生物医学中的应用
+- 🧬 RNA-seq差异表达（DESeq2）
+- 🔬 单细胞测序分析（Seurat）
+- 📈 临床数据统计（survival）
+- 🗺️ 基因组注释（GenomicRanges）
+- 📝 可重复研究（R Markdown/Quarto）
+:::
+:::
 
 ---
 
-## RStudio界面
+## 1.3 R大神与tidyverse
 
+::: {.columns}
+::: {.column width="55%"}
+### Hadley Wickham
+
+2019年荣获**考普斯总统奖**（统计学诺贝尔奖）
+
+- 创建了 **tidyverse** 生态系统
+- 彻底改变了现代R编程风格
+- 著有 *R for Data Science* 等经典书籍
+- 个人主页：<https://hadley.nz/>
+:::
+::: {.column width="45%"}
+### tidyverse：数据科学全家桶
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+library(tidyverse)
 ```
-┌─────────────────┬─────────────────┐
-│   Source        │    Environment  │
-│  (代码编辑器)    │   (变量查看)     │
-│                 ├─────────────────┤
-│                 │ Files/Plots/    │
-│                 │ Packages/Help   │
-├─────────────────┴─────────────────┤
-│           Console (控制台)         │
-│           输入命令，查看输出         │
-└───────────────────────────────────┘
-```
+
+核心包：
+- `dplyr` — 数据处理
+- `ggplot2` — 数据可视化
+- `tidyr` — 数据整理
+- `readr` — 数据读取
+- `stringr` — 字符处理
+:::
+:::
+
+> 官网：<https://www.tidyverse.org/>
 
 ---
 
-# 第2部分：基础数据类型
+## 1.4 安装R和RStudio
 
-## 五大基本数据类型
+### 安装步骤
 
-| 类型 | 说明 | 示例 | 生信应用 |
-|------|------|------|----------|
-| `numeric` | 数值型 | `3.14` | 基因表达量 |
-| `integer` | 整数型 | `42L` | 读数计数 |
-| `character` | 字符型 | `"TP53"` | 基因名 |
-| `logical` | 逻辑型 | `TRUE` | 差异表达标志 |
-| `complex` | 复数型 | `3+4i` | 傅里叶变换 |
+::: {.columns}
+::: {.column width="50%"}
+**① 安装R**
+
+- 官网：<https://cran.r-project.org/>
+- 选择对应操作系统版本
+- Windows/macOS/Linux均支持
+
+**② 安装RStudio**
+
+- 官网：<https://posit.co/download/rstudio-desktop/>
+- 免费开源的集成开发环境
+:::
+::: {.column width="50%"}
+**RStudio四大面板**
+
+```
+┌──────────────┬──────────────┐
+│    源代码    │    环境/历史  │
+│  (脚本编辑)  │  (变量查看)  │
+├──────────────┼──────────────┤
+│    控制台    │  文件/图形/  │
+│  (命令输入)  │  包/帮助     │
+└──────────────┴──────────────┘
+```
+:::
+:::
 
 ---
 
-## 创建变量与查看类型
+# 第2部分：R对象
+
+## 2.1 一切皆对象
+
+> 在R中存储的数据称为**对象（object）**，R语言数据处理就是不断**创建和操控这些对象**
+
+### R可以当计算器使用
 
 ```{r}
-# 基因表达数据示例
-gene_name <- "TP53"          # 字符型
-expression <- 8.5            # 数值型
-is_significant <- TRUE       # 逻辑型
-sample_count <- 100L         # 整数型
+1 + 1
+2 ^ 10
+sqrt(16)
+```
 
+### 查看对象类型
+
+```{r}
+class(3.14)
+class("TP53")
+class(TRUE)
+```
+
+---
+
+## 2.2 对象的创建与赋值
+
+> 使用赋值操作符 `<-` 或 `=` 将数据赋值给变量
+
+```{r}
+# 创建变量（相当于给盒子贴上名字并装入数据）
+gene_name <- "TP53"        # 字符型
+expression <- 8.5          # 数值型
+is_DE <- TRUE              # 逻辑型
+sample_count <- 100L       # 整数型
+
+# 查看变量值
+gene_name
+expression
+```
+
+```{r}
 # 查看类型
 class(expression)
 typeof(sample_count)
+length(gene_name)
 ```
 
 ---
 
-## 向量：R的核心数据结构
+## 2.3 变量命名规则
 
-> 向量是R中**最基本的数据结构**，所有元素必须是**同一类型**
+::: {.columns}
+::: {.column width="50%"}
+### ✅ 合法的命名
+- 字母、数字、下划线 `_`、句点 `.` 组成
+- 第一个字符**必须是字母或句点**
+- 区分大小写（`gene` ≠ `Gene`）
 
+```r
+gene_name <- "TP53"      # 推荐
+patient.age <- 45        # 可用
+x1 <- 100                # 简单
+```
+:::
+::: {.column width="50%"}
+### ❌ 非法的命名
+```r
+1gene <- "TP53"    # 数字开头❌
+_expr <- 8.5       # 下划线开头❌
+my gene <- "TP53"  # 含空格❌
+```
+
+### 💡 命名最佳实践
+```r
+# 描述清晰，使用小写+下划线
+male_height_cm <- 175   # 最佳
+maleHeight <- 175       # 可以
+h <- 175                # 避免
+```
+:::
+:::
+
+---
+
+## 2.4 对象属性
+
+```{r}
+x <- c(1.5, 2.3, 8.7, 4.1)
+
+# 类型和长度是最重要的两个属性
+typeof(x)       # 内部存储类型
+class(x)        # 对象类型
+length(x)       # 元素个数
+```
+
+```{r}
+# 属性赋值
+names(x) <- c("S1", "S2", "S3", "S4")
+attr(x, "unit") <- "FPKM"
+attributes(x)
+```
+
+---
+
+# 第3部分：R向量
+
+## 3.1 向量：R的核心数据结构
+
+> 向量（vector）是R最基础的数据类型，元素**类型统一**，用 `c()` 创建
+
+::: {.columns}
+::: {.column width="50%"}
 ### 创建向量
 
 ```{r}
-# 基因表达值
-tp53_expr <- c(8.5, 12.3, 6.7, 15.2, 9.1)
-samples <- c("Tumor_1", "Tumor_2", "Normal_1", "Normal_2", "Tumor_3")
+# 数值型向量
+expr <- c(8.5, 12.3, 6.7, 15.2, 9.1)
 
-# 序列生成
-1:10                       # 1到10
-seq(1, 100, by = 10)       # 步长为10
-rep(c("Tumor", "Normal"), each = 3)  # 重复
+# 字符型向量
+genes <- c("TP53", "KRAS", "BRCA1")
+
+# 逻辑型向量
+de_flag <- c(TRUE, FALSE, TRUE)
+
+# 单个值也是长度为1的向量
+x <- 6
+length(x)
+```
+:::
+::: {.column width="50%"}
+### 生成序列
+
+```{r}
+# 整数序列
+1:10
+
+# 指定步长
+seq(0, 1, by = 0.25)
+
+# 重复
+rep(c("Tumor", "Normal"), times = 3)
+rep(c("Tumor", "Normal"), each = 3)
+```
+:::
+:::
+
+---
+
+## 3.2 向量类型详解
+
+### 数值型：integer vs double
+
+```{r}
+x_int <- 42L        # integer（整数，后缀L）
+x_dbl <- 42.0       # double（浮点数）
+
+typeof(x_int)
+typeof(x_dbl)
+is.integer(x_int)
+```
+
+### 字符串型（String）
+
+```{r}
+gene <- "TP53"      # 双引号或单引号
+sample_id <- 'GSM001'
+nchar(gene)         # 字符串长度
 ```
 
 ---
 
-## 向量索引与筛选
+## 3.3 因子型向量（factor）
+
+> 因子是带有**层级（Levels）**的字符串向量，用于表示分类变量
 
 ```{r}
-# 基因表达数据
-tp53 <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+# 创建因子
+stage <- factor(c("I", "II", "III", "II", "IV", "I"))
+stage
+levels(stage)
+table(stage)
+```
 
-# 索引（R从1开始！）
-tp53[1]              # 第一个样本
-tp53[c(1, 3, 5)]     # 多个样本
-tp53[2:4]            # 范围
-
-# 条件筛选
-tp53[tp53 > 10]      # 高表达样本
-which(tp53 > 10)     # 返回位置
+```{r}
+# 有序因子（如温度等级）
+severity <- factor(c("mild", "severe", "moderate", "mild"),
+                   levels = c("mild", "moderate", "severe"),
+                   ordered = TRUE)
+severity
+severity[1] < severity[2]
 ```
 
 ---
 
-## 向量化运算：R的灵魂
+## 3.4 命名向量
 
 ```{r}
-# 两个基因的表达值
-tp53 <- c(8.5, 12.3, 6.7, 15.2)
-kras <- c(5.2, 7.8, 9.1, 6.5)
+# 每个元素可以有名字
+expr <- c(TP53 = 8.5, KRAS = 12.3, BRCA1 = 6.7, MYC = 15.2)
+expr
 
-# 逐元素运算
-tp53 + kras               # 表达量之和
-tp53 * 2                  # 标准化
-tp53 > 10                 # 高表达判断
-
-# 统计函数
-mean(tp53)                # 平均值
-sd(tp53)                  # 标准差
-sum(tp53 > 10)            # 高表达样本数
+# 访问命名元素
+expr["TP53"]
+names(expr)
 ```
-
-> 💡 **最佳实践**：用向量化代替循环，速度提升10-100倍！
 
 ---
 
-## 矩阵：二维数据结构
+## 3.5 强制类型转换
+
+> 向量元素**必须是同一类型**，若类型不同，R自动转换（**强制转换**）
+
+### 转换层级规则
+
+```
+character > numeric > logical
+double > integer
+```
 
 ```{r}
-# 创建表达矩阵（基因 × 样本）
-expr_matrix <- matrix(
+# 混合类型会自动转换
+c(1, "USA", TRUE)   # 全部变为字符型
+c(1, TRUE, FALSE)   # 逻辑→数值
+```
+
+```{r}
+# 显式转换
+as.numeric("3.14")
+as.character(100)
+as.logical(0)
+```
+
+---
+
+# 第4部分：R常见数据结构
+
+## 4.1 基础数据结构概览
+
+| 数据结构 | 维度 | 元素类型 | 适用场景 |
+|---------|------|---------|---------|
+| `vector` | 1维 | 统一 | 单列数据、序列 |
+| `matrix` | 2维 | 统一 | 基因表达矩阵 |
+| `list` | 任意 | 混合 | 分析结果集合 |
+| `data.frame` | 2维 | 混合 | 临床数据表格 |
+
+> 💡 矩阵、列表、数据框都可以看作**向量的衍生结构**
+
+---
+
+## 4.2 矩阵（matrix）
+
+> 矩阵是**二维**的向量，所有元素类型相同
+
+```{r}
+# 创建基因表达矩阵
+expr_mat <- matrix(
   c(8.5, 12.3, 6.7, 15.2,
-    5.2, 7.8, 9.1, 6.5,
-    3.1, 4.5, 8.2, 7.9),
+    5.2,  7.8, 9.1,  6.5,
+    3.1,  4.5, 8.2,  7.9),
   nrow = 3, byrow = TRUE
 )
 
-# 命名
-dimnames(expr_matrix) <- list(
-  c("TP53", "KRAS", "BRCA1"),      # 基因名
-  c("S1", "S2", "S3", "S4")         # 样本名
-)
-expr_matrix
+# 行列命名
+rownames(expr_mat) <- c("TP53", "KRAS", "BRCA1")
+colnames(expr_mat) <- c("S1", "S2", "S3", "S4")
+expr_mat
+```
+
+```{r}
+dim(expr_mat)     # 维度
+nrow(expr_mat)    # 行数
+ncol(expr_mat)    # 列数
 ```
 
 ---
 
-## 数据框：最重要的结构
+## 4.3 列表（list）
+
+> 列表像一列火车，每节车厢可以装**不同类型**的数据
+
+```{r}
+# 存储分析结果
+result <- list(
+  gene     = "TP53",
+  expr     = c(8.5, 12.3, 6.7, 15.2),
+  p_value  = 0.0023,
+  is_DE    = TRUE
+)
+
+# 访问元素
+result$gene
+result[["p_value"]]
+result[[2]]
+```
+
+---
+
+## 4.4 数据框（data.frame）
+
+> 数据框 = **等长向量组成的列表**，类似Excel表格，生物信息学最常用数据结构
 
 ```{r}
 # 患者临床数据
 patients <- data.frame(
-  patient_id = c("P001", "P002", "P003", "P004", "P005"),
-  age = c(45, 52, 38, 61, 29),
-  gender = c("M", "F", "F", "M", "F"),
-  tumor_stage = c("II", "III", "I", "IV", "II"),
+  id        = c("P001", "P002", "P003", "P004", "P005"),
+  age       = c(45, 52, 38, 61, 29),
+  gender    = c("M", "F", "F", "M", "F"),
+  stage     = c("II", "III", "I", "IV", "II"),
   tp53_expr = c(8.5, 12.3, 6.7, 15.2, 9.1)
 )
 patients
@@ -292,392 +485,447 @@ patients
 
 ---
 
-## 数据框操作
-
-### 访问列
+## 4.5 数据框操作
 
 ```{r}
-patients$tp53_expr              # $符号访问
-patients[["age"]]               # 双括号访问
-patients[, c("age", "gender")]  # 多列选择
+# 查看结构
+str(patients)
+dim(patients)
 ```
 
-### 筛选行
-
 ```{r}
-patients[patients$age > 50, ]           # 老年患者
-patients[patients$tumor_stage == "IV", ] # 晚期患者
-subset(patients, tp53_expr > 10)        # 高表达患者
+# 访问列（三种方式等价）
+patients$age
+patients[["age"]]
+patients[, "age"]
 ```
 
----
-
-## 数据框常用函数
-
 ```{r}
-str(patients)              # 数据结构
-summary(patients)          # 统计摘要
-head(patients, 3)          # 前3行
-dim(patients)              # 行列数
-nrow(patients)             # 行数
-colnames(patients)         # 列名
+# 筛选行
+patients[patients$age > 50, ]
+subset(patients, stage == "III" | stage == "IV")
 ```
 
 ---
 
-## 列表：灵活的数据容器
+# 第5部分：运算符与向量运算
+
+## 5.1 算术运算符
 
 ```{r}
-# 存储分析结果
-analysis_result <- list(
-  gene = "TP53",
-  expression = c(8.5, 12.3, 6.7, 15.2),
-  statistics = list(
-    mean = 10.675,
-    sd = 3.82,
-    p_value = 0.001
-  ),
-  significant = TRUE
-)
+x <- c(10, 20, 30, 40)
+y <- c(2, 4, 5, 8)
 
-# 访问元素
-analysis_result$statistics$mean
-analysis_result[["expression"]]
+x + y     # 加法
+x - y     # 减法
+x * y     # 乘法
+x / y     # 除法
+x ^ 2     # 乘方
+x %% y    # 取余（模运算）
+x %/% y   # 整除
 ```
 
 ---
 
-# 第3部分：控制流与函数
+## 5.2 循环补齐原则
 
-## 条件语句
+> 两个向量长度不等时，**短向量会循环补齐**至长向量的长度
+
+```{r}
+# 标量（长度1）与向量运算
+c(1, 2, 3, 4) * 2
+
+# 长度整数倍关系
+c(1, 2, 3, 4) + c(10, 20)   # c(10,20)补齐为c(10,20,10,20)
+```
+
+```{r}
+# ⚠️ 非整数倍时R会警告
+c(1, 2, 3) + c(10, 20)
+```
+
+---
+
+## 5.3 关系运算符
+
+```{r}
+x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+
+x > 10        # 大于
+x >= 10       # 大于等于
+x == 9.1      # 等于（注意是==）
+x != 9.1      # 不等于
+
+# 找出高表达基因的位置
+which(x > 10)
+x[x > 10]
+```
+
+---
+
+## 5.4 逻辑运算符
+
+```{r}
+a <- c(TRUE, TRUE, FALSE, FALSE)
+b <- c(TRUE, FALSE, TRUE, FALSE)
+
+a & b     # 元素级 AND（两者均TRUE）
+a | b     # 元素级 OR（至少一个TRUE）
+!a        # 取反
+```
+
+```{r}
+# 实际应用：多条件筛选
+x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+x[x > 8 & x < 13]    # 中等表达水平
+```
+
+---
+
+## 5.5 特殊值
+
+> R中有四种特殊值，在数据分析中需要特别注意
+
+```{r}
+# Inf：无限大
+1 / 0;  -1 / 0
+
+# NaN：非数（Not a Number）
+0 / 0;  log(-1)
+
+# NA：缺失值（Not Available）
+x <- c(8.5, NA, 12.3, NA, 6.7)
+is.na(x)
+mean(x, na.rm = TRUE)   # 忽略NA计算
+
+# NULL：空对象
+y <- NULL
+is.null(y)
+```
+
+---
+
+## 5.6 其他运算符
+
+```{r}
+# %in%：判断元素是否在集合中
+c("TP53", "BRCA1", "EGFR") %in% c("TP53", "KRAS")
+
+# 管道运算符（R 4.1+原生支持）
+c(1, 5, 3, 2, 4) |> sort() |> rev()
+```
+
+```{r}
+# seq_along：生成与向量等长的序列
+genes <- c("TP53", "KRAS", "BRCA1")
+seq_along(genes)   # 替代1:length(genes)
+```
+
+---
+
+# 第6部分：R编程
+
+## 6.1 if 语句
 
 ```{r}
 # 根据表达量分类
-tp53_mean <- mean(tp53_expr)
+expr_mean <- 12.5
 
-if (tp53_mean > 15) {
-  category <- "高表达"
-} else if (tp53_mean > 10) {
-  category <- "中表达"
+if (expr_mean > 15) {
+  cat("高表达\n")
+} else if (expr_mean > 10) {
+  cat("中等表达\n")
 } else {
-  category <- "低表达"
+  cat("低表达\n")
 }
-category
+```
+
+```{r}
+# ifelse：向量化条件判断
+x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+ifelse(x > 10, "高表达", "低表达")
 ```
 
 ---
 
-## 向量化条件：ifelse
+## 6.2 for 循环
+
+> 对**序列（向量）**中的元素依次进行处理
 
 ```{r}
-# 批量分类多个基因
-expression <- c(8.5, 12.3, 6.7, 15.2, 9.1)
-
-# 二分类
-high_expr <- ifelse(expression > 10, "高", "低")
-
-# 多分类
-grade <- ifelse(expression > 15, "A",
-         ifelse(expression > 10, "B", "C"))
-```
-
----
-
-## 循环语句
-
-### for循环示例
-
-```{r}
-# 计算每个样本的总表达量
+# 计算多个基因的标准化值
 genes <- c("TP53", "KRAS", "BRCA1")
-total_expr <- 0
+expr  <- c(8.5, 12.3, 6.7)
 
-for (gene in genes) {
-  expr <- sample(5:15, 1)
-  total_expr <- total_expr + expr
-  print(paste(gene, ":", expr))
+for (i in seq_along(genes)) {
+  zscore <- (expr[i] - mean(expr)) / sd(expr)
+  cat(genes[i], "z-score:", round(zscore, 2), "\n")
 }
 ```
 
-### while循环
+```{r}
+# break：找到第一个高表达基因后退出
+for (i in seq_along(expr)) {
+  if (expr[i] > 10) {
+    cat("第一个高表达基因:", genes[i], "\n")
+    break
+  }
+}
+```
+
+---
+
+## 6.3 while 和 repeat 循环
 
 ```{r}
-# 迭代直到收敛
-diff <- 1.0
-iter <- 0
+# while循环：满足条件则继续
+diff <- 1.0; iter <- 0
 while (diff > 0.01) {
   diff <- diff * 0.5
   iter <- iter + 1
 }
+cat("迭代次数:", iter, "\n")
 ```
-
----
-
-## 循环控制
 
 ```{r}
-# break: 找到第一个高表达基因
-for (i in 1:length(expression)) {
-  if (expression[i] > 12) {
-    print(paste("找到高表达基因，位置:", i))
-    break
-  }
+# repeat：无条件循环，必须用break退出
+x <- 1
+repeat {
+  x <- x * 2
+  if (x >= 16) break
 }
-
-# next: 跳过缺失值
-for (val in c(8.5, NA, 12.3, NA, 6.7)) {
-  if (is.na(val)) next
-  print(val)
-}
+x
 ```
 
 ---
 
-## 自定义函数
+# 第7部分：函数及应用
 
-### 计算BMI
+## 7.1 内置函数
+
+> R的强大就在于丰富的**内置函数**，与数学函数 y = f(x) 概念一致
 
 ```{r}
-calculate_bmi <- function(weight_kg, height_m) {
-  bmi <- weight_kg / (height_m ^ 2)
-  
-  category <- ifelse(bmi < 18.5, "偏瘦",
-              ifelse(bmi < 25, "正常",
-              ifelse(bmi < 30, "超重", "肥胖")))
-  
-  return(list(
-    bmi = round(bmi, 2),
-    category = category
-  ))
-}
+x <- c(2, 7, 8, 9, 3, 1, 5)
 
-calculate_bmi(70, 1.75)
+# 汇总函数（返回单个值）
+mean(x); median(x); sd(x); var(x)
+min(x); max(x); sum(x); length(x)
 ```
-
----
-
-## 生信专用函数示例
-
-### 计算Fold Change
 
 ```{r}
-calculate_fc <- function(tumor, normal, log2 = TRUE) {
-  # 计算均值
-  mean_tumor <- mean(tumor)
-  mean_normal <- mean(normal)
-  
-  # 计算Fold Change
-  fc <- mean_tumor / mean_normal
-  
-  if (log2) {
-    fc <- log2(fc)
-  }
-  
-  return(fc)
-}
-
-# 使用示例
-tumor_expr <- c(12.3, 15.2, 18.5, 14.1)
-normal_expr <- c(6.7, 7.8, 8.2, 7.5)
-calculate_fc(tumor_expr, normal_expr)
+# 向量化函数（返回等长向量）
+sqrt(x)
+log2(x)
+abs(c(-3, 5, -1))
+round(c(3.14159, 2.71828), digits = 2)
 ```
 
 ---
 
-## 函数参数与默认值
+## 7.2 向量化函数 vs 汇总函数
+
+| 类型 | 输入 | 输出 | 示例 |
+|------|------|------|------|
+| **向量化函数** | 向量（n个元素）| 向量（n个元素）| `sqrt()`, `log2()` |
+| **汇总函数** | 向量（n个元素）| 标量（1个元素）| `mean()`, `sum()` |
+| **其他** | 向量 | 不等长向量 | `unique()`, `table()` |
 
 ```{r}
-# 差异表达分析函数
-analyze_de <- function(expression, 
-                       group,
-                       method = "t-test",
-                       alpha = 0.05) {
-  # 分组
-  group1 <- expression[group == "Tumor"]
-  group2 <- expression[group == "Normal"]
-  
-  # t检验
-  result <- t.test(group1, group2)
-  
-  list(
-    p_value = result$p.value,
-    significant = result$p.value < alpha,
-    method = method
-  )
-}
-
-# 使用
-expr <- c(12.3, 15.2, 18.5, 6.7, 7.8, 8.2)
-group <- c("Tumor", "Tumor", "Tumor", "Normal", "Normal", "Normal")
-analyze_de(expr, group)
+x <- c(2, 7, 8, 9, 3)
+x ^ 2 + 5               # 向量化运算
+x - mean(x)             # 减去均值
+(x - mean(x)) / sd(x)   # Z-score标准化
 ```
 
 ---
 
-# 第4部分：R包生态
+## 7.3 自定义函数
 
-## R包生态概览
+> 减少代码重复，提升编程效率
 
-### 两大核心仓库
+```{r}
+# 定义Z-score标准化函数
+my_std <- function(x) {
+  (x - mean(x)) / sd(x)
+}
 
-| 仓库 | 定位 | 包数量 | 生信代表 |
-|------|------|--------|----------|
-| **CRAN** | 综合R包 | 20,000+ | ggplot2, dplyr |
-| **Bioconductor** | 生物信息 | 2,000+ | DESeq2, Seurat |
+# 对多个向量应用
+x <- c(2, 7, 8, 9, 3)
+y <- c(1, 5, 7, 8, 9, 3)
+my_std(x)
+my_std(y)
+```
+
+```{r}
+# 带默认参数的函数
+analyze_expr <- function(expr, threshold = 10, log2_transform = FALSE) {
+  if (log2_transform) expr <- log2(expr + 1)
+  high <- expr[expr > threshold]
+  list(n_high = length(high), mean_high = mean(high))
+}
+analyze_expr(c(8.5, 12.3, 6.7, 15.2, 9.1))
+```
 
 ---
 
-## 安装R包
-
-### 从CRAN安装
+## 7.4 使用三方包函数
 
 ```{r, eval=FALSE}
-install.packages("ggplot2")
-install.packages(c("dplyr", "tidyr", "readr"))
+# 安装并加载包
+install.packages("dplyr")
+library(dplyr)
+
+# 若多个包有同名函数，用::明确指定
+dplyr::select(patients, age, stage)
 ```
 
-### 从Bioconductor安装
+### 获取帮助
 
 ```{r, eval=FALSE}
-if (!require("BiocManager"))
-    install.packages("BiocManager")
-
-BiocManager::install("DESeq2")
-BiocManager::install(c("GenomicRanges", "Biostrings"))
+?mean                    # 查看函数文档
+help(package = "dplyr")  # 查看包文档
+example(mean)            # 运行示例
 ```
 
 ---
 
-## 加载与使用
+# 第8部分：取子集
+
+## 8.1 子集选取概述
+
+> 从对象中提取**部分数据**，是数据分析的基本操作
+
+| 操作符 | 适用对象 | 说明 |
+|-------|---------|------|
+| `[` | 全部 | 返回**同类型**子集 |
+| `[[` | 列表/数据框 | 返回**单个元素** |
+| `$` | 列表/数据框 | 按**名字**访问元素 |
+
+---
+
+## 8.2 向量取子集
+
+```{r}
+x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
+names(x) <- c("S1", "S2", "S3", "S4", "S5")
+
+# 位置索引（R从1开始！）
+x[1];  x[c(1, 3, 5)];  x[2:4]
+
+# 逻辑索引
+x[x > 10]
+
+# 命名索引
+x[c("S1", "S3")]
+
+# 负索引（排除）
+x[-2]
+```
+
+---
+
+## 8.3 矩阵取子集
+
+```{r}
+# 行列位置
+expr_mat[1, ]           # 第1行（TP53）
+expr_mat[, 1:2]         # 前2列（S1, S2）
+expr_mat["KRAS", "S2"]  # 按名字
+```
+
+```{r}
+# 矩阵运算
+apply(expr_mat, 1, mean)   # 每行均值（1=行）
+apply(expr_mat, 2, mean)   # 每列均值（2=列）
+```
+
+---
+
+## 8.4 列表与数据框取子集
+
+```{r}
+# 列表取子集：[]返回列表，[[]]返回元素本身
+result[1]         # 返回列表
+result[[1]]       # 返回元素本身
+result$gene       # 等价于result[["gene"]]
+```
+
+```{r}
+# 数据框取子集
+patients[1:3, ]                          # 前3行
+patients[, c("id", "age", "stage")]      # 指定列
+patients[patients$age > 50, ]            # 条件筛选行
+patients[patients$stage == "IV", "id"]   # 筛选行+列
+```
+
+---
+
+# 课程总结
+
+## 本讲要点回顾
+
+::: {.columns}
+::: {.column width="50%"}
+### 数据结构
+- **vector**：最基础，元素类型统一
+- **matrix**：二维向量，同类型
+- **list**：灵活容器，类型混合
+- **data.frame**：等长向量列表，最常用
+
+### 向量类型
+- numeric (double/integer)
+- character, logical, **factor**
+- 强制转换规则
+:::
+::: {.column width="50%"}
+### 编程要素
+- 赋值 `<-`，命名规范
+- 运算符：算术、关系、逻辑
+- 特殊值：`NA`, `NaN`, `Inf`, `NULL`
+- 循环：`for`, `while`, `repeat`
+- 条件：`if/else`, `ifelse()`
+
+### 函数与取子集
+- 内置函数：向量化 vs 汇总
+- 自定义函数
+- 取子集：`[`, `[[`, `$`
+:::
+:::
+
+---
+
+## 课程作业
+
+> 使用 **R Markdown** 生成报告并打印提交
 
 ```{r, eval=FALSE}
-# 加载包
-library(ggplot2)
-require(dplyr)
-
-# 查看包帮助
-?ggplot
-help(package = "ggplot2")
-
-# 列出已加载包
-search()
+set.seed(学号)
+weight <- rnorm(20, mean = 60, sd = 15)
+height <- rnorm(20, mean = 170, sd = 20)
 ```
 
----
-
-## 必学生物医学R包
-
-### tidyverse生态（数据科学）
-
-| 包 | 功能 | 生信应用 |
-|----|------|----------|
-| `dplyr` | 数据处理 | 筛选基因、分组统计 |
-| `ggplot2` | 可视化 | 火山图、热图 |
-| `readr` | 数据读取 | 读取表达矩阵 |
-| `tidyr` | 数据整理 | 长宽格式转换 |
-
-### Bioconductor生态（生物信息）
-
-| 包 | 功能 | 应用场景 |
-|----|------|----------|
-| `DESeq2` | RNA-seq分析 | 差异表达 |
-| `Seurat` | 单细胞分析 | 细胞聚类 |
-| `GenomicRanges` | 基因组区间 | 注释分析 |
+### 任务
+1. 自定义函数，根据**方差公式**写出方差计算函数，与 `var()` 对比
+2. 自定义函数，根据身高 `height`（cm）和体重 `weight`（kg）计算 **BMI**
+   $$BMI = \frac{weight}{(height/100)^2}$$
+3. 自定义函数，对向量 `x` 和阈值 `threshold`（默认60），计算所有**大于阈值元素的均值**
 
 ---
 
-# 第5部分：综合案例
+## 参考资料
 
-## 案例：TP53基因表达分析
+- 📖 王敏杰，《数据科学中的R语言》  
+  <https://bookdown.org/wangminjie/R4DS/>
 
-### 背景
+- ⚡ Hadley Wickham，*R for Data Science*（第2版）  
+  <https://r4ds.hadley.nz/>
 
-分析5个肿瘤样本和5个正常样本的TP53基因表达数据
+- 📋 Posit R Cheatsheets（速查表）  
+  <https://posit.co/resources/cheatsheets/>
 
-```{r}
-# 创建数据
-samples <- c(paste0("Tumor_", 1:5), paste0("Normal_", 1:5))
-groups <- c(rep("Tumor", 5), rep("Normal", 5))
-tp53_expr <- c(12.5, 15.2, 8.7, 18.3, 11.9,
-               6.2, 7.5, 5.8, 8.1, 6.9)
-
-# 创建数据框
-data <- data.frame(
-  sample = samples,
-  group = groups,
-  expression = tp53_expr
-)
-```
-
----
-
-## 数据分析流程
-
-```{r}
-# 1. 查看数据
-head(data)
-str(data)
-
-# 2. 分组统计
-aggregate(expression ~ group, data = data, FUN = mean)
-
-# 3. 差异分析
-tumor <- data$expression[data$group == "Tumor"]
-normal <- data$expression[data$group == "Normal"]
-result <- t.test(tumor, normal)
-result$p.value
-```
-
----
-
-## 结果解读
-
-### 统计结果
-
-| 指标 | 数值 | 解释 |
-|------|------|------|
-| 肿瘤组均值 | 13.32 | 高表达 |
-| 正常组均值 | 6.90 | 低表达 |
-| Fold Change | 1.93 | 上调近2倍 |
-| p-value | < 0.05 | 显著差异 |
-
-### 生物学意义
-
-TP53在肿瘤组中显著上调，提示可能参与肿瘤发生发展
-
----
-
-## 本讲要点
-
-### 核心概念
-- R是统计计算与图形语言
-- 五大类型：numeric, integer, character, logical, complex
-- 核心结构：vector, matrix, data.frame, list
-- 向量化操作是R的灵魂
-
-### 生信技能
-- 数据框操作：`df$gene`, `df[condition, ]`
-- 统计分析：`t.test()`, `mean()`, `cor()`
-- 函数编写：自动化分析流程
-- 包管理：`BiocManager::install()`
-
----
-
-## 练习作业
-
-### 基础练习
-1. 创建一个包含10个患者信息的数据框（ID、年龄、性别、分期、生存时间）
-2. 计算不同分期的平均年龄
-3. 筛选出III-IV期患者
-
-### 编程练习
-1. 编写函数计算基因表达的标准化值（Z-score）
-2. 使用向量化操作计算1000个基因的平均表达量
-3. 比较向量化 vs 循环的性能差异
-
-### 思考
-- 为什么R的向量从1开始索引？（对比Python的0索引）
-- 在什么情况下需要使用list而不是data.frame？
+- 🎨 Carbon：漂亮地展示代码  
+  <https://carbon.now.sh/>
 
 ---
 
@@ -685,11 +933,11 @@ TP53在肿瘤组中显著上调，提示可能参与肿瘤发生发展
 
 ### 我们将学习
 
-- Markdown基础语法
-- R Markdown文档结构
-- 代码块与输出控制
-- Quarto现代工作流
-- 生信报告自动化
+- 📝 **Markdown** 基础语法
+- 📊 **R Markdown** 文档结构
+- ⚙️ 代码块选项与输出控制
+- 🌐 **Quarto** 现代工作流
+- ♻️ 可重复性研究最佳实践
 
 ---
 
@@ -699,6 +947,6 @@ TP53在肿瘤组中显著上调，提示可能参与肿瘤发生发展
 中南大学生物医学信息系
 
 📧 wangshx@csu.edu.cn  
-🐙 https://github.com/WangLabCSU
+🐙 <https://github.com/WangLabCSU>
 
 # 谢谢！
