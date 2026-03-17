@@ -2,7 +2,7 @@
 title: "R语言基础"
 subtitle: "R语言在生物信息学中的应用"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
-date: "2025"
+date: "2026-03-19"
 format:
   revealjs:
     theme: [default, ../styles/slides.scss]
@@ -15,6 +15,8 @@ format:
     height: 720
     margin: 0.1
     logo: ../logo.png
+    #https://stackoverflow.com/questions/74404680/rescaling-a-figure-in-quarto
+    #auto-stretch: false
     footer: "R语言基础 | 中南大学"
 execute:
   echo: true
@@ -64,7 +66,7 @@ showtext::showtext_auto()
 > 目的不是培养程序员，而是用数据推动学科发展
 :::
 ::: {.column width="45%"}
-### Hadley Wickham的数据科学流程
+### 数据科学流程
 1. 数据导入
 2. 数据规整（清洗）
 3. 数据处理
@@ -80,10 +82,12 @@ showtext::showtext_auto()
 
 > 1992年，新西兰奥克兰大学 **Ross Ihaka** 和 **Robert Gentleman** 开发了R语言
 
+- 🌐 官网：<https://www.r-project.org/>
+
 ::: {.columns}
 ::: {.column width="50%"}
 ### 核心特点
-- 🌐 官网：<https://www.r-project.org/>
+
 - 📊 统计计算与图形可视化
 - 💻 跨平台：Windows / Mac / Linux
 - 💰 开源免费（GPL协议）
@@ -108,6 +112,8 @@ showtext::showtext_auto()
 ::: {.column width="55%"}
 ### Hadley Wickham
 
+![](https://hadley.nz/hadley.jpg){width=30%}
+
 2019年荣获**考普斯总统奖**（统计学诺贝尔奖）
 
 - 创建了 **tidyverse** 生态系统
@@ -124,6 +130,7 @@ library(tidyverse)
 ```
 
 核心包：
+
 - `dplyr` — 数据处理
 - `ggplot2` — 数据可视化
 - `tidyr` — 数据整理
@@ -132,7 +139,7 @@ library(tidyverse)
 :::
 :::
 
-> 官网：<https://www.tidyverse.org/>
+tidyverse官网：<https://www.tidyverse.org/>
 
 ---
 
@@ -168,6 +175,21 @@ library(tidyverse)
 :::
 :::
 
+## 1.4 安装R和RStudio
+
+### RStudio
+
+![](figures/rstudio.png)
+
+
+## 1.5 Positron - The Data Science IDE
+
+- <https://positron.posit.co/>
+
+::: {.columns}
+![](figures/positron.png){width="70%"}
+::: 
+
 ---
 
 # 第2部分：R对象
@@ -183,6 +205,8 @@ library(tidyverse)
 2 ^ 10
 sqrt(16)
 ```
+
+## 2.1 一切皆对象
 
 ### 查看对象类型
 
@@ -208,13 +232,6 @@ sample_count <- 100L       # 整数型
 # 查看变量值
 gene_name
 expression
-```
-
-```{r}
-# 查看类型
-class(expression)
-typeof(sample_count)
-length(gene_name)
 ```
 
 ---
@@ -264,6 +281,8 @@ typeof(x)       # 内部存储类型
 class(x)        # 对象类型
 length(x)       # 元素个数
 ```
+
+## 2.5 属性与赋值
 
 ```{r}
 # 属性赋值
@@ -318,9 +337,7 @@ rep(c("Tumor", "Normal"), each = 3)
 
 ---
 
-## 3.2 向量类型详解
-
-### 数值型：integer vs double
+## 3.2 向量类型详解 - 数值型：integer vs double
 
 ```{r}
 x_int <- 42L        # integer（整数，后缀L）
@@ -331,7 +348,7 @@ typeof(x_dbl)
 is.integer(x_int)
 ```
 
-### 字符串型（String）
+## 3.2 向量类型详解 - 字符串型（String）
 
 ```{r}
 gene <- "TP53"      # 双引号或单引号
@@ -352,6 +369,8 @@ stage
 levels(stage)
 table(stage)
 ```
+
+## 3.3 因子型向量（factor）
 
 ```{r}
 # 有序因子（如温度等级）
@@ -389,11 +408,15 @@ character > numeric > logical
 double > integer
 ```
 
+## 3.5 强制类型转换
+
 ```{r}
 # 混合类型会自动转换
 c(1, "USA", TRUE)   # 全部变为字符型
 c(1, TRUE, FALSE)   # 逻辑→数值
 ```
+
+## 3.5 强制类型转换
 
 ```{r}
 # 显式转换
@@ -438,6 +461,8 @@ colnames(expr_mat) <- c("S1", "S2", "S3", "S4")
 expr_mat
 ```
 
+## 4.2 矩阵（matrix）
+
 ```{r}
 dim(expr_mat)     # 维度
 nrow(expr_mat)    # 行数
@@ -459,6 +484,12 @@ result <- list(
   is_DE    = TRUE
 )
 
+result
+```
+
+## 4.3 列表（list）
+
+```{r}
 # 访问元素
 result$gene
 result[["p_value"]]
@@ -493,12 +524,16 @@ str(patients)
 dim(patients)
 ```
 
+## 4.5 数据框操作
+
 ```{r}
 # 访问列（三种方式等价）
 patients$age
 patients[["age"]]
 patients[, "age"]
 ```
+
+## 4.5 数据框操作
 
 ```{r}
 # 筛选行
@@ -512,7 +547,7 @@ subset(patients, stage == "III" | stage == "IV")
 
 ## 5.1 算术运算符
 
-```{r}
+```r
 x <- c(10, 20, 30, 40)
 y <- c(2, 4, 5, 8)
 
@@ -539,6 +574,8 @@ c(1, 2, 3, 4) * 2
 c(1, 2, 3, 4) + c(10, 20)   # c(10,20)补齐为c(10,20,10,20)
 ```
 
+## 5.2 循环补齐原则
+
 ```{r}
 # ⚠️ 非整数倍时R会警告
 c(1, 2, 3) + c(10, 20)
@@ -548,13 +585,20 @@ c(1, 2, 3) + c(10, 20)
 
 ## 5.3 关系运算符
 
-```{r}
+```r
 x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
 
 x > 10        # 大于
 x >= 10       # 大于等于
 x == 9.1      # 等于（注意是==）
 x != 9.1      # 不等于
+```
+
+
+## 5.3 关系运算符
+
+```{r}
+x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
 
 # 找出高表达基因的位置
 which(x > 10)
@@ -565,7 +609,7 @@ x[x > 10]
 
 ## 5.4 逻辑运算符
 
-```{r}
+```r
 a <- c(TRUE, TRUE, FALSE, FALSE)
 b <- c(TRUE, FALSE, TRUE, FALSE)
 
@@ -573,6 +617,8 @@ a & b     # 元素级 AND（两者均TRUE）
 a | b     # 元素级 OR（至少一个TRUE）
 !a        # 取反
 ```
+
+## 5.4 逻辑运算符
 
 ```{r}
 # 实际应用：多条件筛选
@@ -592,7 +638,11 @@ x[x > 8 & x < 13]    # 中等表达水平
 
 # NaN：非数（Not a Number）
 0 / 0;  log(-1)
+```
 
+## 5.5 特殊值
+
+```{r}
 # NA：缺失值（Not Available）
 x <- c(8.5, NA, 12.3, NA, 6.7)
 is.na(x)
@@ -640,6 +690,8 @@ if (expr_mean > 15) {
 }
 ```
 
+## 6.1 if 语句
+
 ```{r}
 # ifelse：向量化条件判断
 x <- c(8.5, 12.3, 6.7, 15.2, 9.1)
@@ -662,6 +714,8 @@ for (i in seq_along(genes)) {
   cat(genes[i], "z-score:", round(zscore, 2), "\n")
 }
 ```
+
+## 6.2 for 循环
 
 ```{r}
 # break：找到第一个高表达基因后退出
@@ -713,6 +767,8 @@ mean(x); median(x); sd(x); var(x)
 min(x); max(x); sum(x); length(x)
 ```
 
+## 7.1 内置函数
+
 ```{r}
 # 向量化函数（返回等长向量）
 sqrt(x)
@@ -730,6 +786,8 @@ round(c(3.14159, 2.71828), digits = 2)
 | **向量化函数** | 向量（n个元素）| 向量（n个元素）| `sqrt()`, `log2()` |
 | **汇总函数** | 向量（n个元素）| 标量（1个元素）| `mean()`, `sum()` |
 | **其他** | 向量 | 不等长向量 | `unique()`, `table()` |
+
+## 7.2 向量化函数 vs 汇总函数
 
 ```{r}
 x <- c(2, 7, 8, 9, 3)
@@ -756,6 +814,8 @@ y <- c(1, 5, 7, 8, 9, 3)
 my_std(x)
 my_std(y)
 ```
+
+## 7.3 自定义函数
 
 ```{r}
 # 带默认参数的函数
@@ -812,7 +872,11 @@ names(x) <- c("S1", "S2", "S3", "S4", "S5")
 
 # 位置索引（R从1开始！）
 x[1];  x[c(1, 3, 5)];  x[2:4]
+```
 
+## 8.2 向量取子集
+
+```{r}
 # 逻辑索引
 x[x > 10]
 
@@ -834,6 +898,8 @@ expr_mat[, 1:2]         # 前2列（S1, S2）
 expr_mat["KRAS", "S2"]  # 按名字
 ```
 
+## 8.3 矩阵取子集
+
 ```{r}
 # 矩阵运算
 apply(expr_mat, 1, mean)   # 每行均值（1=行）
@@ -850,6 +916,8 @@ result[1]         # 返回列表
 result[[1]]       # 返回元素本身
 result$gene       # 等价于result[["gene"]]
 ```
+
+## 8.4 列表与数据框取子集
 
 ```{r}
 # 数据框取子集
@@ -918,14 +986,14 @@ height <- rnorm(20, mean = 170, sd = 20)
 - 📖 王敏杰，《数据科学中的R语言》  
   <https://bookdown.org/wangminjie/R4DS/>
 
-- ⚡ Hadley Wickham，*R for Data Science*（第2版）  
-  <https://r4ds.hadley.nz/>
+- ⚡ Hadley Wickham，*R for Data Science*（第2版）
+
+  <https://r4ds.hadley.nz/> 
+  
+  <https://sunpast.github.io/r4ds/>（丁加笔记📒）
 
 - 📋 Posit R Cheatsheets（速查表）  
   <https://posit.co/resources/cheatsheets/>
-
-- 🎨 Carbon：漂亮地展示代码  
-  <https://carbon.now.sh/>
 
 ---
 

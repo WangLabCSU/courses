@@ -1,6 +1,6 @@
 ---
 title: "R Markdown与可重复研究"
-subtitle: "从代码到专业科研报告"
+subtitle: "R语言在生物信息学中的应用"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
 date: "2025"
 format:
@@ -143,15 +143,23 @@ showtext::showtext_auto()
 1. 有序列表第一条
 2. 有序列表第二条
 
-[链接文字](https://www.r-project.org/)
-![图片描述](image.png)
+[R官网](https://www.r-project.org/)
+![图片描述](https://hadley.nz/hadley.jpg)
 ````
 
+::: {.columns}
+::: {.column width="50%"}
 - 无序列表项目一
   - 子项目（缩进2个空格）
 - 无序列表项目二
 
 [R官网](https://www.r-project.org/)
+:::
+::: {.column width="50%"}
+<center>![](https://hadley.nz/hadley.jpg){width=30%}</center>
+<center>图片描述</center>
+:::
+:::
 
 ---
 
@@ -187,6 +195,10 @@ data |> filter(age > 50) |> select(id, age)
 ```
 ````
 
+> 这里只会标记代码，不会像 RMarkdown 里代码可以执行
+
+## 2.5 代码与公式
+
 ### LaTeX数学公式
 
 ````markdown
@@ -203,7 +215,7 @@ $$
 
 # 第3部分：R Markdown文档结构
 
-## 3.1 R Markdown的组成
+## 3.1 R Markdown的组成 {.small}
 
 > 在RStudio中创建：**File → New File → R Markdown**
 
@@ -226,7 +238,7 @@ expr_data <- read.csv("tp53_expression.csv")
 summary(expr_data)
 ```
 
-根据上述统计摘要，数据包含 `r nrow(expr_data)` 个样本。
+根据上述统计摘要，数据包含 `r knitr::inline_expr("nrow(expr_data)")` 个样本。
 ````
 
 三大组成：
@@ -243,7 +255,7 @@ summary(expr_data)
 title: "RNA-seq差异表达分析"
 subtitle: "基于DESeq2的肿瘤vs正常分析"
 author: "王诗翔"
-date: "`r Sys.Date()`"
+date: "`r Sys.Date()`"   # 自动插入今天的日期
 output: 
   html_document:
     toc: true            # 显示目录
@@ -255,8 +267,6 @@ output:
     df_print: paged      # 分页显示数据框
 ---
 ```
-
-> 💡 `date: "\`r Sys.Date()\`"` 会自动插入今天的日期
 
 ---
 
@@ -272,6 +282,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point()
 ```
 ````
+
+## 3.3 代码块基本语法
 
 ### 常用选项速查
 
@@ -304,7 +316,7 @@ summary(cars)
 
 ---
 
-## 3.4 代码块演示（续）
+## 3.4 代码块演示
 
 ### ② 只显示代码（不执行）
 
@@ -331,9 +343,9 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 > 在文本中嵌入R计算结果，实现**动态更新**
 
 ````markdown
-本次分析共 `r nrow(cars)` 个样本，
-平均速度 `r round(mean(cars$speed), 1)` mph，
-中位刹车距离 `r median(cars$dist)` 英尺。
+本次分析共 `r knitr::inline_expr("nrow(cars)")` 个样本，
+平均速度 `r knitr::inline_expr("round(mean(cars$speed), 1)")` mph，
+中位刹车距离 `r knitr::inline_expr("median(cars$dist)")` 英尺。
 ````
 
 本次分析共 `r nrow(cars)` 个样本，
@@ -350,7 +362,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 
 ## 3.6 图表输出
 
-```{r, fig.width=10, fig.height=6, fig.cap="TP53在肿瘤与正常组织中的表达"}
+```{r, fig.width=10, fig.height=6}
 # 创建演示数据
 set.seed(42)
 df <- data.frame(
@@ -383,9 +395,9 @@ ggplot(df, aes(x = group, y = expression, fill = group)) +
 
 ---
 
-## 3.8 表格输出
+## 3.8 表格输出 {.small}
 
-### 使用 `knitr::kable`
+### 使用 `knitr::kable` 
 
 ```{r}
 result_df <- data.frame(
@@ -405,7 +417,7 @@ knitr::kable(
 
 ---
 
-## 3.9 参数化报告
+## 3.9 参数化报告 {.small}
 
 ### 定义参数（在YAML中）
 
@@ -440,7 +452,13 @@ if (params$show_plot) {
 
 ## 4.1 什么是Quarto？
 
-> Quarto是**下一代开源科学出版系统**，统一支持R、Python、Julia等多语言
+> Quarto (<https://quarto.org/>)是**下一代开源科学出版系统**，统一支持R、Python、Julia等多语言
+
+::: {.columns}
+![](figures/quarto.jpg){width="70%"}
+:::
+
+## 4.1 什么是Quarto？
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -465,6 +483,7 @@ R Markdown  →  Quarto
 - 📚 **多格式**：网站/书籍/幻灯片/论文
 :::
 :::
+
 
 ---
 
@@ -572,7 +591,7 @@ project/
 
 ---
 
-## 5.2 代码书写规范
+## 5.2 代码书写规范 {.small}
 
 ### 命名规范
 
@@ -604,7 +623,7 @@ find_de_genes <- function(expr_matrix, group, alpha = 0.05) {
 
 ---
 
-## 5.3 生信分析报告模板
+## 5.3 生信分析报告模板 {.small}
 
 ### 标准报告结构
 
@@ -705,7 +724,7 @@ output:
 
 ---
 
-## 速查表资源
+## 速查表资源 {.small}
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -740,7 +759,7 @@ output:
 
 ### 下节课预告
 
-- 🔬 实验指导：R Markdown实战
+- 🔬 上机实验练习
 - 📊 撰写你的第一份生信分析报告
 
 # 谢谢！

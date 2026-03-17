@@ -406,16 +406,6 @@ $transition-slow: 300ms ease;
   font-size: inherit;
   color: $text-secondary;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  
-  &::before {
-    content: '"';
-    font-size: 2em;
-    color: $csu-red;
-    opacity: 0.3;
-    line-height: 0;
-    vertical-align: -0.3em;
-    margin-right: 0.1em;
-  }
 }
 
 // ============================================
