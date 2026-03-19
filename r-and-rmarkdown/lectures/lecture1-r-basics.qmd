@@ -13,8 +13,6 @@ subtitle: "从入门到生物医学数据分析"
 - 向量化操作的优势与实战
 - R包管理与Bioconductor生态
 
-**预计时长**：45分钟理论 + 15分钟练习
-
 ---
 
 ## 1. R语言简介
@@ -441,7 +439,7 @@ cat("P-value:", t_test_result$p.value, "\n")
 
 ---
 
-## 课后作业
+## 拓展
 
 1. **阅读材料**
    - [R for Data Science Chapter 1-3](https://r4ds.had.co.nz/)

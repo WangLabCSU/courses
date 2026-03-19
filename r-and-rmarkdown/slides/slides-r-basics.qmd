@@ -965,7 +965,7 @@ patients[patients$stage == "IV", "id"]   # 筛选行+列
 
 ## 课程作业
 
-> 使用 **R Markdown** 生成报告并打印提交
+> 使用 **R Markdown** 生成报告按要求提交
 
 ```{r, eval=FALSE}
 set.seed(学号)

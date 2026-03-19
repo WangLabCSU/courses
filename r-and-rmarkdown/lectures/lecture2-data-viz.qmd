@@ -12,8 +12,6 @@ subtitle: "tidyverse生态入门"
 - ggplot2图层语法
 - 实战案例
 
-**预计时长**：45分钟理论 + 15分钟演示
-
 ---
 
 ## 1. tidyverse简介
@@ -286,7 +284,7 @@ ggplot(clinical_summary, aes(x = age_group, y = mean_survival, fill = diagnosis)
 
 ---
 
-## 课后作业
+## 拓展
 
 1. 阅读 [R for Data Science Chapter 3-5](https://r4ds.had.co.nz/)
 2. 使用dplyr处理实验数据

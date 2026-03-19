@@ -13,8 +13,6 @@ subtitle: "创建可重复性研究报告"
 - 图表与表格
 - 参数化报告
 
-**预计时长**：45分钟理论 + 15分钟演示
-
 ---
 
 ## 1. Markdown基础
@@ -469,7 +467,7 @@ csl: nature.csl  # 引用样式
 
 ---
 
-## 课后作业
+## 拓展
 
 1. 阅读 [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
 2. 完成实验手册练习2

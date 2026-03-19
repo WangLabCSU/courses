@@ -15,8 +15,6 @@ execute:
 - 多语言支持
 - 可重复性研究最佳实践
 
-**预计时长**：45分钟理论 + 15分钟演示
-
 ---
 
 ## 1. Quarto简介
@@ -300,7 +298,7 @@ quarto convert report.Rmd
 
 ---
 
-## 课堂演示
+## 实践
 
 1. 创建Quarto文档
 2. 运行Python和R代码
@@ -309,7 +307,7 @@ quarto convert report.Rmd
 
 ---
 
-## 课后作业
+## 拓展
 
 1. 将一份R Markdown转换为Quarto
 2. 尝试在Quarto中运行Python代码
