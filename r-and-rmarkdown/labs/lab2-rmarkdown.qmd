@@ -91,12 +91,12 @@ output:
     toc: true
     toc_float: true
     code_folding: show
-    number_sections: true
+    number_sections: false
     theme: cerulean
     highlight: tango
   pdf_document:
     toc: true
-    number_sections: true
+    number_sections: false
   word_document:
     toc: true
 ---
