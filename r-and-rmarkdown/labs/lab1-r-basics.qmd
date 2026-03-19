@@ -73,7 +73,7 @@ subtitle: "掌握R语言核心语法与生信数据处理"
 #| echo: true
 
 # 创建变量
- tp53_expr <- 8.5
+tp53_expr <- 8.5
 read_count <- 10000L
 gene_name <- "BRCA1"
 is_de <- TRUE
@@ -242,6 +242,7 @@ patients
 
 ::: {.hint-box}
 **提示**：
+
 - 条件筛选使用 `data[condition, ]`
 - `which.max()` 可以找到最大值的位置
 - `aggregate()` 用于分组统计
