@@ -86,7 +86,15 @@ author:
   - name: "你的姓名"
     affiliation: "中南大学 · 生物信息学专业"
 date: "`r Sys.Date()`"
+header-includes:
+- \usepackage{ctex}
+- \usepackage{float}
+- \floatplacement{figure}{H}
 output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: false
   html_document:
     toc: true
     toc_float: true
@@ -94,9 +102,6 @@ output:
     number_sections: false
     theme: cerulean
     highlight: tango
-  pdf_document:
-    toc: true
-    number_sections: false
   word_document:
     toc: true
 ---
@@ -173,6 +178,9 @@ knitr::opts_chunk$set(
   fig.width = 8,
   fig.height = 6
 )
+
+# install.packages("showtext")
+showtext::showtext_auto()
 
 library(ggplot2)
 library(dplyr)
