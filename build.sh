@@ -25,6 +25,7 @@ for course in r-and-rmarkdown; do
   if [ -d "$course" ] && [ -f "$course/_quarto.yml" ]; then
     echo "   构建课程: $course"
     cd "$course"
+    rm -rf _site
     quarto render
     cd ..
   fi
