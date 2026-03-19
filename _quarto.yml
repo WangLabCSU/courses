@@ -3,6 +3,8 @@ project:
   output-dir: _site
   render:
     - "*.qmd"
+    # 排除子课程目录（它们有独立的_quarto.yml，需要单独构建）
+    - "!*/**"
 
 website:
   title: "CSU生物医学信息系课程"
@@ -18,7 +20,9 @@ website:
         text: 首页
       - text: 课程
         menu:
-          - href: r-and-rmarkdown/index.qmd
+          # 注意：子课程链接必须使用 .html 后缀
+          # 因为根目录排除了子目录渲染，Quarto 不会自动转换 .qmd 链接
+          - href: r-and-rmarkdown/index.html
             text: "R与(R)Markdown基础"
       - href: learning-resources.qmd
         text: 学习资源

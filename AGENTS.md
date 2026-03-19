@@ -269,16 +269,78 @@ $dark-blue: #1a5276;    // 强调色
 :::
 ```
 
-## 5. 链接检查清单
+## 5. 链接规范与检查清单
+
+### 5.1 链接使用规则
+
+由于采用**多项目独立构建**架构，链接使用需遵循以下规则：
+
+#### 根目录 `_quarto.yml` 中的链接
+```yaml
+# ✅ 正确：指向子课程必须使用 .html 后缀
+- href: r-and-rmarkdown/index.html
+  text: "R与(R)Markdown基础"
+
+# ❌ 错误：不要使用 .qmd 后缀
+# - href: r-and-rmarkdown/index.qmd  # 这会导致下载源文件！
+```
+
+**原因**：根目录排除了子目录渲染 (`- "!*/**"`)，Quarto 不会自动转换 `.qmd` 链接为 `.html`。
+
+#### 根目录内容文件（如 `index.qmd`）中的链接
+```markdown
+# ✅ 正确：指向子课程使用 .html
+[进入课程](r-and-rmarkdown/index.html)
+
+# ✅ 正确：根目录内部链接可以使用 .qmd（Quarto会自动转换）
+[学习资源](learning-resources.qmd)
+
+# ❌ 错误：不要使用 .qmd 指向子课程
+# [进入课程](r-and-rmarkdown/index.qmd)  # 会导致下载源文件！
+```
+
+#### 子课程内部的链接
+```markdown
+# ✅ 正确：子课程内部链接可以使用 .qmd（Quarto会自动转换）
+[课程大纲](syllabus.qmd)
+[实验1](labs/lab1-r-basics.qmd)
+
+# ✅ 正确：指向根目录使用 .html
+[返回首页](../index.html)
+[学习资源](../learning-resources.html)
+
+# ✅ 正确：图片路径
+![](../logo/wsx.jpeg)
+```
+
+#### 子课程 `_quarto.yml` 中的链接
+```yaml
+# ✅ 正确：指向根目录使用 .html
+- href: ../index.html
+  text: "← 返回课程主页"
+- href: ../learning-resources.html
+  text: 学习资源
+
+# ✅ 正确：子课程内部使用 .qmd（Quarto会自动转换）
+- href: syllabus.qmd
+  text: 课程大纲
+- href: labs/lab1-r-basics.qmd
+  text: 实验1
+```
+
+### 5.2 链接检查清单
 
 发布前必须验证以下链接：
 
-- [ ] 所有幻灯片链接指向 `.html` 而非 `.qmd`
-- [ ] 实验室主页 https://wanglabcsu.github.io/
-- [ ] GitHub组织 https://github.com/WangLabCSU
-- [ ] 邮箱链接 wangshx@csu.edu.cn
-- [ ] 外部资源链接（R文档、Quarto等）
-- [ ] 课程间交叉引用链接
+- [ ] **根目录到子课程**：所有链接使用 `.html` 后缀
+- [ ] **子课程到根目录**：所有链接使用 `.html` 后缀
+- [ ] **子课程内部**：可以使用 `.qmd`（Quarto 会自动转换）
+- [ ] **幻灯片链接**：指向 `.html` 而非 `.qmd`
+- [ ] **实验室主页**：https://wanglabcsu.github.io/
+- [ ] **GitHub组织**：https://github.com/WangLabCSU
+- [ ] **邮箱链接**：wangshx@csu.edu.cn
+- [ ] **外部资源链接**（R文档、Quarto等）
+- [ ] **课程间交叉引用链接**
 
 ## 6. 新增课程流程
 
@@ -313,6 +375,45 @@ AI协助创建新课程时，按以下步骤执行：
 5. **更新根README**
    在课程列表中添加新课程
 
+### 6.1 构建架构说明
+
+本仓库采用**多项目独立构建**架构：
+
+#### 根目录 `_quarto.yml` 关键配置
+```yaml
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    # 排除子课程目录（它们有独立的_quarto.yml，需要单独构建）
+    - "!*/**"
+```
+
+**重要**：`- "!*/**"` 配置确保根目录的 `quarto render` **不会**递归渲染子目录，避免：
+- 子课程被根目录配置重复渲染（导致菜单栏不完整）
+- 二次渲染问题
+
+#### 构建流程
+1. 根目录执行 `quarto render` → 仅构建根目录的 `.qmd` 文件
+2. 每个子课程目录独立执行 `quarto render` → 使用各自的 `_quarto.yml` 配置
+3. `build.sh` 自动发现并构建所有课程（见下文）
+
+#### build.sh 自动发现机制
+```bash
+# 自动发现所有包含 _quarto.yml 的子目录
+discover_courses() {
+    for dir in */; do
+        dir_name="${dir%/}"
+        if [ -f "$dir_name/_quarto.yml" ]; then
+            echo "$dir_name"
+        fi
+    done
+}
+```
+
+**新增课程时无需修改 build.sh**，只需确保课程目录包含 `_quarto.yml` 文件。
+
 ## 8. 常见问题处理
 
 ### Q1: 幻灯片logo不显示
@@ -338,6 +439,47 @@ lang: zh
 - 网站内链接使用相对路径
 - 幻灯片链接使用 `.html` 后缀
 - 外部链接使用完整URL
+
+### Q5: 子课程菜单栏显示不完整
+
+**原因**：根目录的 `quarto render` 默认会递归渲染子目录，使用根目录的配置覆盖子课程配置。
+
+**解决方案**：已在根目录 `_quarto.yml` 中配置 `- "!*/**"` 排除子目录。如果问题仍存在，检查：
+- 子目录是否有 `_quarto.yml` 文件
+- 是否使用了 `build.sh` 或 GitHub Actions 进行构建
+
+### Q6: 构建时文件被渲染两次
+
+**原因**：根目录 `quarto render` 递归处理了子课程文件，然后 `build.sh` 又单独构建了子课程。
+
+**解决方案**：确保根目录 `_quarto.yml` 包含排除规则：
+```yaml
+render:
+  - "*.qmd"
+  - "!*/**"  # 排除所有子目录
+```
+
+### Q7: 新增课程后 build.sh 需要更新
+
+**解决方案**：新版 `build.sh` 已支持自动发现课程。只需确保新课程目录包含 `_quarto.yml` 文件即可，无需修改构建脚本。
+
+### Q8: 点击子课程链接时下载 .qmd 文件而不是打开网页
+
+**原因**：根目录链接指向了 `.qmd` 文件而非 `.html`。由于根目录排除了子目录渲染，Quarto 不会自动转换链接。
+
+**示例**：
+```yaml
+# ❌ 错误 - 会导致下载 r-and-rmarkdown/index.qmd
+- href: r-and-rmarkdown/index.qmd
+
+# ✅ 正确 - 正常打开网页
+- href: r-and-rmarkdown/index.html
+```
+
+**解决方案**：
+1. 检查根目录 `_quarto.yml` 中的子课程链接，确保使用 `.html` 后缀
+2. 检查根目录 `index.qmd` 中的子课程链接，确保使用 `.html` 后缀
+3. 参见 [5.1 链接使用规则](#51-链接使用规则)
 
 ## 9. 联系信息
 

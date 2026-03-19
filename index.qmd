@@ -69,7 +69,7 @@ format:
 - tidyverse数据处理与ggplot2可视化
 - R Markdown与Quarto报告编写
 
-[进入课程](r-and-rmarkdown/index.qmd){.btn .btn-primary .btn-sm .mt-2}
+[进入课程](r-and-rmarkdown/index.html){.btn .btn-primary .btn-sm .mt-2}
 [查看幻灯片](r-and-rmarkdown/slides/slides-r-basics.html){.btn .btn-outline-primary .btn-sm .mt-2}
 :::
 :::
