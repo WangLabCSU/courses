@@ -1,0 +1,395 @@
+---
+title: "第4讲：功能富集分析"
+subtitle: "从差异基因到生物学解释"
+---
+
+## 本讲概述
+
+本讲将介绍功能富集分析的原理和方法：
+
+- GO和KEGG数据库简介
+- 过表达分析（ORA）原理
+- GSEA方法简介
+- 结果可视化与解释
+
+## 1. 为什么需要功能富集分析？
+
+### 1.1 问题背景
+
+差异表达分析后，你可能得到：
+- 上调基因：1,500个
+- 下调基因：1,200个
+
+**面对数千个基因，如何理解其生物学意义？**
+
+### 1.2 功能富集分析目标
+
+1. **降维**：从基因列表到功能类别
+2. **解释**：识别受影响的生物学过程
+3. **假设生成**：发现新的研究方向
+
+```
+差异基因列表          功能富集分析          生物学洞察
+┌──────────┐           ┌──────────┐          ┌──────────┐
+│ Gene A   │           │ GO:1234  │          │ 细胞增殖 │
+│ Gene B   │    →      │ KEGG:567 │    →     │ 信号通路 │
+│ Gene C   │           │ GO:5678  │          │ 代谢过程 │
+│ ...      │           │ ...      │          │ ...      │
+│ Gene N   │           │          │          │          │
+└──────────┘           └──────────┘          └──────────┘
+```
+
+## 2. 功能注释数据库
+
+### 2.1 Gene Ontology (GO)
+
+**GO三大分支**：
+
+| 分支 | 缩写 | 描述 | 示例 |
+|------|------|------|------|
+| **细胞组分** | CC | 基因产物所在位置 | nucleus, membrane |
+| **分子功能** | MF | 基因产物的生化活性 | kinase activity |
+| **生物过程** | BP | 参与的生物学过程 | cell division |
+
+**GO结构**：有向无环图（DAG）
+
+```
+            生物过程 (Biological Process)
+                   │
+         ┌─────────┴─────────┐
+         │                   │
+    细胞增殖            细胞凋亡
+         │
+    ┌────┴────┐
+    │         │
+DNA复制    有丝分裂
+```
+
+**GO注释特点**：
+- 一个基因可有多个GO注释
+- 注释遵循"真路径规则"（True Path Rule）
+- 不同分支独立注释
+
+### 2.2 KEGG通路
+
+**KEGG（Kyoto Encyclopedia of Genes and Genomes）**：
+
+| 数据库 | 内容 | 应用 |
+|--------|------|------|
+| **PATHWAY** | 代谢通路、信号通路 | 通路富集分析 |
+| **GENES** | 基因序列信息 | 基因注释 |
+| **COMPOUND** | 化合物/代谢物 | 代谢组学 |
+| **DISEASE** | 疾病相关基因 | 疾病研究 |
+
+**常见KEGG通路**：
+- **代谢通路**：糖酵解、脂肪酸代谢
+- **信号通路**：MAPK、PI3K-Akt、Wnt
+- **疾病通路**：癌症通路、Pathways in cancer
+- **免疫通路**：T细胞受体、B细胞受体
+
+### 2.3 其他数据库
+
+| 数据库 | 特点 | 用途 |
+|--------|------|------|
+| **Reactome** | 人工注释，详细 | 通路分析 |
+| **MSigDB** | 基因集集合 | GSEA |
+| **DO** | 疾病本体 | 疾病富集 |
+| **WikiPathways** | 开放编辑 | 通路可视化 |
+
+## 3. 过表达分析（ORA）
+
+### 3.1 ORA原理
+
+**核心问题**：某GO/通路中的差异基因是否比随机期望更多？
+
+**超几何检验**：
+```
+背景基因：N个（如20,000）
+背景中属于某通路的基因：M个
+
+差异基因：n个
+差异基因中属于该通路的基因：k个
+
+P(X=k) = C(M,k) × C(N-M, n-k) / C(N,n)
+```
+
+### 3.2 ORA分析步骤
+
+```
+1. 获取差异基因列表（如上调基因）
+        ↓
+2. 选择背景基因集（通常是所有检测基因）
+        ↓
+3. 对每个GO/通路进行超几何检验
+        ↓
+4. 多重检验校正（BH）
+        ↓
+5. 筛选显著富集的条目
+```
+
+### 3.3 富集比值
+
+```
+富集比值 = (k/n) / (M/N)
+
+其中：
+- k/n：差异基因中属于该通路的比例
+- M/N：背景中属于该通路的比例
+
+富集比值 > 1：该通路被富集
+```
+
+### 3.4 clusterProfiler ORA
+
+```r
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+# 准备差异基因（ENTREZ ID格式）
+deg_genes <- rownames(subset(res, padj < 0.05 & log2FoldChange > 1))
+
+# 基因ID转换（ENSEMBL → ENTREZID）
+gene_df <- bitr(deg_genes,
+              fromType = "ENSEMBL",
+              toType = "ENTREZID",
+              OrgDb = org.Hs.eg.db)
+
+# GO富集分析
+ego <- enrichGO(gene = gene_df$ENTREZID,
+               OrgDb = org.Hs.eg.db,
+               ont = "BP",          # BP/MF/CC
+               pAdjustMethod = "BH",
+               pvalueCutoff = 0.05,
+               qvalueCutoff = 0.2)
+
+# 查看结果
+head(ego)
+```
+
+### 3.5 ORA结果解读
+
+| 列名 | 含义 | 说明 |
+|------|------|------|
+| ID | GO/通路ID | 唯一标识符 |
+| Description | 描述 | 功能名称 |
+| GeneRatio | k/n | 差异基因中属于该通路的比率 |
+| BgRatio | M/N | 背景中属于该通路的比率 |
+| pvalue | 原始p值 | 富集显著性 |
+| p.adjust | 校正p值 | BH校正后的显著性 |
+| qvalue | FDR控制 | 更严格的校正 |
+| geneID | 基因列表 | 属于该通路的差异基因 |
+| Count | k | 属于该通路的差异基因数 |
+
+::: {.callout-tip}
+### 选择富集阈值
+- **宽松**：p.adjust < 0.05，用于探索性分析
+- **严格**：qvalue < 0.05，用于发表结果
+- **综合考虑**：GeneRatio和生物学意义
+:::
+
+## 4. KEGG通路富集
+
+### 4.1 KEGG分析
+
+```r
+# KEGG通路富集
+kk <- enrichKEGG(gene = gene_df$ENTREZID,
+               organism = "hsa",    # hsa=human, mmu=mouse
+               pAdjustMethod = "BH",
+               pvalueCutoff = 0.05)
+
+# 查看结果
+head(kk)
+```
+
+### 4.2 物种代码
+
+| 物种 | 代码 |
+|------|------|
+| 人类 | hsa |
+| 小鼠 | mmu |
+| 大鼠 | rno |
+| 斑马鱼 | dre |
+| 果蝇 | dme |
+
+## 5. GSEA简介
+
+### 5.1 ORA的局限性
+
+**ORA缺点**：
+- 需要预设阈值筛选差异基因
+- 丢失微小但协调变化的基因
+- 忽略基因表达变化的方向
+
+### 5.2 GSEA原理
+
+**Gene Set Enrichment Analysis（基因集富集分析）**：
+
+1. 根据所有基因的排序（如log2FC）进行排序
+2. 评估基因集成员是否富集在排序列表的顶部或底部
+3. 计算富集分数（Enrichment Score, ES）
+
+```
+排序的基因列表（按log2FC从高到低）：
+
+log2FC:  +5    +3    +1    0    -1    -3    -5
+         │     │     │    │     │     │     │
+Gene:   A───B───C───D───E───F───G───H───I───J
+         ↑     ↑                       ↑
+       通路X成员                     通路Y成员
+
+富集分数计算：
+- 通路X富集在顶部（正相关）→ ES > 0
+- 通路Y富集在底部（负相关）→ ES < 0
+```
+
+### 5.3 GSEA分析
+
+```r
+library(clusterProfiler)
+library(DOSE)
+
+# 准备排序基因列表（所有基因，按log2FC排序）
+geneList <- res$log2FoldChange
+names(geneList) <- rownames(res)
+geneList <- sort(geneList, decreasing = TRUE)
+
+# 基因ID转换
+geneList_entrez <- bitr(names(geneList),
+                      fromType = "ENSEMBL",
+                      toType = "ENTREZID",
+                      OrgDb = org.Hs.eg.db)
+
+# 创建命名向量
+names(geneList) <- geneList_entrez$ENTREZID[match(names(geneList),
+                                              geneList_entrez$ENSEMBL)]
+geneList <- geneList[!is.na(names(geneList))]
+
+# GSEA分析
+gsea <- gseGO(geneList = geneList,
+            OrgDb = org.Hs.eg.db,
+            ont = "BP",
+            pAdjustMethod = "BH",
+            pvalueCutoff = 0.05)
+
+# 查看结果
+head(gsea)
+```
+
+### 5.4 GSEA结果解读
+
+| 列名 | 含义 |
+|------|------|
+| ID | 基因集ID |
+| setSize | 基因集中检测到的基因数 |
+| enrichmentScore | 富集分数 |
+| NES | 标准化富集分数（不同基因集可比） |
+| pvalue | 显著性 |
+| leading_edge | 核心富集基因 |
+
+**NES解释**：
+- NES > 0：基因集富集在排序列表顶部（如上调基因）
+- NES < 0：基因集富集在排序列表底部（如下调基因）
+- |NES| > 1：通常认为有意义
+
+### 5.5 ORA vs GSEA
+
+| 特性 | ORA | GSEA |
+|------|-----|------|
+| 输入 | 差异基因列表 | 全部基因（排序） |
+| 阈值依赖 | 是 | 否 |
+| 检测方向 | 是（需分别分析） | 是（自动检测） |
+| 检测微弱信号 | 弱 | 强 |
+| 计算量 | 小 | 大 |
+| 推荐场景 | 快速筛选 | 深入分析 |
+
+## 6. 结果可视化
+
+### 6.1 条形图
+
+```r
+# 富集条形图
+barplot(ego, showCategory = 20)
+
+# 或者使用ggplot2
+library(ggplot2)
+dotplot(ego, showCategory = 15) + ggtitle("GO Enrichment")
+```
+
+### 6.2 网络图
+
+```r
+# 富集条目间的基因重叠网络
+cnetplot(ego, categorySize = "pvalue")
+
+# 显示基因和通路的关联
+```
+
+### 6.3 GSEA mountain plot
+
+```r
+# GSEA富集图
+gseaplot2(gsea, geneSetID = 1, title = gsea$Description[1])
+```
+
+- 绿线：富集分数曲线
+- 黑色竖线：基因集中基因在排序列表中的位置
+- 热图：基因表达值分布
+
+### 6.4 热图
+
+```r
+# 富集通路中基因的表达热图
+heatplot(ego, foldChange = geneList)
+```
+
+## 7. 结果解释与报告
+
+### 7.1 撰写富集分析结果
+
+**示例描述**：
+
+```markdown
+对差异表达基因进行GO生物过程富集分析（clusterProfiler，
+p.adjust < 0.05）。上调基因显著富集于"细胞周期调控"
+（GeneRatio=45/120, p.adjust=2.3×10^-10）、"DNA复制"
+（GeneRatio=32/120, p.adjust=5.6×10^-8）等增殖相关通路。
+下调基因则富集于"细胞凋亡"（GeneRatio=28/98,
+p.adjust=8.1×10^-6）和"免疫应答"（GeneRatio=35/98,
+p.adjust=3.2×10^-5）。
+
+这些结果表明，处理可能通过促进细胞增殖和抑制
+凋亡来促进肿瘤生长。
+```
+
+### 7.2 注意事项
+
+1. **选择合适背景**：使用所有检测基因作为背景，而非全基因组
+2. **关注GeneRatio**：高富集比更可靠
+3. **结合表达方向**：上调和下调基因分别富集分析
+4. **避免过度解读**：富集≠因果
+5. **验证**：关键通路可用其他方法验证（如文献）
+
+## 8. 小结
+
+本讲要点：
+
+1. **功能数据库**：GO（CC/MF/BP）、KEGG是主要功能注释资源
+2. **ORA原理**：超几何检验评估基因集是否过度代表
+3. **GSEA优势**：不依赖阈值，可检测协调的微小变化
+4. **结果解读**：关注显著性、富集比和生物学意义
+5. **可视化**：条形图、网络图、GSEA mountain plot
+
+## 思考题
+
+1. 为什么富集分析需要设置背景基因集？
+2. ORA和GSEA各自适用于什么场景？
+3. 富集分析p值<0.05就一定有意义吗？
+4. 如何判断一个富集结果是否可靠？
+
+## 参考文献
+
+1. Yu G, et al. clusterProfiler: an R package for comparing biological themes among gene clusters. OMICS. 2012;16(5):284-287.
+2. Subramanian A, et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc Natl Acad Sci USA. 2005;102(43):15545-15550.
+3. Ashburner M, et al. Gene ontology: tool for the unification of biology. Nat Genet. 2000;25(1):25-29.
+4. Kanehisa M, Goto S. KEGG: kyoto encyclopedia of genes and genomes. Nucleic Acids Res. 2000;28(1):27-30.

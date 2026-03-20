@@ -1,0 +1,147 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "slides/*.qmd"  # 幻灯片也参与渲染
+
+website:
+  title: "转录组数据分析"
+  description: "中南大学生物医学信息系 - RNA-seq数据处理与差异表达分析"
+  site-url: https://wanglabcsu.github.io/courses/rna-seq-analysis
+  repo-url: https://github.com/WangLabCSU/courses
+  repo-branch: main
+
+  navbar:
+    title: "转录组数据分析"
+    left:
+      - href: ../index.html
+        text: "← 返回课程主页"
+      - href: index.qmd
+        text: 课程首页
+      - href: syllabus.qmd
+        text: 课程大纲
+      - text: 教学资源
+        menu:
+          - text: "---"
+          - text: "讲座笔记"
+          - href: lectures/lecture1-rnaseq-principles.qmd
+            text: "📖 讲座1：RNA-seq原理与实验流程"
+          - href: lectures/lecture2-preprocessing-qc.qmd
+            text: "📖 讲座2：数据预处理与质控"
+          - href: lectures/lecture3-de-analysis.qmd
+            text: "📖 讲座3：差异表达分析"
+          - href: lectures/lecture4-functional-analysis.qmd
+            text: "📖 讲座4：功能富集分析"
+          - text: "---"
+          - text: "幻灯片"
+          - href: slides/slides-rnaseq-overview.html
+            text: "📊 幻灯片：RNA-seq概述"
+          - href: slides/slides-de-analysis.html
+            text: "📊 幻灯片：差异表达分析"
+          - text: "---"
+          - text: "实验指导"
+          - href: labs/lab1-rnaseq-workflow.qmd
+            text: "🧪 实验1：RNA-seq数据处理流程"
+          - href: labs/lab2-de-visualization.qmd
+            text: "🧪 实验2：差异表达分析与可视化"
+      - href: resources.qmd
+        text: 拓展资源
+      - href: ../learning-resources.html
+        text: 学习资源
+    right:
+      - text: "🤖 AI问答"
+        href: https://deepwiki.com/WangLabCSU/courses
+        target: _blank
+        aria-label: AI问答
+      - icon: bug
+        text: "报告问题"
+        href: https://github.com/WangLabCSU/courses/issues/new
+        aria-label: 报告问题
+      - icon: github
+        href: https://github.com/WangLabCSU
+        aria-label: GitHub
+      - text: "中南大学"
+        href: https://www.csu.edu.cn
+
+  sidebar:
+    - title: "课程导航"
+      style: "docked"
+      contents:
+        - section: "课程信息"
+          contents:
+            - index.qmd
+            - syllabus.qmd
+        - section: "讲座笔记"
+          contents:
+            - text: "📖 讲座1：RNA-seq原理与实验流程"
+              href: lectures/lecture1-rnaseq-principles.qmd
+            - text: "📖 讲座2：数据预处理与质控"
+              href: lectures/lecture2-preprocessing-qc.qmd
+            - text: "📖 讲座3：差异表达分析"
+              href: lectures/lecture3-de-analysis.qmd
+            - text: "📖 讲座4：功能富集分析"
+              href: lectures/lecture4-functional-analysis.qmd
+        - section: "教学资源"
+          contents:
+            - text: "📊 幻灯片：RNA-seq概述"
+              href: slides/slides-rnaseq-overview.html
+            - text: "📊 幻灯片：差异表达分析"
+              href: slides/slides-de-analysis.html
+        - section: "实验指导"
+          contents:
+            - labs/lab1-rnaseq-workflow.qmd
+            - labs/lab2-de-visualization.qmd
+        - section: "资源"
+          contents:
+            - text: "📚 拓展资源"
+              href: resources.qmd
+            - text: "📚 学习资源"
+              href: ../learning-resources.html
+
+  page-footer:
+    left: "© 2026 王诗翔 - 中南大学 · 生物医学信息系"
+    center:
+      - text: "WangLabCSU"
+        href: https://github.com/WangLabCSU
+    right:
+      - text: 许可证
+        href: license.qmd
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles/custom.scss]
+      dark: [darkly, styles/custom-dark.scss]
+    css: styles/styles.css
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
+    fig-width: 8
+    fig-height: 6
+    execute:
+      echo: true
+      message: false
+      warning: false
+    knitr:
+      opts_chunk:
+        message: false
+        warning: false
+    code-block-bg: true
+    code-block-border-left: "#8B0000"
+    df-print: paged
+    tbl-cap-location: top
+    fig-cap-location: bottom
+    link-external-icon: true
+    link-external-newwindow: true
+
+execute:
+  freeze: true
+  echo: true
+
+bibliography: references.bib
+
+lang: zh

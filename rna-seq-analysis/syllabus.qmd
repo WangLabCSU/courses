@@ -1,0 +1,185 @@
+---
+title: "课程大纲"
+subtitle: "Syllabus"
+---
+
+## 基本信息
+
+| 项目 | 内容 |
+|------|------|
+| **课程名称** | 转录组数据分析 |
+| **英文名称** | RNA-seq Data Analysis |
+| **授课对象** | 生物医学信息系 本科生/研究生 |
+| **先修课程** | R与(R)Markdown基础、生物统计学 |
+| **授课教师** | 王诗翔 副教授 |
+| **开课单位** | 中南大学 |
+
+**学时说明**：每学时 = 45分钟
+
+## 课程目标
+
+完成本课程后，学生将能够：
+
+1. **知识目标**
+   - 理解RNA-seq技术的原理、实验流程和数据特点
+   - 掌握转录组数据从原始FASTQ到表达矩阵的处理流程
+   - 理解差异表达分析的统计原理和方法
+   - 了解功能富集分析的算法和常用数据库
+
+2. **能力目标**
+   - 能够独立使用标准流程处理RNA-seq原始数据
+   - 能够使用DESeq2/edgeR进行差异表达分析
+   - 能够使用clusterProfiler进行功能富集分析
+   - 能够使用ggplot2等工具进行结果可视化
+
+3. **素质目标**
+   - 建立转录组研究的系统性分析思维
+   - 培养生物信息学数据质量控制意识
+   - 增强生物学结果解释和文献阅读能力
+
+## 教学内容与安排
+
+### 理论讲授（2学时 = 90分钟）
+
+| 序号 | 主题 | 内容要点 | 时长 |
+|:----:|------|----------|:----:|
+| 1 | **RNA-seq原理与实验流程** | RNA-seq技术原理；文库制备流程；测序平台比较；实验设计原则；批次效应与控制 | 30分钟 |
+| 2 | **数据预处理与质控** | FASTQ格式与质控（FastQC）；接头和低质量 trimming；参考基因组比对（STAR/HISAT2）；基因表达定量（featureCounts） | 25分钟 |
+| 3 | **差异表达分析** | 表达矩阵标准化；DESeq2和edgeR原理；统计检验与多重校正；结果筛选与解释 | 20分钟 |
+| 4 | **功能富集分析** | GO和KEGG数据库介绍；ORA超几何检验；GSEA原理；结果可视化 | 15分钟 |
+
+**合计：2学时（90分钟）**
+
+### 实验教学（2学时 = 90分钟）
+
+| 序号 | 实验名称 | 内容 | 时长 |
+|:----:|----------|------|:----:|
+| 1 | **RNA-seq数据处理流程** | FASTQ质控分析；使用R进行表达数据预处理；数据标准化和转换 | 45分钟 |
+| 2 | **差异表达分析与可视化** | DESeq2差异分析；火山图、热图绘制；GO/KEGG富集分析 | 45分钟 |
+
+**合计：2学时（90分钟）**
+
+**总计：4学时（180分钟）**
+
+## 详细教学计划
+
+### 理论讲授：RNA-seq原理与分析 (2学时)
+
+::: {.callout-note}
+#### 学习目标
+- 理解RNA-seq实验流程和数据产生机制
+- 掌握质量控制的重要性
+- 学会使用主流分析工具
+- 能够解释差异表达分析结果
+:::
+
+**讲授内容：**
+
+1. **RNA-seq技术概述**（10分钟）
+   - 转录组测序技术的发展历程
+   - RNA-seq vs 芯片技术的优势
+   - 常用测序平台比较（Illumina、Nanopore等）
+
+2. **实验流程与文库制备**（10分钟）
+   - 总RNA提取与质控
+   - mRNA富集（poly-A选择）
+   - 文库构建与质量控制
+   - 测序深度和重复数设计
+
+3. **实验设计与批次效应**（10分钟）
+   - 生物学重复 vs 技术重复
+   - 随机化与平衡设计
+   - 批次效应来源与识别
+   - 批次校正方法简介
+
+4. **数据预处理**（12分钟）
+   - FASTQ文件格式与质量编码
+   - FastQC质控报告解读
+   - Trimmomatic/Cutadapt接头去除
+   - 比对原理与常用比对工具
+
+5. **表达定量**（13分钟）
+   - 比对结果处理（SAM/BAM）
+   - 基因表达计数（featureCounts）
+   - 表达矩阵构建
+   - 标准化方法（TPM、FPKM、DESeq2 size factors）
+
+6. **差异表达分析**（20分钟）
+   - 差异分析的基本原理
+   - DESeq2工作流程
+   - 负二项分布与离散度估计
+   - 统计检验与p值校正
+   - log2 Fold Change计算与解释
+
+7. **功能富集分析**（15分钟）
+   - GO和KEGG数据库介绍
+   - 超几何检验原理（ORA）
+   - GSEA方法简介
+   - 富集结果可视化
+
+## 参考教材与资源
+
+### 主要教材
+
+1. **《RNA-seq Data Analysis: A Practical Approach》**
+   Eija Korpelainen et al.
+   CRC Press, 2014
+
+2. **《Bioconductor Case Studies》**
+   Florian Hahne et al.
+   Springer, 2008
+
+3. **DESeq2 Vignette**
+   Michael Love et al.
+   https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
+
+### 在线资源
+
+- [Bioconductor RNA-seq Workflow](https://www.bioconductor.org/packages/release/workflows/html/rnaseqGene.html)
+- [RNA-seq Wiki (HBC Training)](https://github.com/hbctraining/Intro-to-rnaseq-hpc-O2)
+- [NBIS RNA-seq Workshop](https://github.com/NBISweden/workshop-RNAseq)
+- [WangLab RNA-seq Workshop](https://github.com/WangLabCSU/workshop-RNAseq)
+- [clusterProfiler Book](https://yulab-smu.top/biomedical-knowledge-mining-book/)
+
+### 软件环境
+
+- R >= 4.3.0
+- Bioconductor >= 3.18
+- 必需R包：
+  - `DESeq2` - 差异表达分析
+  - `edgeR` - 差异表达分析（备选）
+  - `limma` - 线性模型分析
+  - `clusterProfiler` - 功能富集
+  - `org.Hs.eg.db` - 人类基因注释
+  - `pheatmap` - 热图绘制
+  - `ggplot2` - 数据可视化
+
+## 课程拓展
+
+本课程是生物医学信息系课程体系的核心模块，后续可衔接：
+
+| 后续课程 | 衔接内容 |
+|----------|----------|
+| **单细胞RNA-seq分析** | 单细胞数据质控、降维、聚类、轨迹分析 |
+| **基因组突变分析** | 体细胞突变、CNV分析 |
+| **整合多组学分析** | 多组学数据整合与网络分析 |
+| **系统生物学** | 调控网络构建与建模 |
+
+## 学术诚信
+
+本课程要求严格遵守学术诚信规范：
+
+- 实验报告独立完成，禁止抄袭代码
+- 引用他人代码需明确标注来源
+- 鼓励合作讨论分析方法，但禁止直接复制分析结果
+- 违反者按学校规定处理
+
+---
+
+**联系信息**
+
+- 授课教师：王诗翔 副教授
+- 单位：中南大学 · 生物医学信息系
+- 邮箱：wangshx@csu.edu.cn
+- 实验室主页：https://wanglabcsu.github.io/
+- GitHub：https://github.com/WangLabCSU

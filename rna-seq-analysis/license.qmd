@@ -1,0 +1,76 @@
+---
+title: "许可证"
+subtitle: "License"
+---
+
+## 双许可证声明
+
+本课程内容采用双许可证模式：
+
+### 教学内容
+
+**知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议**
+
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+您可以：
+- **共享** — 在任何媒介以任何形式复制、发行本作品
+- **演绎** — 修改、转换或以本作品为基础进行创作
+
+须遵守以下条件：
+- **署名** — 您必须给出适当的署名，提供指向本许可协议的链接，同时标明是否对原始作品作了修改
+- **非商业性使用** — 您不得将本作品用于商业目的
+- **相同方式共享** — 如果您再混合、转换或者基于本作品进行创作，您必须基于与原先许可协议相同的许可协议分发您贡献的作品
+
+### 示例代码
+
+**MIT License**
+
+Copyright (c) 2026 王诗翔
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 引用建议
+
+如果您在研究中使用了本课程的材料，请考虑引用：
+
+```
+王诗翔. 转录组数据分析[DB/OL]. 中南大学生物医学信息系, 2026.
+https://wanglabcsu.github.io/courses/rna-seq-analysis
+```
+
+## 致谢
+
+本课程内容参考了以下开源资源和社区贡献：
+
+- [Bioconductor](https://www.bioconductor.org/) - 开源生物信息学软件
+- [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) - Love et al., Genome Biology, 2014
+- [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) - Yu et al., OMICS, 2012
+
+感谢生物信息学社区的贡献者！
+
+---
+
+**联系方式**
+
+- 邮箱：wangshx@csu.edu.cn
+- 实验室主页：https://wanglabcsu.github.io/
+- GitHub：https://github.com/WangLabCSU

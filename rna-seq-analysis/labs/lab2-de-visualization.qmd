@@ -1,0 +1,697 @@
+---
+title: "实验2：差异表达分析与可视化"
+subtitle: "使用DESeq2识别和可视化差异表达基因"
+---
+
+## 实验目标
+
+完成本实验后，你将能够：
+
+1. 使用DESeq2进行差异表达分析
+2. 筛选和解释差异表达基因
+3. 绘制火山图、热图等可视化图表
+4. 进行基础的功能富集分析
+
+**实验时长**：45分钟
+**实验类型**：个人完成
+
+---
+
+## 实验准备
+
+### 环境要求
+
+- R >= 4.3.0
+- 必需R包：DESeq2, ggplot2, pheatmap, clusterProfiler, org.Hs.eg.db, enrichplot
+
+### 加载包和创建示例数据
+
+```r
+# 安装和加载所需包
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+packages <- c("DESeq2", "ggplot2", "pheatmap", "clusterProfiler",
+              "org.Hs.eg.db", "enrichplot")
+
+for (pkg in packages) {
+  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    BiocManager::install(pkg)
+    library(pkg, character.only = TRUE)
+  }
+}
+
+# 创建示例数据（延续实验1）
+set.seed(123)
+
+samples <- c(paste0("Control_", 1:3), paste0("Treatment_", 1:3))
+conditions <- factor(c(rep("Control", 3), rep("Treatment", 3)))
+
+# 创建2000个基因的表达矩阵
+ngenes <- 2000
+gene_names <- paste0("Gene_", 1:ngenes)
+
+# 使用真实的基因ID格式（ENSEMBL风格）
+gene_ids <- paste0("ENSG", sprintf("%011d", 1:ngenes))
+
+counts <- matrix(0, nrow = ngenes, ncol = 6)
+rownames(counts) <- gene_ids
+colnames(counts) <- samples
+
+# 为每个基因生成基础表达量
+base_expr <- rnbinom(ngenes, mu = 100, size = 2)
+
+for (i in 1:ngenes) {
+  counts[i, 1:3] <- rpois(3, lambda = base_expr[i])
+
+  if (i <= 200) {
+    # 上调2倍
+    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 2.5)
+  } else if (i <= 400) {
+    # 下调0.4倍
+    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 0.4)
+  } else {
+    # 无变化
+    counts[i, 4:6] <- rpois(3, lambda = base_expr[i])
+  }
+}
+
+# 创建DESeq2对象
+colData <- data.frame(
+  condition = conditions,
+  row.names = samples
+)
+
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData = colData,
+  design = ~ condition
+)
+
+# 过滤低表达基因
+keep <- rowSums(counts(dds) >= 10) >= 3
+dds <- dds[keep, ]
+
+cat("数据准备完成！\n")
+cat("基因数:", nrow(dds), "\n")
+cat("样本数:", ncol(dds), "\n")
+```
+
+---
+
+## 第一部分：差异表达分析
+
+### 练习1.1：运行DESeq2差异分析
+
+```r
+# TODO: 完成DESeq2差异分析流程
+
+# 1. 运行DESeq2
+# 提示：使用 DESeq() 函数
+dds <- ____(dds)
+
+# 2. 提取结果
+cat("提取结果...\n")
+res <- results(dds, contrast = c("condition", "Treatment", "Control"))
+
+# 3. 查看结果摘要
+print("DESeq2结果摘要:")
+summary(res)
+
+# 4. 查看结果表的前几行
+print("\n结果表（前5行）:")
+head(res)
+
+# 5. 统计差异基因数量
+# padj < 0.05 且 |log2FC| > 1
+sig_genes <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
+cat("\n差异表达基因数 (padj<0.05, |log2FC|>1):", nrow(sig_genes), "\n")
+
+# 6. 分别统计上调和下调
+down_genes <- subset(res, padj < 0.05 & log2FoldChange < -1)
+up_genes <- subset(res, padj < 0.05 & log2FoldChange > 1)
+
+cat("上调基因数:", nrow(up_genes), "\n")
+cat("下调基因数:", nrow(down_genes), "\n")
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+dds <- DESeq(dds)
+
+res <- results(dds, contrast = c("condition", "Treatment", "Control"))
+
+cat("DESeq2结果摘要:\n")
+summary(res)
+
+cat("\n结果表（前5行）:\n")
+print(head(res))
+
+sig_genes <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
+cat("\n差异表达基因数 (padj<0.05, |log2FC|>1):", nrow(sig_genes), "\n")
+
+down_genes <- subset(res, padj < 0.05 & log2FoldChange < -1)
+up_genes <- subset(res, padj < 0.05 & log2FoldChange > 1)
+
+cat("上调基因数:", nrow(up_genes), "\n")
+cat("下调基因数:", nrow(down_genes), "\n")
+```
+</details>
+
+---
+
+### 练习1.2：结果表解读和整理
+
+```r
+# TODO: 整理和解读差异分析结果
+
+# 1. 将结果转换为数据框并添加基因ID
+res_df <- as.data.frame(res)
+res_df$Gene <- rownames(res_df)
+
+# 2. 添加差异状态分类
+# 提示：使用ifelse()根据padj和log2FC创建DE_status列
+res_df$DE_status <- ifelse(
+  res_df$padj < 0.05 & res_df$log2FoldChange > 1, "Up",
+  ifelse(res_df$padj < 0.05 & res_df$log2FoldChange < -1, "Down", "NS")
+)
+
+# 3. 统计各类基因数量
+status_table <- table(res_df$DE_status)
+print("差异基因统计:")
+print(status_table)
+
+# 4. 找出Top 10上调基因（按padj排序）
+top_up <- res_df[res_df$DE_status == "Up", ]
+top_up <- top_up[order(top_up$padj), ]
+cat("\nTop 10 上调基因:\n")
+print(head(top_up[, c("Gene", "log2FoldChange", "padj")], 10))
+
+# 5. 找出Top 10下调基因
+top_down <- res_df[res_df$DE_status == "Down", ]
+top_down <- top_down[order(top_down$padj), ]
+cat("\nTop 10 下调基因:\n")
+print(head(top_down[, c("Gene", "log2FoldChange", "padj")], 10))
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+res_df <- as.data.frame(res)
+res_df$Gene <- rownames(res_df)
+
+res_df$DE_status <- ifelse(
+  res_df$padj < 0.05 & res_df$log2FoldChange > 1, "Up",
+  ifelse(res_df$padj < 0.05 & res_df$log2FoldChange < -1, "Down", "NS")
+)
+
+status_table <- table(res_df$DE_status)
+cat("差异基因统计:\n")
+print(status_table)
+
+top_up <- res_df[res_df$DE_status == "Up", ]
+top_up <- top_up[order(top_up$padj), ]
+cat("\nTop 10 上调基因:\n")
+print(head(top_up[, c("Gene", "log2FoldChange", "padj")], 10))
+
+top_down <- res_df[res_df$DE_status == "Down", ]
+top_down <- top_down[order(top_down$padj), ]
+cat("\nTop 10 下调基因:\n")
+print(head(top_down[, c("Gene", "log2FoldChange", "padj")], 10))
+```
+</details>
+
+---
+
+## 第二部分：可视化
+
+### 练习2.1：MA图
+
+MA图展示表达量（mean）与差异倍数（log2FC）的关系。
+
+```r
+# TODO: 创建MA图
+
+# 方法1：使用DESeq2内置函数
+plotMA(res, ylim = c(-5, 5), main = "MA Plot (DESeq2)")
+
+# 方法2：使用ggplot2自定义
+# 移除NA值
+res_clean <- res_df[!is.na(res_df$padj), ]
+
+# 绘制MA图
+ma_plot <- ggplot(res_clean, aes(x = baseMean, y = log2FoldChange,
+                                  color = DE_status)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_x_log10() +
+  scale_color_manual(values = c("Down" = "blue", "NS" = "grey", "Up" = "red")) +
+  geom_hline(yintercept = c(-1, 1), linetype = "dashed", color = "grey50") +
+  theme_minimal() +
+  labs(title = "MA Plot - Differential Expression",
+       x = "Mean Expression (log10 scale)",
+       y = "log2 Fold Change",
+       color = "Differential\nExpression") +
+  theme(legend.position = "right")
+
+print(ma_plot)
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+plotMA(res, ylim = c(-5, 5), main = "MA Plot (DESeq2)")
+
+res_clean <- res_df[!is.na(res_df$padj), ]
+
+ma_plot <- ggplot(res_clean, aes(x = baseMean, y = log2FoldChange,
+                                  color = DE_status)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_x_log10() +
+  scale_color_manual(values = c("Down" = "blue", "NS" = "grey", "Up" = "red")) +
+  geom_hline(yintercept = c(-1, 1), linetype = "dashed", color = "grey50") +
+  theme_minimal() +
+  labs(title = "MA Plot - Differential Expression",
+       x = "Mean Expression (log10 scale)",
+       y = "log2 Fold Change",
+       color = "Differential\nExpression") +
+  theme(legend.position = "right")
+
+print(ma_plot)
+```
+</details>
+
+---
+
+### 练习2.2：火山图
+
+火山图同时展示差异倍数和统计显著性。
+
+```r
+# TODO: 创建火山图
+
+# 1. 准备数据
+# 添加 -log10(padj) 列
+res_plot <- res_clean
+res_plot$negLog10padj <- -log10(res_plot$padj)
+
+# 设置y轴上限（避免Inf）
+res_plot$negLog10padj[is.infinite(res_plot$negLog10padj)] <- max(res_plot$negLog10padj[is.finite(res_plot$negLog10padj)]) + 5
+
+# 2. 绘制火山图
+volcano_plot <- ggplot(res_plot, aes(x = log2FoldChange, y = negLog10padj,
+                                      color = DE_status)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_color_manual(values = c("Down" = "blue", "NS" = "grey", "Up" = "red")) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "grey50") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "grey50") +
+  theme_minimal() +
+  labs(title = "Volcano Plot - Differential Expression",
+       x = "log2 Fold Change",
+       y = "-log10(adjusted p-value)",
+       color = "Differential\nExpression")
+
+print(volcano_plot)
+
+# 3. 标注Top基因（可选）
+# 获取最显著的上下调基因
+top_genes <- rbind(
+  head(res_plot[res_plot$DE_status == "Up", ], 5),
+  head(res_plot[res_plot$DE_status == "Down", ], 5)
+)
+
+volcano_labeled <- volcano_plot +
+  geom_text(data = top_genes,
+            aes(label = Gene),
+            size = 3, vjust = -0.5, hjust = 0.5)
+
+print(volcano_labeled)
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+res_plot <- res_clean
+res_plot$negLog10padj <- -log10(res_plot$padj)
+res_plot$negLog10padj[is.infinite(res_plot$negLog10padj)] <- max(res_plot$negLog10padj[is.finite(res_plot$negLog10padj)]) + 5
+
+volcano_plot <- ggplot(res_plot, aes(x = log2FoldChange, y = negLog10padj,
+                                      color = DE_status)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_color_manual(values = c("Down" = "blue", "NS" = "grey", "Up" = "red")) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "grey50") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "grey50") +
+  theme_minimal() +
+  labs(title = "Volcano Plot - Differential Expression",
+       x = "log2 Fold Change",
+       y = "-log10(adjusted p-value)",
+       color = "Differential\nExpression")
+
+print(volcano_plot)
+
+top_genes <- rbind(
+  head(res_plot[res_plot$DE_status == "Up", ], 5),
+  head(res_plot[res_plot$DE_status == "Down", ], 5)
+)
+
+volcano_labeled <- volcano_plot +
+  geom_text(data = top_genes,
+            aes(label = Gene),
+            size = 3, vjust = -0.5, hjust = 0.5)
+
+print(volcano_labeled)
+```
+</details>
+
+---
+
+### 练习2.3：差异基因热图
+
+```r
+# TODO: 创建差异基因表达热图
+
+# 1. 选择Top差异基因进行可视化
+# 选择padj最小的前50个基因
+top_genes_heatmap <- head(res_df[order(res_df$padj), "Gene"], 50)
+
+# 2. 获取标准化后的表达数据
+dds_norm <- estimateSizeFactors(dds)
+normalized_counts <- counts(dds_norm, normalized = TRUE)
+
+# 提取Top基因的表达量
+heatmap_data <- normalized_counts[top_genes_heatmap, ]
+
+# 3. 对数据进行log2转换并中心化（按基因）
+heatmap_log <- log2(heatmap_data + 1)
+heatmap_scaled <- t(scale(t(heatmap_log)))  # 按行（基因）标准化
+
+# 4. 准备注释数据
+annotation_col <- data.frame(
+  Condition = colData(dds)$condition,
+  row.names = colnames(dds)
+)
+
+# 5. 绘制热图
+pheatmap(heatmap_scaled,
+         annotation_col = annotation_col,
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         show_rownames = FALSE,
+         main = "Top 50 Differential Genes - Expression Heatmap",
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         fontsize = 8)
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+top_genes_heatmap <- head(res_df[order(res_df$padj), "Gene"], 50)
+
+dds_norm <- estimateSizeFactors(dds)
+normalized_counts <- counts(dds_norm, normalized = TRUE)
+
+heatmap_data <- normalized_counts[top_genes_heatmap, ]
+
+heatmap_log <- log2(heatmap_data + 1)
+heatmap_scaled <- t(scale(t(heatmap_log)))
+
+annotation_col <- data.frame(
+  Condition = colData(dds)$condition,
+  row.names = colnames(dds)
+)
+
+pheatmap(heatmap_scaled,
+         annotation_col = annotation_col,
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         show_rownames = FALSE,
+         main = "Top 50 Differential Genes - Expression Heatmap",
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         fontsize = 8)
+```
+</details>
+
+---
+
+## 第三部分：功能富集分析
+
+### 练习3.1：GO富集分析
+
+```r
+# TODO: 进行GO功能富集分析
+
+# 1. 准备差异基因列表
+# 由于我们使用的是模拟数据，这里展示代码框架
+# 实际分析时需要真实的基因ID
+
+# 上调基因
+gene_list_up <- res_df$Gene[res_df$DE_status == "Up"]
+# 下调基因
+gene_list_down <- res_df$Gene[res_df$DE_status == "Down"]
+
+cat("上调基因数:", length(gene_list_up), "\n")
+cat("下调基因数:", length(gene_list_down), "\n")
+
+# 2. GO富集分析代码框架（需要真实的基因ID才能运行）
+# ego_up <- enrichGO(
+#   gene = gene_list_up,
+#   OrgDb = org.Hs.eg.db,
+#   keyType = "ENSEMBL",
+#   ont = "BP",
+#   pAdjustMethod = "BH",
+#   pvalueCutoff = 0.05
+# )
+
+# 3. 结果可视化代码框架
+# barplot(ego_up, showCategory = 15, title = "GO BP Enrichment - Upregulated Genes")
+# dotplot(ego_up, showCategory = 15)
+
+# 4. 模拟富集结果展示
+# 创建一个模拟的富集结果数据框
+mock_enrichment <- data.frame(
+  ID = paste0("GO:", sprintf("%07d", 1:10)),
+  Description = c(
+    "cell cycle",
+    "cell division",
+    "DNA replication",
+    "mitotic nuclear division",
+    "chromosome segregation",
+    "cell proliferation",
+    "response to stimulus",
+    "metabolic process",
+    "gene expression",
+    "signal transduction"
+  ),
+  GeneRatio = paste0(sample(10:50, 10), "/", sample(100:200, 10)),
+  BgRatio = paste0(sample(100:500, 10), "/", 20000),
+  pvalue = 10^(-runif(10, 2, 10)),
+  p.adjust = 10^(-runif(10, 2, 8)),
+  Count = sample(10:50, 10)
+)
+
+cat("\n模拟富集结果示例（上调基因）:\n")
+print(mock_enrichment)
+
+# 5. 可视化模拟结果
+mock_enrichment$negLog10padj <- -log10(mock_enrichment$p.adjust)
+
+bar_plot <- ggplot(mock_enrichment,
+                   aes(x = reorder(Description, negLog10padj),
+                       y = negLog10padj)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "GO BP Enrichment - Upregulated Genes (Simulated)",
+       x = "",
+       y = "-log10(adjusted p-value)")
+
+print(bar_plot)
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+gene_list_up <- res_df$Gene[res_df$DE_status == "Up"]
+gene_list_down <- res_df$Gene[res_df$DE_status == "Down"]
+
+cat("上调基因数:", length(gene_list_up), "\n")
+cat("下调基因数:", length(gene_list_down), "\n")
+
+mock_enrichment <- data.frame(
+  ID = paste0("GO:", sprintf("%07d", 1:10)),
+  Description = c(
+    "cell cycle",
+    "cell division",
+    "DNA replication",
+    "mitotic nuclear division",
+    "chromosome segregation",
+    "cell proliferation",
+    "response to stimulus",
+    "metabolic process",
+    "gene expression",
+    "signal transduction"
+  ),
+  GeneRatio = paste0(sample(10:50, 10), "/", sample(100:200, 10)),
+  BgRatio = paste0(sample(100:500, 10), "/", 20000),
+  pvalue = 10^(-runif(10, 2, 10)),
+  p.adjust = 10^(-runif(10, 2, 8)),
+  Count = sample(10:50, 10)
+)
+
+cat("\n模拟富集结果示例（上调基因）:\n")
+print(mock_enrichment)
+
+mock_enrichment$negLog10padj <- -log10(mock_enrichment$p.adjust)
+
+bar_plot <- ggplot(mock_enrichment,
+                   aes(x = reorder(Description, negLog10padj),
+                       y = negLog10padj)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "GO BP Enrichment - Upregulated Genes (Simulated)",
+       x = "",
+       y = "-log10(adjusted p-value)")
+
+print(bar_plot)
+```
+</details>
+
+---
+
+## 第四部分：综合练习
+
+### 练习4.1：生成差异分析报告
+
+整合上述分析，生成一个简要的报告：
+
+```r
+# TODO: 生成差异分析汇总报告
+
+cat("==============================================\n")
+cat("         RNA-seq 差异分析报告\n")
+cat("==============================================\n\n")
+
+cat("1. 样本信息\n")
+cat("   - 对照组样本数:", sum(colData$condition == "Control"), "\n")
+cat("   - 处理组样本数:", sum(colData$condition == "Treatment"), "\n")
+cat("   - 总基因数:", nrow(res_df), "\n\n")
+
+cat("2. 差异基因统计\n")
+cat("   - 总差异基因数:", sum(res_df$DE_status != "NS"), "\n")
+cat("   - 上调基因数:", sum(res_df$DE_status == "Up"), "\n")
+cat("   - 下调基因数:", sum(res_df$DE_status == "Down"), "\n\n")
+
+cat("3. Top 5 上调基因\n")
+top5_up <- head(res_df[res_df$DE_status == "Up", ], 5)
+for (i in 1:5) {
+  cat(sprintf("   %s: log2FC = %.2f, padj = %.2e\n",
+              top5_up$Gene[i], top5_up$log2FoldChange[i], top5_up$padj[i]))
+}
+
+cat("\n4. Top 5 下调基因\n")
+top5_down <- head(res_df[res_df$DE_status == "Down", ], 5)
+for (i in 1:5) {
+  cat(sprintf("   %s: log2FC = %.2f, padj = %.2e\n",
+              top5_down$Gene[i], top5_down$log2FoldChange[i], top5_down$padj[i]))
+}
+
+cat("\n==============================================\n")
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```{r}
+#| eval: false
+#| echo: true
+
+cat("==============================================\n")
+cat("         RNA-seq 差异分析报告\n")
+cat("==============================================\n\n")
+
+cat("1. 样本信息\n")
+cat("   - 对照组样本数:", sum(colData$condition == "Control"), "\n")
+cat("   - 处理组样本数:", sum(colData$condition == "Treatment"), "\n")
+cat("   - 总基因数:", nrow(res_df), "\n\n")
+
+cat("2. 差异基因统计\n")
+cat("   - 总差异基因数:", sum(res_df$DE_status != "NS"), "\n")
+cat("   - 上调基因数:", sum(res_df$DE_status == "Up"), "\n")
+cat("   - 下调基因数:", sum(res_df$DE_status == "Down"), "\n\n")
+
+cat("3. Top 5 上调基因\n")
+top5_up <- head(res_df[res_df$DE_status == "Up", ], 5)
+for (i in 1:5) {
+  cat(sprintf("   %s: log2FC = %.2f, padj = %.2e\n",
+              top5_up$Gene[i], top5_up$log2FoldChange[i], top5_up$padj[i]))
+}
+
+cat("\n4. Top 5 下调基因\n")
+top5_down <- head(res_df[res_df$DE_status == "Down", ], 5)
+for (i in 1:5) {
+  cat(sprintf("   %s: log2FC = %.2f, padj = %.2e\n",
+              top5_down$Gene[i], top5_down$log2FoldChange[i], top5_down$padj[i]))
+}
+
+cat("\n==============================================\n")
+```
+</details>
+
+---
+
+## 实验提交
+
+**无，见课程作业要求**
+
+---
+
+## 思考题
+
+1. **为什么火山图中会出现|log2FC|很大但p值不显著的点？**
+   这些基因通常表达量很低， counts的随机波动大，统计检验效能不足。
+
+2. **MA图中为什么高表达基因的log2FC趋于0？**
+   高表达基因通常受严格调控，表达量相对稳定；低表达基因更容易出现大倍数变化。
+
+3. **如何选择差异基因筛选阈值？**
+   标准：|log2FC| > 1, padj < 0.05。可根据研究需要调整，严格阈值用于下游验证，宽松阈值用于探索。
+
+4. **热图中为什么要对数据进行行标准化？**
+   消除基因间表达量基线差异，突出展示基因在不同样本间的表达模式（相对变化）。
+
+---
+
+## 延伸阅读
+
+- [DESeq2 Vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+- [clusterProfiler Documentation](https://yulab-smu.top/biomedical-knowledge-mining-book/)
+- [RNA-seq Visualization Guide](https://hbctraining.github.io/DGE_workshop/lessons/06_DGE_visualizing_results.html)
+
+---
+
+**实验结束，祝学习愉快！** 🎉

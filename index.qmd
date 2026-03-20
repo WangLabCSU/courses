@@ -75,10 +75,10 @@ format:
 :::
 
 ::: {.col-md-6}
-::: {.course-card style="opacity: 0.6;"}
+::: {.course-card}
 ### 🧬 转录组数据分析
 
-**学时**: 4学时（理论2 + 实验2）  
+**学时**: 4学时（理论2 + 实验2）
 **对象**: 生物医学信息系 本科生/研究生
 
 RNA-seq数据处理与差异表达分析。
@@ -87,9 +87,8 @@ RNA-seq数据处理与差异表达分析。
 - DESeq2/edgeR差异分析
 - 功能富集与通路分析
 
-::: {.badge .bg-secondary}
-即将推出
-:::
+[进入课程](rna-seq-analysis/index.html){.btn .btn-primary .btn-sm .mt-2}
+[查看幻灯片](rna-seq-analysis/slides/slides-rnaseq-overview.html){.btn .btn-outline-primary .btn-sm .mt-2}
 :::
 :::
 

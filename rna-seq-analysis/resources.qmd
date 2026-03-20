@@ -1,0 +1,132 @@
+---
+title: "拓展资源"
+subtitle: "Learning Resources"
+---
+
+## 官方文档与教程
+
+### Bioconductor
+
+::: {.resource-grid}
+::: {.resource-card}
+#### [RNA-seq Workflow](https://www.bioconductor.org/packages/release/workflows/html/rnaseqGene.html)
+Bioconductor官方RNA-seq分析工作流，使用airway数据集演示完整分析流程
+:::
+::: {.resource-card}
+#### [DESeq2 Vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+DESeq2包官方文档，详细的差异表达分析教程
+:::
+::: {.resource-card}
+#### [edgeR User Guide](https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf)
+edgeR用户指南，适用于复杂实验设计的差异分析
+:::
+:::
+
+### 在线课程
+
+::: {.resource-grid}
+::: {.resource-card}
+#### [HBC RNA-seq Training](https://github.com/hbctraining/Intro-to-rnaseq-hpc-O2)
+哈佛生物信息学核心培训材料，涵盖RNA-seq分析全流程
+:::
+::: {.resource-card}
+#### [NBIS RNA-seq Workshop](https://github.com/NBISweden/workshop-RNAseq)
+瑞典国家生物信息学基础设施RNA-seq培训材料
+:::
+::: {.resource-card}
+#### [WangLab Workshop](https://github.com/WangLabCSU/workshop-RNAseq)
+本实验室RNA-seq培训资料，与课程内容配套
+:::
+:::
+
+## 参考书籍
+
+| 书名 | 作者 | 说明 |
+|------|------|------|
+| **RNA-seq Data Analysis** | Korpelainen et al. | RNA-seq数据分析实用指南 |
+| **Bioinformatics Data Skills** | Vince Buffalo | 生物信息学数据处理基础 |
+| **R for Data Science** | Wickham & Grolemund | R数据科学基础 |
+| **Bioconductor Case Studies** | Hahne et al. | Bioconductor案例分析 |
+
+## 数据库与工具
+
+### 基因注释数据库
+
+- **Ensembl**: https://www.ensembl.org/
+- **NCBI Gene**: https://www.ncbi.nlm.nih.gov/gene
+- **Gene Ontology**: http://geneontology.org/
+- **KEGG**: https://www.genome.jp/kegg/
+
+### 常用工具
+
+| 工具 | 用途 | 链接 |
+|------|------|------|
+| **FastQC** | 测序数据质控 | https://www.bioinformatics.babraham.ac.uk/projects/fastqc/ |
+| **Trimmomatic** | 接头和低质量序列去除 | http://www.usadellab.org/cms/?page=trimmomatic |
+| **STAR** | RNA-seq reads比对 | https://github.com/alexdobin/STAR |
+| **HISAT2** | 快速splice-aware比对 | https://daehwankimlab.github.io/hisat2/ |
+| **featureCounts** | 基因表达计数 | http://subread.sourceforge.net/ |
+| **MultiQC** | 整合质控报告 | https://multiqc.info/ |
+
+### R包资源
+
+::: {.resource-grid}
+::: {.resource-card}
+#### [clusterProfiler](https://yulab-smu.top/biomedical-knowledge-mining-book/)
+全面的功能富集分析R包，支持多种富集方法和可视化
+:::
+::: {.resource-card}
+#### [ComplexHeatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/)
+复杂热图绘制R包，适用于基因组数据可视化
+:::
+::: {.resource-card}
+#### [fgsea](https://bioconductor.org/packages/release/bioc/html/fgsea.html)
+快速GSEA分析R包
+:::
+:::
+
+## 示例数据集
+
+### 课程示例数据
+
+课程使用经过简化的小鼠或人类RNA-seq数据集，包含：
+- 对照组和实验组各3个重复
+- ~1000个差异表达基因
+- 完整的样本信息metadata
+
+### 公开数据集
+
+| 数据集 | 说明 | 获取方式 |
+|--------|------|----------|
+| **airway** | 人气道上皮细胞数据集 | `data(airway, package="airway")` |
+| **pasilla** | 果蝇RNA-seq数据集 | `data(pasillaGenes)` |
+| **GSE52778** | 人类前列腺癌数据集 | GEO数据库 |
+
+## 学习路径建议
+
+### 入门路径
+
+1. 完成本课程理论学习
+2. 跟随[Bioconductor RNA-seq Workflow](https://www.bioconductor.org/packages/release/workflows/html/rnaseqGene.html)实践
+3. 使用自己的数据重复分析流程
+
+### 进阶路径
+
+1. 学习批次效应校正（ComBat-seq等）
+2. 掌握整合分析（多数据集meta-analysis）
+3. 探索单细胞RNA-seq分析（Seurat）
+
+## 社区与支持
+
+- **Bioconductor支持网站**: https://support.bioconductor.org/
+- **Biostars**: https://www.biostars.org/
+- **Stack Overflow**: https://stackoverflow.com/questions/tagged/rna-seq
+
+## 相关课程
+
+- [R与(R)Markdown基础](../r-and-rmarkdown/index.html)
+- [单细胞RNA-seq分析](https://github.com/NBISweden/workshop-scRNAseq)
+
+---
+
+**提示**：如果遇到问题，建议首先查阅官方文档和Vignette，然后在Bioconductor支持论坛或Biostars搜索类似问题。

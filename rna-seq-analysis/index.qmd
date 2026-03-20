@@ -1,0 +1,203 @@
+---
+title: "转录组数据分析"
+subtitle: "中南大学 生物医学信息系 本科/研究生课程"
+description: "掌握RNA-seq数据处理、差异表达分析与功能富集分析"
+format:
+  html:
+    toc: false
+    page-layout: custom
+---
+
+::: {.hero-banner .text-center .py-5 .mb-4 style="background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%); color: white;"}
+
+# 转录组数据分析
+
+## RNA-seq Data Analysis
+
+::: {.lead .mt-3}
+中南大学 · 生物医学信息系 · 本科/研究生课程
+:::
+
+:::
+
+::: {.container .py-4}
+
+## 开始学习 {.text-center .mt-4 .mb-5}
+
+::: {.row .justify-content-center}
+::: {.col-md-10}
+
+::: {.d-grid .gap-2 .d-md-flex .justify-content-md-center}
+[📋 课程大纲](syllabus.qmd){.btn .btn-primary .btn-lg .me-2}
+[🧪 实验1：RNA-seq流程](labs/lab1-rnaseq-workflow.qmd){.btn .btn-success .btn-lg .me-2}
+[🧪 实验2：差异表达分析](labs/lab2-de-visualization.qmd){.btn .btn-success .btn-lg .me-2}
+[📚 学习资源](../learning-resources.html){.btn .btn-info .btn-lg}
+:::
+
+::: {.mt-3 .text-center}
+**幻灯片**：
+[📊 RNA-seq概述](slides/slides-rnaseq-overview.html){.btn .btn-outline-secondary .btn-sm .me-1}
+[📊 差异表达分析](slides/slides-de-analysis.html){.btn .btn-outline-secondary .btn-sm}
+:::
+
+:::
+:::
+
+## 课程简介 {.text-center .mb-5}
+
+::: {.row .justify-content-center}
+::: {.col-lg-10}
+
+本课程面向**生物医学信息系**本科生/研究生，系统讲授 **RNA-seq（转录组测序）数据分析** 的核心技术与实践方法。通过"2学时理论讲授 + 2学时实验操作"的紧凑安排，帮助学生：
+
+- 理解RNA-seq实验原理与数据产生机制
+- 掌握从原始数据到表达矩阵的完整处理流程
+- 学会使用DESeq2/edgeR进行差异表达分析
+- 掌握功能富集分析与结果可视化
+- 建立转录组研究的系统性分析思维
+
+:::
+:::
+
+## 课程模块 {.text-center .mb-4}
+
+::: {.row .g-4}
+
+::: {.col-md-6}
+::: {.course-card}
+### 📊 理论讲授 (2学时 = 90分钟)
+
+| 内容 | 时长 | 要点 |
+|------|:----:|------|
+| **RNA-seq原理与实验** | 30分钟 | 测序原理、文库制备、实验设计 |
+| **数据预处理与质控** | 25分钟 | FastQC、Trimming、比对、定量 |
+| **差异表达分析** | 20分钟 | DESeq2、edgeR、统计检验 |
+| **功能富集分析** | 15分钟 | GO、KEGG、GSEA、可视化 |
+
+[查看详细大纲](syllabus.qmd){.btn .btn-outline-primary .btn-sm .mt-2}
+:::
+:::
+
+::: {.col-md-6}
+::: {.course-card}
+### 🧪 实验操作 (2学时 = 90分钟)
+
+| 实验 | 时长 | 目标 |
+|------|:----:|------|
+| **实验1：数据处理流程** | 45分钟 | FASTQ质控、比对、表达定量 |
+| **实验2：差异表达分析** | 45分钟 | DESeq2分析、火山图、热图 |
+
+配套示例数据、分析代码、参考答案
+
+[进入实验指导](labs/lab1-rnaseq-workflow.qmd){.btn .btn-outline-primary .btn-sm .mt-2}
+:::
+:::
+
+:::
+
+## 你将学到什么 {.text-center .mt-5 .mb-4}
+
+::: {.row .g-4 .text-center}
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 🧬
+**RNA-seq原理**
+测序技术、文库制备、实验设计原则、批次效应控制
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 📊
+**数据处理**
+FASTQ质控、read trimming、基因组比对、表达定量
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 📈
+**差异分析**
+DESeq2/edgeR使用、标准化方法、多重检验校正
+:::
+:::
+::: {.col-6 .col-md-3}
+::: {.p-3}
+### 🎯
+**功能分析**
+GO/KEGG富集、GSEA、结果可视化、生物学解释
+:::
+:::
+:::
+
+## 前置要求 {.mt-5}
+
+::: {.row .justify-content-center}
+::: {.col-lg-8}
+
+::: {.callout-note}
+### 先修课程
+- **R与(R)Markdown基础** 或同等R编程经验
+- 了解基本的统计学概念（假设检验、p值等）
+
+### 软件环境
+- R >= 4.3.0
+- Bioconductor >= 3.18
+- 必需R包：DESeq2, edgeR, limma, clusterProfiler, org.Hs.eg.db
+:::
+
+:::
+:::
+
+## 授课教师 {.mt-5}
+
+::: {.instructor-card}
+::: {.instructor-avatar style="width: 100px; height: 100px; overflow: hidden; padding: 0;"}
+![](../logo/wsx.jpeg){style="width: 100%; height: 100%; object-fit: cover;"}
+:::
+::: {.instructor-info}
+### 王诗翔 副教授
+
+**中南大学 · 生物医学信息系**
+
+研究方向：生物信息学、计算生物学、多组学数据分析
+
+🌐 [实验室主页](https://wanglabcsu.github.io/)
+📧 wangshx@csu.edu.cn
+🐙 [WangLabCSU](https://github.com/WangLabCSU)
+:::
+:::
+
+## 课程特色 {.mt-5}
+
+::: {.row .g-4}
+::: {.col-md-4}
+::: {.feature-box}
+#### 🎯 实战导向
+以真实RNA-seq数据集为例，从原始FASTQ到生物学解释的全流程实操
+:::
+:::
+::: {.col-md-4}
+::: {.feature-box}
+#### 🔬 前沿技术
+涵盖最新分析方法和工具，包括批次效应校正、整合分析等
+:::
+:::
+::: {.col-md-4}
+::: {.feature-box}
+#### 📚 资源丰富
+提供完整的分析代码、测试数据、参考文献和拓展阅读
+:::
+:::
+:::
+
+:::
+
+::: {.text-center .py-4 .mt-5 style="background: #f8f9fa;"}
+
+**中南大学 · 生物医学信息系**
+*Department of Biomedical Informatics, Central South University*
+
+本课程网站使用 [Quarto](https://quarto.org) 构建 ·
+[GitHub 仓库](https://github.com/WangLabCSU/courses/tree/main/rna-seq-analysis) ·
+[实验室主页](https://wanglabcsu.github.io/)
+
+:::
