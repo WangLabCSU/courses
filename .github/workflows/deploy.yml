@@ -3,12 +3,8 @@ name: Deploy Courses to GitHub Pages
 on:
   push:
     branches: [main, master]
-    paths-ignore:
-      - '.github/**'
   pull_request:
     branches: [main, master]
-    paths-ignore:
-      - '.github/**'
   workflow_dispatch:
 
 permissions:
