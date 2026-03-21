@@ -5,108 +5,90 @@ subtitle: "从计数到差异基因"
 
 ## 本讲概述
 
-本讲将介绍差异表达分析的原理和方法：
+**学习目标**：
+- 理解RNA-seq数据的统计特性（负二项分布）
+- 掌握DESeq2分析流程
+- 理解多重检验校正原理
+- 掌握结果筛选和可视化
 
-- 差异表达分析的统计基础
-- DESeq2和edgeR的工作流程
-- 多重检验校正
-- 结果解读与可视化
+**重点难点**：
+- 🔑 **重点**：DESeq2分析步骤、结果筛选标准
+- ⚠️ **难点**：离散度估计、log2FC收缩原理
 
-## 1. 差异表达分析概述
+---
 
-### 1.1 什么是差异表达？
+## 1. RNA-seq数据统计特性
 
-**差异表达基因（Differentially Expressed Genes, DEGs）**：在不同条件下表达水平发生显著变化的基因。
+### 1.1 计数数据特点
+
+| 特性 | 说明 |
+|------|------|
+| **离散型** | 非负整数 |
+| **过度离散** | 方差 > 均值 |
+| **零膨胀** | 大量基因在某些样本中为0 |
+
+### 1.2 为什么不能用t检验？
 
 ```
-对照组              处理组
-├─┤                 ├────┤
-表达量=10           表达量=20
-    ↓
- Fold Change = 2
+正态分布：均值 = 方差
+RNA-seq：  方差 >> 均值（过度离散）
 ```
 
-### 1.2 分析流程
+### 1.3 负二项分布
+
+```
+均值 = μ
+方差 = μ + α×μ²  (α为离散度参数)
+```
+
+| 离散度 | 分布 | 方差 vs 均值 |
+|--------|------|--------------|
+| α = 0 | 泊松分布 | 方差 = 均值 |
+| α > 0 | 负二项分布 | 方差 > 均值 |
+
+**实际应用**：
+- 低表达基因：离散度高（采样误差大）
+- 高表达基因：离散度低（采样误差小）
+
+---
+
+## 2. DESeq2工作流程 🔑
+
+### 2.1 核心原理
+
+**负二项广义线性模型（GLM）**：
+```
+log2(q_ij) = β_0 + β_1 × condition + ε
+
+β_0：截距（对照组基线）
+β_1：处理效应（log2 Fold Change）
+```
+
+### 2.2 分析步骤
 
 ```
 原始counts矩阵
       ↓
-  数据过滤 (低表达基因)
+  计算Size Factors（标准化）
       ↓
-  标准化 (size factors)
+  估计基因离散度（趋势拟合）
       ↓
-  离散度估计
+  拟合负二项GLM
       ↓
-  统计检验 (Wald test/LRT)
+  Wald检验/LRT
       ↓
-  多重检验校正 (BH)
+  多重检验校正（BH）
       ↓
-  差异基因筛选 (padj < 0.05, |log2FC| > 1)
+  差异基因筛选
 ```
 
-## 2. RNA-seq数据的统计特性
-
-### 2.1 计数数据的分布
-
-RNA-seq计数数据具有以下特点：
-
-1. **离散型**：非负整数
-2. **过度离散**：方差 > 均值
-3. **零膨胀**：大量基因在某些样本中为0
-
-### 2.2 负二项分布
-
-**为什么不用正态分布？**
-
-- 正态分布：均值 = 方差
-- RNA-seq数据：方差通常 > 均值（过度离散）
-
-**负二项分布**：
-```
-P(X=k) = C(k+r-1, k) × p^r × (1-p)^k
-
-其中：
-- 均值 μ
-- 方差 μ + α×μ²  (α为离散度参数)
-```
-
-::: {.callout-note}
-### 离散度（Dispersion）
-离散度衡量数据的变异程度相对于泊松分布的偏离。
-
-- 离散度 = 0：泊松分布（均值=方差）
-- 离散度 > 0：负二项分布（方差>均值）
-:::
-
-## 3. DESeq2工作流程
-
-### 3.1 DESeq2原理
-
-DESeq2使用**负二项广义线性模型（GLM）**进行差异分析：
-
-```
-log2(q_ij) = β_0 + β_1 × condition + ε
-
-其中：
-- q_ij：基因i在样本j中的期望计数
-- β_0：截距（对照组基线）
-- β_1：处理效应（log2 Fold Change）
-```
-
-### 3.2 DESeq2分析步骤
+### 2.3 DESeq2代码
 
 ```r
-# 标准DESeq2工作流程
-
-# 1. 准备数据
-colData <- DataFrame(
-  condition = factor(c("ctrl", "ctrl", "ctrl",
-                       "treat", "treat", "treat"))
-)
-
+# 1. 创建DESeq2对象
 dds <- DESeqDataSetFromMatrix(
   countData = counts_matrix,
-  colData = colData,
+  colData = sample_info,
   design = ~ condition
 )
 
@@ -114,16 +96,14 @@ dds <- DESeqDataSetFromMatrix(
 keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep, ]
 
-# 3. 运行DESeq2
+# 3. 运行DESeq2（包含所有步骤）
 dds <- DESeq(dds)
 
 # 4. 提取结果
 res <- results(dds, contrast = c("condition", "treat", "ctrl"))
 ```
 
-### 3.3 关键步骤详解
-
-#### Step 1: 计算size factors（标准化）
+### 2.4 Size Factor标准化
 
 **中位数比值法**：
 ```
@@ -132,240 +112,172 @@ size factor_j = median_i (counts_ij / geometric_mean_i)
 
 假设：大多数基因在样本间表达稳定
 
-#### Step 2: 离散度估计
+### 2.5 离散度估计 ⚠️
 
-```r
-# DESeq2自动执行
-dds <- estimateSizeFactors(dds)
-dds <- estimateDispersions(dds)
-```
+DESeq2采用**趋势拟合**：
+- 先计算每个基因的离散度
+- 再拟合离散度-均值趋势曲线
+- 最后将各基因离散度向趋势收缩
 
-**散度-均值关系**：
-- 低表达基因：离散度高（采样误差大）
-- 高表达基因：离散度低（采样误差小）
+**为什么需要收缩？**
+- 小样本时，单个基因的离散度估计不稳定
+- 收缩可提高估计的稳健性
 
-#### Step 3: Wald检验
+---
 
-```
-H0: β_1 = 0 （无差异表达）
-H1: β_1 ≠ 0 （有差异表达）
-
-统计量: z = β_1 / SE(β_1)
-p值 = 2 × P(Z > |z|)
-```
-
-## 4. edgeR简介
-
-### 4.1 edgeR特点
-
-- 同样基于负二项分布
-- 使用不同的离散度估计方法（经验贝叶斯）
-- 适用于复杂实验设计
-
-### 4.2 edgeR工作流程
-
-```r
-# edgeR标准流程
-library(edgeR)
-
-# 1. 创建DGEList对象
-dge <- DGEList(counts = counts_matrix,
-             group = factor(c("ctrl", "ctrl", "ctrl",
-                             "treat", "treat", "treat")))
-
-# 2. 过滤和标准化
-keep <- filterByExpr(dge)
-dge <- dge[keep, , keep.lib.sizes = FALSE]
-dge <- calcNormFactors(dge)
-
-# 3. 离散度估计
-dge <- estimateDisp(dge)
-
-# 4. 差异检验
-et <- exactTest(dge)
-topTags(et)
-```
-
-### 4.3 DESeq2 vs edgeR
+## 3. edgeR简介
 
 | 特性 | DESeq2 | edgeR |
 |------|--------|-------|
 | 离散度估计 | 趋势拟合 | 经验贝叶斯 |
-| 收缩性 | 更强（小样本稳健） | 较弱 |
-| 复杂设计 | 支持 | 支持（需设计矩阵） |
+| 收缩性 | 更强 | 较弱 |
+| 小样本稳健性 | **更好** | 中等 |
 | 速度 | 较慢 | 较快 |
-| 推荐场景 | 样本少（n<5） | 样本多或复杂设计 |
 
-::: {.callout-tip}
-### 工具选择建议
-- 样本数较少（n=3）：DESeq2更稳健
-- 复杂实验设计：两者均可，DESeq2语法更简洁
-- 大规模分析：edgeR速度更快
-:::
+**推荐**：
+- 样本少（n=3）：**DESeq2**
+- 复杂设计：两者均可
 
-## 5. 多重检验校正
+---
 
-### 5.1 为什么需要校正？
+## 4. 多重检验校正 🔑
 
-假设检测20,000个基因，每个基因单独检验（α=0.05）：
+### 4.1 为什么需要校正？
 
+检测20,000个基因（α=0.05）：
 ```
 假阳性期望数 = 20,000 × 0.05 = 1,000个！
 ```
 
-### 5.2 Benjamini-Hochberg (BH) 方法
+### 4.2 Benjamini-Hochberg (BH) 方法
 
 **控制假发现率（FDR）**：
-
 ```
 FDR = E[假阳性数 / 拒绝数]
 ```
 
-**BH校正步骤**：
-1. 将所有m个假设的p值从小到大排序：p₁ ≤ p₂ ≤ ... ≤ pₘ
-2. 找到最大的k，使得 pₖ ≤ (k/m) × α
-3. 拒绝前k个假设
+找到最大的k，使得 pₖ ≤ (k/m) × α
 
-### 5.3 p值 vs FDR
+### 4.3 p值 vs FDR
 
-| 指标 | 符号 | 含义 | 使用场景 |
-|------|------|------|----------|
-| p值 | pvalue | 单次检验错误概率 | 不推荐直接使用 |
-| 调整p值 | padj/padj | FDR控制 | 差异基因筛选 |
+| 指标 | 符号 | 使用场景 |
+|------|------|----------|
+| p值 | pvalue | **不推荐直接使用** |
+| 调整p值 | **padj** | **差异基因筛选** |
 
-## 6. 结果解读与筛选
-
-### 6.1 DESeq2结果表
-
-```r
-# 查看结果
-res <- results(dds)
-head(res)
-```
-
-| 列名 | 含义 |
-|------|------|
-| baseMean | 平均表达量（标准化后） |
-| log2FoldChange | log2倍数变化 |
-| lfcSE | log2FC标准误 |
-| stat | Wald统计量 |
-| pvalue | 原始p值 |
-| padj | BH校正后p值 |
-
-### 6.2 差异基因筛选标准
-
-::: {.callout-important}
-### 推荐筛选阈值
-- **|log2FC| > 1** （倍数变化 > 2）
-- **padj < 0.05** （FDR < 5%）
-
-可根据研究需要调整：
-- 更严格：|log2FC| > 2, padj < 0.01
-- 更宽松：|log2FC| > 0.5, padj < 0.1
+::: {.callout-warning}
+**必须使用padj筛选差异基因，不能用原始pvalue！**
 :::
 
-### 6.3 结果分类
+---
 
+## 5. 结果解读 🔑
+
+### 5.1 DESeq2结果表
+
+| 列名 | 含义 | 说明 |
+|------|------|------|
+| baseMean | 平均表达量 | 标准化后的平均reads |
+| **log2FoldChange** | log2倍数变化 | 处理/对照 |
+| lfcSE | log2FC标准误 | 估计不确定性 |
+| stat | Wald统计量 | 检验统计量 |
+| pvalue | 原始p值 | 未校正 |
+| **padj** | 校正p值 | **BH校正后** |
+
+### 5.2 差异基因筛选标准
+
+```
+推荐阈值：
+- |log2FC| > 1  （倍数变化 > 2）
+- padj < 0.05  （FDR < 5%）
+```
+
+**分类矩阵**：
 ```
            padj < 0.05
-            Yes     No
-        ┌────────┬────────┐
- log2FC  │        │        │
-  > 1    │ 上调   │  nominally上调 │
-        │  (Up)  │        │
-        ├────────┼────────┤
-  -1 to 1│ 无差异 │ 无差异 │
-        │        │        │
-        ├────────┼────────┤
-  < -1   │ 下调   │ nominally下调 │
-        │ (Down) │        │
-        └────────┴────────┘
+            Yes       No
+       ┌─────────┬─────────┐
+log2FC │  上调   │ nominally│
+  > 1  │  (Up)   │   上调   │
+       ├─────────┼─────────┤
+-1 to 1│ 无差异  │  无差异  │
+       ├─────────┼─────────┤
+log2FC │  下调   │ nominally│
+ < -1  │ (Down)  │   下调   │
+       └─────────┴─────────┘
 ```
 
-## 7. 结果可视化
+### 5.3 log2FC收缩 ⚠️
 
-### 7.1 MA图
+**问题**：低表达基因的高log2FC不可靠
+
+**DESeq2解决方案**：
+```r
+resLFC <- lfcShrink(dds, coef = "condition_treat_vs_ctrl")
+```
+
+**效果**：
+- 低表达基因：log2FC向0收缩
+- 高表达基因：保持相对稳定
+
+---
+
+## 6. 结果可视化
+
+### 6.1 MA图
+
+- **X轴**：平均表达量（log10）
+- **Y轴**：log2 Fold Change
+- **特点**：红点为差异基因，低表达基因log2FC波动大
 
 ```r
 plotMA(res, ylim = c(-5, 5))
 ```
 
-- X轴：平均表达量（log10）
-- Y轴：log2 Fold Change
-- 红点：差异表达基因
+### 6.2 火山图
 
-### 7.2 火山图
+- **X轴**：log2 Fold Change
+- **Y轴**：-log10(padj)
+- **特点**：同时展示变化倍数和统计显著性
 
-```r
-# 使用ggplot2绘制
-ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
-  geom_point(aes(color = DE_status)) +
-  scale_color_manual(values = c("Down" = "blue",
-                                "NS" = "grey",
-                                "Up" = "red")) +
-  xlab("log2 Fold Change") +
-  ylab("-log10 adjusted p-value") +
-  theme_minimal()
-```
+### 6.3 热图
 
-- X轴：log2 Fold Change
-- Y轴：-log10(padj)
-- 可同时展示变化倍数和显著性
+展示Top差异基因的表达模式，需使用标准化后的数据
 
-### 7.3 热图
+---
 
-```r
-library(pheatmap)
-
-# 选择前50个差异基因
-mat <- assay(rld)[head(order(res$padj), 50), ]
-mat <- mat - rowMeans(mat)  # 中心化
-
-pheatmap(mat,
-         annotation_col = colData[, "condition", drop = FALSE],
-         scale = "row")
-```
-
-## 8. 常见问题
-
-### 8.1 无差异基因或差异基因过多
+## 7. 常见问题
 
 | 问题 | 可能原因 | 解决方案 |
 |------|----------|----------|
 | 无差异基因 | 分组错误 | 检查colData |
 | | 批次效应 | 添加批次到设计公式 |
-| | 阈值过严 | 适当放宽阈值 |
 | 差异基因过多 | 生物学差异大 | 检查样本质量 |
-| | 阈值过松 | 使用更严格阈值 |
 
-### 8.2 log2FC收缩
+---
 
-```r
-# DESeq2自动对低表达基因的log2FC进行收缩
-resLFC <- lfcShrink(dds, coef = "condition_treat_vs_ctrl")
+## 8. 本讲小结
 
-# 适用于低表达基因的高log2FC不可靠的情况
-```
+| 要点 | 内容 |
+|------|------|
+| 统计基础 | RNA-seq数据符合**负二项分布**，存在过度离散 |
+| DESeq2核心 | 负二项GLM + **中位数比值标准化** + Wald检验 |
+| 多重校正 | 使用**BH方法控制FDR** |
+| 筛选标准 | **\|log2FC\| > 1 + padj < 0.05** |
+| 结果解读 | 关注表达量、变化倍数、统计显著性 |
 
-## 9. 小结
-
-本讲要点：
-
-1. **统计基础**：RNA-seq计数数据符合负二项分布，存在过度离散
-2. **DESeq2核心**：负二项GLM + 中位数比值标准化 + Wald检验
-3. **多重校正**：使用BH方法控制FDR
-4. **筛选标准**：|log2FC| > 1 + padj < 0.05
-5. **结果解读**：关注表达量、变化倍数、统计显著性的综合信息
+---
 
 ## 思考题
 
 1. 为什么RNA-seq数据不能使用t检验？
-2. size factor标准化与TPM标准化的区别？
+2. Size factor标准化与TPM标准化的区别？
 3. 如何解释padj > 0.05但pvalue < 0.05的基因？
 4. 火山图和MA图各自的优势是什么？
 
+---
+
 ## 参考文献
 
-1. Love MI, et al. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 2014;15(12):550.
-2. Robinson MD, et al. edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics. 2010;26(1):139-140.
-3. Law CW, et al. voom: precision weights unlock linear model analysis tools for RNA-seq read counts. Genome Biol. 2014;15(2):R29.
+1. Love MI, et al. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 2014
+2. Robinson MD, et al. edgeR: a Bioconductor package for differential expression analysis. Bioinformatics. 2010

@@ -1,0 +1,239 @@
+---
+title: "Practice"
+author: "Shixiang Wang"
+date: "2024-10-23"
+output: 
+    html_document:
+        toc: true
+        toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+## 1.install.R \| 依赖包的安装
+
+```{r, eval=FALSE}
+# 从cran ----------
+chooseCRANmirror()
+
+install.packages("wget")
+library(wget)
+wget_set() # 断点续传下载
+
+install.packages("pheatmap")
+library(pheatmap)
+
+install.packages("ggplot2")
+library(ggplot2)
+
+install.packages("BiocManager")
+library(BiocManager)
+
+# 从BiocManager安装 -------------
+
+chooseBioCmirror() # China Anhui
+
+library(BiocManager)
+BiocManager::install("DESeq2")
+library(DESeq2)
+BiocManager::install("clusterProfiler")
+BiocManager::install("org.Hs.eg.db")
+```
+
+## 2.deseq2.R \| 差异表达分析
+
+加载包：
+
+```{r}
+library("DESeq2")
+```
+
+读入数据并检查：
+
+```{r}
+dataMatrix <- read.table("geneCountMatrix.txt", header = T)
+dim(dataMatrix)
+head(dataMatrix)
+rownames(dataMatrix) <- dataMatrix[, "gene_symbol"]
+dataMatrix <- dataMatrix[, 2:dim(dataMatrix)[2]]
+head(dataMatrix)
+```
+
+```{r}
+coldata <- read.table("samplesinfo.txt", header = TRUE)
+head(coldata)
+```
+
+数据转换与差异分析：
+
+```{r}
+dds <- DESeqDataSetFromMatrix(countData = dataMatrix, colData = coldata, design = ~type)
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep, ]
+dds <- DESeq(dds)
+
+dds.res <- results(dds, alpha = 0.05)
+summary(dds.res)
+sum(dds.res$padj < 0.05, na.rm = TRUE)
+```
+
+数据的导出与保存。
+
+```{r}
+dds.resOrdered <- dds.res[order(dds.res$padj), ]
+write.table(as.data.frame(dds.resOrdered), file = "PTC_vs_ATC_results.txt", quote = F, sep = "\t")
+sum((dds.res$padj < 0.05 & abs(dds.res$log2FoldChange) > 2), na.rm = TRUE)
+
+###### 筛选log2 fold change在两倍以上，p-adjust小于0.05的ATC和PTC差异表达基因
+dds.res.filtered <- dds.res[which(dds.res$padj < 0.05 & abs(dds.res$log2FoldChange) > 2), ]
+write.table(dds.res.filtered, file = "PTC_vs_ATC_DEG.txt", quote = F, sep = "\t")
+```
+
+
+## 3.visualization.R \| 数据结果可视化
+
+### 基本的可视化策略
+
+```{r}
+library(ggplot2)
+
+volcano_data <- read.table("PTC_vs_ATC_results.txt", sep = "\t") # 读入差异表达结果
+volcano_data <- na.omit(volcano_data) # 删除含NA的行
+significant <- as.factor(abs(volcano_data$log2FoldChange) >= 2 & volcano_data$padj <= 0.01) # 设置显著性阈值
+
+ggplot(volcano_data, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(aes(shape = significant, color = significant)) +
+  xlim(c(-10, 10)) +
+  labs(x = "log2FoldChange", y = "-log10 padj") +
+  scale_y_continuous(limits = c(0, 20), expand = c(0, 0)) +
+  scale_shape_discrete(labels = c("no", "yes")) +
+  scale_color_discrete(labels = c("no", "yes")) # ggplot2命令
+```
+
+### 使用专用 R 包
+
+```{r}
+# https://github.com/BioSenior/ggVolcano
+# remotes::install_github("BioSenior/ggVolcano")
+library(ggVolcano)
+
+# use the function -- add_regulate to add a regulate column
+# to the DEG result data.
+volcano_data2 <- tibble::rownames_to_column(volcano_data, "row")
+data <- add_regulate(volcano_data2,
+  log2FC_name = "log2FoldChange",
+  fdr_name = "padj", log2FC = 2, fdr = 0.01
+)
+
+# plot
+ggvolcano(data,
+  x = "log2FoldChange", y = "padj",
+  label = "row", label_number = 10, output = FALSE
+)
+```
+
+
+## 4.function-clusterprofiler.R \| 富集分析可视化
+
+加载包：
+
+```{r}
+# BiocManager::install("clusterProfiler")
+# BiocManager::install("org.Hs.eg.db")
+
+library(org.Hs.eg.db)
+library(clusterProfiler)
+```
+
+导入和查看数据：
+
+```{r}
+# 载入数据
+dds.res <- read.table("PTC_vs_ATC_results.txt")
+dim(dds.res)
+# 查看数据基因命名方式
+head(rownames(dds.res))
+# 查看注释数据支持的基因识别方式
+keytypes(org.Hs.eg.db)
+
+# 选择需要进行功能富集分析的基因集合
+dds.res.up <- dds.res[which(dds.res$padj < 0.05 & dds.res$log2FoldChange > 2), ]
+dds.res.up.geneName <- rownames(dds.res.up)
+length(dds.res.up.geneName)
+```
+
+分析：
+
+```{r}
+# 进行GO的Biological Process进行注释
+# 默认的为ENTREZID，这里用的是gene symbol，所有需要指定参数keyType= "SYMBOL"
+dds.res.up.ego.bp <- enrichGO(
+  gene = dds.res.up.geneName,
+  keyType = "SYMBOL",
+  OrgDb = org.Hs.eg.db,
+  ont = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.01,
+  qvalueCutoff = 0.05
+)
+head(dds.res.up.ego.bp)
+# 在所有的GO进行注释
+dds.res.up.ego <- enrichGO(
+  gene = dds.res.up.geneName,
+  keyType = "SYMBOL",
+  OrgDb = org.Hs.eg.db,
+  ont = "ALL",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.01,
+  qvalueCutoff = 0.05
+)
+head(dds.res.up.ego)
+```
+
+绘图：
+
+```{r}
+# 点图展示富集结果
+dotplot(dds.res.up.ego.bp, showCategory = 15, orderBy = "p.adjust")
+dotplot(dds.res.up.ego, showCategory = 15, orderBy = "count")
+
+dds.res.FC <- dds.res[, "log2FoldChange"]
+names(dds.res.FC) <- rownames(dds.res)
+cnetplot(dds.res.up.ego, foldChange = dds.res.FC)
+```
+
+KEGG富集分析：
+
+```{r}
+# enrichKEGG只支持"kegg", 'ncbi-geneid', 'ncib-proteinid' 和 'uniprot'的识别符，所有需要将gene symble转换为UNIPROT的ID。
+dds.res.up.symbol2uniport <- bitr(dds.res.up.geneName, fromType = "SYMBOL", toType = c("UNIPROT"), OrgDb = "org.Hs.eg.db")
+head(dds.res.up.symbol2uniport)
+dds.res.up.kk <- enrichKEGG(dds.res.up.symbol2uniport[, 2], keyType = "uniprot", organism = "hsa", pvalueCutoff = 0.05, pAdjustMethod = "BH", qvalueCutoff = 0.1)
+head(dds.res.up.kk)
+```
+
+> 同学们课后可以自己试着用 clusterProfiler 提供的可视化函数尝试下。
+
+GSEA 分析：
+
+```{r}
+head(dds.res.FC)
+dds.res.FC.ordered <- dds.res.FC[order(dds.res.FC, decreasing = T)]
+dds.res.gsecc <- gseGO(
+  geneList = dds.res.FC.ordered,
+  keyType = "SYMBOL",
+  ont = "ALL",
+  OrgDb = org.Hs.eg.db,
+  verbose = F
+)
+head(summary(dds.res.gsecc))
+gseaplot(dds.res.gsecc, geneSetID = "GO:0022613")
+```
+
+参考和学习资料：
+
+- https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
+- https://www.nature.com/articles/s41596-024-01020-z
+- https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7

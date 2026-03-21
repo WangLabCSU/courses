@@ -1,0 +1,412 @@
+---
+source: Rmd
+title: Extra exploration of design matrices
+teaching: 30
+exercises: 30
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+    warning = FALSE
+)
+```
+
+
+```{r source-download-data, echo=FALSE, purl=FALSE, message=FALSE}
+source("download_data.R")
+```
+
+::::::::::::::::::::::::::::::::::::::: objectives
+
+- Explain the formula notation and design matrices.
+- Explore different designs and learn how to interpret coefficients.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::: questions
+
+- How can one translate biological questions and comparisons to statistical terms suitable for use with RNA-seq analysis packages?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## Loading required packages and reading data
+
+We start by loading a few packages that will be needed in this episode. 
+In particular, the [ExploreModelMatrix](https://bioconductor.org/packages/ExploreModelMatrix/) package provides resources for exploring design matrices in a graphical fashion, for easier interpretation. 
+
+```{r load-pkg}
+suppressPackageStartupMessages({
+    library(SummarizedExperiment)
+    library(ExploreModelMatrix)
+    library(dplyr)
+    library(DESeq2)
+})
+```
+
+Next, we read the metadata table for our data set. Because we want to explore many different design matrices, we will read in the 4th file we downloaded but haven't used yet: that for both Cerebellum and Spinal Cord samples (45 samples total). As seen in previous episodes, the metadata contains information about the age, sex, infection status, time of measurement and tissue of the collected samples. 
+Note that Day0 always corresponds to non-infected samples, and that infected samples are collected on days 4 and 8.
+Moreover, all mice have the same age (8 weeks). 
+Hence, in the first part of this episode we consider only the sex, tissue and time variables further. 
+
+```{r read-data}
+meta <- read.csv("data/GSE96870_coldata_all.csv", row.names = 1)
+meta
+table(meta$time, meta$infection)
+table(meta$age)
+```
+
+We can start by visualizing the number of observations for each combination of the three predictor variables. 
+
+```{r cooccplots}
+vd <- VisualizeDesign(sampleData = meta, 
+                      designFormula = ~ tissue + time + sex)
+vd$cooccurrenceplots
+```
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge
+
+Based on this visualization, would you say that the data set is balanced, or are there combinations of predictor variables that are severely over- or underrepresented?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## Compare males and females, non-infected spinal cord
+
+Next, we will set up our first design matrix. 
+Here, we will focus on the uninfected (Day0) spinal cord samples, and our aim is to compare the male and female mice. 
+Thus, we first subset the metadata to only the samples of interest, and next set up and visualize the design matrix with a single predictor variable (sex). 
+By defining the design formula as `~ sex`, we tell R to include an intercept in the design. 
+This intercept will represent the 'baseline' level of the predictor variable, which in this case is selected to be the Female mice. 
+If not explicitly specified, R will order the values of the predictor in alphabetical order and select the first one as the reference or baseline level. 
+
+```{r male-vs-female}
+## Subset metadata
+meta_noninf_spc <- meta %>% filter(time == "Day0" & 
+                                       tissue == "Spinalcord")
+meta_noninf_spc
+
+## Use ExploreModelMatrix to create a design matrix and visualizations, given 
+## the desired design formula. 
+vd <- VisualizeDesign(sampleData = meta_noninf_spc, 
+                      designFormula = ~ sex)
+vd$designmatrix
+vd$plotlist
+
+## Note that we can also generate the design matrix like this
+model.matrix(~ sex, data = meta_noninf_spc)
+```
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge
+
+With this design, what is the interpretation of the `sexMale` coefficient?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge
+
+Set up the design formula to compare male and female spinal cord samples from Day0 as above, but instruct R to not include an intercept in the model. How does this change the interpretation of the coefficients? What contrast would have to be specified to compare the mean expression of a gene between male and female mice? 
+
+:::::::::::::::  solution
+
+### Solution
+
+```{r male-vs-female-noint, echo=TRUE}
+meta_noninf_spc <- meta %>% filter(time == "Day0" & 
+                                       tissue == "Spinalcord")
+meta_noninf_spc
+vd <- VisualizeDesign(sampleData = meta_noninf_spc, 
+                      designFormula = ~ 0 + sex)
+vd$designmatrix
+vd$plotlist
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge
+
+Set up the design formula to compare the three time points (Day0, Day4, Day8) in the male spinal cord samples, and visualize it using `ExploreModelMatrix`.
+
+:::::::::::::::  solution
+
+### Solution
+
+```{r all-times, echo=TRUE}
+meta_male_spc <- meta %>% filter(sex == "Male" & tissue == "Spinalcord")
+meta_male_spc
+vd <- VisualizeDesign(sampleData = meta_male_spc, designFormula = ~ time)
+vd$designmatrix
+vd$plotlist
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Factorial design without interactions
+
+Next, we again consider only non-infected mice, but fit a model incorporating both sex and tissue as predictors. 
+We assume that the tissue differences are the same for both male and female mice, and consequently fit an additive model, without interaction terms. 
+
+```{r factorial-noint}
+meta_noninf <- meta %>% filter(time == "Day0")
+meta_noninf
+vd <- VisualizeDesign(sampleData = meta_noninf, 
+                      designFormula = ~ sex + tissue)
+vd$designmatrix
+vd$plotlist
+```
+
+## Factorial design with interactions
+
+In the previous model, we assumed that the tissue differences were the same for both male and female mice. 
+To allow for the estimation of sex-specific tissue differences (at the expense of having one additional coefficient to estimate from the data), we can include an interaction term in the model. 
+
+```{r factorial-withint}
+meta_noninf <- meta %>% filter(time == "Day0")
+meta_noninf
+
+## Define a design including an interaction term
+## Note that ~ sex * tissue is equivalent to 
+## ~ sex + tissue + sex:tissue
+vd <- VisualizeDesign(sampleData = meta_noninf, 
+                      designFormula = ~ sex * tissue)
+vd$designmatrix
+vd$plotlist
+```
+
+## Combining multiple factors into one
+
+Sometimes, for experiments with multiple factors, it is easier to interpret coefficients and set up contrasts of interest if the factors are combined into one. 
+Let's consider the previous example again, using this approach:
+
+```{r factorial-combine}
+meta_noninf <- meta %>% filter(time == "Day0")
+meta_noninf$sex_tissue <- paste0(meta_noninf$sex, "_", meta_noninf$tissue)
+meta_noninf
+
+vd <- VisualizeDesign(sampleData = meta_noninf, 
+                      designFormula = ~ 0 + sex_tissue)
+vd$designmatrix
+vd$plotlist
+```
+
+
+## Paired design
+
+In this particular data set the samples are paired - the same mice have contributed both the cerebellum and spinal cord samples. 
+This information was not included in the previous models. 
+However, accounting for it can increase power to detect tissue differences by eliminating variability in baseline expression levels between mice. 
+Here, we define a paired design for the female non-infected mice, aimed at testing for differences between tissues after accounting for baseline differences between mice.
+
+```{r paired}
+meta_fem_day0 <- meta %>% filter(sex == "Female" & 
+                                     time == "Day0")
+
+# ensure that mouse is treated as a categorical variable
+meta_fem_day0$mouse <- factor(meta_fem_day0$mouse)
+
+meta_fem_day0
+
+vd <- VisualizeDesign(sampleData = meta_fem_day0,
+                      designFormula = ~ mouse + tissue)
+vd$designmatrix
+vd$plotlist
+```
+
+## Within- and between-subject comparisons
+
+In some situations, we need to combine the types of models considered above. 
+For example, let's say that we want to investigate if the tissue differences are different for infected and non-infected female mice. 
+In this case, each mice only contributes to one of the infection groups (each mice is either infected or non-infected), but contributes both a cerebellum and a spinal cord sample.
+One way to view this type of design is as two paired experiments, one for each infection group (see the [edgeR user guide section 3.5](https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf)).
+We can then easily compare the two tissues in each infection group, and contrast the tissue differences between the infection groups. 
+
+```{r within-and-between}
+meta_fem_day04 <- meta %>% 
+    filter(sex == "Female" & 
+               time %in% c("Day0", "Day4")) %>%
+    droplevels()
+# ensure that mouse is treated as a categorical variable
+meta_fem_day04$mouse <- factor(meta_fem_day04$mouse)
+
+meta_fem_day04
+design <- model.matrix(~ mouse, data = meta_fem_day04)
+design <- cbind(design, 
+                Spc.Day0 = meta_fem_day04$tissue == "Spinalcord" & 
+                    meta_fem_day04$time == "Day0",
+                Spc.Day4 = meta_fem_day04$tissue == "Spinalcord" & 
+                    meta_fem_day04$time == "Day4")
+rownames(design) <- rownames(meta_fem_day04)
+design
+vd <- VisualizeDesign(sampleData = meta_fem_day04 %>%
+                          select(time, tissue, mouse),
+                      designFormula = NULL, 
+                      designMatrix = design, flipCoordFitted = FALSE)
+vd$designmatrix
+vd$plotlist
+```
+
+## How does this relate to the DESeq2 analysis we did in the previous episode? 
+
+Now that we have learnt more about interpreting design matrices, let's look back to the differential expression analysis we performed in the previous episode. 
+We will repeat the main lines of code here.
+
+```{r deseq-fit-sex-time}
+se <- readRDS("data/GSE96870_se.rds")
+se <- se[rowSums(assay(se, "counts")) > 5, ]
+dds <- DESeq2::DESeqDataSet(se, design = ~ sex + time)
+dds <- DESeq(dds)
+```
+
+`DESeq2` stores the design matrix in the object: 
+
+```{r check-mm-sex-time}
+attr(dds, "modelMatrix")
+```
+
+The column names can be obtained via the `resultsNames` function:
+
+```{r check-resnames-sex-time}
+resultsNames(dds)
+```
+
+Let's visualize this design: 
+
+```{r vis-sex-time}
+vd <- VisualizeDesign(sampleData = colData(dds)[, c("sex", "time")], 
+                      designMatrix = attr(dds, "modelMatrix"), 
+                      flipCoordFitted = TRUE)
+vd$plotlist
+```
+
+In the previous episode, we performed a test comparing Day8 samples to Day0 samples:
+
+```{r test-sex-time}
+resTime <- results(dds, contrast = c("time", "Day8", "Day0"))
+```
+
+From the figure above, we see that this comparison is represented by the `time_Day8_vs_Day0` coefficient, which corresponds to the fourth column in the design matrix. 
+Thus, an alternative way of specifying the contrast for the test would be: 
+
+```{r text-sex-time-contrast}
+resTimeNum <- results(dds, contrast = c(0, 0, 0, 1))
+```
+
+Let's check if the results are comparable: 
+
+```{r compare-tests-sex-time}
+summary(resTime)
+summary(resTimeNum)
+
+## logFC
+plot(resTime$log2FoldChange, resTimeNum$log2FoldChange)
+abline(0, 1)
+
+## -log10(p-value)
+plot(-log10(resTime$pvalue), -log10(resTimeNum$pvalue))
+abline(0, 1)
+```
+
+## Redo DESeq2 analysis with interaction
+
+Next, let's look at a different setup. 
+We still consider the sex and time predictors, but now we allow an interaction between them. 
+In other words, we allow the time effect to be different for males and females. 
+
+```{r deseq-fit-sex-time-int}
+se <- readRDS("data/GSE96870_se.rds")
+se <- se[rowSums(assay(se, "counts")) > 5, ]
+dds <- DESeq2::DESeqDataSet(se, design = ~ sex * time)
+dds <- DESeq(dds)
+attr(dds, "modelMatrix")
+```
+
+Let's visualize this design: 
+
+```{r vis-sex-time-int}
+vd <- VisualizeDesign(sampleData = colData(dds)[, c("sex", "time")], 
+                      designMatrix = attr(dds, "modelMatrix"), 
+                      flipCoordFitted = TRUE)
+vd$plotlist
+```
+
+Note that now, the `time_Day8_vs_Day0` coefficient represents the difference between Day8 and Day0 **for the Female samples**. 
+To get the corresponding difference for the male samples, we need to also add the interaction effect (`sexMale.timeDay8`). 
+
+```{r test-time}
+## Day8 vs Day0, female
+resTimeFemale <- results(dds, contrast = c("time", "Day8", "Day0"))
+
+## Interaction effect (difference in Day8-Day0 effect between Male and Female)
+resTimeInt <- results(dds, name = "sexMale.timeDay8")
+```
+
+Let's try to fit this model with the second approach mentioned above, namely to create a single factor.
+
+```{r fit-sex-time-int-single}
+se <- readRDS("data/GSE96870_se.rds")
+se <- se[rowSums(assay(se, "counts")) > 5, ]
+se$sex_time <- paste0(se$sex, "_", se$time)
+dds <- DESeq2::DESeqDataSet(se, design = ~ 0 + sex_time)
+dds <- DESeq(dds)
+attr(dds, "modelMatrix")
+```
+
+We again visualize this design: 
+
+```{r vis-sex-time-int-single}
+vd <- VisualizeDesign(sampleData = colData(dds)[, c("sex", "time")], 
+                      designMatrix = attr(dds, "modelMatrix"), 
+                      flipCoordFitted = TRUE)
+vd$plotlist
+```
+
+We then set up the same contrasts as above
+
+```{r test-sex-time-int-contrast}
+## Day8 vs Day0, female
+resTimeFemaleSingle <- results(dds, contrast = c("sex_time", "Female_Day8", "Female_Day0"))
+
+## Interaction effect (difference in Day8-Day0 effect between Male and Female)
+resultsNames(dds)
+resTimeIntSingle <- results(dds, contrast = c(1, 0, -1, -1, 0, 1))
+```
+
+Check that these results agree with the ones obtained by fitting the model with the two factors and the interaction term. 
+
+```{r compare-sex-time-int}
+summary(resTimeFemale)
+summary(resTimeFemaleSingle)
+plot(-log10(resTimeFemale$pvalue), -log10(resTimeFemaleSingle$pvalue))
+abline(0, 1)
+
+summary(resTimeInt)
+summary(resTimeIntSingle)
+plot(-log10(resTimeInt$pvalue), -log10(resTimeIntSingle$pvalue))
+abline(0, 1)
+```
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- The formula framework in R allows creation of design matrices, which details the variables expected to be associated with systematic differences in gene expression levels. 
+- Comparisons of interest can be defined using contrasts, which are linear combinations of the model coefficients. 
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+

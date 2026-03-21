@@ -1,19 +1,35 @@
 ---
-title: "实验1：RNA-seq数据处理流程"
-subtitle: "从原始数据到表达矩阵"
+title: "实验1：RNA-seq数据质控与预处理"
+subtitle: "从表达矩阵到质控报告"
 ---
 
 ## 实验目标
 
 完成本实验后，你将能够：
 
-1. 使用R进行RNA-seq表达数据的质控和预处理
-2. 构建DESeq2分析所需的表达矩阵
-3. 进行数据标准化和转换
-4. 评估样本质量和批次效应
+1. 使用DESeq2创建分析对象并进行数据预处理
+2. 理解并计算Size Factors进行标准化
+3. 使用VST进行数据转换
+4. 通过PCA和相关性热图评估样本质量
+5. 识别潜在的批次效应和异常样本
 
 **实验时长**：45分钟
-**实验类型**：个人完成
+**实验数据**：基于真实甲状腺癌RNA-seq数据（PTC vs ATC）的简化数据集
+
+---
+
+## 关键知识点
+
+::: {.callout-important}
+### 核心概念速记
+
+| 概念 | 要点 |
+|------|------|
+| **DESeqDataSet** | DESeq2的核心数据结构，包含counts矩阵、样本信息和设计公式 |
+| **Size Factor** | 校正测序深度的标准化因子，中位数比值法计算 |
+| **VST** | Variance Stabilizing Transformation，用于PCA和可视化 |
+| **PCA** | 主成分分析，用于识别样本间主要变异来源 |
+:::
 
 ---
 
@@ -22,14 +38,7 @@ subtitle: "从原始数据到表达矩阵"
 ### 环境要求
 
 - [R](https://cran.r-project.org/) >= 4.3.0
-- 必需R包：DESeq2, ggplot2, pheatmap
-
-### 创建新项目
-
-1. 打开RStudio
-2. 菜单：File → New Project → New Directory → New Project
-3. 目录名：`lab1-rnaseq-workflow`
-4. 勾选 `Create a git repository`
+- 必需R包：DESeq2, ggplot2, pheatmap, RColorBrewer
 
 ### 安装和加载包
 
@@ -52,6 +61,7 @@ install_if_missing <- function(pkg) {
 install_if_missing("ggplot2")
 install_if_missing("pheatmap")
 install_if_missing("RColorBrewer")
+install_if_missing("reshape2")
 
 # 加载包
 library(DESeq2)
@@ -62,148 +72,86 @@ library(RColorBrewer)
 
 ---
 
-## 第一部分：示例数据准备
+## 第一部分：数据准备
 
 ### 练习1.1：创建示例表达矩阵
 
-我们将创建一个模拟的RNA-seq表达矩阵（已在预处理步骤完成比对和定量）。
+我们将创建一个模拟的RNA-seq表达矩阵，模拟真实甲状腺癌数据特征（PTC vs ATC）。
 
 ```r
 # TODO: 运行以下代码创建示例数据
 
 set.seed(123)
 
-# 设置样本信息
-samples <- c(paste0("Control_", 1:3), paste0("Treatment_", 1:3))
-conditions <- factor(c(rep("Control", 3), rep("Treatment", 3)))
+# 设置样本信息（模拟PTC vs ATC数据）
+samples <- c(paste0("PTC_", 1:3), paste0("ATC_", 1:3))
+conditions <- factor(c(rep("PTC", 3), rep("ATC", 3)),
+                     levels = c("PTC", "ATC"))  # PTC作为对照
 
-# 创建2000个基因的表达矩阵
-ngenes <- 2000
-gene_names <- paste0("Gene_", 1:ngenes)
+# 创建5000个基因的表达矩阵（真实数据通常有2万+基因）
+ngenes <- 5000
+gene_names <- paste0("GENE_", sprintf("%05d", 1:ngenes))
 
-# 生成count矩阵（模拟真实RNA-seq数据特征）
-# 控制组：基准表达
+# 生成count矩阵
+set.seed(42)
 counts <- matrix(0, nrow = ngenes, ncol = 6)
 rownames(counts) <- gene_names
 colnames(counts) <- samples
 
-# 为每个基因生成基础表达量
-base_expr <- rnbinom(ngenes, mu = 100, size = 2)
+# 为每个基因生成基础表达量（负二项分布）
+base_expr <- rnbinom(ngenes, mu = 200, size = 1)
 
 for (i in 1:ngenes) {
-  # 控制组：基础表达 + 随机噪声
+  # PTC组（对照）：基础表达
   counts[i, 1:3] <- rpois(3, lambda = base_expr[i])
 
-  # 处理组：部分基因上调/下调
-  if (i <= 200) {
-    # 上调2倍
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 2)
-  } else if (i <= 400) {
-    # 下调0.5倍
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 0.5)
+  # ATC组（处理）：部分基因差异表达
+  if (i <= 300) {
+    # 上调2-4倍（ATC中高表达）
+    fold_change <- runif(1, 2, 4)
+    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
+  } else if (i <= 500) {
+    # 下调0.2-0.5倍（ATC中低表达）
+    fold_change <- runif(1, 0.2, 0.5)
+    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
   } else {
     # 无变化
     counts[i, 4:6] <- rpois(3, lambda = base_expr[i])
   }
 }
 
-# 查看数据
-print("表达矩阵维度:")
-dim(counts)
+# 查看数据基本信息
+cat("表达矩阵维度:", dim(counts), "\n")
+cat("\n前5行数据:\n")
+print(head(counts, 5))
 
-print("\n前5行数据:")
-head(counts, 5)
+cat("\n各样本总reads数（测序深度）:\n")
+print(colSums(counts))
 
-print("\n样本总reads数:")
-colSums(counts)
+cat("\n表达量分布统计:\n")
+print(summary(as.vector(counts)))
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看输出解读</summary>
 
-```{r}
-#| eval: false
-#| echo: true
+**输出解读**：
+- 矩阵维度：5000个基因 × 6个样本
+- 总reads数：各样本测序深度在90-110万左右（模拟差异测序深度）
+- 表达量分布：大部分基因表达量较低（0值多），符合RNA-seq数据特征
 
-set.seed(123)
-
-samples <- c(paste0("Control_", 1:3), paste0("Treatment_", 1:3))
-conditions <- factor(c(rep("Control", 3), rep("Treatment", 3)))
-
-ngenes <- 2000
-gene_names <- paste0("Gene_", 1:ngenes)
-
-counts <- matrix(0, nrow = ngenes, ncol = 6)
-rownames(counts) <- gene_names
-colnames(counts) <- samples
-
-base_expr <- rnbinom(ngenes, mu = 100, size = 2)
-
-for (i in 1:ngenes) {
-  counts[i, 1:3] <- rpois(3, lambda = base_expr[i])
-
-  if (i <= 200) {
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 2)
-  } else if (i <= 400) {
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * 0.5)
-  } else {
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i])
-  }
-}
-
-cat("表达矩阵维度:", dim(counts), "\n\n")
-cat("前5行数据:\n")
-print(head(counts, 5))
-
-cat("\n样本总reads数:\n")
-print(colSums(counts))
-```
 </details>
 
 ---
 
-## 第二部分：数据质控
+## 第二部分：DESeq2对象创建与质控
 
-### 练习2.1：样本信息表和DESeq2对象创建
+### 练习2.1：创建DESeq2对象
 
 ```r
 # TODO: 创建样本信息表并构建DESeq2对象
 
-# 1. 创建colData数据框
-colData <- data.frame(
-  condition = conditions,
-  row.names = samples
-)
-
-# 查看colData
-print("样本信息表:")
-print(colData)
-
-# 2. 创建DESeqDataSet对象
-# 提示：使用 DESeqDataSetFromMatrix()
-dds <- DESeqDataSetFromMatrix(
-  countData = ____,
-  colData = ____,
-  design = ____
-)
-
-# 3. 查看对象
-print("DESeq2对象:")
-dds
-
-# 4. 提取原始counts矩阵
-counts_raw <- counts(dds)
-print("\n原始counts矩阵维度:")
-dim(counts_raw)
-```
-
-<details>
-<summary>点击查看参考答案</summary>
-
-```{r}
-#| eval: false
-#| echo: true
-
+# 1. 创建colData数据框（样本信息）
 colData <- data.frame(
   condition = conditions,
   row.names = samples
@@ -212,61 +160,81 @@ colData <- data.frame(
 cat("样本信息表:\n")
 print(colData)
 
-# 确保已安装 DESeq2
-if (!require("DESeq2", quietly = TRUE))
-    BiocManager::install("DESeq2")
+# 2. 创建DESeqDataSet对象
+# 注意：DESeq2需要原始counts，不要使用标准化后的数据！
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData = colData,
+  design = ~ condition  # 设计公式：比较condition间的差异
+)
+
+cat("\nDESeq2对象信息:\n")
+print(dds)
+
+cat("\n设计公式:", as.character(design(dds)), "\n")
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```r
+colData <- data.frame(
+  condition = conditions,
+  row.names = samples
+)
 
 dds <- DESeqDataSetFromMatrix(
   countData = counts,
   colData = colData,
   design = ~ condition
 )
-
-cat("\nDESeq2对象:\n")
-print(dds)
-
-counts_raw <- counts(dds)
-cat("\n原始counts矩阵维度:", dim(counts_raw), "\n")
 ```
+
 </details>
+
+::: {.callout-warning}
+### ⚠️ 常见错误
+**错误**：使用TPM/FPKM等标准化数据创建DESeq2对象
+**正确**：DESeq2必须使用原始count数据，标准化在内部自动进行
+:::
 
 ---
 
 ### 练习2.2：过滤低表达基因
 
-低表达基因会增加噪音，需要在分析前过滤。
+**为什么需要过滤？**
+- 低表达基因的计数随机性大，可能引入噪音
+- 减少计算量，提高统计效能
 
 ```r
 # TODO: 完成低表达基因过滤
 
 # 1. 统计过滤前的基因数
-genes_before <- ____
+genes_before <- nrow(dds)
 cat("过滤前基因数:", genes_before, "\n")
 
 # 2. 过滤条件：至少3个样本中counts >= 10
-# 提示：使用 rowSums() 和 条件筛选
-keep <- ____(counts(dds)) >= 3
+# 提示：使用 rowSums() 和条件筛选
+keep <- rowSums(counts(dds) >= 10) >= 3
 
 # 3. 应用过滤
-dds_filtered <- dds[____, ]
+dds_filtered <- dds[keep, ]
 
 # 4. 统计过滤后的基因数
-genes_after <- nrow(counts(dds_filtered))
+genes_after <- nrow(dds_filtered)
 cat("过滤后基因数:", genes_after, "\n")
 cat("过滤比例:", round((1 - genes_after/genes_before) * 100, 1), "%\n")
 
-# 5. 查看过滤后的数据
-print("\n过滤后数据:")
-dds_filtered
+# 5. 更新dds对象
+dds <- dds_filtered
+cat("\n过滤后的DESeq2对象:\n")
+print(dds)
 ```
 
 <details>
 <summary>点击查看参考答案</summary>
 
-```{r}
-#| eval: false
-#| echo: true
-
+```r
 genes_before <- nrow(dds)
 cat("过滤前基因数:", genes_before, "\n")
 
@@ -277,113 +245,101 @@ genes_after <- nrow(dds_filtered)
 cat("过滤后基因数:", genes_after, "\n")
 cat("过滤比例:", round((1 - genes_after/genes_before) * 100, 1), "%\n")
 
-cat("\n过滤后数据:\n")
-print(dds_filtered)
+dds <- dds_filtered
 ```
+
 </details>
 
 ---
 
-### 练习2.3：计算测序深度和Size Factors
+### 练习2.3：计算Size Factors（测序深度标准化）
+
+**原理**：中位数比值法
+```
+size factor_j = median_i (counts_ij / geometric_mean_i)
+```
+假设：大多数基因在不同样本间表达稳定
 
 ```r
 # TODO: 完成size factor计算和分析
 
-# 1. 计算每个样本的总reads数（测序深度）
-lib_size <- ____(counts(dds_filtered))
+# 1. 计算每个样本的总reads数
+lib_size <- colSums(counts(dds))
 cat("各样本测序深度（总reads数）:\n")
 print(lib_size)
 
 # 2. 计算size factors（DESeq2自动）
-dds_filtered <- estimateSizeFactors(dds_filtered)
+dds <- estimateSizeFactors(dds)
 
 # 3. 提取size factors
-size_factors <- sizeFactors(dds_filtered)
+size_factors <- sizeFactors(dds)
 cat("\nSize Factors:\n")
 print(round(size_factors, 3))
 
 # 4. 分析：size factor与测序深度的关系
-# 正常情况下，size factor应该与测序深度相关
-cat("\n测序深度 vs Size Factor 相关性:\n")
-correlation <- cor(____, ____)
-cat("相关系数:", round(correlation, 3), "\n")
+correlation <- cor(lib_size, size_factors)
+cat("\n测序深度 vs Size Factor 相关性:", round(correlation, 3), "\n")
 
 # 5. 可视化
-plot_data <- data.frame(
-  Sample = colnames(dds_filtered),
+df_plot <- data.frame(
+  Sample = colnames(dds),
   LibSize = lib_size,
   SizeFactor = size_factors,
-  Condition = colData(dds_filtered)$condition
+  Condition = colData(dds)$condition
 )
 
-ggplot(plot_data, aes(x = LibSize, y = SizeFactor, color = Condition)) +
-  geom_point(size = 3) +
-  geom_text(aes(label = Sample), vjust = -0.5, size = 3) +
+ggplot(df_plot, aes(x = LibSize, y = SizeFactor, color = Condition)) +
+  geom_point(size = 4) +
+  geom_text(aes(label = Sample), vjust = -0.8, size = 3) +
   theme_minimal() +
   labs(title = "测序深度 vs Size Factor",
+       subtitle = paste("Correlation:", round(correlation, 3)),
        x = "Library Size (Total Counts)",
-       y = "Size Factor")
+       y = "Size Factor") +
+  theme(legend.position = "top")
 ```
 
 <details>
 <summary>点击查看参考答案</summary>
 
-```{r}
-#| eval: false
-#| echo: true
+```r
+lib_size <- colSums(counts(dds))
+dds <- estimateSizeFactors(dds)
+size_factors <- sizeFactors(dds)
 
-lib_size <- colSums(counts(dds_filtered))
-cat("各样本测序深度（总reads数）:\n")
-print(lib_size)
-
-dds_filtered <- estimateSizeFactors(dds_filtered)
-
-size_factors <- sizeFactors(dds_filtered)
-cat("\nSize Factors:\n")
-print(round(size_factors, 3))
-
-cat("\n测序深度 vs Size Factor 相关性:\n")
-correlation <- cor(lib_size, size_factors)
-cat("相关系数:", round(correlation, 3), "\n")
-
-plot_data <- data.frame(
-  Sample = colnames(dds_filtered),
-  LibSize = lib_size,
-  SizeFactor = size_factors,
-  Condition = colData(dds_filtered)$condition
-)
-
-ggplot(plot_data, aes(x = LibSize, y = SizeFactor, color = Condition)) +
-  geom_point(size = 3) +
-  geom_text(aes(label = Sample), vjust = -0.5, size = 3) +
-  theme_minimal() +
-  labs(title = "测序深度 vs Size Factor",
-       x = "Library Size (Total Counts)",
-       y = "Size Factor")
+# 可视化代码同上
 ```
+
 </details>
+
+::: {.callout-note}
+### 💡 关键理解
+- Size Factor > 1：该样本测序深度高于中位数，counts会被缩小
+- Size Factor < 1：该样本测序深度低于中位数，counts会被放大
+- 理想情况下，Size Factor应与测序深度正相关
+:::
 
 ---
 
-## 第三部分：数据标准化与转换
+## 第三部分：数据转换与可视化
 
-### 练习3.1：获取标准化后的数据
+### 练习3.1：获取标准化和转换后的数据
 
 ```r
-# TODO: 获取不同类型的标准化数据
+# TODO: 获取不同类型的数据
 
 # 1. 获取normalized counts（size factor校正后）
-normalized_counts <- counts(____, normalized = ____)
+normalized_counts <- counts(dds, normalized = TRUE)
 
-cat("原始counts（Gene_1）:\n")
-print(counts(dds_filtered)["Gene_1", ])
+cat("原始counts示例（前3个基因，前3个样本）:\n")
+print(head(counts(dds)[, 1:3], 3))
 
-cat("\n标准化counts（Gene_1）:\n")
-print(round(normalized_counts["Gene_1", ], 2))
+cat("\n标准化counts示例（相同基因和样本）:\n")
+print(round(head(normalized_counts[, 1:3], 3), 2))
 
-# 2. 使用 vst (variance stabilizing transformation) 进行数据转换
-#  vst 适用于大样本，rlog 适用于小样本（n < 30）
-dds_vst <- vst(dds_filtered, blind = FALSE)
+# 2. 使用VST进行数据转换
+# VST (Variance Stabilizing Transformation) 使方差趋于稳定
+dds_vst <- vst(dds, blind = FALSE)  # blind=FALSE使用设计信息
 
 # 3. 提取转换后的矩阵
 vst_matrix <- assay(dds_vst)
@@ -391,133 +347,122 @@ vst_matrix <- assay(dds_vst)
 cat("\nVST转换后数据（前3个基因，前3个样本）:\n")
 print(round(vst_matrix[1:3, 1:3], 2))
 
-# 4. 比较原始和转换后的分布
-par(mfrow = c(1, 2))
-boxplot(log2(counts(dds_filtered) + 1)[, 1:6],
-        main = "Log2 Raw Counts",
-        las = 2, cex.axis = 0.7)
-boxplot(vst_matrix[, 1:6],
-        main = "VST Transformed",
-        las = 2, cex.axis = 0.7)
+cat("\nVST数据范围:", round(min(vst_matrix), 2), "to", round(max(vst_matrix), 2), "\n")
 ```
 
 <details>
 <summary>点击查看参考答案</summary>
 
-```{r}
-#| eval: false
-#| echo: true
-
-normalized_counts <- counts(dds_filtered, normalized = TRUE)
-
-cat("原始counts（Gene_1）:\n")
-print(counts(dds_filtered)["Gene_1", ])
-
-cat("\n标准化counts（Gene_1）:\n")
-print(round(normalized_counts["Gene_1", ], 2))
-
-dds_vst <- vst(dds_filtered, blind = FALSE)
+```r
+normalized_counts <- counts(dds, normalized = TRUE)
+dds_vst <- vst(dds, blind = FALSE)
 vst_matrix <- assay(dds_vst)
-
-cat("\nVST转换后数据（前3个基因，前3个样本）:\n")
-print(round(vst_matrix[1:3, 1:3], 2))
 ```
+
 </details>
+
+::: {.callout-note}
+### VST vs rlog 选择
+- **VST**：适用于大样本（n > 30），计算更快
+- **rlog**：适用于小样本（n < 30），效果更稳定
+- 本实验使用VST即可
+:::
 
 ---
 
-## 第四部分：样本质量评估
-
-### 练习4.1：样本间相关性分析
+### 练习3.2：样本间相关性分析
 
 ```r
 # TODO: 计算和可视化样本间相关性
 
 # 1. 计算样本间Pearson相关系数矩阵
-# 提示：使用 cor() 函数，对转置后的vst_matrix计算
-cor_matrix <- cor(____)
-
-cat("样本间相关性矩阵:\n")
-print(round(cor_matrix, 3))
-
-# 2. 使用pheatmap绘制相关性热图
-# 提示：使用pheatmap()，设置annotation_col显示condition
-annotation <- data.frame(
-  Condition = colData(dds_filtered)$condition,
-  row.names = colnames(dds_filtered)
-)
-
-pheatmap(cor_matrix,
-         annotation_col = annotation,
-         main = "Sample Correlation Heatmap",
-         color = colorRampPalette(brewer.pal(9, "Blues"))(100))
-```
-
-<details>
-<summary>点击查看参考答案</summary>
-
-```{r}
-#| eval: false
-#| echo: true
-
 cor_matrix <- cor(vst_matrix)
 
 cat("样本间相关性矩阵:\n")
 print(round(cor_matrix, 3))
 
-annotation <- data.frame(
-  Condition = colData(dds_filtered)$condition,
-  row.names = colnames(dds_filtered)
+# 2. 准备注释数据
+annotation_col <- data.frame(
+  Condition = colData(dds)$condition,
+  row.names = colnames(dds)
+)
+
+# 3. 绘制相关性热图
+pheatmap(cor_matrix,
+         annotation_col = annotation_col,
+         main = "Sample Correlation Heatmap",
+         color = colorRampPalette(brewer.pal(9, "Blues"))(100),
+         display_numbers = TRUE,
+         number_color = "white",
+         fontsize_number = 8)
+```
+
+<details>
+<summary>点击查看参考答案</summary>
+
+```r
+cor_matrix <- cor(vst_matrix)
+
+annotation_col <- data.frame(
+  Condition = colData(dds)$condition,
+  row.names = colnames(dds)
 )
 
 pheatmap(cor_matrix,
-         annotation_col = annotation,
+         annotation_col = annotation_col,
          main = "Sample Correlation Heatmap",
          color = colorRampPalette(brewer.pal(9, "Blues"))(100))
 ```
+
 </details>
+
+::: {.callout-important}
+### 质控判断标准
+✅ **良好**：组内相关性 > 组间相关性（同条件样本聚类在一起）
+❌ **异常**：样本按批次或其他非生物学因素聚类
+:::
 
 ---
 
-### 练习4.2：主成分分析（PCA）
+### 练习3.3：主成分分析（PCA）
 
-PCA可以帮助我们识别样本间的主要变异来源和潜在的批次效应。
+PCA帮助我们识别样本间的主要变异来源和潜在的批次效应。
 
 ```r
 # TODO: 完成PCA分析
 
 # 1. 使用DESeq2的plotPCA函数
-# 提示：使用plotPCA()，intgroup参数设置分组变量
-pca_plot <- plotPCA(____, intgroup = ____)
+pca_plot <- plotPCA(dds_vst, intgroup = "condition")
 
 # 2. 美化PCA图
 pca_plot +
   theme_minimal() +
   geom_text(aes(label = name), vjust = -0.5, size = 3) +
-  labs(title = "PCA Plot - Sample Clustering")
+  labs(title = "PCA Plot - Sample Clustering",
+       subtitle = "PC1 vs PC2") +
+  theme(legend.position = "top")
 
 # 3. 提取PCA数据并查看方差解释比例
 pca_data <- plotPCA(dds_vst, intgroup = "condition", returnData = TRUE)
-
-# 计算每个主成分解释的方差百分比
 percentVar <- round(100 * attr(pca_data, "percentVar"))
+
+cat("\nPCA方差解释:\n")
 cat("PC1 解释方差:", percentVar[1], "%\n")
 cat("PC2 解释方差:", percentVar[2], "%\n")
+cat("PC1 + PC2 累计:", sum(percentVar[1:2]), "%\n")
 
-# 4. 解读：
-# - PC1是否主要分离Control和Treatment？
-# - 组内样本是否聚类在一起？
+# 4. 解读问题（请回答）
+cat("\n=== PCA解读 ===\n")
+cat("1. PC1是否主要分离PTC和ATC样本？", "\n")
+cat("2. 组内样本是否聚类在一起？", "\n")
+cat("3. 是否有明显的异常样本？", "\n")
 ```
 
 <details>
 <summary>点击查看参考答案</summary>
 
-```{r}
-#| eval: false
-#| echo: true
-
+```r
 pca_plot <- plotPCA(dds_vst, intgroup = "condition")
-
 pca_plot +
   theme_minimal() +
   geom_text(aes(label = name), vjust = -0.5, size = 3) +
@@ -525,124 +470,101 @@ pca_plot +
 
 pca_data <- plotPCA(dds_vst, intgroup = "condition", returnData = TRUE)
 percentVar <- round(100 * attr(pca_data, "percentVar"))
-cat("PC1 解释方差:", percentVar[1], "%\n")
-cat("PC2 解释方差:", percentVar[2], "%\n")
 ```
+
 </details>
 
 ---
 
-### 练习4.3：基因表达分布可视化
+## 第四部分：综合质控报告
+
+### 练习4.1：生成质控报告
+
+基于上述分析，完成以下质控报告：
 
 ```r
-# TODO: 可视化基因表达分布
+# TODO: 基于分析结果回答以下问题
 
-# 1. 绘制样本表达分布箱线图
-vst_df <- as.data.frame(vst_matrix)
-vst_df$Gene <- rownames(vst_df)
+cat("==============================================\n")
+cat("         RNA-seq 质控报告\n")
+cat("==============================================\n\n")
 
-# 转换为长格式
-vst_long <- reshape2::melt(vst_df, id.vars = "Gene",
-                           variable.name = "Sample",
-                           value.name = "Expression")
+# 1. 数据过滤
+cat("1. 数据过滤\n")
+cat("   - 原始基因数:", genes_before, "\n")
+cat("   - 过滤后基因数:", genes_after, "\n")
+cat("   - 过滤比例:", round((1 - genes_after/genes_before) * 100, 1), "%\n")
+cat("   - 判断: ___ (是否合理? 一般过滤30-50%为正常)\n\n")
 
-# 添加分组信息
-vst_long$Condition <- gsub("_.*", "", vst_long$Sample)
+# 2. Size Factors
+cat("2. Size Factors\n")
+cat("   - 范围:", round(min(size_factors), 3), "to", round(max(size_factors), 3), "\n")
+cat("   - 与测序深度相关性:", round(correlation, 3), "\n")
+cat("   - 判断: ___ (差异是否过大? 一般0.5-2.0为正常)\n\n")
 
-# 绘制箱线图
-ggplot(vst_long, aes(x = Sample, y = Expression, fill = Condition)) +
-  geom_boxplot() +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Gene Expression Distribution by Sample",
-       y = "VST Transformed Expression")
+# 3. 样本相关性
+group1_cor <- mean(cor_matrix[1:3, 1:3][lower.tri(cor_matrix[1:3, 1:3])])
+group2_cor <- mean(cor_matrix[4:6, 4:6][lower.tri(cor_matrix[4:6, 4:6])])
+between_cor <- mean(cor_matrix[1:3, 4:6])
 
-# 2. 绘制均值-方差图
-# 展示标准化是否成功（VST后方差应趋于稳定）
-mean_sd_plot <- vsn::meanSdPlot(vst_matrix, ranks = FALSE)
-print(mean_sd_plot$gg +
-      ggtitle("Mean-Standard Deviation Relationship (VST)"))
+cat("3. 样本间相关性\n")
+cat("   - PTC组内平均相关性:", round(group1_cor, 3), "\n")
+cat("   - ATC组内平均相关性:", round(group2_cor, 3), "\n")
+cat("   - 组间平均相关性:", round(between_cor, 3), "\n")
+cat("   - 判断: ___ (组内 > 组间? 这是理想情况)\n\n")
+
+# 4. PCA
+cat("4. PCA分析\n")
+cat("   - PC1解释方差:", percentVar[1], "%\n")
+cat("   - PC2解释方差:", percentVar[2], "%\n")
+cat("   - 判断: ___ (PC1是否分离两组样本?)\n\n")
+
+# 5. 总体评估
+cat("5. 总体质控结论\n")
+cat("   - 数据质量: ___ (良好/一般/差)\n")
+cat("   - 是否可继续差异分析: ___ (是/否)\n")
+cat("   - 注意事项: ___\n\n")
+
+cat("==============================================\n")
 ```
-
-<details>
-<summary>点击查看参考答案</summary>
-
-```{r}
-#| eval: false
-#| echo: true
-
-vst_df <- as.data.frame(vst_matrix)
-vst_df$Gene <- rownames(vst_df)
-
-vst_long <- reshape2::melt(vst_df, id.vars = "Gene",
-                           variable.name = "Sample",
-                           value.name = "Expression")
-
-vst_long$Condition <- gsub("_.*", "", vst_long$Sample)
-
-ggplot(vst_long, aes(x = Sample, y = Expression, fill = Condition)) +
-  geom_boxplot() +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Gene Expression Distribution by Sample",
-       y = "VST Transformed Expression")
-```
-</details>
-
----
-
-## 第五部分：综合练习
-
-### 练习5.1：质控报告汇总
-
-基于上述分析，回答以下问题：
-
-```markdown
-1. 数据过滤后保留了多少基因？过滤比例是否合理？
-   答案：____
-
-2. 各样本的size factor范围是多少？是否差异过大？
-   答案：____
-
-3. 样本间相关性如何？组内和组间相关性有何差异？
-   答案：____
-
-4. PCA结果显示Control和Treatment是否清晰分离？
-   答案：____
-
-5. 是否有异常样本需要剔除？
-   答案：____
-```
-
----
-
-## 实验提交
-
-**无，见课程作业要求**
 
 ---
 
 ## 思考题
 
 1. **为什么需要过滤低表达基因？**
-   低表达基因的计数随机性大，可能引入噪音。
+   <details><summary>点击查看答案</summary>低表达基因的计数随机性大，可能引入噪音；统计检验效能不足</details>
 
-2. **VST和rlog转换的区别是什么？**
-   VST适用于大样本，计算更快；rlog适用于小样本，效果更稳定。
+2. **Size Factor与简单CPM标准化的区别？**
+   <details><summary>点击查看答案</summary>Size Factor使用中位数比值法，对高表达基因稳健；CPM易受极值影响</details>
 
-3. **如果PCA显示Control和Treatment没有分离，可能是什么原因？**
-   可能是：处理效应较弱、批次效应、样本标签错误或实验失败。
+3. **如果PCA显示PTC和ATC没有清晰分离，可能是什么原因？**
+   <details><summary>点击查看答案</summary>处理效应弱、批次效应、样本标签错误或实验失败</details>
 
-4. **如何评估测序深度是否足够？**
-   检查：基因检出数（通常>10,000）、饱和曲线、样本间相关性。
+4. **VST转换的目的是什么？**
+   <details><summary>点击查看答案</summary>使数据方差趋于稳定，适合PCA等需要正态分布假设的分析</details>
+
+---
+
+## 关键代码速查表
+
+| 操作 | 代码 |
+|------|------|
+| 创建DESeq2对象 | `DESeqDataSetFromMatrix(countData, colData, design = ~ condition)` |
+| 过滤低表达基因 | `dds[rowSums(counts(dds) >= 10) >= 3, ]` |
+| 计算Size Factors | `estimateSizeFactors(dds)` |
+| 获取normalized counts | `counts(dds, normalized = TRUE)` |
+| VST转换 | `vst(dds, blind = FALSE)` |
+| PCA | `plotPCA(vst_obj, intgroup = "condition")` |
+| 样本相关性 | `cor(assay(vst_obj))` |
 
 ---
 
 ## 延伸阅读
 
 - [DESeq2 Vignette - Data Transformation](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#data-transformations)
-- [RNA-seq Data Quality Control](https://www.bioconductor.org/packages/release/workflows/html/rnaseqGene.html#data-quality)
+- [RNA-seq Data Quality Control Best Practices](https://www.bioconductor.org/packages/release/workflows/html/rnaseqGene.html#data-quality)
 
 ---
 
-**实验结束，祝学习愉快！** 🎉
+**实验结束，请继续完成实验2：差异表达分析与可视化** 🎉
