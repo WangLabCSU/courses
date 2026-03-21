@@ -39,6 +39,8 @@ website:
             text: "📊 幻灯片：RNA-seq概述"
           - href: slides/slides-de-analysis.html
             text: "📊 幻灯片：差异表达分析"
+          - href: slides/slides-functional-analysis.html
+            text: "📊 幻灯片：功能富集分析"
           - text: "---"
           - text: "实验指导"
           - href: labs/lab1-rnaseq-workflow.qmd
@@ -88,6 +90,8 @@ website:
               href: slides/slides-rnaseq-overview.html
             - text: "📊 幻灯片：差异表达分析"
               href: slides/slides-de-analysis.html
+            - text: "📊 幻灯片：功能富集分析"
+              href: slides/slides-functional-analysis.html
         - section: "实验指导"
           contents:
             - labs/lab1-rnaseq-workflow.qmd

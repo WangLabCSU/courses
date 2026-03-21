@@ -14,7 +14,7 @@ subtitle: "使用DESeq2识别差异基因并进行功能分析"
 5. 进行基础的功能富集分析（GO/KEGG）
 
 **实验时长**：45分钟
-**实验数据**：延续实验1的模拟PTC vs ATC数据
+**实验数据**：真实甲状腺癌RNA-seq数据（PTC vs ATC）
 
 ---
 
@@ -43,7 +43,7 @@ subtitle: "使用DESeq2识别差异基因并进行功能分析"
 
 ## 实验准备
 
-### 加载包和数据
+### 加载包和真实数据
 
 ```r
 # 安装和加载所需包
@@ -60,42 +60,40 @@ for (pkg in packages) {
   }
 }
 
-# 加载实验1的数据（或重新创建）
+# 加载真实RNA-seq数据（PTC vs ATC甲状腺癌数据）
 # 如果实验1已完成，可以直接使用dds对象
-# 否则运行以下代码重新创建数据
+# 否则运行以下代码重新加载数据
 
-set.seed(42)
-samples <- c(paste0("PTC_", 1:3), paste0("ATC_", 1:3))
-conditions <- factor(c(rep("PTC", 3), rep("ATC", 3)), levels = c("PTC", "ATC"))
+# 1. 读取表达矩阵
+counts_matrix <- read.table("../data/geneCountMatrix.txt", header = TRUE)
+counts <- counts_matrix[, -1]  # 移除基因symbol列
+rownames(counts) <- counts_matrix$gene_symbol
 
-ngenes <- 5000
-gene_names <- paste0("GENE_", sprintf("%05d", 1:ngenes))
-counts <- matrix(0, nrow = ngenes, ncol = 6)
-rownames(counts) <- gene_names
-colnames(counts) <- samples
+# 2. 读取样本信息
+sample_info <- read.table("../data/samplesinfo.txt", header = TRUE)
+conditions <- factor(sample_info$type, levels = c("PTC", "ATC"))
 
-base_expr <- rnbinom(ngenes, mu = 200, size = 1)
-for (i in 1:ngenes) {
-  counts[i, 1:3] <- rpois(3, lambda = base_expr[i])
-  if (i <= 300) {
-    fold_change <- runif(1, 2, 4)
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
-  } else if (i <= 500) {
-    fold_change <- runif(1, 0.2, 0.5)
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
-  } else {
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i])
-  }
-}
+# 3. 创建DESeq2对象
+colData <- data.frame(
+  condition = conditions,
+  batch = sample_info$condition,
+  row.names = sample_info$type
+)
 
-colData <- data.frame(condition = conditions, row.names = samples)
-dds <- DESeqDataSetFromMatrix(countData = counts, colData = colData, design = ~ condition)
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData = colData,
+  design = ~ condition
+)
+
+# 4. 过滤低表达基因
 keep <- rowSums(counts(dds) >= 10) >= 3
 dds <- dds[keep, ]
 
 cat("数据准备完成！\n")
 cat("基因数:", nrow(dds), "\n")
 cat("样本数:", ncol(dds), "\n")
+cat("样本名称:", colnames(dds), "\n")
 ```
 
 ---
@@ -416,27 +414,37 @@ gene_list_down <- res_df$gene[res_df$diff_status == "Down"]
 cat("上调基因数:", length(gene_list_up), "\n")
 cat("下调基因数:", length(gene_list_down), "\n")
 
-# 2. GO富集分析（Biological Process）
-# 注意：使用模拟的基因名，真实分析需要转换为ENTREZID
+# 2. 查看支持的基因ID类型
+cat("\norg.Hs.eg.db支持的ID类型（部分）:\n")
+print(head(keytypes(org.Hs.eg.db), 10))
+
+# 3. GO富集分析（Biological Process）
+# 使用SYMBOL直接分析（clusterProfiler支持）
 ego_up <- enrichGO(
   gene = gene_list_up,
   OrgDb = org.Hs.eg.db,
-  keyType = "SYMBOL",  # 基因名为SYMBOL格式
-  ont = "BP",          # Biological Process
+  keyType = "SYMBOL",        # 输入基因ID类型
+  ont = "BP",                # BP: Biological Process
   pAdjustMethod = "BH",
   pvalueCutoff = 0.05,
   qvalueCutoff = 0.2
 )
 
-# 3. 查看结果
+# 4. 查看结果
 cat("\nGO富集结果（前10条）:\n")
 print(head(ego_up, 10))
 
-# 4. 条形图可视化
+# 5. 可视化
+# 条形图
 barplot(ego_up, showCategory = 15, title = "GO BP Enrichment - Upregulated Genes")
 
-# 5. 点图可视化
-dotplot(ego_up, showCategory = 15, title = "GO BP Enrichment - Upregulated Genes")
+# 点图（更推荐使用）
+dotplot(ego_up, showCategory = 15, orderBy = "p.adjust",
+        title = "GO BP Enrichment - Upregulated Genes")
+
+# 6. 保存结果
+write.csv(as.data.frame(ego_up), "GO_BP_upregulated.csv", row.names = FALSE)
+cat("\n结果已保存到: GO_BP_upregulated.csv\n")
 ```
 
 <details>
@@ -519,6 +527,105 @@ dotplot(kk, showCategory = 15)
 
 ---
 
+### 练习3.3：网络图可视化（cnetplot）
+
+```r
+# TODO: 绘制富集基因与通路的网络图
+
+# 1. 准备基因表达变化数据
+gene_foldchange <- res_df$log2FoldChange
+names(gene_foldchange) <- res_df$gene
+
+# 2. 绘制cnetplot
+# 显示前5个显著富集的条目及其关联基因
+cnetplot(ego_up,
+         categorySize = "pvalue",      # 节点大小按p值
+         foldChange = gene_foldchange, # 显示基因表达变化
+         showCategory = 5,             # 显示前5个条目
+         circular = FALSE,             # 线性布局
+         colorEdge = TRUE)             # 按条目着色边
+
+# 3. 圆形布局（更美观）
+cnetplot(ego_up,
+         foldChange = gene_foldchange,
+         showCategory = 3,
+         circular = TRUE)
+```
+
+<details>
+<summary>点击查看cnetplot解读</summary>
+
+**cnetplot解读**：
+- **大节点**：富集条目（GO term）
+- **小节点**：基因
+- **红色基因**：上调
+- **蓝色基因**：下调
+- **用途**：查看哪些基因参与多个通路，以及基因与通路的关联关系
+
+</details>
+
+---
+
+### 练习3.4：GSEA分析（可选，进阶）
+
+```r
+# TODO: 进行GSEA分析
+
+# 1. 准备排序基因列表（所有基因，按log2FC排序）
+geneList <- res_df$log2FoldChange
+names(geneList) <- res_df$gene
+geneList <- sort(geneList, decreasing = TRUE)
+
+# 2. 查看排序后的基因列表
+cat("排序后的基因列表（Top 10上调和下调）:\n")
+cat("Top 10 上调基因:\n")
+print(head(geneList, 10))
+cat("\nTop 10 下调基因:\n")
+print(tail(geneList, 10))
+
+# 3. GSEA分析（使用SYMBOL）
+gsea <- gseGO(
+  geneList = geneList,
+  OrgDb = org.Hs.eg.db,
+  keyType = "SYMBOL",
+  ont = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.05,
+  minGSSize = 10,      # 基因集最小基因数
+  maxGSSize = 500      # 基因集最大基因数
+)
+
+# 4. 查看GSEA结果
+cat("\nGSEA结果（前5条）:\n")
+print(head(gsea, 5))
+
+# 5. GSEA可视化
+# 绘制最显著富集的条目
+gseaplot2(gsea, geneSetID = 1, title = gsea$Description[1])
+
+# 同时绘制前3个
+gseaplot2(gsea, geneSetID = 1:3)
+```
+
+<details>
+<summary>点击查看GSEA解读</summary>
+
+**GSEA结果解读**：
+- **NES**：标准化富集分数
+  - NES > 0：通路在排序列表顶部富集（上调）
+  - NES < 0：通路在排序列表底部富集（下调）
+- **p.adjust**：校正后的显著性
+- **leading_edge**：核心富集基因
+
+**GSEA mountain plot解读**：
+- 绿线：富集分数曲线，峰值位置表示最大富集
+- 黑色竖线：基因集中基因在排序列表中的位置
+- 热图：基因表达值分布
+
+</details>
+
+---
+
 ## 第四部分：综合分析报告
 
 ### 练习4.1：生成差异分析报告
@@ -555,10 +662,24 @@ for (i in 1:5) {
               top5_down$gene[i], top5_down$log2FoldChange[i], top5_down$padj[i]))
 }
 
-cat("\n5. 生物学解释\n")
+cat("\n5. 功能富集分析结果\n")
+if (exists("ego_up") && nrow(as.data.frame(ego_up)) > 0) {
+  cat("   - GO BP富集条目数:", nrow(as.data.frame(ego_up)), "\n")
+  cat("   - Top富集通路:", as.data.frame(ego_up)$Description[1], "\n")
+} else {
+  cat("   - GO BP富集条目数: 0（可能需要调整阈值）\n")
+}
+if (exists("kk") && !is.null(kk) && nrow(as.data.frame(kk)) > 0) {
+  cat("   - KEGG富集条目数:", nrow(as.data.frame(kk)), "\n")
+} else {
+  cat("   - KEGG富集条目数: 0或分析未完成\n")
+}
+
+cat("\n6. 生物学解释\n")
 cat("   - 上调基因可能参与ATC的恶性表型\n")
 cat("   - 下调基因可能在ATC中受到抑制\n")
-cat("   - 需进一步进行功能富集分析和文献验证\n")
+cat("   - 富集到的通路提示了ATC与PTC的生物学差异\n")
+cat("   - 需结合文献进一步验证关键通路\n")
 
 cat("\n==============================================\n")
 ```
@@ -593,8 +714,14 @@ cat("\n==============================================\n")
 | 筛选差异基因 | `subset(res, padj < 0.05 & abs(log2FC) > 1)` |
 | MA图 | `plotMA(res)` |
 | 火山图 | `ggplot(res_df, aes(x=log2FC, y=-log10(padj), color=status)) + geom_point()` |
-| GO富集 | `enrichGO(gene, OrgDb = org.Hs.eg.db, ont = "BP")` |
-| KEGG富集 | `enrichKEGG(gene, organism = "hsa")` |
+| 查看keytypes | `keytypes(org.Hs.eg.db)` |
+| ID转换 | `bitr(genes, fromType="SYMBOL", toType="ENTREZID", OrgDb=org.Hs.eg.db)` |
+| GO富集 | `enrichGO(gene, OrgDb=org.Hs.eg.db, ont="BP", keyType="SYMBOL")` |
+| KEGG富集 | `enrichKEGG(gene, organism="hsa", keyType="kegg")` |
+| 点图 | `dotplot(ego, showCategory=15, orderBy="p.adjust")` |
+| 网络图 | `cnetplot(ego, foldChange=geneList, showCategory=5)` |
+| GSEA | `gseGO(geneList, OrgDb=org.Hs.eg.db, ont="BP")` |
+| GSEA图 | `gseaplot2(gsea, geneSetID=1)` |
 
 ---
 

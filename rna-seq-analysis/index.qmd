@@ -37,7 +37,8 @@ format:
 ::: {.mt-3 .text-center}
 **幻灯片**：
 [📊 RNA-seq概述](slides/slides-rnaseq-overview.html){.btn .btn-outline-secondary .btn-sm .me-1}
-[📊 差异表达分析](slides/slides-de-analysis.html){.btn .btn-outline-secondary .btn-sm}
+[📊 差异表达分析](slides/slides-de-analysis.html){.btn .btn-outline-secondary .btn-sm .me-1}
+[📊 功能富集分析](slides/slides-functional-analysis.html){.btn .btn-outline-secondary .btn-sm}
 :::
 
 :::

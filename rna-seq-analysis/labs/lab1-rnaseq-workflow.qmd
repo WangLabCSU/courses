@@ -74,71 +74,59 @@ library(RColorBrewer)
 
 ## 第一部分：数据准备
 
-### 练习1.1：创建示例表达矩阵
+### 练习1.1：读取真实RNA-seq表达矩阵
 
-我们将创建一个模拟的RNA-seq表达矩阵，模拟真实甲状腺癌数据特征（PTC vs ATC）。
+我们将使用真实的甲状腺癌RNA-seq数据（PTC vs ATC）进行实验。数据已经过预处理，包含了基因表达计数矩阵和样本信息。
 
 ```r
-# TODO: 运行以下代码创建示例数据
+# TODO: 读取真实数据文件
 
-set.seed(123)
+# 1. 读取表达矩阵（基因计数矩阵）
+# 文件包含基因symbol和6个样本的原始counts
+counts_matrix <- read.table("../data/geneCountMatrix.txt", header = TRUE)
 
-# 设置样本信息（模拟PTC vs ATC数据）
-samples <- c(paste0("PTC_", 1:3), paste0("ATC_", 1:3))
-conditions <- factor(c(rep("PTC", 3), rep("ATC", 3)),
-                     levels = c("PTC", "ATC"))  # PTC作为对照
-
-# 创建5000个基因的表达矩阵（真实数据通常有2万+基因）
-ngenes <- 5000
-gene_names <- paste0("GENE_", sprintf("%05d", 1:ngenes))
-
-# 生成count矩阵
-set.seed(42)
-counts <- matrix(0, nrow = ngenes, ncol = 6)
-rownames(counts) <- gene_names
-colnames(counts) <- samples
-
-# 为每个基因生成基础表达量（负二项分布）
-base_expr <- rnbinom(ngenes, mu = 200, size = 1)
-
-for (i in 1:ngenes) {
-  # PTC组（对照）：基础表达
-  counts[i, 1:3] <- rpois(3, lambda = base_expr[i])
-
-  # ATC组（处理）：部分基因差异表达
-  if (i <= 300) {
-    # 上调2-4倍（ATC中高表达）
-    fold_change <- runif(1, 2, 4)
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
-  } else if (i <= 500) {
-    # 下调0.2-0.5倍（ATC中低表达）
-    fold_change <- runif(1, 0.2, 0.5)
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i] * fold_change)
-  } else {
-    # 无变化
-    counts[i, 4:6] <- rpois(3, lambda = base_expr[i])
-  }
-}
-
-# 查看数据基本信息
-cat("表达矩阵维度:", dim(counts), "\n")
+# 查看数据结构
+cat("原始数据维度:", dim(counts_matrix), "\n")
 cat("\n前5行数据:\n")
-print(head(counts, 5))
+print(head(counts_matrix, 5))
 
+# 2. 设置行名为基因symbol，并移除基因symbol列
+counts <- counts_matrix[, -1]  # 移除第一列（基因symbol列）
+rownames(counts) <- counts_matrix$gene_symbol
+
+cat("\n表达矩阵维度:", dim(counts), "\n")
+cat("样本名称:\n")
+print(colnames(counts))
+
+# 3. 读取样本信息
+sample_info <- read.table("../data/samplesinfo.txt", header = TRUE)
+cat("\n样本信息:\n")
+print(sample_info)
+
+# 4. 提取条件信息（PTC vs ATC）
+# 注意：设置因子水平，PTC作为对照（参考水平）
+conditions <- factor(sample_info$type, levels = c("PTC", "ATC"))
+cat("\n条件因子:\n")
+print(conditions)
+
+# 5. 查看数据基本信息
 cat("\n各样本总reads数（测序深度）:\n")
 print(colSums(counts))
 
 cat("\n表达量分布统计:\n")
-print(summary(as.vector(counts)))
+print(summary(as.vector(as.matrix(counts))))
+
+cat("\n零值比例:", mean(counts == 0) * 100, "%\n")
 ```
 
 <details>
 <summary>点击查看输出解读</summary>
 
 **输出解读**：
-- 矩阵维度：5000个基因 × 6个样本
-- 总reads数：各样本测序深度在90-110万左右（模拟差异测序深度）
-- 表达量分布：大部分基因表达量较低（0值多），符合RNA-seq数据特征
+- 矩阵维度：约20,000+个基因 × 6个样本（真实数据规模）
+- 样本：ATC1, ATC2, ATC3（未分化甲状腺癌）vs PTC1, PTC2, PTC3（乳头状甲状腺癌）
+- 总reads数：各样本测序深度约数百万（真实测序深度）
+- 零值比例：约30-50%，符合RNA-seq数据特征（大量低表达/未表达基因）
 
 </details>
 
@@ -152,9 +140,11 @@ print(summary(as.vector(counts)))
 # TODO: 创建样本信息表并构建DESeq2对象
 
 # 1. 创建colData数据框（样本信息）
+# 从sample_info中提取必要信息
 colData <- data.frame(
   condition = conditions,
-  row.names = samples
+  batch = sample_info$condition,  # 批次信息（C1, C2）
+  row.names = sample_info$type    # 使用样本名作为行名
 )
 
 cat("样本信息表:\n")
@@ -172,6 +162,7 @@ cat("\nDESeq2对象信息:\n")
 print(dds)
 
 cat("\n设计公式:", as.character(design(dds)), "\n")
+cat("\n注意：数据中包含批次信息（C1, C2），可用于后续的批次效应分析\n")
 ```
 
 <details>
@@ -180,7 +171,8 @@ cat("\n设计公式:", as.character(design(dds)), "\n")
 ```r
 colData <- data.frame(
   condition = conditions,
-  row.names = samples
+  batch = sample_info$condition,
+  row.names = sample_info$type
 )
 
 dds <- DESeqDataSetFromMatrix(
