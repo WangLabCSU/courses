@@ -1,6 +1,13 @@
 ---
 title: "实验2：差异表达分析与可视化"
 subtitle: "使用DESeq2识别差异基因并进行功能分析"
+execute:
+  freeze: false
+  eval: true
+  echo: true
+  output: true
+  warning: false
+  message: false
 ---
 
 ## 实验目标
@@ -15,6 +22,7 @@ subtitle: "使用DESeq2识别差异基因并进行功能分析"
 
 **实验时长**：45分钟
 **实验数据**：真实甲状腺癌RNA-seq数据（PTC vs ATC）
+**数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
 
 ---
 
@@ -64,20 +72,36 @@ for (pkg in packages) {
 # 如果实验1已完成，可以直接使用dds对象
 # 否则运行以下代码重新加载数据
 
+# 数据下载链接（从课程网站下载）：
+# - geneCountMatrix.txt: ../data/geneCountMatrix.txt
+# - samplesinfo.txt: ../data/samplesinfo.txt
+# 代码中使用GitHub链接确保可执行
+
+# 下载并读取数据
+data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
+data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
+
+if (!file.exists("geneCountMatrix.txt")) {
+  download.file(data_url_counts, "geneCountMatrix.txt", mode = "wb")
+}
+if (!file.exists("samplesinfo.txt")) {
+  download.file(data_url_info, "samplesinfo.txt", mode = "wb")
+}
+
 # 1. 读取表达矩阵
-counts_matrix <- read.table("../data/geneCountMatrix.txt", header = TRUE)
+counts_matrix <- read.table("geneCountMatrix.txt", header = TRUE, sep = "\t", check.names = FALSE)
 counts <- counts_matrix[, -1]  # 移除基因symbol列
 rownames(counts) <- counts_matrix$gene_symbol
 
 # 2. 读取样本信息
-sample_info <- read.table("../data/samplesinfo.txt", header = TRUE)
+sample_info <- read.table("samplesinfo.txt", header = TRUE, sep = "\t")
 conditions <- factor(sample_info$type, levels = c("PTC", "ATC"))
 
 # 3. 创建DESeq2对象
 colData <- data.frame(
   condition = conditions,
-  batch = sample_info$condition,
-  row.names = sample_info$type
+  batch = sample_info$batch,
+  row.names = sample_info$sample
 )
 
 dds <- DESeqDataSetFromMatrix(
@@ -114,6 +138,10 @@ dds <- DESeq(dds)
 # 注意：这里的"处理"是ATC vs PTC
 res <- results(dds, contrast = c("condition", "ATC", "PTC"))
 
+# 3. (可选) 收缩log2FC估计值，使低表达基因的fold change更稳健
+# res_lfc <- lfcShrink(dds, coef = "condition_ATC_vs_PTC", type = "apeglm")
+# 推荐使用收缩后的log2FC进行下游可视化
+
 # 3. 查看结果摘要
 cat("\nDESeq2结果摘要:\n")
 summary(res)
@@ -133,6 +161,7 @@ cat("padj < 0.05:", sum(res$padj < 0.05, na.rm = TRUE), "\n")
 <summary>点击查看输出解读</summary>
 
 **输出解读**：
+
 - `baseMean`：平均表达量（size factor标准化后）
 - `log2FoldChange`：log2倍数变化（ATC vs PTC）
 - `lfcSE`：log2FC的标准误
@@ -152,7 +181,7 @@ cat("padj < 0.05:", sum(res$padj < 0.05, na.rm = TRUE), "\n")
 # 1. 将结果转换为数据框并移除NA
 res_df <- as.data.frame(res)
 res_df$gene <- rownames(res_df)
-res_df <- na.omit(res_df)  # 移除padj为NA的行
+res_df <- na.omit(res_df)  # 移除padj为NA的行（通常是低表达基因被独立过滤）
 
 # 2. 添加差异状态分类
 res_df$diff_status <- ifelse(
@@ -239,6 +268,7 @@ print(ma_plot)
 <summary>点击查看MA图解读</summary>
 
 **MA图解读**：
+
 - **X轴**：平均表达量（log10）
 - **Y轴**：log2 Fold Change
 - **红点**：上调基因（ATC中高表达）
@@ -246,6 +276,7 @@ print(ma_plot)
 - **灰点**：不显著
 
 **关键观察**：
+
 - 低表达基因（左侧）的log2FC波动更大
 - 高表达基因（右侧）趋于稳定
 - 这是RNA-seq数据的典型特征
@@ -451,6 +482,7 @@ cat("\n结果已保存到: GO_BP_upregulated.csv\n")
 <summary>点击查看结果解读</summary>
 
 **富集结果解读**：
+
 - **ID**：GO条目ID
 - **Description**：功能描述
 - **GeneRatio**：差异基因中属于该通路的基因比例
@@ -463,10 +495,12 @@ cat("\n结果已保存到: GO_BP_upregulated.csv\n")
 
 ::: {.callout-warning}
 ### 富集分析注意事项
+
 1. **背景基因集**：应为所有检测到的基因，而非全基因组
 2. **基因ID转换**：clusterProfiler需要特定ID格式（ENTREZID/SYMBOL等）
 3. **阈值选择**：p.adjust < 0.05为常用阈值
 4. **生物学解释**：富集≠因果，需结合文献解读
+5. **GO冗余**：GO terms常有高度重叠，可使用 `simplify(ego)` 减少冗余
 :::
 
 ---
@@ -556,6 +590,7 @@ cnetplot(ego_up,
 <summary>点击查看cnetplot解读</summary>
 
 **cnetplot解读**：
+
 - **大节点**：富集条目（GO term）
 - **小节点**：基因
 - **红色基因**：上调
@@ -611,6 +646,7 @@ gseaplot2(gsea, geneSetID = 1:3)
 <summary>点击查看GSEA解读</summary>
 
 **GSEA结果解读**：
+
 - **NES**：标准化富集分数
   - NES > 0：通路在排序列表顶部富集（上调）
   - NES < 0：通路在排序列表底部富集（下调）
@@ -618,6 +654,7 @@ gseaplot2(gsea, geneSetID = 1:3)
 - **leading_edge**：核心富集基因
 
 **GSEA mountain plot解读**：
+
 - 绿线：富集分数曲线，峰值位置表示最大富集
 - 黑色竖线：基因集中基因在排序列表中的位置
 - 热图：基因表达值分布
@@ -689,19 +726,44 @@ cat("\n==============================================\n")
 ## 思考题
 
 1. **为什么火山图中会出现|log2FC|很大但p值不显著的点？**
-   <details><summary>点击查看答案</summary>这些基因通常表达量很低，counts的随机波动大，统计检验效能不足</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   这些基因通常表达量很低，counts的随机波动大，统计检验效能不足
+   </details>
 
 2. **MA图中为什么高表达基因的log2FC趋于0？**
-   <details><summary>点击查看答案</summary>高表达基因通常受严格调控，表达量相对稳定；低表达基因更容易出现大倍数变化</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   高表达基因通常受严格调控，表达量相对稳定；低表达基因更容易出现大倍数变化
+   </details>
 
 3. **如何选择差异基因筛选阈值？**
-   <details><summary>点击查看答案</summary>标准：|log2FC| > 1, padj < 0.05。可根据研究需要调整，严格阈值用于下游验证，宽松阈值用于探索</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   标准：|log2FC| > 1, padj < 0.05。可根据研究需要调整，严格阈值用于下游验证，宽松阈值用于探索
+   </details>
 
 4. **热图中为什么要对数据进行行标准化？**
-   <details><summary>点击查看答案</summary>消除基因间表达量基线差异，突出展示基因在不同样本间的表达模式（相对变化）</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   消除基因间表达量基线差异，突出展示基因在不同样本间的表达模式（相对变化）
+   </details>
 
 5. **富集分析中为什么要进行多重检验校正？**
-   <details><summary>点击查看答案</summary>检测大量GO/通路时，假阳性会累积，需用BH等方法控制FDR</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   检测大量GO/通路时，假阳性会累积，需用BH等方法控制FDR
+   </details>
 
 ---
 
@@ -717,7 +779,7 @@ cat("\n==============================================\n")
 | 查看keytypes | `keytypes(org.Hs.eg.db)` |
 | ID转换 | `bitr(genes, fromType="SYMBOL", toType="ENTREZID", OrgDb=org.Hs.eg.db)` |
 | GO富集 | `enrichGO(gene, OrgDb=org.Hs.eg.db, ont="BP", keyType="SYMBOL")` |
-| KEGG富集 | `enrichKEGG(gene, organism="hsa", keyType="kegg")` |
+| KEGG富集 | `enrichKEGG(gene, organism="hsa")` |
 | 点图 | `dotplot(ego, showCategory=15, orderBy="p.adjust")` |
 | 网络图 | `cnetplot(ego, foldChange=geneList, showCategory=5)` |
 | GSEA | `gseGO(geneList, OrgDb=org.Hs.eg.db, ont="BP")` |

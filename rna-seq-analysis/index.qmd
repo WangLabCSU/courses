@@ -89,6 +89,7 @@ format:
 | **实验2：差异分析与可视化** | 45分钟 | DESeq2、火山图、热图、GO富集 |
 
 基于真实甲状腺癌数据集(PTC vs ATC)，配套完整代码和参考答案
+<a href="data/geneCountMatrix.txt" download class="btn btn-outline-secondary btn-sm">📥 下载基因表达矩阵</a> <a href="data/samplesinfo.txt" download class="btn btn-outline-secondary btn-sm">📥 下载样本信息</a>
 
 [进入实验指导](labs/lab1-rnaseq-workflow.qmd){.btn .btn-outline-primary .btn-sm .mt-2}
 :::

@@ -89,10 +89,15 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 
 ### 课程示例数据
 
-课程使用经过简化的小鼠或人类RNA-seq数据集，包含：
-- 对照组和实验组各3个重复
-- ~1000个差异表达基因
-- 完整的样本信息metadata
+课程使用真实甲状腺癌RNA-seq数据集（PTC vs ATC），包含：
+- **对照组（PTC）**和**实验组（ATC）**各3个生物学重复
+- ~20,000个基因的原始计数矩阵
+- 含批次信息的完整样本metadata
+
+| 文件 | 说明 | 下载 |
+|------|------|------|
+| `geneCountMatrix.txt` | 基因表达原始计数矩阵（~20,000基因 × 6样本） | <a href="data/geneCountMatrix.txt" download>下载</a> |
+| `samplesinfo.txt` | 样本信息表（样本名、分组、批次） | <a href="data/samplesinfo.txt" download>下载</a> |
 
 ### 公开数据集
 

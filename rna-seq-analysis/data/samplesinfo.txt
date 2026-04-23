@@ -1,4 +1,4 @@
-type	condition
+sample	type	batch
 ATC1	ATC	C1
 ATC2	ATC	C2
 ATC3	ATC	C1

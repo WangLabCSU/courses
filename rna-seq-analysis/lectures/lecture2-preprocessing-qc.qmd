@@ -15,6 +15,10 @@ subtitle: "从FASTQ到表达矩阵"
 - 🔑 **重点**：质控指标解读、标准化原理
 - ⚠️ **难点**：TPM vs FPKM vs Size Factors 的区别与选择
 
+**配套数据**：本课程使用真实甲状腺癌RNA-seq数据（PTC vs ATC）
+- <a href="../data/geneCountMatrix.txt" download>下载 geneCountMatrix.txt</a>
+- <a href="../data/samplesinfo.txt" download>下载 samplesinfo.txt</a>
+
 ---
 
 ## 1. FASTQ文件格式
@@ -36,85 +40,119 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII    ← 质量分数（ASCII编码）
 Q = -10 × log10(P)    （P为错误概率）
 ```
 
-| Q值 | 准确率 | 评价 |
-|-----|--------|------|
-| 30 | 99.9% | 优秀 |
-| 20 | 99% | 可接受 |
-| <20 | <99% | 差 |
+| Q值 | 准确率 | 错误概率 | 评价 |
+|-----|--------|----------|------|
+| Q30 | 99.9% | 0.001 | 优秀（推荐标准） |
+| Q20 | 99% | 0.01 | 可接受 |
+| Q10 | 90% | 0.1 | 差 |
 
-**要求**：Q30 > **85%**
+::: {.callout-important}
+### 🔑 质控标准
+
+**Q30 > 85%** 表示测序质量合格，85%以上的碱基错误概率低于0.001。
+:::
 
 ---
 
 ## 2. 数据质控（FastQC）
 
-### 2.1 关键模块
+### 2.1 FastQC关键模块
 
-| 模块 | 说明 |
-|------|------|
-| Per base sequence quality | 每个碱基位置的质量分布 |
-| Per sequence GC content | GC含量分布 |
-| Sequence Duplication Levels | 重复序列水平 |
-| Adapter Content | 接头含量 |
+| 模块 | 说明 | 正常表现 |
+|------|------|----------|
+| **Per base sequence quality** | 每碱基质量分布 | 全部区域Q>20 |
+| **Per sequence GC content** | GC含量分布 | 单峰正态分布 |
+| **Sequence Duplication Levels** | 重复序列水平 | <50% |
+| **Adapter Content** | 接头含量 | <5% |
+| **Per base N content** | N碱基比例 | <5% |
 
-### 2.2 质控标准
+### 2.2 质控标准汇总
 
-| 指标 | 合格 | 不合格处理 |
-|------|------|------------|
-| Q30 | > 85% | 检查测序质量 |
-| GC含量 | 正态分布 | 检查污染 |
-| 重复率 | < 50% | 检查PCR过度扩增 |
-| 接头含量 | < 5% | 使用Trimmomatic去除 |
+| 指标 | 合格 | 不合格 | 处理方案 |
+|------|------|--------|----------|
+| Q30 | > 85% | < 85% | 检查测序质量、重新测序 |
+| GC含量 | 正态分布 | 异常峰 | 检查污染、物种匹配 |
+| 重复率 | < 50% | > 50% | 检查PCR扩增、文库复杂度 |
+| 接头含量 | < 5% | > 5% | Trimmomatic去除接头 |
 
 ### 2.3 数据清洗（Trimmomatic）
 
 ```bash
+# 双端测序数据清洗
 trimmomatic PE \
   input_R1.fastq.gz input_R2.fastq.gz \
   output_R1_paired.fq.gz output_R1_unpaired.fq.gz \
   output_R2_paired.fq.gz output_R2_unpaired.fq.gz \
-  ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-  LEADING:3 TRAILING:3 \
-  SLIDINGWINDOW:4:15 \
-  MINLEN:36
+  ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \  # 接头去除
+  LEADING:3 \                           # 前端低质量切除
+  TRAILING:3 \                          # 后端低质量切除
+  SLIDINGWINDOW:4:15 \                  # 滑动窗口修剪
+  MINLEN:36                             # 最小长度过滤
 ```
+
+::: {.callout-tip}
+### 清洗参数解释
+
+- `ILLUMINACLIP`：去除Illumina接头序列
+- `LEADING/TRAILING`：切除首尾质量<Q3的碱基
+- `SLIDINGWINDOW`：4碱基窗口平均质量<Q15时切除
+- `MINLEN`：过滤短于36bp的reads
+:::
 
 ---
 
 ## 3. Reads比对
 
-### 3.1 比对挑战
+### 3.1 比对挑战：剪接位点
 
 RNA-seq reads跨越**外显子-内含子边界**：
+
 ```
-基因组:  exon1 ---intron--- exon2
-          ↓                    ↓
-Read:     ├────ATCGATCG───────┤  ← 剪接reads
-              ↑ splice junction
+基因组DNA结构：
+exon1 ─────── intron ─────── exon2
+  │                              │
+  ├───────splice junction───────┤
+         ↑
+     需要剪接感知比对工具
 ```
 
 ### 3.2 剪接感知比对工具
 
-| 工具 | 特点 | 适用 |
-|------|------|------|
-| **STAR** | 速度快，内存需求高 | 大规模分析 |
-| **HISAT2** | 速度快，内存需求低 | 常规分析 |
+| 工具 | 特点 | 速度 | 内存需求 | 适用场景 |
+|------|------|------|----------|----------|
+| **STAR** | 最快、高灵敏度 | 极快 | 高（30GB+） | 大规模分析 |
+| **HISAT2** | 低内存、灵活 | 快 | 低（<8GB） | 常规分析 |
+| **TopHat2** | 经典工具 | 较慢 | 中等 | 已逐渐淘汰 |
 
 ### 3.3 STAR比对关键参数
 
 ```bash
+# STAR比对命令示例
 STAR --genomeDir genome_index \
      --readFilesIn read1.fq.gz read2.fq.gz \
-     --outFilterMultimapNmax 20 \  # 最大比对位点数
-     --outSAMtype BAM SortedByCoordinate
+     --readFilesCommand zcat \           # 解压命令
+     --outFilterMultimapNmax 20 \        # 最大比对位点数
+     --alignSJoverhangMin 8 \            # 剪接位点最小overhang
+     --alignSJDBoverhangMin 1 \          # 已知剪接位点overhang
+     --outSAMtype BAM SortedByCoordinate # 输出排序BAM
 ```
 
 ### 3.4 比对质控指标
 
-| 指标 | 可接受 | 良好 | 优秀 |
-|------|--------|------|------|
-| 唯一比对率 | >70% | >85% | >90% |
-| rRNA比例 | <10% | <5% | <2% |
+| 指标 | 可接受 | 良好 | 优秀 | 不合格处理 |
+|------|--------|------|------|------------|
+| 总比对率 | >70% | >85% | >90% | 检查参考基因组 |
+| 唯一比对率 | >60% | >75% | >85% | 检查接头、污染 |
+| rRNA比例 | <10% | <5% | <2% | 检查rRNA去除效率 |
+
+::: {.callout-warning}
+### ⚠️ 低比对率可能原因
+
+1. 接头未去除干净
+2. 样本污染（其他物种）
+3. 参考基因组选择错误
+4. 测序质量差
+:::
 
 ---
 
@@ -123,21 +161,33 @@ STAR --genomeDir genome_index \
 ### 4.1 定量原理
 
 ```
-比对reads:      ===
-                    =============
-                                   ========
-                    ↓
-计数: gene_A = 3 reads
+比对reads分布示意：
+Gene_A:   ==========          ====
+               ↓              ↓
+           exon1           exon2
+
+计数方法：统计落在基因区域的reads数
+Gene_A counts = 14 reads
 ```
 
-### 4.2 featureCounts
+### 4.2 定量工具对比
+
+| 工具 | 特点 | 优点 | 缺点 |
+|------|------|------|------|
+| **featureCounts** | 基于比对 | 快、准确、支持多线程 | 需先比对 |
+| **HTSeq-count** | 基于比对 | Python实现、灵活 | 较慢 |
+| **Salmon/kallisto** | 无比对 | 极快、伪比对 | 不产生BAM文件 |
+
+### 4.3 featureCounts命令
 
 ```bash
+# featureCounts定量
 featureCounts -a annotation.gtf \
               -o counts.txt \
-              -T 8 \
-              -p \                    # 双端模式
-              -t exon -g gene_id \    # 按exon计数，gene_id汇总
+              -T 8 \                    # 线程数
+              -p \                      # 双端模式
+              -t exon -g gene_id \      # 按exon计数，gene_id汇总
+              -B \                      # 只统计正确配对的reads
               sample1.bam sample2.bam
 ```
 
@@ -147,22 +197,24 @@ featureCounts -a annotation.gtf \
 
 ### 5.1 为什么需要标准化？
 
-| 样本 | 总reads | 基因A counts |
-|------|---------|--------------|
-| A | 10M | 100 |
-| B | 20M | 200 |
+| 样本 | 总reads | 基因A counts | 问题 |
+|------|---------|--------------|------|
+| A | 10M | 100 | 基准 |
+| B | 20M | 200 | B的counts高2倍，但表达量相同！ |
 
-**问题**：B的counts高是因为测序深度更深，**非真实表达差异**
+::: {.callout-note}
+**核心问题**：测序深度不同导致counts不可直接比较
+:::
 
 ### 5.2 标准化方法对比
 
-| 方法 | 公式特点 | 适用场景 |
-|------|----------|----------|
-| **CPM/RPM** | reads/总reads×10⁶ | 简单可视化 |
-| **TPM** | 长度校正，和为10⁶ | **样本内基因比较** |
-| **FPKM/RPKM** | 长度+深度校正 | 基因间比较（不推荐） |
-| **Size Factor** | 中位数比值法 | **差异分析（DESeq2）** |
-| **TMM** | 修剪均值M值 | 差异分析（edgeR） |
+| 方法 | 公式特点 | 适用场景 | 说明 |
+|------|----------|----------|------|
+| **CPM/RPM** | counts/总reads×10⁶ | 简单可视化 | 仅校正测序深度 |
+| **TPM** | 长度校正，和为10⁶ | **样本内基因比较** | 标准化后可比较基因间丰度 |
+| **FPKM/RPKM** | 长度+深度校正 | 基因间比较 | 不推荐（TPM更好） |
+| **Size Factor** | 中位数比值法 | **差异分析（DESeq2）** | 差异分析专用 |
+| **TMM** | 修剪均值M值 | 差异分析（edgeR） | edgeR默认方法 |
 
 ### 5.3 TPM计算原理
 
@@ -170,31 +222,44 @@ featureCounts -a annotation.gtf \
 Step 1: RPK = counts / (gene_length / 1000)
 Step 2: scaling_factor = sum(RPK) / 10⁶
 Step 3: TPM = RPK / scaling_factor
+
+特点：所有基因TPM之和 = 10⁶，便于样本间比较基因丰度
 ```
 
 ::: {.callout-important}
-### 方法选择指南
+### 🔑 方法选择指南
 
-| 目的 | 方法 |
-|------|------|
-| **差异分析** | 原始counts + DESeq2/edgeR内置标准化 |
-| **样本内基因比较** | TPM |
-| **可视化** | log2-transformed CPM |
+| 分析目的 | 推荐方法 | 原因 |
+|----------|----------|------|
+| **差异分析** | Size Factor (DESeq2内置) | 统计模型正确建模counts分布 |
+| **样本内基因比较** | TPM | 校正基因长度，可比较基因间丰度 |
+| **可视化（热图等）** | log2(VST/CPM) | 数据正态化，适合线性方法 |
+| **聚类分析** | VST/rlog | 稳定方差，适合降维 |
+
+**切记**：DESeq2必须使用原始counts，不要预先标准化！
 :::
 
-### 5.4 DESeq2 Size Factor
+### 5.4 DESeq2 Size Factor详解
 
 **中位数比值法**：
 ```
 size factor_j = median_i (counts_ij / geometric_mean_i)
 ```
 
-**假设**：大多数基因在不同样本间表达稳定
+**原理假设**：大多数基因在不同样本间表达稳定
 
-| 样本 | 总reads | Size Factor | 说明 |
-|------|---------|-------------|------|
-| A | 10M | 1.0 | 基准 |
-| B | 20M | 2.0 | 深度2倍，counts除以2 |
+**计算示例**：
+| 样本 | 总reads | Size Factor | 校正后counts |
+|------|---------|-------------|--------------|
+| A | 10M | 1.0 | counts × 1.0 |
+| B | 20M | 2.0 | counts / 2.0 |
+
+::: {.callout-tip}
+**Size Factor解读**：
+- SF > 1：该样本测序深度高于中位数，counts会被缩小
+- SF < 1：该样本测序深度低于中位数，counts会被放大
+- 理想情况：SF与测序深度正相关
+:::
 
 ---
 
@@ -203,41 +268,68 @@ size factor_j = median_i (counts_ij / geometric_mean_i)
 ```
 原始数据 (FASTQ)
       ↓
-  FastQC质控
+  FastQC质控 ─────→ 质控报告
       ↓
-  Trimmomatic清洗
+  Trimmomatic清洗 ─→ 清洗后FASTQ
       ↓
-  STAR比对 (BAM)
+  STAR比对 ────────→ BAM文件
       ↓
-  featureCounts定量
+  featureCounts定量 → counts矩阵
       ↓
-  表达矩阵 (counts)
-      ↓
-  标准化 (CPM/TPM/Size Factor)
-      ↓
-  差异分析 (DESeq2)
+  DESeq2分析 ──────→ 差异基因
+      │
+      ├── Size Factor标准化（自动）
+      ├── VST/rlog转换（可视化）
+      └── 统计检验
 ```
 
 ---
 
 ## 7. 质控检查清单
 
-| 阶段 | 检查项 | 标准 |
-|------|--------|------|
-| 原始数据 | Q30 | > 85% |
-| 原始数据 | 接头污染 | < 5% |
-| 比对 | 唯一比对率 | > 70% |
-| 比对 | rRNA比例 | < 10% |
-| 定量 | 基因检出数 | > 10,000 |
+| 阶段 | 检查项 | 标准 | 不合格处理 |
+|------|--------|------|------------|
+| 原始数据 | Q30 | > 85% | 检查测序质量 |
+| 原始数据 | 接头污染 | < 5% | Trimmomatic去除 |
+| 比对 | 总比对率 | > 70% | 检查参考基因组 |
+| 比对 | 唯一比对率 | > 60% | 检查接头、污染 |
+| 定量 | 基因检出数 | > 10,000 | 检查比对质量 |
 
 ---
 
 ## 思考题
 
 1. 为什么RNA-seq比对需要剪接感知工具？
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   因为RNA-seq测序的是剪接后的mRNA，reads可能跨越外显子-内含子边界（剪接位点），常规比对工具无法正确处理这种情况。
+   </details>
+
 2. TPM和FPKM的主要区别是什么？
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   TPM的标准化后所有基因之和固定为10⁶，便于样本间比较；FPKM之和因样本而异，不适合跨样本比较。TPM是更好的选择。
+   </details>
+
 3. 唯一比对率低可能是什么原因？
-4. 如何判断是否存在adapter污染？
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   可能原因：1) 接头序列残留；2) 样本污染；3) 参考基因组错误；4) 测序质量差；5) 重复序列多。
+   </details>
+
+4. 为什么DESeq2分析不能用TPM数据？
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   DESeq2的统计模型基于负二项分布建模原始counts，需要counts的整数特性。TPM破坏了counts的统计特性，会导致错误的统计推断。
+   </details>
 
 ---
 
@@ -245,3 +337,5 @@ size factor_j = median_i (counts_ij / geometric_mean_i)
 
 1. Dobin A, et al. STAR: ultrafast universal RNA-seq aligner. Bioinformatics. 2013
 2. Liao Y, et al. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics. 2014
+3. Love MI, et al. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 2014
+4. Li B, Dewey CN. RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome. BMC Bioinformatics. 2011

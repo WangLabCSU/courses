@@ -1,6 +1,13 @@
 ---
 title: "实验1：RNA-seq数据质控与预处理"
 subtitle: "从表达矩阵到质控报告"
+execute:
+  freeze: false
+  eval: true
+  echo: true
+  output: true
+  warning: false
+  message: false
 ---
 
 ## 实验目标
@@ -15,6 +22,7 @@ subtitle: "从表达矩阵到质控报告"
 
 **实验时长**：45分钟
 **实验数据**：基于真实甲状腺癌RNA-seq数据（PTC vs ATC）的简化数据集
+**数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
 
 ---
 
@@ -78,19 +86,55 @@ library(RColorBrewer)
 
 我们将使用真实的甲状腺癌RNA-seq数据（PTC vs ATC）进行实验。数据已经过预处理，包含了基因表达计数矩阵和样本信息。
 
-```r
-# TODO: 读取真实数据文件
+::: {.callout-note}
+### 📦 数据集说明
 
-# 1. 读取表达矩阵（基因计数矩阵）
-# 文件包含基因symbol和6个样本的原始counts
-counts_matrix <- read.table("../data/geneCountMatrix.txt", header = TRUE)
+| 文件 | 内容 | 样本 |
+|------|------|:----:|
+| `geneCountMatrix.txt` | 基因表达原始计数矩阵 | 6个样本 |
+| `samplesinfo.txt` | 样本元数据（分组、批次） | 6行 |
+
+**分组设计**：
+
+- **PTC**（乳头状甲状腺癌）：PTC1, PTC2, PTC3
+- **ATC**（未分化甲状腺癌）：ATC1, ATC2, ATC3
+- **批次**：C1（ATC1, ATC3, PTC1），C2（ATC2, PTC2, PTC3）
+
+**数据下载链接**：
+
+- <a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a>
+- <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
+:::
+
+```r
+# TODO: 下载数据文件（从课程网站下载到工作目录）
+# 如果在本地运行，可以直接使用课程网站下载的文件
+# 或从以下链接下载：
+# - geneCountMatrix.txt: https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt
+# - samplesinfo.txt: https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt
+
+# 下载数据文件（如果不存在）
+data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
+data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
+
+if (!file.exists("geneCountMatrix.txt")) {
+  download.file(data_url_counts, "geneCountMatrix.txt", mode = "wb")
+  cat("已下载 geneCountMatrix.txt\n")
+}
+if (!file.exists("samplesinfo.txt")) {
+  download.file(data_url_info, "samplesinfo.txt", mode = "wb")
+  cat("已下载 samplesinfo.txt\n")
+}
+
+# 3. 读取表达矩阵（基因计数矩阵）
+counts_matrix <- read.table("geneCountMatrix.txt", header = TRUE, sep = "\t", check.names = FALSE)
 
 # 查看数据结构
 cat("原始数据维度:", dim(counts_matrix), "\n")
 cat("\n前5行数据:\n")
 print(head(counts_matrix, 5))
 
-# 2. 设置行名为基因symbol，并移除基因symbol列
+# 4. 设置行名为基因symbol，并移除基因symbol列
 counts <- counts_matrix[, -1]  # 移除第一列（基因symbol列）
 rownames(counts) <- counts_matrix$gene_symbol
 
@@ -98,31 +142,32 @@ cat("\n表达矩阵维度:", dim(counts), "\n")
 cat("样本名称:\n")
 print(colnames(counts))
 
-# 3. 读取样本信息
-sample_info <- read.table("../data/samplesinfo.txt", header = TRUE)
+# 5. 读取样本信息
+sample_info <- read.table("samplesinfo.txt", header = TRUE, sep = "\t")
 cat("\n样本信息:\n")
 print(sample_info)
 
-# 4. 提取条件信息（PTC vs ATC）
+# 6. 提取条件信息（PTC vs ATC）
 # 注意：设置因子水平，PTC作为对照（参考水平）
 conditions <- factor(sample_info$type, levels = c("PTC", "ATC"))
 cat("\n条件因子:\n")
 print(conditions)
 
-# 5. 查看数据基本信息
+# 7. 查看数据基本信息
 cat("\n各样本总reads数（测序深度）:\n")
 print(colSums(counts))
 
 cat("\n表达量分布统计:\n")
 print(summary(as.vector(as.matrix(counts))))
 
-cat("\n零值比例:", mean(counts == 0) * 100, "%\n")
+cat("\n零值比例:", round(mean(counts == 0) * 100, 1), "%\n")
 ```
 
 <details>
 <summary>点击查看输出解读</summary>
 
 **输出解读**：
+
 - 矩阵维度：约20,000+个基因 × 6个样本（真实数据规模）
 - 样本：ATC1, ATC2, ATC3（未分化甲状腺癌）vs PTC1, PTC2, PTC3（乳头状甲状腺癌）
 - 总reads数：各样本测序深度约数百万（真实测序深度）
@@ -143,8 +188,8 @@ cat("\n零值比例:", mean(counts == 0) * 100, "%\n")
 # 从sample_info中提取必要信息
 colData <- data.frame(
   condition = conditions,
-  batch = sample_info$condition,  # 批次信息（C1, C2）
-  row.names = sample_info$type    # 使用样本名作为行名
+  batch = sample_info$batch,      # 批次信息（C1, C2）
+  row.names = sample_info$sample  # 使用样本名作为行名
 )
 
 cat("样本信息表:\n")
@@ -171,8 +216,8 @@ cat("\n注意：数据中包含批次信息（C1, C2），可用于后续的批�
 ```r
 colData <- data.frame(
   condition = conditions,
-  batch = sample_info$condition,
-  row.names = sample_info$type
+  batch = sample_info$batch,
+  row.names = sample_info$sample
 )
 
 dds <- DESeqDataSetFromMatrix(
@@ -525,16 +570,36 @@ cat("==============================================\n")
 ## 思考题
 
 1. **为什么需要过滤低表达基因？**
-   <details><summary>点击查看答案</summary>低表达基因的计数随机性大，可能引入噪音；统计检验效能不足</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   低表达基因的计数随机性大，可能引入噪音；统计检验效能不足
+   </details>
 
 2. **Size Factor与简单CPM标准化的区别？**
-   <details><summary>点击查看答案</summary>Size Factor使用中位数比值法，对高表达基因稳健；CPM易受极值影响</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   Size Factor使用中位数比值法，对高表达基因稳健；CPM易受极值影响
+   </details>
 
 3. **如果PCA显示PTC和ATC没有清晰分离，可能是什么原因？**
-   <details><summary>点击查看答案</summary>处理效应弱、批次效应、样本标签错误或实验失败</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   处理效应弱、批次效应、样本标签错误或实验失败
+   </details>
 
 4. **VST转换的目的是什么？**
-   <details><summary>点击查看答案</summary>使数据方差趋于稳定，适合PCA等需要正态分布假设的分析</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   使数据方差趋于稳定，适合PCA等需要正态分布假设的分析
+   </details>
 
 ---
 

@@ -6,14 +6,18 @@ subtitle: "从差异基因到生物学解释"
 ## 本讲概述
 
 **学习目标**：
-- 理解GO和KEGG数据库的结构
+- 理解GO和KEGG数据库的结构与用途
 - 掌握ORA超几何检验原理
-- 理解GSEA与ORA的区别
-- 掌握clusterProfiler的使用
+- 理解GSEA与ORA的区别与适用场景
+- 掌握clusterProfiler完整使用流程
 
 **重点难点**：
 - 🔑 **重点**：ORA原理、clusterProfiler使用、基因ID转换
-- ⚠️ **难点**：GSEA原理、KEGG的ID转换、结果生物学解释
+- ⚠️ **难点**：GSEA原理理解、KEGG的ID转换、结果生物学解释
+
+**配套数据**：本课程使用真实甲状腺癌RNA-seq数据（PTC vs ATC）
+- <a href="../data/geneCountMatrix.txt" download>下载 geneCountMatrix.txt</a>
+- <a href="../data/samplesinfo.txt" download>下载 samplesinfo.txt</a>
 
 ---
 
@@ -22,10 +26,17 @@ subtitle: "从差异基因到生物学解释"
 ### 1.1 问题背景
 
 差异表达分析后，你可能得到：
-- 上调基因：1,500个
-- 下调基因：1,200个
+- 上调基因：~1,500个
+- 下调基因：~1,200个
 
-**面对数千个基因，如何理解其生物学意义？**
+::: {.callout-important}
+### 🔑 核心问题
+
+面对数千个差异基因，如何理解其生物学意义？
+- 哪些生物学过程受影响？
+- 哪些信号通路被激活/抑制？
+- 如何转化为可解释的科学发现？
+:::
 
 ### 1.2 分析目标
 
@@ -39,11 +50,11 @@ subtitle: "从差异基因到生物学解释"
 └──────────┘           └──────────┘           └──────────┘
 ```
 
-| 目标 | 说明 |
-|------|------|
-| 降维 | 从基因列表到功能类别 |
-| 解释 | 识别受影响的生物学过程 |
-| 假设生成 | 发现新的研究方向 |
+| 目标 | 说明 | 产出 |
+|------|------|------|
+| **降维** | 从基因列表到功能类别 | 富集通路列表 |
+| **解释** | 识别受影响的生物学过程 | 生物学机制假设 |
+| **假设生成** | 发现新的研究方向 | 后续实验设计 |
 
 ---
 
@@ -55,11 +66,18 @@ subtitle: "从差异基因到生物学解释"
 
 | 分支 | 缩写 | 描述 | 示例 |
 |------|------|------|------|
-| **细胞组分** | CC | 基因产物所在位置 | nucleus, membrane |
-| **分子功能** | MF | 基因产物的生化活性 | kinase activity |
-| **生物过程** | BP | 参与的生物学过程 | cell division |
+| **细胞组分** | CC | 基因产物所在位置 | nucleus, mitochondrion |
+| **分子功能** | MF | 基因产物的生化活性 | kinase activity, DNA binding |
+| **生物过程** | BP | 参与的生物学过程 | cell division, apoptosis |
 
-**GO结构**：有向无环图（DAG）
+::: {.callout-tip}
+### BP是最常用的分支
+
+生物过程（BP）直接反映基因参与的生物学活动，最适合解释差异表达的生物学意义。
+:::
+
+**GO结构：有向无环图（DAG）**：
+
 ```
             生物过程 (Biological Process)
                    │
@@ -70,34 +88,39 @@ subtitle: "从差异基因到生物学解释"
     ┌────┴────┐
     │         │
 DNA复制    有丝分裂
-```
 
-**GO注释特点**：
+特点：
+- 父节点注释包含所有子节点（True Path Rule）
 - 一个基因可有多个GO注释
-- 注释遵循"真路径规则"（True Path Rule）
-- 父节点的注释包含所有子节点
+- GO terms之间有层级关系
+```
 
 ### 2.2 KEGG通路
 
 | 数据库 | 内容 | 应用 |
 |--------|------|------|
 | **PATHWAY** | 代谢通路、信号通路 | 通路富集分析 |
-| **GENES** | 基因序列信息 | 基因注释 |
+| **GENES** | 基因序列信息 | 基因注释查询 |
 | **DISEASE** | 疾病相关基因 | 疾病研究 |
+| **COMPOUND** | 化合物信息 | 代谢研究 |
 
-**常见KEGG通路**：
-- **代谢通路**：糖酵解、脂肪酸代谢
-- **信号通路**：MAPK、PI3K-Akt、Wnt
-- **疾病通路**：Pathways in cancer
-- **免疫通路**：T细胞受体、B细胞受体
+**常见KEGG通路类型**：
 
-### 2.3 其他数据库
+| 类型 | 示例通路 | 应用场景 |
+|------|----------|----------|
+| **代谢通路** | 糖酵解、脂肪酸代谢 | 代谢疾病研究 |
+| **信号通路** | MAPK, PI3K-Akt, Wnt | 癌症、发育研究 |
+| **疾病通路** | Pathways in cancer | 癌症机制研究 |
+| **免疫通路** | T细胞受体、B细胞受体 | 免疫学研究 |
+
+### 2.3 其他常用数据库
 
 | 数据库 | 特点 | 用途 |
 |--------|------|------|
-| **Reactome** | 人工注释，详细 | 通路分析 |
-| **MSigDB** | 基因集集合 | GSEA |
-| **DO (Disease Ontology)** | 疾病本体 | 疾病富集 |
+| **Reactome** | 人工注释，详细准确 | 通路分析 |
+| **MSigDB** | 基因集集合（>30,000） | GSEA分析 |
+| **DO (Disease Ontology)** | 疾病本体分类 | 疾病富集 |
+| **DisGeNET** | 基因-疾病关联 | 疾病研究 |
 
 ---
 
@@ -107,54 +130,47 @@ DNA复制    有丝分裂
 
 不同数据库使用不同的基因标识符：
 
-| ID类型 | 示例 | 使用场景 |
-|--------|------|----------|
-| **SYMBOL** | TP53, BRCA1 | 人类可读 |
-| **ENTREZID** | 7157, 672 | NCBI数据库 |
-| **ENSEMBL** | ENSG00000141510 | Ensembl数据库 |
-| **UNIPROT** | P04637 | 蛋白数据库 |
-| **KEGG** | hsa:7157 | KEGG通路 |
+| ID类型 | 示例 | 使用场景 | 说明 |
+|--------|------|----------|------|
+| **SYMBOL** | TP53, BRCA1 | 人类可读 | 常用但可能重复 |
+| **ENTREZID** | 7157, 672 | NCBI数据库 | clusterProfiler默认 |
+| **ENSEMBL** | ENSG00000141510 | Ensembl数据库 | 基因组分析 |
+| **UNIPROT** | P04637 | 蛋白质研究 | 蛋白质功能分析 |
 
-### 3.2 查看支持的ID类型
+::: {.callout-warning}
+### ⚠️ ID转换注意事项
 
-```r
-library(org.Hs.eg.db)
+- 部分基因可能没有对应的目标ID（返回NA）
+- 一个SYMBOL可能对应多个ENTREZID（需去重处理）
+- 不同物种使用不同ID系统
+:::
 
-# 查看人类基因注释包支持的所有ID类型
-keytypes(org.Hs.eg.db)
-
-# 常用类型包括：
-# - SYMBOL: 基因符号
-# - ENTREZID: Entrez Gene ID
-# - ENSEMBL: Ensembl Gene ID
-# - UNIPROT: UniProt ID
-# - REFSEQ: RefSeq ID
-```
-
-### 3.3 bitr进行ID转换
+### 3.2 clusterProfiler ID转换
 
 ```r
 library(clusterProfiler)
+library(org.Hs.eg.db)
 
-# SYMBOL → ENTREZID
+# 查看支持的所有ID类型
+keytypes(org.Hs.eg.db)
+
+# SYMBOL → ENTREZID 转换
 gene_df <- bitr(gene_symbols,
                 fromType = "SYMBOL",
                 toType = "ENTREZID",
                 OrgDb = org.Hs.eg.db)
 
-# 多目标转换：SYMBOL → ENTREZID + UNIPROT
-gene_df <- bitr(gene_symbols,
-                fromType = "SYMBOL",
-                toType = c("ENTREZID", "UNIPROT"),
-                OrgDb = org.Hs.eg.db)
-```
+# 查看转换成功率
+cat("输入基因数:", length(gene_symbols), "\n")
+cat("转换成功数:", nrow(gene_df), "\n")
+cat("转换成功率:", round(nrow(gene_df)/length(gene_symbols)*100, 1), "%\n")
 
-::: {.callout-warning}
-### ⚠️ 注意：ID转换可能不完全
-- 部分基因可能没有对应的目标ID（返回NA）
-- 一个SYMBOL可能对应多个ENTREZID（需去重）
-- 转换后建议检查转换成功率
-:::
+# 多目标转换：SYMBOL → ENTREZID + UNIPROT
+gene_df_multi <- bitr(gene_symbols,
+                      fromType = "SYMBOL",
+                      toType = c("ENTREZID", "UNIPROT"),
+                      OrgDb = org.Hs.eg.db)
+```
 
 ---
 
@@ -164,98 +180,116 @@ gene_df <- bitr(gene_symbols,
 
 **核心问题**：某GO/通路中的差异基因是否比随机期望更多？
 
-**超几何检验**：
+**超几何检验（Hypergeometric Test）**：
+
 ```
-背景基因：N个（如20,000，所有检测到的基因）
+背景基因总数：N（如20,000，所有检测到的基因）
 背景中属于某通路的基因：M个
 
-差异基因：n个
+差异基因总数：n个
 差异基因中属于该通路的基因：k个
 
+超几何检验公式：
 P(X=k) = C(M,k) × C(N-M, n-k) / C(N,n)
+
+其中：C(a,b) = a! / (b! × (a-b)!)
 ```
 
-### 4.2 ORA分析步骤
+::: {.callout-note}
+### 直观理解
+
+想象从一袋球中随机抽取：
+- 总球数：N（所有基因）
+- 红球数：M（属于某通路的基因）
+- 抽取数：n（差异基因）
+- 抽到红球数：k（差异基因中属于该通路）
+
+如果抽到的红球显著多于期望，则该通路被"富集"。
+:::
+
+### 4.2 ORA分析流程
 
 ```
-1. 获取差异基因列表（|log2FC|>1, padj<0.05）
+步骤1：获取差异基因列表（|log2FC|>1, padj<0.05）
         ↓
-2. 选择背景基因集（所有检测到的基因）
+步骤2：选择背景基因集（所有检测到的基因）
         ↓
-3. 基因ID转换（如SYMBOL → ENTREZID）
+步骤3：基因ID转换（如SYMBOL → ENTREZID）
         ↓
-4. 对每个GO/通路进行超几何检验
+步骤4：对每个GO/通路进行超几何检验
         ↓
-5. 多重检验校正（BH）
+步骤5：多重检验校正（BH）
         ↓
-6. 筛选显著富集的条目（p.adjust < 0.05）
+步骤6：筛选显著富集的条目（p.adjust < 0.05）
 ```
 
-### 4.3 富集比值
+### 4.3 富集比值计算
 
 ```
-富集比值 = (k/n) / (M/N)
+富集比值 (Enrichment Ratio) = (k/n) / (M/N)
 
-- k/n：差异基因中属于该通路的比例
-- M/N：背景中属于该通路的比例
+- k/n：差异基因中属于该通路的比例（观测值）
+- M/N：背景中属于该通路的比例（期望值）
 
-富集比值 > 1：该通路被富集
-富集比值 = 2：差异基因在该通路中的比例是背景的2倍
+解读：
+- 富集比值 > 1：该通路被富集
+- 富集比值 = 2：差异基因在该通路的比例是背景的2倍
+- 富集比值越高，富集越显著
 ```
 
-### 4.4 clusterProfiler ORA 🔑
+### 4.4 clusterProfiler GO富集 🔑
 
 ```r
 library(clusterProfiler)
 library(org.Hs.eg.db)
 
-# 1. 基因ID转换（SYMBOL → ENTREZID）
-gene_df <- bitr(deg_genes,
-                fromType = "SYMBOL",
-                toType = "ENTREZID",
-                OrgDb = org.Hs.eg.db)
+# 1. 准备基因列表（ENTREZID格式）
+gene_list <- deg_up$ENTREZID  # 上调差异基因
 
 # 2. GO富集分析
 ego <- enrichGO(
-  gene = gene_df$ENTREZID,    # 基因列表
-  OrgDb = org.Hs.eg.db,       # 物种注释包
-  keyType = "ENTREZID",       # 输入基因ID类型
-  ont = "BP",                 # BP/MF/CC/ALL
-  pAdjustMethod = "BH",       # 多重检验校正方法
-  pvalueCutoff = 0.05,        # p值阈值
-  qvalueCutoff = 0.2          # q值阈值
+  gene = gene_list,          # 基因列表
+  OrgDb = org.Hs.eg.db,      # 物种注释包
+  keyType = "ENTREZID",      # 输入基因ID类型
+  ont = "BP",                # BP/MF/CC/ALL
+  pAdjustMethod = "BH",      # 多重检验校正方法
+  pvalueCutoff = 0.05,       # p值阈值
+  qvalueCutoff = 0.2,        # q值阈值
+  readable = TRUE            # 将ENTREZID转换为SYMBOL
 )
 
 # 3. 查看结果
-head(ego)
+head(ego, 10)
 
 # 4. 导出结果
-df <- as.data.frame(ego)
-write.csv(df, "GO_enrichment_results.csv")
+write.csv(as.data.frame(ego), "GO_BP_enrichment.csv", row.names = FALSE)
 ```
 
 ### 4.5 ORA结果解读
 
 | 列名 | 含义 | 说明 |
 |------|------|------|
-| ID | GO/通路ID | 唯一标识符，如GO:0007049 |
-| Description | 描述 | 功能名称，如"cell cycle" |
-| GeneRatio | k/n | 差异基因中属于该通路的比率，如45/120 |
-| BgRatio | M/N | 背景中属于该通路的比率，如500/20000 |
-| pvalue | 原始p值 | 富集显著性 |
-| **p.adjust** | 校正p值 | **BH校正后，用于筛选** |
-| qvalue | FDR控制 | 更严格的校正 |
-| geneID | 基因列表 | 属于该通路的差异基因ID |
-| Count | k | 属于该通路的差异基因数 |
+| **ID** | GO/通路ID | 唯一标识符，如GO:0007049 |
+| **Description** | 功能描述 | 通路名称，如"cell cycle" |
+| **GeneRatio** | k/n | 差异基因中属于该通路的比率，如45/120 |
+| **BgRatio** | M/N | 背景中属于该通路的比率，如500/20000 |
+| **pvalue** | 原始p值 | 超几何检验显著性 |
+| **p.adjust** | 校正p值 | BH校正后，**用于筛选** |
+| **qvalue** | FDR控制 | 更严格的校正指标 |
+| **geneID** | 基因列表 | 属于该通路的差异基因ID |
+| **Count** | k | 属于该通路的差异基因数 |
 
 ::: {.callout-tip}
-**选择富集阈值**：
-- 宽松：p.adjust < 0.05（探索性分析，返回较多结果）
-- 标准：p.adjust < 0.05 且 qvalue < 0.2（常用）
-- 严格：qvalue < 0.05（发表级别，结果更可靠）
+### 阈值选择建议
+
+| 场景 | 阈值建议 | 说明 |
+|------|----------|------|
+| 探索性分析 | p.adjust < 0.05 | 较宽松，返回更多结果 |
+| 标准分析 | p.adjust < 0.05 且 qvalue < 0.2 | 常用标准 |
+| 发表级别 | qvalue < 0.05 | 更严格，结果更可靠 |
 :::
 
-### 4.6 GO三大分支分别分析
+### 4.6 GO三大分支分析
 
 ```r
 # 生物过程 (BP) - 最常用
@@ -275,15 +309,34 @@ ego_all <- enrichGO(gene = gene_list, OrgDb = org.Hs.eg.db, ont = "ALL")
 
 ## 5. KEGG通路富集 🔑⚠️
 
-### 5.1 KEGG分析的特殊性
+### 5.1 KEGG分析特殊性
 
-**注意**：`enrichKEGG()` 支持的ID类型与GO不同：
-- 支持：kegg, ncbi-geneid, ncbi-proteinid, uniprot
-- **不支持**：SYMBOL, ENSEMBL
+::: {.callout-warning}
+### ⚠️ KEGG ID类型限制
 
-### 5.2 KEGG分析流程
+`enrichKEGG()` 支持的ID类型：
+- ✅ 支持：kegg, ncbi-geneid, ncbi-proteinid, uniprot
+- ❌ **不支持**：SYMBOL, ENSEMBL
+
+必须先转换为ENTREZID或UNIPROT！
+:::
+
+### 5.2 常用物种代码
+
+| 物种 | 代码 | 说明 |
+|------|------|------|
+| **人类** | hsa | Homo sapiens |
+| **小鼠** | mmu | Mus musculus |
+| **大鼠** | rno | Rattus norvegicus |
+| **斑马鱼** | dre | Danio rerio |
+| **果蝇** | dme | Drosophila melanogaster |
+| **大肠杆菌** | eco | Escherichia coli |
+
+### 5.3 KEGG分析代码
 
 ```r
+library(clusterProfiler)
+
 # 方法1：使用ENTREZID（推荐）
 gene_df <- bitr(gene_symbols,
                 fromType = "SYMBOL",
@@ -292,42 +345,23 @@ gene_df <- bitr(gene_symbols,
 
 kk <- enrichKEGG(
   gene = gene_df$ENTREZID,
-  organism = "hsa",         # hsa=human, mmu=mouse, rno=rat
-  keyType = "kegg",         # 或"ncbi-geneid"
+  organism = "hsa",           # 人类
+  keyType = "kegg",           # 或"ncbi-geneid"
   pAdjustMethod = "BH",
-  pvalueCutoff = 0.05
+  pvalueCutoff = 0.05,
+  qvalueCutoff = 0.2
 )
 
-# 方法2：使用UNIPROT（某些情况更稳定）
-gene_df <- bitr(gene_symbols,
-                fromType = "SYMBOL",
-                toType = "UNIPROT",
-                OrgDb = org.Hs.eg.db)
-
-kk <- enrichKEGG(
-  gene = gene_df$UNIPROT,
-  organism = "hsa",
-  keyType = "uniprot",
-  pAdjustMethod = "BH",
-  pvalueCutoff = 0.05
-)
+# 查看结果
+head(kk, 10)
 ```
 
-### 5.3 常用物种代码
-
-| 物种 | 代码 | 说明 |
-|------|------|------|
-| 人类 | hsa | Homo sapiens |
-| 小鼠 | mmu | Mus musculus |
-| 大鼠 | rno | Rattus norvegicus |
-| 斑马鱼 | dre | Danio rerio |
-| 果蝇 | dme | Drosophila melanogaster |
-
 ::: {.callout-warning}
-### ⚠️ KEGG分析常见问题
-1. **网络问题**：KEGG数据库在国外，可能被防火墙阻挡
-2. **ID转换失败**：部分基因可能没有KEGG注释
-3. **版本问题**：KEGG定期更新，结果可能随时间变化
+### ⚠️ KEGG常见问题
+
+1. **网络连接**：KEGG数据库在日本，可能网络延迟或失败
+2. **ID转换失败**：部分基因没有KEGG注释
+3. **版本更新**：KEGG定期更新，结果可能随时间变化
 :::
 
 ---
@@ -336,17 +370,29 @@ kk <- enrichKEGG(
 
 ### 6.1 ORA的局限性
 
-- 需要预设阈值筛选差异基因（丢失阈值附近的基因）
-- 丢失微小但协调变化的基因
-- 忽略基因表达变化的方向
+| 局限性 | 说明 |
+|--------|------|
+| **阈值依赖** | 需预设差异基因筛选阈值，丢失阈值附近基因 |
+| **丢失微弱信号** | 协调但微小变化的基因集可能被忽略 |
+| **忽略变化方向** | 不区分上调/下调基因的通路差异 |
 
 ### 6.2 GSEA原理
 
 **Gene Set Enrichment Analysis**：
 
+```
+核心思想：
+不预设阈值，使用全部基因按变化排序
+评估基因集是否富集在排序列表的顶部或底部
+
+步骤：
 1. 根据所有基因排序（如log2FC从高到低）
-2. 评估基因集成员是否富集在排序列表顶部或底部
-3. 计算富集分数（Enrichment Score, ES）
+2. 遍历排序列表，计算富集分数（ES）
+3. 统计检验评估ES显著性
+4. 多重检验校正
+```
+
+**富集分数计算示意**：
 
 ```
 排序的基因列表（按log2FC从高到低）：
@@ -357,67 +403,82 @@ Gene:   A───B───C───D───E───F───G───H�
          ↑     ↑                       ↑
        通路X成员                     通路Y成员
 
-富集分数计算：
-- 通路X富集在顶部（正相关）→ ES > 0
-- 通路Y富集在底部（负相关）→ ES < 0
+ES计算：
+- 遇到通路成员：累积分数增加
+- 非通路成员：累积分数减少
+- 通路X成员在顶部 → ES > 0（通路在顶部富集）
+- 通路Y成员在底部 → ES < 0（通路在底部富集）
 ```
 
-### 6.3 GSEA分析
+### 6.3 GSEA分析代码
 
 ```r
-# 准备排序基因列表（所有基因，按log2FC排序）
-geneList <- res$log2FoldChange
-names(geneList) <- rownames(res)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+# 1. 准备排序基因列表（所有基因，按log2FC排序）
+geneList <- res_df$log2FoldChange
+names(geneList) <- res_df$gene  # 使用SYMBOL作为名称
 geneList <- sort(geneList, decreasing = TRUE)
 
-# 基因ID转换
-geneList_df <- bitr(names(geneList),
-                    fromType = "SYMBOL",
-                    toType = "ENTREZID",
-                    OrgDb = org.Hs.eg.db)
+# 2. ID转换
+gene_df <- bitr(names(geneList),
+                fromType = "SYMBOL",
+                toType = "ENTREZID",
+                OrgDb = org.Hs.eg.db)
 
-# 创建命名向量（ENTREZID作为名称，log2FC作为值）
-names(geneList) <- geneList_df$ENTREZID[match(names(geneList), geneList_df$SYMBOL)]
-geneList <- geneList[!is.na(names(geneList))]
+# 创建命名向量（ENTREZID为名，log2FC为值）
+geneList_entrez <- geneList
+names(geneList_entrez) <- gene_df$ENTREZID[
+  match(names(geneList), gene_df$SYMBOL)]
+geneList_entrez <- geneList_entrez[!is.na(names(geneList_entrez))]
 
-# GSEA分析
+# 3. GSEA分析
 gsea <- gseGO(
-  geneList = geneList,
+  geneList = geneList_entrez,
   OrgDb = org.Hs.eg.db,
   ont = "BP",
+  keyType = "ENTREZID",
   pAdjustMethod = "BH",
   pvalueCutoff = 0.05,
-  minGSSize = 10,     # 基因集最小基因数
-  maxGSSize = 500     # 基因集最大基因数
+  minGSSize = 10,      # 基因集最小基因数
+  maxGSSize = 500      # 基因集最大基因数
 )
+
+# 4. 查看结果
+head(gsea, 10)
 ```
 
 ### 6.4 GSEA结果解读
 
-| 列名 | 含义 |
-|------|------|
-| ID | 基因集ID |
-| setSize | 基因集中检测到的基因数 |
-| enrichmentScore | 富集分数（ES） |
-| **NES** | 标准化富集分数（不同基因集可比） |
-| pvalue | 显著性 |
-| p.adjust | 校正后p值 |
-| leading_edge | 核心富集基因 |
+| 列名 | 含义 | 说明 |
+|------|------|------|
+| **NES** | 标准化富集分数 | 不同基因集可比，关键指标 |
+| enrichmentScore | 原始富集分数 | 未标准化 |
+| pvalue | 显著性 | 原始p值 |
+| p.adjust | 校正后p值 | 用于筛选 |
+| setSize | 基因集大小 | 检测到的基因数 |
+| leading_edge | 核心富集基因 | 贡献最大ES的基因 |
 
-**NES解释**：
-- NES > 0：基因集富集在排序列表顶部（上调基因）
-- NES < 0：基因集富集在排序列表底部（下调基因）
-- |NES| > 1：通常认为有意义
+::: {.callout-tip}
+### NES解读
 
-### 6.5 ORA vs GSEA
+- **NES > 0**：基因集富集在排序列表顶部（上调相关）
+- **NES < 0**：基因集富集在排序列表底部（下调相关）
+- **|NES| > 1**：通常认为有意义
+- **|NES| > 1.5**：强富集
+:::
+
+### 6.5 ORA vs GSEA 对比
 
 | 特性 | ORA | GSEA |
 |------|-----|------|
-| 输入 | 差异基因列表 | 全部基因（排序） |
-| 阈值依赖 | **是** | **否** |
-| 检测微弱信号 | 弱 | **强** |
-| 计算量 | 小 | 大 |
-| 适用场景 | 快速筛选 | **深入分析** |
+| **输入数据** | 差异基因列表 | 全部基因（排序） |
+| **阈值依赖** | **是**（需预设阈值） | **否** |
+| **检测微弱信号** | 弱（阈值附近丢失） | **强**（使用全部基因） |
+| **方向信息** | 丢失（需分开分析） | **保留**（NES正负） |
+| **计算量** | 小（快速） | 大（较慢） |
+| **适用场景** | 快速筛选、初探 | **深入分析、全面评估** |
 
 ---
 
@@ -427,23 +488,33 @@ gsea <- gseGO(
 
 ```r
 # 显示Top 20富集条目
-barplot(ego, showCategory = 20, title = "GO BP Enrichment")
+barplot(ego, showCategory = 20,
+        title = "GO BP Enrichment",
+        x = "Count",           # X轴显示基因数
+        color = "p.adjust")    # 按p.adjust着色
 ```
 
 ### 7.2 点图（Dotplot）🔑
 
 ```r
 # 按p.adjust排序显示Top 15
-dotplot(ego, showCategory = 15, orderBy = "p.adjust")
+dotplot(ego, showCategory = 15,
+        orderBy = "p.adjust",
+        title = "GO BP Enrichment")
 
 # 按基因数排序
-dotplot(ego, showCategory = 15, orderBy = "Count")
+dotplot(ego, showCategory = 15,
+        orderBy = "Count")
 ```
 
-**点图解读**：
-- **点大小**：富集基因数（Count）
-- **颜色**：显著性（p.adjust）
-- **X轴**：GeneRatio
+::: {.callout-note}
+### 点图解读
+
+- **点大小**：富集基因数（Count），越大表示越多基因参与
+- **点颜色**：显著性（p.adjust），颜色深表示更显著
+- **X轴**：GeneRatio (k/n)，富集比例
+- **解读**：右上角大点（高富集比、基因多、显著）为关键通路
+:::
 
 ### 7.3 网络图（Cnetplot）🔑
 
@@ -451,36 +522,49 @@ dotplot(ego, showCategory = 15, orderBy = "Count")
 # 富集条目与基因的关联网络
 # foldChange参数显示基因的表达变化方向
 cnetplot(ego,
-         categorySize = "pvalue",
+         categorySize = "pvalue",    # 条目大小按p值
+         foldChange = geneList,      # 基因表达变化方向
+         showCategory = 5,           # 显示前5个条目
+         circular = FALSE)           # 线性布局
+
+# 圆形布局（更美观）
+cnetplot(ego,
          foldChange = geneList,
-         showCategory = 5)
+         showCategory = 3,
+         circular = TRUE)
 ```
 
 **用途**：
 - 显示富集条目间的基因重叠
-- 查看哪些基因参与多个通路
+- 查看哪些基因参与多个通路（枢纽基因）
 - 结合表达变化方向（红色=上调，蓝色=下调）
 
-### 7.4 GSEA mountain plot
+### 7.4 GSEA Mountain Plot
 
 ```r
+library(enrichplot)
+
 # 绘制指定基因集的GSEA图
-gseaplot2(gsea, geneSetID = 1, title = gsea$Description[1])
+gseaplot2(gsea, geneSetID = 1,
+          title = gsea$Description[1])
 
 # 同时绘制多个基因集
-gseaplot2(gsea, geneSetID = 1:3)
+gseaplot2(gsea, geneSetID = 1:3,
+          title = "Top 3 Enriched Pathways")
 ```
 
 **图例解读**：
-- 绿线：富集分数曲线
-- 黑色竖线：基因集中基因在排序列表中的位置
-- 热图：基因表达值分布
+- **绿色曲线**：富集分数（ES）随排序位置变化
+- **峰值位置**：最大富集位置
+- **黑色竖线**：基因集中基因在排序列表中的位置
+- **底部热图**：基因log2FC分布
 
 ### 7.5 热图（Heatplot）
 
 ```r
 # 富集通路中基因的表达热图
-heatplot(ego, foldChange = geneList, showCategory = 5)
+heatplot(ego, foldChange = geneList,
+         showCategory = 5)
 ```
 
 ---
@@ -488,41 +572,76 @@ heatplot(ego, foldChange = geneList, showCategory = 5)
 ## 8. 完整分析流程示例
 
 ```r
-# 完整功能富集分析流程
+# ============================================
+#   RNA-seq功能富集分析完整流程
+# ============================================
+
 library(DESeq2)
 library(clusterProfiler)
 library(org.Hs.eg.db)
 library(enrichplot)
+library(ggplot2)
 
-# 1. 差异基因筛选（实验2已完成）
-deg_up <- rownames(subset(res, padj < 0.05 & log2FoldChange > 1))
-deg_down <- rownames(subset(res, padj < 0.05 & log2FoldChange < -1))
+# ---- 步骤1：差异基因筛选 ----
+deg_up <- rownames(subset(res,
+                          padj < 0.05 &
+                          log2FoldChange > 1))
+deg_down <- rownames(subset(res,
+                            padj < 0.05 &
+                            log2FoldChange < -1))
 
-# 2. ID转换
-deg_up_df <- bitr(deg_up, fromType = "SYMBOL",
-                  toType = "ENTREZID", OrgDb = org.Hs.eg.db)
+cat("上调差异基因:", length(deg_up), "\n")
+cat("下调差异基因:", length(deg_down), "\n")
 
-# 3. GO富集分析
+# ---- 步骤2：ID转换 ----
+deg_up_df <- bitr(deg_up,
+                  fromType = "SYMBOL",
+                  toType = "ENTREZID",
+                  OrgDb = org.Hs.eg.db)
+deg_down_df <- bitr(deg_down,
+                    fromType = "SYMBOL",
+                    toType = "ENTREZID",
+                    OrgDb = org.Hs.eg.db)
+
+# ---- 步骤3：GO富集分析 ----
 ego_up <- enrichGO(gene = deg_up_df$ENTREZID,
                    OrgDb = org.Hs.eg.db,
                    ont = "BP",
                    pvalueCutoff = 0.05,
-                   qvalueCutoff = 0.2)
+                   qvalueCutoff = 0.2,
+                   readable = TRUE)
 
-# 4. 可视化
-dotplot(ego_up, showCategory = 15)
-barplot(ego_up, showCategory = 15)
+ego_down <- enrichGO(gene = deg_down_df$ENTREZID,
+                     OrgDb = org.Hs.eg.db,
+                     ont = "BP",
+                     pvalueCutoff = 0.05,
+                     qvalueCutoff = 0.2,
+                     readable = TRUE)
 
-# 5. KEGG富集分析
+# ---- 步骤4：可视化 ----
+# 点图
+dotplot(ego_up, showCategory = 15) +
+  ggtitle("GO BP - Upregulated")
+dotplot(ego_down, showCategory = 15) +
+  ggtitle("GO BP - Downregulated")
+
+# 网络图
+gene_fc <- res$log2FoldChange
+names(gene_fc) <- rownames(res)
+cnetplot(ego_up, foldChange = gene_fc, showCategory = 5)
+
+# ---- 步骤5：KEGG分析 ----
 kk_up <- enrichKEGG(gene = deg_up_df$ENTREZID,
                     organism = "hsa",
                     pvalueCutoff = 0.05)
-
 dotplot(kk_up, showCategory = 15)
 
-# 6. 保存结果
+# ---- 步骤6：保存结果 ----
 write.csv(as.data.frame(ego_up), "GO_BP_upregulated.csv")
+write.csv(as.data.frame(ego_down), "GO_BP_downregulated.csv")
 write.csv(as.data.frame(kk_up), "KEGG_upregulated.csv")
+
+cat("\n分析完成！结果已保存\n")
 ```
 
 ---
@@ -531,43 +650,34 @@ write.csv(as.data.frame(kk_up), "KEGG_upregulated.csv")
 
 ### 9.1 撰写富集分析结果
 
-**示例描述**：
+**示例描述模板**：
 
-```markdown
-对差异表达基因进行GO生物过程富集分析（clusterProfiler，
-p.adjust < 0.05）。上调基因显著富集于"细胞周期调控"
-（GeneRatio=45/120, p.adjust=2.3×10^-10）和"DNA复制"
-（GeneRatio=32/120, p.adjust=5.6×10^-8）等增殖相关通路。
-下调基因则富集于"细胞凋亡"（GeneRatio=28/98,
-p.adjust=8.1×10^-6）和"免疫应答"（GeneRatio=35/98,
-p.adjust=3.2×10^-5）。KEGG分析显示上调基因富集于
-"Pathways in cancer"（p.adjust=1.5×10^-5）和"Cell cycle"
-（p.adjust=8.7×10^-4）。
-
-这些结果表明，ATC相较于PTC可能通过促进细胞增殖
-和抑制凋亡来增强恶性表型。
-```
+> 对差异表达基因进行GO生物过程富集分析（clusterProfiler，p.adjust < 0.05）。上调基因（n=1,234）显著富集于"细胞周期调控"（GeneRatio=45/1234, p.adjust=2.3×10^-10）、"DNA复制"（GeneRatio=32/1234, p.adjust=5.6×10^-8）等增殖相关通路。下调基因（n=987）则富集于"细胞凋亡"（GeneRatio=28/987, p.adjust=8.1×10^-6）和"免疫应答"（GeneRatio=35/987, p.adjust=3.2×10^-5）。
+>
+> KEGG通路分析显示，上调基因显著富集于"Pathways in cancer"（p.adjust=1.5×10^-5）、"Cell cycle"（p.adjust=8.7×10^-4）等癌症相关通路。这些结果提示ATC相较于PTC可能通过促进细胞增殖、抑制凋亡来增强恶性表型。
 
 ### 9.2 注意事项 ⚠️
 
 | 注意事项 | 说明 |
 |----------|------|
-| **选择合适背景** | 使用所有检测到的基因作为背景，而非全基因组 |
-| **关注GeneRatio** | 高富集比（>2）更可靠 |
-| **结合表达方向** | 上调和下调基因分别富集分析 |
+| **背景基因选择** | 使用所有检测到的基因，而非全基因组 |
+| **关注GeneRatio** | 高富集比（>2）更可靠，避免低比例假阳性 |
+| **分开分析上下调** | 上调和下调基因分别富集，避免混合 |
 | **避免过度解读** | 富集≠因果，需实验验证 |
 | **文献验证** | 关键通路需结合已有文献支持 |
-| **多重比较** | 需进行BH校正，控制FDR |
+| **多重检验校正** | 必须使用校正后p值（p.adjust） |
 
 ### 9.3 常见问题排查
 
 | 问题 | 可能原因 | 解决方案 |
 |------|----------|----------|
-| 富集结果为空 | ID转换失败 | 检查keyType是否正确 |
-|  | 阈值过严 | 放宽pvalueCutoff |
-| 结果过多 | 阈值过松 | 使用qvalue或更严格的p.adjust |
-| 通路名称不显示 | 网络问题 | 检查KEGG数据库连接 |
-| 基因数过少 | 差异基因少 | 放宽差异基因筛选阈值 |
+| **富集结果为空** | ID转换失败 | 检查keyType是否正确 |
+| | 阈值过严 | 放宽pvalueCutoff |
+| | 差异基因太少 | 放宽差异筛选阈值 |
+| **结果过多** | 阈值过松 | 使用qvalue或更严格阈值 |
+| | 基因集太小 | 设置minGSSize |
+| **通路名称不显示** | 网络问题 | 检查KEGG数据库连接 |
+| **基因数过少** | 差异基因少 | 放宽差异筛选阈值 |
 
 ---
 
@@ -575,28 +685,48 @@ p.adjust=3.2×10^-5）。KEGG分析显示上调基因富集于
 
 | 要点 | 内容 |
 |------|------|
-| 功能数据库 | **GO**（CC/MF/BP）、**KEGG**是主要资源 |
-| ID转换 | 使用`bitr()`进行SYMBOL↔ENTREZID↔UNIPROT转换 |
-| ORA原理 | **超几何检验**评估基因集是否过度代表 |
-| GSEA优势 | 不依赖阈值，可检测协调的微小变化 |
-| 可视化 | 条形图、点图、**cnetplot**、GSEA mountain plot |
-| 结果解读 | 关注显著性、GeneRatio、生物学意义 |
+| **功能数据库** | **GO**（CC/MF/BP）、**KEGG**是主要资源 |
+| **ID转换** | 使用`bitr()`进行SYMBOL↔ENTREZID转换 |
+| **ORA原理** | **超几何检验**评估基因集是否过度代表 |
+| **GSEA优势** | 不依赖阈值，可检测协调的微小变化 |
+| **可视化** | 条形图、点图、**cnetplot**、GSEA mountain plot |
+| **结果解读** | 关注显著性、GeneRatio、生物学意义 |
 
 ---
 
 ## 思考题
 
 1. **为什么富集分析需要设置背景基因集？**
-   <details><summary>点击查看答案</summary>背景基因集决定了"预期"的随机富集水平。使用所有检测到的基因作为背景，而非全基因组，因为未检测到的基因不应该参与计算。</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   背景基因集决定了"期望"的随机富集水平。使用所有检测到的基因作为背景，而非全基因组，因为未检测到的基因不应该参与统计计算。
+   </details>
 
 2. **ORA和GSEA各自适用于什么场景？**
-   <details><summary>点击查看答案</summary>ORA适用于快速筛选已有明确差异基因列表的场景；GSEA适用于不预设阈值、希望检测协调微小变化的深入分析场景。</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   ORA适用于：已有明确差异基因列表、快速筛选候选通路、初步探索。GSEA适用于：不预设阈值、希望检测协调微小变化、全面评估基因集状态、保留变化方向信息。
+   </details>
 
 3. **富集分析p值<0.05就一定有意义吗？**
-   <details><summary>点击查看答案</summary>不一定。需要：1) 使用校正后的p值(p.adjust)；2) 考虑GeneRatio（富集比）；3) 结合生物学知识判断；4) 需要文献支持。</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   不一定。需要综合考虑：1) 使用校正后p值(p.adjust)；2) GeneRatio是否足够高（>2）；3) 富集基因数Count是否足够（≥5）；4) 是否有生物学意义；5) 是否有文献支持。
+   </details>
 
 4. **如何判断一个富集结果是否可靠？**
-   <details><summary>点击查看答案</summary>1) p.adjust < 0.05且qvalue < 0.2；2) GeneRatio > 2；3) 富集基因数Count >= 5；4) 与文献报道一致；5) 多个数据库(GO/KEGG)一致。</details>
+
+   <details>
+   <summary>点击查看答案</summary>
+
+   判断标准：1) p.adjust < 0.05 且 qvalue < 0.2；2) GeneRatio > 2（富集比高）；3) Count ≥ 5（足够基因数）；4) 多数据库一致（GO和KEGG结果一致）；5) 有文献支持；6) 生物学合理性。
+   </details>
 
 ---
 
