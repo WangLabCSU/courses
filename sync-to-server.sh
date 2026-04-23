@@ -6,7 +6,8 @@
 set -e
 
 SOURCE_DIR="_site"
-TARGET_HOST="lab-bio"
+#TARGET_HOST="lab-bio"
+TARGET_HOST="lab-bio-in"
 TARGET_DIR="/home/bio/manage/appnet/apps/courses"
 
 echo "Starting sync from $SOURCE_DIR to $TARGET_HOST:$TARGET_DIR..."
