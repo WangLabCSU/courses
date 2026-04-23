@@ -1,0 +1,292 @@
+---
+title: "讲座3：突变数据格式详解"
+author: "王诗翔"
+date: "2026-04-23"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+## 3.1 VCF 格式详解
+
+VCF（Variant Call Format）是存储基因组变异数据的标准格式。
+
+### VCF 文件结构
+
+VCF 文件由三部分组成：
+
+**1. 元数据部分（以 `##` 开头）**：
+
+```
+##fileformat=VCFv4.3
+##fileDate=20250101
+##source=MyCaller
+##reference=GRCh38
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+```
+
+**2. 列标题部分（以 `#` 开头）**：
+
+```
+#CHROM  POS     ID        REF  ALT  QUAL  FILTER  INFO          FORMAT  Sample1
+```
+
+**3. 数据行部分**：
+
+```
+chr1    100     rs123     A    G    100   PASS    DP=50;NS=2    GT:DP   0/1:50
+```
+
+### VCF 主要字段详解
+
+| 字段 | 类型 | 描述 |
+|------|------|------|
+| CHROM | String | 染色体名称 |
+| POS | Integer | 变异位点位置（1-based） |
+| ID | String | 变异位点标识（如 rs 号） |
+| REF | String | 参考序列碱基 |
+| ALT | String | 变异序列碱基 |
+| QUAL | Float | 质量得分（Phred尺度） |
+| FILTER | String | 过滤状态 |
+| INFO | String | 附加信息（键值对） |
+| FORMAT | String | 样本数据格式描述 |
+| Sample列 | String | 样本具体数据 |
+
+### INFO 字段常用标签
+
+| 标签 | 描述 |
+|------|------|
+| DP | 总深度 |
+| NS | 样本数 |
+| AC | 变异等位基因计数 |
+| AF | 变异等位基因频率 |
+| DB | dbSNP 数据库中存在 |
+| H2 | HapMap2 数据库中存在 |
+
+### VCF 文件读取示例
+
+```r
+library(VariantAnnotation)
+
+# 读取 VCF 文件
+vcf <- readVcf("sample.vcf.gz", "hg19")
+
+# 提取基本信息
+head(rowRanges(vcf))
+
+# 提取 INFO 字段
+info(vcf)
+
+# 提取样本基因型
+geno(vcf)$GT
+```
+
+## 3.2 MAF 格式详解
+
+MAF（Mutation Annotation Format）是 TCGA 项目定义的突变注释格式。
+
+### MAF 文件特点
+
+- 纯文本格式，Tab 分隔
+- 包含所有样本的 SNV 和注释信息
+- 一行一个突变记录
+- 适合下游统计分析
+
+### MAF 文件结构
+
+```
+#version 2.4
+Hugo_Symbol   Entrez_Gene_Id  Chromosome  Start_Position  End_Position  Variant_Classification  ...
+TP53          7157            chr17       7579472         7579472       Missense_Mutation       ...
+BRCA1         672             chr17       41276132        41276132      Nonsense_Mutation       ...
+```
+
+### MAF 必需字段（32列）
+
+| 序号 | 字段名 | 描述 |
+|------|--------|------|
+| 1 | Hugo_Symbol | HUGO 基因名 |
+| 2 | Entrez_Gene_Id | Entrez 基因ID |
+| 3 | Center | 测序中心 |
+| 4 | NCBI_Build | 参考基因组版本 |
+| 5 | Chromosome | 染色体 |
+| 6 | Start_Position | 起始位置 |
+| 7 | End_Position | 终止位置 |
+| 8 | Strand | 正负链 |
+| 9 | Variant_Classification | 变异分类 |
+| 10 | Variant_Type | 变变类型 |
+| 11 | Reference_Allele | 参考等位基因 |
+| 12 | Tumor_Seq_Allele1 | 肿瘤等位基因1 |
+| 13 | Tumor_Seq_Allele2 | 肿瘤等位基因2 |
+| 14 | Tumor_Sample_Barcode | 肿瘤样本ID |
+| 15 | Matched_Norm_Sample_Barcode | 正常样本ID |
+
+### Variant_Classification 分类
+
+| 分类 | 含义 |
+|------|------|
+| Missense_Mutation | 错义突变 |
+| Nonsense_Mutation | 无义突变 |
+| Frame_Shift_Del | 移码缺失 |
+| Frame_Shift_Ins | 移码插入 |
+| In_Frame_Del | 框内缺失 |
+| In_Frame_Ins | 框内插入 |
+| Splice_Site | 剪接位点突变 |
+| Silent | 沉默突变 |
+| Translation_Start_Site | 翻译起始位点突变 |
+
+### Variant_Type 类型
+
+| 类型 | 含义 |
+|------|------|
+| SNP | 单核苷酸多态性 |
+| INS | 插入 |
+| DEL | 缺失 |
+| DNP | 双核苷酸多态性 |
+| TNP | 三核苷酸多态性 |
+
+## 3.3 VCF 与 MAF 转换
+
+### 使用 vcf2maf 工具
+
+vcf2maf 是将 VCF 转换为 MAF 的常用工具。
+
+**安装方法**：
+
+```bash
+# 下载 vcf2maf
+git clone https://github.com/mskcc/vcf2maf
+
+# 需要安装 vep (Variant Effect Predictor)
+# 参考：https://useast.ensembl.org/info/docs/tools/vep/index.html
+```
+
+**使用示例**：
+
+```bash
+perl vcf2maf.pl --input-vcf input.vcf --output-maf output.maf
+```
+
+### 使用 maftools 直接处理
+
+maftools 可以直接处理某些格式的数据：
+
+```r
+library(maftools)
+
+# 从 VCF 创建 MAF（需要先转换）
+# 或使用其他格式直接读取
+```
+
+## 3.4 数据质量检查
+
+### VCF 文件质量检查
+
+```r
+library(VariantAnnotation)
+
+# 读取 VCF
+vcf <- readVcf("sample.vcf.gz")
+
+# 检查质量得分分布
+qual <- info(vcf)$QUAL
+summary(qual)
+
+# 过滤低质量变异
+filtered <- vcf[qual > 30]
+```
+
+### MAF 文件质量检查
+
+```r
+library(maftools)
+
+# 读取 MAF
+maf <- read.maf("sample.maf")
+
+# 查看变异统计
+getSampleSummary(maf)
+
+# 查看基因突变统计
+getGeneSummary(maf)
+
+# 查看变异类型分布
+plotmafSummary(maf)
+```
+
+## 3.5 数据获取途径
+
+### 公共数据库
+
+| 数据库 | 网址 | 数据类型 |
+|--------|------|----------|
+| TCGA (GDC) | https://portal.gdc.cancer.gov/ | 肿瘤突变数据 |
+| COSMIC | https://cancer.sanger.ac.uk/cosmic | 肿瘤体细胞突变 |
+| dbSNP | https://www.ncbi.nlm.nih.gov/snp/ | SNP 数据 |
+| ClinVar | https://www.ncbi.nlm.nih.gov/clinvar/ | 临床相关变异 |
+
+### 数据下载示例
+
+```r
+# TCGA 数据可通过 TCGAbiolinks 包下载
+if (!require("TCGAbiolinks"))
+    BiocManager::install("TCGAbiolinks")
+
+library(TCGAbiolinks)
+
+# 查询 TCGA-LAML 突变数据
+query <- GDCquery(
+    project = "TCGA-LAML",
+    data.category = "Simple Somatic Mutation",
+    data.type = "Aggregate"
+)
+
+# 下载数据
+GDCdownload(query)
+maf_data <- GDCprepare(query)
+```
+
+## 3.6 数据预处理流程
+
+```r
+library(maftools)
+
+# 1. 读取原始 MAF 文件
+maf_raw <- read.maf("raw.maf")
+
+# 2. 查看数据概览
+summary(maf_raw)
+
+# 3. 过滤低质量变异（可选）
+# 根据质量得分或置信度过滤
+
+# 4. 合并临床数据
+clin_data <- read.table("clinical.tsv", header = TRUE)
+maf <- read.maf(maf = "raw.maf", clinicalData = clin_data)
+
+# 5. 数据子集筛选
+# 选择特定样本
+maf_subset <- subsetMaf(maf, tsb = c("Sample1", "Sample2"))
+
+# 选择特定基因
+maf_gene <- subsetMaf(maf, genes = c("TP53", "BRCA1"))
+```
+
+## 本讲小结
+
+本讲座详细介绍了突变数据的常用格式：
+
+1. VCF 格式的结构和主要字段
+2. MAF 格式的结构和必需字段
+3. VCF 与 MAF 格式的区别和转换方法
+4. 数据质量检查的方法
+5. 公共数据库的数据获取途径
+6. 数据预处理的基本流程
+
+**课后思考题**：
+
+- 在实际研究中如何选择使用 VCF 还是 MAF 格式？
+- 数据质量检查应该关注哪些指标？
+- 如何从 TCGA 数据库获取自己感兴趣肿瘤类型的突变数据？

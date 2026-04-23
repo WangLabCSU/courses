@@ -1,0 +1,368 @@
+---
+title: "maftools：突变数据可视化"
+subtitle: "MAF格式与突变分析工具"
+author: "王诗翔 副教授<br>中南大学生物医学信息系"
+date: "2026-04-23"
+format:
+  revealjs:
+    theme: [default, ../styles/slides.scss]
+    slide-number: true
+    chalkboard: true
+    code-fold: false
+    code-overflow: wrap
+    highlight-style: github
+    width: 1280
+    height: 720
+    margin: 0.1
+    logo: ../../logo/csu_logo.png
+    footer: "maftools工具 | 中南大学"
+execute:
+  echo: true
+  output: true
+  warning: false
+  message: false
+---
+
+```{r, eval=TRUE, echo=FALSE, output=FALSE}
+showtext::showtext_auto()
+```
+
+# 课程大纲
+
+## 本讲内容
+
+::: {.columns}
+::: {.column width="50%"}
+1. **Bioconductor简介**
+2. **MAF格式详解**
+3. **maftools安装**
+4. **数据读取方法**
+:::
+::: {.column width="50%"}
+5. **oncoplot绘制**
+6. **突变概览图**
+7. **生存分析**
+8. **突变关联分析**
+:::
+:::
+
+---
+
+# 第1部分：Bioconductor
+
+## 1.1 Bioconductor项目
+
+> **Bioconductor**：开源生物信息学软件项目，专注生物数据分析
+
+### 项目特点
+
+- 高质量生物信息学工具包
+- 严格审核流程
+- 半年一次发布周期
+- 活跃的开发者社区
+
+---
+
+## 1.2 Bioconductor vs CRAN
+
+| 特点 | CRAN | Bioconductor |
+|------|------|--------------|
+| 包类型 | 通用R包 | 生物信息专用 |
+| 发布 | 随时 | 半年一次 |
+| 审核 | 基础 | 严格 |
+| 版本 | 灵活 | 固定 |
+
+---
+
+## 1.3 Bioconductor安装
+
+```r
+# 安装 BiocManager
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+
+# 设置版本
+BiocManager::install(version = "3.21")
+
+# 安装包
+BiocManager::install("maftools")
+```
+
+---
+
+# 第2部分：MAF格式
+
+## 2.1 MAF定义
+
+**MAF（Mutation Annotation Format）**：TCGA制定的突变注释格式
+
+### 特点
+
+- 纯文本，Tab分隔
+- 包含所有样本突变信息
+- 内置注释字段
+- 适合下游分析
+
+---
+
+## 2.2 MAF必需字段
+
+| 字段 | 含义 |
+|------|------|
+| Hugo_Symbol | 基因名称 |
+| Chromosome | 染色体 |
+| Start_Position | 起始位置 |
+| Variant_Classification | 变异分类 |
+| Variant_Type | 变异类型 |
+| Tumor_Sample_Barcode | 样本ID |
+
+---
+
+## 2.3 Variant Classification
+
+| 分类 | 含义 |
+|------|------|
+| Missense_Mutation | 错义突变 |
+| Nonsense_Mutation | 无义突变 |
+| Frame_Shift_Del | 移码缺失 |
+| Frame_Shift_Ins | 移码插入 |
+| Splice_Site | 剪接位点 |
+| Silent | 沉默突变 |
+
+---
+
+## 2.4 MAF与VCF对比
+
+| 特点 | VCF | MAF |
+|------|-----|-----|
+| 数据粒度 | 单变异位点 | 带注释变异 |
+| 样本信息 | 需额外文件 | 同一文件 |
+| 注释 | 单独处理 | 内置字段 |
+| 分析便利性 | 预处理 | 直接分析 |
+
+---
+
+# 第3部分：maftools入门
+
+## 3.1 maftools安装
+
+```r
+# 从 Bioconductor 安装
+BiocManager::install("maftools")
+
+# 加载包
+library(maftools)
+```
+
+---
+
+## 3.2 maftools功能概览
+
+| 功能 | 函数 | 应用 |
+|------|------|------|
+| 数据读取 | `read.maf()` | 导入MAF文件 |
+| 突变概览 | `plotmafSummary()` | 数据统计 |
+| Oncoplot | `oncoplot()` | 突变图谱 |
+| 生存分析 | `mafSurvival()` | 突变与生存 |
+| 关联分析 | `somaticInteractions()` | 互斥/协同 |
+
+---
+
+## 3.3 数据读取
+
+```r
+# 加载示例数据
+laml.maf <- system.file("extdata",
+    "tcga_laml.maf.gz", package = "maftools")
+laml.clin <- system.file("extdata",
+    "tcga_laml_annot.tsv", package = "maftools")
+
+# 创建MAF对象
+laml <- read.maf(
+    maf = laml.maf,
+    clinicalData = laml.clin
+)
+```
+
+---
+
+## 3.4 查看MAF信息
+
+```r
+# 基本信息
+laml
+
+# 样本概览
+getSampleSummary(laml)
+
+# 基因概览
+getGeneSummary(laml)
+```
+
+---
+
+# 第4部分：可视化
+
+## 4.1 突变概览图
+
+```r
+plotmafSummary(
+    maf = laml,
+    rmOutlier = TRUE,
+    addStat = 'median'
+)
+```
+
+::: {.callout-tip}
+图包含：样本突变数分布、突变类型分布、基因突变频率
+:::
+
+---
+
+## 4.2 Oncoplot绘制
+
+```r
+# 绘制前20高频突变基因
+oncoplot(maf = laml, top = 20)
+```
+
+---
+
+## 4.3 Oncoplot解读
+
+::: {.columns}
+::: {.column width="50%"}
+### 图形元素
+
+- **行**：基因（按频率排序）
+- **列**：样本（按模式聚类）
+- **颜色**：突变类型
+:::
+::: {.column width="50%"}
+### 侧边栏
+
+- **右侧**：基因突变频率
+- **左侧**：样本突变数量
+:::
+:::
+
+---
+
+## 4.4 Oncoplot定制
+
+```r
+# 添加临床注释
+oncoplot(
+    maf = laml,
+    top = 10,
+    clinicalFeatures = "FAB_classification",
+    sortByAnnotation = TRUE
+)
+```
+
+---
+
+# 第5部分：生存分析
+
+## 5.1 基因生存分析
+
+```r
+mafSurvival(
+    maf = laml,
+    genes = "FLT3",
+    clinicalData = getClinicalData(laml),
+    clinicalFeature = "Overall_Survival_Status",
+    timeFeature = "Days_to_last_followup"
+)
+```
+
+---
+
+## 5.2 结果解读
+
+| 指标 | 含义 |
+|------|------|
+| **HR** | 风险比（>1增加风险） |
+| **P值** | <0.05表示显著 |
+| **生存曲线** | 两组生存差异 |
+
+---
+
+# 第6部分：关联分析
+
+## 6.1 突变互斥/协同
+
+```r
+somaticInteractions(
+    maf = laml,
+    top = 25,
+    pvalue = c(0.05, 0.1)
+)
+```
+
+---
+
+## 6.2 关联类型
+
+| 类型 | 含义 | 示例 |
+|------|------|------|
+| **互斥** | 很少同时发生 | TP53 vs KRAS |
+| **协同** | 常同时发生 | 同通路基因 |
+
+---
+
+# 第7部分：其他功能
+
+## 7.1 TITV分析
+
+```r
+# 转换颠换分析
+titv(maf = laml, plotType = "bar")
+```
+
+---
+
+## 7.2 数据筛选
+
+```r
+# 按样本筛选
+laml_subset <- subsetMaf(
+    laml,
+    tsb = c("Sample1", "Sample2")
+)
+
+# 按基因筛选
+laml_genes <- subsetMaf(
+    laml,
+    genes = c("FLT3", "TP53")
+)
+```
+
+---
+
+# 总结
+
+## maftools核心功能
+
+1. **数据读取** — `read.maf()` 导入MAF文件
+2. **可视化** — `oncoplot()` 突变图谱
+3. **生存分析** — `mafSurvival()` 突变与预后
+4. **关联分析** — `somaticInteractions()` 基因互斥/协同
+5. **TITV分析** — 转换颠换统计
+
+---
+
+# 谢谢！
+
+## 联系方式
+
+📧 wangshx@csu.edu.cn
+🌐 https://wanglabcsu.github.io/
+
+---
+
+## 参考资料
+
+- maftools文档：https://bioconductor.org/packages/maftools
+- maftools教程：https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html
+- Mayakonda A et al. Maftools: efficient and comprehensive analysis of somatic variants in cancer. Genome Medicine. 2018

@@ -1,0 +1,296 @@
+---
+title: "讲座2：Bioconductor 与突变分析工具"
+author: "王诗翔"
+date: "2026-04-23"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+## 2.1 Bioconductor 简介
+
+Bioconductor 是一个开源的生物信息学软件项目，专门为生物数据的分析和理解开发工具。
+
+**项目特点**：
+
+- 开发和分享用于精确、可重复分析生物数据的开源软件
+- 培养包容和协作的开发者和数据科学家社区
+- 提供丰富的高质量生物信息学工具包
+
+**与 CRAN 的区别**：
+
+| 特点 | CRAN | Bioconductor |
+|------|------|--------------|
+| 包类型 | 通用 R 包 | 生物信息学专用包 |
+| 发布周期 | 随时更新 | 半年一次发布 |
+| 质量控制 | 基础审核 | 严格审核流程 |
+| 依赖管理 | 标准依赖 | 严格的版本控制 |
+
+### Bioconductor 安装
+
+```r
+# 安装 BiocManager
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# 设置版本（当前最新版本 3.21）
+BiocManager::install(version = "3.21")
+
+# 安装特定包
+BiocManager::install(c("maftools", "VariantAnnotation", "GenomicRanges"))
+```
+
+## 2.2 Bioconductor 包概览
+
+Bioconductor 包分为以下几类：
+
+**软件包**：分析方法和算法实现
+
+**注释包**：基因组注释和映射信息
+
+**实验数据包**：示例数据集
+
+**工作流包**：完整的分析流程
+
+### 常用突变分析相关包
+
+| 包名 | 功能 | 应用场景 |
+|------|------|----------|
+| maftools | MAF 数据分析可视化 | 突变概览、生存分析 |
+| VariantAnnotation | 变异注释 | VCF 文件处理 |
+| GenomicRanges | 基因组区间操作 | 突变定位 |
+| Sigminer | 突变特征分析 | 特征提取、拟合 |
+| BSgenome | 参考基因组 | 序列获取 |
+
+## 2.3 GenomicRanges 包
+
+GenomicRanges 是处理基因组区间数据的核心包。
+
+**主要功能**：
+
+- 表示和操作基因组区间
+- 区间交集、并集等操作
+- 区间查找和匹配
+
+**GRanges 对象**：
+
+```r
+library(GenomicRanges)
+
+# 创建 GRanges 对象
+gr <- GRanges(
+    seqnames = c("chr1", "chr2", "chr1"),
+    ranges = IRanges(start = c(100, 200, 150), width = c(50, 100, 30)),
+    strand = c("+", "-", "+"),
+    gene = c("GeneA", "GeneB", "GeneC")
+)
+
+# 查看对象
+print(gr)
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+GRanges object with 3 ranges and 1 metadata column:
+      seqnames    ranges strand |      gene
+         <Rle> <IRanges>  <Rle> | <character>
+  [1]     chr1   100-149      + |      GeneA
+  [2]     chr2   200-299      - |      GeneB
+  [3]     chr1   150-179      + |      GeneC
+```
+
+</details>
+
+**常用操作**：
+
+```r
+# 获取区间长度
+width(gr)
+
+# 查找重叠区间
+findOverlaps(gr1, gr2)
+
+# 合并区间
+reduce(gr)
+```
+
+## 2.4 VariantAnnotation 包
+
+VariantAnnotation 用于注释和处理变异信息。
+
+**主要功能**：
+
+- 读取 VCF 文件
+- 注释变异位点
+- 计算变异效应
+
+### VCF 格式简介
+
+VCF（Variant Call Format）是存储基因组变异的标准格式。
+
+**VCF 文件结构**：
+
+1. **元数据行**：以 `##` 开头，描述文件信息
+2. **列标题行**：以 `#` 开头，描述各列含义
+3. **数据行**：每行代表一个变异位点
+
+**主要字段**：
+
+| 字段 | 含义 | 示例 |
+|------|------|------|
+| CHROM | 染色体名称 | chr1 |
+| POS | 变异位置 | 12345 |
+| ID | 变异标识 | rs12345 |
+| REF | 参考序列 | A |
+| ALT | 变异序列 | G |
+| QUAL | 质量得分 | 100 |
+| FILTER | 过滤状态 | PASS |
+| INFO | 附加信息 | 各种键值对 |
+
+### VariantAnnotation 使用示例
+
+```r
+library(VariantAnnotation)
+
+# 读取 VCF 文件
+vcf_file <- system.file("extdata", "chr7.vcf.gz", package = "VariantAnnotation")
+vcf <- readVcf(vcf_file, "hg19")
+
+# 查看 VCF 信息
+summary(vcf)
+
+# 提取变异信息
+variants <- rowRanges(vcf)
+```
+
+## 2.5 maftools 包介绍
+
+maftools 是分析 MAF 格式突变数据的核心工具包。
+
+### maftools 功能概览
+
+| 功能模块 | 描述 | 相关函数 |
+|----------|------|----------|
+| 数据导入 | 读取 MAF 文件 | read.maf() |
+| 数据概览 | 突变统计汇总 | getSampleSummary() |
+| 可视化 | 突变图谱绘制 | oncoplot() |
+| 生存分析 | 突变与生存关联 | mafSurvival() |
+| 关联分析 | 突变互斥/协同 | somaticInteractions() |
+
+### maftools 安装
+
+```r
+# 从 Bioconductor 安装
+BiocManager::install("maftools")
+
+# 加载包
+library(maftools)
+```
+
+### MAF 格式详解
+
+MAF（Mutation Annotation Format）是由 TCGA 制定的突变注释格式。
+
+**MAF 与 VCF 的区别**：
+
+| 特点 | VCF | MAF |
+|------|-----|-----|
+| 数据粒度 | 单个变异位点 | 带注释的变异 |
+| 样本信息 | 需额外文件 | 包含在同一文件 |
+| 注释信息 | 需单独注释 | 内置注释字段 |
+| 分析便利性 | 需预处理 | 直接分析 |
+
+**MAF 必需字段**：
+
+| 字段 | 含义 |
+|------|------|
+| Hugo_Symbol | 基因名称 |
+| Entrez_Gene_Id | Entrez ID |
+| Chromosome | 染色体 |
+| Start_Position | 起始位置 |
+| End_Position | 终止位置 |
+| Variant_Classification | 变异分类 |
+| Variant_Type | 变异类型 |
+| Reference_Allele | 参考等位基因 |
+| Tumor_Seq_Allele1 | 肿瘤等位基因1 |
+| Tumor_Seq_Allele2 | 肿瘤等位基因2 |
+| Tumor_Sample_Barcode | 样本标识 |
+
+### maftools 基础操作
+
+```r
+library(maftools)
+
+# 加载内置示例数据
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml.clin <- system.file("extdata", "tcga_laml_annot.tsv", package = "maftools")
+
+# 创建 MAF 对象
+laml <- read.maf(maf = laml.maf, clinicalData = laml.clin)
+
+# 查看 MAF 对象信息
+laml
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+An object of class MAF
+          ID        summary Mean Median
+1: Samples         193   NA     NA
+2: Genes           880   NA     NA
+3: Variants       1627    8      6
+4: Mutated samples 193   NA     NA
+```
+
+</details>
+
+## 2.6 Sigminer 包介绍
+
+Sigminer 是专门用于突变特征分析的 R 包。
+
+### Sigminer 功能
+
+- 突变特征提取（de novo）
+- 突变特征拟合（refitting）
+- 特征可视化
+- 结果分析与解读
+
+### Sigminer 安装
+
+```r
+# 从 CRAN 安装
+install.packages("sigminer")
+
+# 或从 GitHub 安装最新版
+devtools::install_github("ShixiangWang/sigminer")
+
+# 加载包
+library(sigminer)
+```
+
+### Sigminer 文档资源
+
+- **GitHub**：https://github.com/ShixiangWang/sigminer
+- **在线文档**：https://shixiangwang.github.io/sigminer-book/
+
+## 本讲小结
+
+本讲座介绍了 Bioconductor 和突变分析相关工具：
+
+1. Bioconductor 项目及其与 CRAN 的区别
+2. Bioconductor 包的安装方法
+3. GenomicRanges 用于基因组区间操作
+4. VariantAnnotation 用于 VCF 文件处理
+5. maftools 用于 MAF 数据分析和可视化
+6. Sigminer 用于突变特征分析
+
+**课后思考题**：
+
+- 为什么生物信息学分析需要 Bioconductor 这样的专业平台？
+- MAF 格式相比 VCF 格式有哪些优势和不足？
+- 如何根据研究需求选择合适的分析工具包？

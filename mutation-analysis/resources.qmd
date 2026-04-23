@@ -1,0 +1,206 @@
+---
+title: "学习资源"
+author: "王诗翔"
+date: "2026-04-23"
+---
+
+## 核心工具文档
+
+### Bioconductor 相关
+
+| 资源 | 链接 | 说明 |
+|------|------|------|
+| Bioconductor 官网 | https://www.bioconductor.org/ | Bioconductor 项目主站 |
+| maftools 文档 | https://bioconductor.org/packages/maftools | MAF 数据分析与可视化包 |
+| maftools 教程 | https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html | 详细使用教程（必读） |
+| maftools GitHub | https://github.com/PoisonAlien/maftools | 源码和问题反馈 |
+| VariantAnnotation | https://bioconductor.org/packages/VariantAnnotation | 变异注释包 |
+| GenomicRanges | https://bioconductor.org/packages/GenomicRanges | 基因组区间数据处理 |
+| BiocManager | https://bioconductor.org/packages/BiocManager | 包管理工具 |
+
+### 突变特征分析
+
+| 资源 | 链接 | 说明 |
+|------|------|------|
+| Sigminer GitHub | https://github.com/ShixiangWang/sigminer | 突变特征分析工具（作者开发） |
+| Sigminer Book | https://shixiangwang.github.io/sigminer-book/ | 详细使用手册（必读） |
+| COSMIC Signatures | https://cancer.sanger.ac.uk/signatures/ | 突变特征参考数据库 |
+| SigProfiler | https://github.com/AlexandrovLab/SigProfilerExtractor | Python版本特征分析工具 |
+
+## 数据格式参考
+
+| 资源 | 链接 | 说明 |
+|------|------|------|
+| VCF 格式规范 | https://www.internationalgenome.org/wiki/Analysis/vcf4.0/ | VCF 文件格式详解 |
+| GDC MAF 格式 | https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/ | GDC MAF 格式官方文档 |
+| vcf2maf 工具 | https://github.com/mskcc/vcf2maf | VCF 转 MAF 工具 |
+| GDC 数据门户 | https://portal.gdc.cancer.gov/ | TCGA 数据下载 |
+
+## 学术文献
+
+### 突变特征研究（必读）
+
+1. **Alexandrov LB et al. (2020)** - "The repertoire of mutational signatures in human cancer" - Nature
+   - 突变特征的系统性研究，COSMIC 数据库基础
+   - [链接](https://www.nature.com/articles/s41586-020-1943-9)
+
+2. **Alexandrov LB et al. (2013)** - "Signatures of mutational processes in human cancer" - Nature
+   - 突变特征分析方法的奠基性论文
+   - [链接](https://www.nature.com/articles/nature12977)
+
+3. **Nik-Zainal S et al. (2016)** - "Landscape of somatic mutations in 560 breast cancer whole-exome sequences" - Nature
+   - 大规模突变特征应用实例
+   - [链接](https://www.nature.com/articles/nature17676)
+
+### maftools 相关
+
+1. **Mayakonda A et al. (2018)** - "Maftools: efficient and comprehensive analysis of somatic variants in cancer" - Genome Medicine
+   - maftools 包的介绍论文（必读）
+   - [链接](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-018-0053-0)
+
+### Bioconductor 应用
+
+1. **Obenchain V et al. (2014)** - "VariantAnnotation: a Bioconductor package for exploration and annotation of genetic variants" - Bioinformatics
+   - VariantAnnotation 包介绍
+
+2. **Lawrence M et al. (2013)** - "Software for computing and annotating genomic ranges" - PLoS Computational Biology
+   - GenomicRanges 包介绍
+
+### 肿瘤基因组综述
+
+1. **Stratton MR et al. (2009)** - "The cancer genome" - Nature
+   - 肿瘤基因组基础综述
+
+2. **Vogelstein B et al. (2013)** - "Cancer genome landscapes" - Science
+   - 癌症基因组全景综述（经典文献）
+
+## 视频教程
+
+| 资源 | 链接 | 说明 |
+|------|------|------|
+| Bioconductor 入门 | https://www.bioconductor.org/help/course-materials/ | Bioconductor 官方课程材料 |
+| maftools 视频教程 | YouTube搜索 "maftools tutorial" | 示例操作演示 |
+| Sigminer 教程 | https://shixiangwang.github.io/sigminer-book/ | 包含详细代码示例 |
+
+## 示例数据
+
+课程使用的示例数据来源于 TCGA（The Cancer Genome Atlas）项目：
+
+### TCGA LAML 数据
+
+- **TCGA LAML（急性髓系白血病）数据**：包含白血病样本的突变和临床信息
+- 数据可通过 maftools 包内置数据获取或从 GDC 数据库下载
+
+```r
+# 使用内置数据
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml.clin <- system.file("extdata", "tcga_laml_annot.tsv", package = "maftools")
+```
+
+### 数据下载方式
+
+1. **maftools内置**：直接使用包内数据练习
+2. **GDC门户**：下载任意TCGA肿瘤类型的MAF文件
+3. **TCGAbiolinks**：使用R包自动下载
+
+```r
+# 使用 TCGAbiolinks 下载
+BiocManager::install("TCGAbiolinks")
+library(TCGAbiolinks)
+
+query <- GDCquery(
+    project = "TCGA-LAML",
+    data.category = "Simple Somatic Mutation"
+)
+GDCdownload(query)
+maf_data <- GDCprepare(query)
+```
+
+## 拓展学习
+
+### 基础知识补充
+
+**分子生物学基础**：
+
+- DNA 结构与复制
+- 基因转录与翻译
+- 突变类型与效应
+
+**肿瘤生物学**：
+
+- 肿瘤演化与克隆结构
+- 驱动基因与乘客突变
+- DNA损伤与修复机制
+
+**生物统计学**：
+
+- 生存分析原理
+- 假设检验方法
+- 多重假设校正
+
+### 编程技能
+
+**R 语言基础**：
+
+- 数据类型：vector, matrix, data.frame
+- 函数编写与调试
+- 包管理与安装
+
+**R Markdown/Quarto**：
+
+- 报告生成与格式化
+- 代码嵌入与结果展示
+- 多格式输出（HTML, PDF）
+
+**Git/GitHub**：
+
+- 版本控制基础
+- 代码托管与分享
+- 协作开发流程
+
+## 学习建议
+
+### 学习路径
+
+建议学生按以下顺序学习：
+
+1. **理论基础** → 学习讲座内容，建立概念框架
+2. **工具熟悉** → 阅读maftools和Sigminer文档
+3. **动手实践** → 跟随实验指导上机操作
+4. **拓展阅读** → 阅读推荐文献深入理解
+5. **独立分析** → 用自己的数据完成分析
+
+### 实践建议
+
+- 使用不同数据集反复练习
+- 尝试修改代码参数观察变化
+- 将分析流程整理为可复用脚本
+- 记录遇到的问题和解决方案
+
+### 问题解决
+
+遇到问题时：
+
+1. 首先查阅官方文档
+2. 搜索GitHub Issues
+3. 尝试简化代码定位问题
+4. 与同学讨论交流
+
+## 课程作业参考
+
+完成课程作业时可参考以下资源：
+
+### Oncoplot绘制
+
+参考 maftools 教程中的 oncoplot 部分：
+https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html#oncoplots
+
+### 生存分析
+
+参考 maftools 生存分析部分：
+https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html#survival-analysis
+
+### 结果解读
+
+- 参考 COSMIC 数据库了解特征含义
+- 查阅文献理解基因生物学意义

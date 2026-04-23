@@ -26,6 +26,8 @@ website:
             text: "R与(R)Markdown基础"
           - href: rna-seq-analysis/index.html
             text: "转录组数据分析"
+          - href: mutation-analysis/index.html
+            text: "基因组突变分析"
       - href: learning-resources.qmd
         text: 学习资源
     right:

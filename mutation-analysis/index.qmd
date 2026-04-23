@@ -1,0 +1,130 @@
+---
+title: "基因组突变分析"
+author: "王诗翔"
+date: "2026-04-23"
+---
+
+## 课程简介
+
+基因组突变分析是生物信息学和肿瘤研究中的重要内容。本课程将系统介绍基因组突变的基本理论、常用数据格式（VCF、MAF）、Bioconductor 相关工具包（maftools、Sigminer 等），并通过实践让学生掌握突变数据处理、分析与可视化，特别是突变特征分析的原理与方法。
+
+## 课程信息
+
+| 项目 | 内容 |
+|------|------|
+| 授课教师 | 王诗翔 |
+| 授课单位 | 中南大学 |
+| 学时安排 | 4学时（2学时理论 + 2学时实践） |
+| 授课语言 | 中文 |
+| 课程形式 | 理论讲授 + 上机实验 |
+
+## 学习目标
+
+通过本课程学习，学生将能够：
+
+- 理解基因组突变的基本概念、类型及其生物学意义
+- 掌握 VCF 和 MAF 等突变数据格式的结构和用途
+- 学会使用 Bioconductor 相关包处理突变数据
+- 熟练运用 maftools 进行突变数据可视化和分析
+- 掌握突变特征分析的原理和 Sigminer 包的使用方法
+- 独立完成从数据导入到结果解读的全流程分析
+
+## 课程大纲
+
+### 第一部分：理论讲授（2学时）
+
+1. **基因组突变基础理论**
+   - 突变定义与类型（SNP、Indel、CNV等）
+   - 突变来源与检测方法
+   - 突变的生物学意义与影响
+
+2. **Bioconductor 与突变分析工具**
+   - Bioconductor 项目介绍
+   - VCF/MAF 数据格式详解
+   - maftools 包功能与应用
+
+3. **突变特征分析理论**
+   - 突变特征概念与分类（SBS、DBS、ID、CN等）
+   - 突变特征分析方法（de novo、refitting）
+   - 突变特征的生物学解读
+
+### 第二部分：上机实验（2学时）
+
+1. **实验一：突变数据导入与预处理**
+   - MAF 数据格式与读取
+   - 数据清洗与质量控制
+   - maftools 基础操作
+
+2. **实验二：突变特征分析实践**
+   - Sigminer 包的使用
+   - de novo 突变特征提取
+   - 突变特征拟合与可视化
+
+## 课程材料下载
+
+<a href="data/tcga_laml.maf.gz" download class="btn-download">TCGA LAML MAF 数据</a>
+<a href="data/tcga_laml_clinical.tsv" download class="btn-download">TCGA LAML 临床数据</a>
+
+## 课程内容
+
+### 理论讲座
+
+| 讲座 | 主题 | 内容概要 |
+|------|------|----------|
+| [讲座1](lectures/lecture1-mutation-basics.html) | 基因组突变基础理论 | 突变定义、类型、来源、检测方法 |
+| [讲座2](lectures/lecture2-bioconductor-tools.html) | Bioconductor 突变分析工具 | Bioconductor介绍、maftools包 |
+| [讲座3](lectures/lecture3-data-formats.html) | 突变数据格式详解 | VCF格式、MAF格式、数据转换 |
+| [讲座4](lectures/lecture4-mutational-signatures.html) | 突变特征分析理论 | 突变特征概念、分析方法、生物学意义 |
+
+### 教学幻灯片
+
+| 幻灯片 | 主题 | 内容概要 |
+|------|------|----------|
+| [幻灯片1](slides/slides-mutation-overview.html) | 基因组突变概述 | 突变类型、检测方法、生物学意义 |
+| [幻灯片2](slides/slides-maftools.html) | maftools工具介绍 | MAF格式、数据可视化、生存分析 |
+| [幻灯片3](slides/slides-mutational-signatures.html) | 突变特征分析 | Sigminer、COSMIC、特征提取 |
+
+### 实验指导
+
+| 实验 | 主题 | 内容概要 |
+|------|------|----------|
+| [实验1](labs/lab1-data-processing.html) | 突变数据处理与分析 | MAF数据读取、maftools可视化、生存分析 |
+| [实验2](labs/lab2-mutational-signatures.html) | 突变特征分析实践 | Sigminer使用、特征提取与拟合 |
+
+## 推荐学习路径
+
+建议学生按以下顺序学习：
+
+1. 先学习理论讲座，建立知识框架
+2. 跟随实验指导进行上机练习
+3. 参考学习资源进行拓展阅读
+4. 完成课程作业巩固所学内容
+
+## 课前准备
+
+请确保已安装以下软件和包：
+
+```r
+# 安装 BiocManager
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# 安装核心包
+BiocManager::install(c("maftools", "VariantAnnotation", "GenomicRanges"))
+
+# 安装 sigminer (从 CRAN 或 GitHub)
+install.packages("sigminer")
+# 或从 GitHub 安装最新版
+# devtools::install_github("ShixiangWang/sigminer")
+```
+
+## 课程作业
+
+课程结束后请完成以下作业：
+
+1. 使用 maftools 绘制 oncoplot
+2. 挑选一个基因进行生存分析
+3. 说明挑选该基因的理由
+4. 对生存分析结果进行解读
+
+将分析过程和结果整理为 R Markdown 文档并保存为 HTML 格式。

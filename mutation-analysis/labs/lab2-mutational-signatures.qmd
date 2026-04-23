@@ -1,0 +1,386 @@
+---
+title: "实验2：突变特征分析实践"
+author: "王诗翔"
+date: "2026-04-23"
+execute:
+  freeze: false
+  eval: true
+  echo: true
+  output: true
+  warning: false
+  message: false
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+## 实验目标
+
+通过本实验，学生将学会：
+
+- 理解突变特征分析的基本原理
+- 使用 Sigminer 包构建突变矩阵
+- 进行 De novo 突变特征提取
+- 完成突变特征拟合分析
+- 解读和可视化分析结果
+
+## 实验准备
+
+### 安装必要包
+
+```r
+# 安装 sigminer（从 CRAN）
+install.packages("sigminer")
+
+# 安装 maftools（从 Bioconductor）
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("maftools")
+
+# 加载包
+library(sigminer)
+library(maftools)
+```
+
+### 数据准备
+
+本实验继续使用 TCGA LAML 数据。
+
+```r
+# 加载示例数据
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml.clin <- system.file("extdata", "tcga_laml_annot.tsv", package = "maftools")
+
+# 创建 MAF 对象
+laml <- read.maf(maf = laml.maf, clinicalData = laml.clin)
+```
+
+## 1. 突变特征分析理论回顾
+
+### SBS 特征分类
+
+单碱基替换（SBS）特征将突变按 96 种类型分类：
+
+- **6 种替换类型**：C>A, C>G, C>T, T>A, T>C, T>G
+- **16 种上下文组合**：突变位点前后各一个碱基
+- **总计**：6 × 16 = 96 种突变类型
+
+### 分析策略
+
+| 策略 | 描述 | 适用场景 |
+|------|------|----------|
+| De novo | 从数据中提取新特征 | 探索性研究、新数据 |
+| Refitting | 拟合到已知特征 | 病因分析、诊断应用 |
+
+## 2. 构建突变矩阵
+
+### 从 MAF 数据提取突变信息
+
+```r
+# 使用 sigminer 从 MAF 提取突变信息
+# 首先将 MAF 数据转换为适合分析的格式
+
+# 获取突变数据
+maf_data <- laml@data
+
+# 查看数据结构
+head(maf_data, 5)
+```
+
+### 使用 sigminer 构建突变矩阵
+
+```r
+# 从 maftools MAF 对象构建突变矩阵
+# sigminer 提供了 sig_tally 函数来处理 MAF 数据
+
+mt_tally <- sig_tally(
+    laml,
+    mode = "SBS"  # 单碱基替换模式
+)
+
+# 查看突变矩阵
+class(mt_tally)
+names(mt_tally)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+`sig_tally` 函数返回：
+
+- **mutation_type**：突变类型分类（如 C>A, C>G 等）
+- **sample**：样本突变计数矩阵
+- **context**：突变上下文信息
+
+</details>
+
+```r
+# 查看突变矩阵维度
+if ("sample" %in% names(mt_tally)) {
+    mt_matrix <- mt_tally$sample
+    print(dim(mt_matrix))
+}
+```
+
+## 3. De Novo 特征提取
+
+### 使用 NMF 进行特征提取
+
+```r
+# 设置特征数量范围
+n_sig_range <- 2:8
+
+# 使用 sig_extract 进行特征提取
+# 注意：此步骤可能需要较长时间
+sig_result <- sig_extract(
+    mt_tally,
+    n_sig = n_sig_range,
+    cores = 1,  # 单核运行（可根据电脑配置调整）
+    n_iter = 20  # 迭代次数
+)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+NMF 特征提取过程：
+
+1. 对不同特征数量（2-8）进行分解
+2. 评估各结果的稳定性和误差
+3. 选择最佳特征数量
+4. 返回特征谱和贡献矩阵
+
+</details>
+
+### 查看提取结果
+
+```r
+# 查看最佳特征数量
+print(sig_result$n_sigs)
+
+# 查看特征谱
+print(sig_result$signature)
+
+# 查看样本贡献
+print(sig_result$exposure)
+```
+
+## 4. 特征可视化
+
+### 绘制特征谱图
+
+```r
+# 使用 sigminer 的可视化函数
+show_signature_profile(sig_result)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+特征谱图展示：
+
+- 每个特征在各突变类型上的贡献比例
+- 高峰位置反映特征的突变偏好
+- 与 COSMIC 已知特征比对可推断病因
+
+</details>
+
+### 绘制样本贡献分布图
+
+```r
+# 展示各样本的特征贡献
+show_signature_exposure(sig_result)
+```
+
+### 绘制贡献热图
+
+```r
+# 样本特征贡献热图
+show_signature_heatmap(sig_result)
+```
+
+## 5. 特征拟合分析（Refitting）
+
+### 拟合到 COSMIC 已知特征
+
+```r
+# 加载 COSMIC SBS 特征数据库
+# sigminer 提供了内置的 COSMIC 特征
+
+# 首先准备突变矩阵
+if (exists("mt_tally") && "sample" %in% names(mt_tally)) {
+    mt_matrix <- mt_tally$sample
+
+    # 使用 sig_fit 拟合到 COSMIC 特征
+    fit_result <- sig_fit(
+        mt_matrix,
+        sig_index = "cosmic_v3_sbs",
+        type = "SBS"
+    )
+
+    # 查看拟合结果
+    print(fit_result)
+}
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+拟合结果包含：
+
+- 各 COSMIC 特征的贡献比例
+- 样本特征的分配情况
+- 可直接与 COSMIC 数据库比对解读
+
+</details>
+
+### 查看拟合贡献
+
+```r
+# 查看各样本的已知特征贡献
+if (exists("fit_result")) {
+    # 查看主要贡献特征
+    main_signatures <- get_main_signatures(fit_result)
+    print(main_signatures)
+}
+```
+
+## 6. 结果解读
+
+### COSMIC SBS 特征参考
+
+以下是常见的 COSMIC SBS 特征及其可能病因：
+
+| 特征编号 | 可能病因 | 突变模式特点 |
+|----------|----------|--------------|
+| SBS1 | 自发性脱氨（年龄相关） | C>T in CpG sites |
+| SBS2 | APOBEC 酶活性 | C>T/G at TpCpN |
+| SBS3 | DNA 修复缺陷 | 多种突变分布 |
+| SBS4 | 吸烟 | C>A 突变为主 |
+| SBS5 | 年龄相关（时钟样） | 多种突变分布 |
+| SBS7a/b/c/d | UV 照射 | C>T 突变为主 |
+| SBS13 | APOBEC 酶活性 | 类似 SBS2 |
+| SBS17 | 不明（可能与化疗相关） | T>G 突变 |
+
+### 解读拟合结果
+
+```r
+# 解读各样本的主要特征贡献
+# 假设 fit_result 包含拟合结果
+
+# 查看各特征的平均贡献
+if (exists("fit_result")) {
+    avg_contribution <- colMeans(fit_result$exposure)
+    print(avg_contribution)
+
+    # 绘制贡献柱状图
+    barplot(avg_contribution,
+            main = "平均特征贡献",
+            xlab = "特征编号",
+            ylab = "贡献比例")
+}
+```
+
+## 7. 完整分析流程示例
+
+以下是一个完整的突变特征分析流程：
+
+```r
+library(sigminer)
+library(maftools)
+
+# === 步骤1：数据准备 ===
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read.maf(maf = laml.maf)
+
+# === 步骤2：构建突变矩阵 ===
+mt_tally <- sig_tally(laml, mode = "SBS")
+
+# === 步骤3：De novo 特征提取 ===
+sig_denovo <- sig_extract(
+    mt_tally,
+    n_sig = 2:6,
+    cores = 1
+)
+
+# === 步骤4：可视化 ===
+show_signature_profile(sig_denovo)
+
+# === 步骤5：特征拟合 ===
+# 拟合到 COSMIC 已知特征（需要更多数据）
+# fit_result <- sig_fit(mt_matrix, sig_index = "cosmic_v3_sbs")
+
+# === 步骤6：结果解读 ===
+# 结合 COSMIC 特征病因信息进行解读
+```
+
+## 8. 高级应用
+
+### 多类型特征分析
+
+Sigminer 支持多种突变特征类型：
+
+```r
+# SBS（单碱基替换）
+sbs_tally <- sig_tally(laml, mode = "SBS")
+
+# DBS（双碱基替换）- 需要足够数据
+# dbs_tally <- sig_tally(laml, mode = "DBS")
+
+# ID（插入缺失）
+# id_tally <- sig_tally(laml, mode = "ID")
+```
+
+### 特征数量选择策略
+
+```r
+# 评估不同特征数量下的稳定性
+# 观察误差曲线和稳定性指标
+
+# 选择特征数量的考虑因素：
+# - 误差最小原则
+# - 稳定性最优原则
+# - 生物学可解释性
+```
+
+## 实验作业
+
+完成以下练习：
+
+### 作业1：特征提取实践
+
+使用不同的数据子集进行特征提取，比较结果差异：
+
+```r
+# 选择部分样本
+set.seed(123)
+samples <- sample(laml@variants.per.sample$Tumor_Sample_Barcode, 50)
+laml_sub <- subsetMaf(laml, tsb = samples)
+
+# 进行特征提取
+mt_tally_sub <- sig_tally(laml_sub, mode = "SBS")
+sig_result_sub <- sig_extract(mt_tally_sub, n_sig = 2:4, cores = 1)
+
+# 可视化结果
+show_signature_profile(sig_result_sub)
+```
+
+### 作业2：结果解读报告
+
+1. 描述你提取的突变特征谱图特点
+2. 与 COSMIC 已知特征进行比对
+3. 推断可能的病因和生物学意义
+4. 讨论结果的局限性
+
+### 提交要求
+
+- 将分析过程整理为 R Markdown 文档
+- 保存为 HTML 格式
+- 包含完整的代码、图表和解读
+
+## 参考资料
+
+- Sigminer 文档：https://shixiangwang.github.io/sigminer-book/
+- COSMIC 突变特征：https://cancer.sanger.ac.uk/signatures/
+- Sigminer GitHub：https://github.com/ShixiangWang/sigminer

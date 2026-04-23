@@ -1,0 +1,373 @@
+---
+title: "突变特征分析"
+subtitle: "Sigminer与COSMIC突变特征"
+author: "王诗翔 副教授<br>中南大学生物医学信息系"
+date: "2026-04-23"
+format:
+  revealjs:
+    theme: [default, ../styles/slides.scss]
+    slide-number: true
+    chalkboard: true
+    code-fold: false
+    code-overflow: wrap
+    highlight-style: github
+    width: 1280
+    height: 720
+    margin: 0.1
+    logo: ../../logo/csu_logo.png
+    footer: "突变特征分析 | 中南大学"
+execute:
+  echo: true
+  output: true
+  warning: false
+  message: false
+---
+
+```{r, eval=TRUE, echo=FALSE, output=FALSE}
+showtext::showtext_auto()
+```
+
+# 课程大纲
+
+## 本讲内容
+
+::: {.columns}
+::: {.column width="50%"}
+1. **突变特征概念**
+2. **SBS分类体系**
+3. **分析方法原理**
+4. **NMF分解**
+:::
+::: {.column width="50%"}
+5. **COSMIC数据库**
+6. **Sigminer安装**
+7. **特征提取流程**
+8. **结果解读**
+:::
+:::
+
+---
+
+# 第1部分：突变特征理论
+
+## 1.1 突变特征定义
+
+> **突变特征（Mutational Signature）**：不同突变过程产生的独特突变类型组合
+
+### 突变过程来源
+
+- DNA复制错误
+- 外源/内源诱变剂
+- DNA修复缺陷
+- 酶促修饰
+
+---
+
+## 1.2 突变特征分类
+
+| 类型 | 全称 | 描述 |
+|------|------|------|
+| **SBS** | Single Base Substitution | 单碱基替换（96种） |
+| **DBS** | Double Base Substitution | 双碱基替换 |
+| **ID** | Insertion/Deletion | 小插入缺失 |
+| **CN** | Copy Number | 拷贝数变异 |
+
+---
+
+## 1.3 SBS 96分类原理
+
+**分类方法**：
+
+- **6种替换**：C>A, C>G, C>T, T>A, T>C, T>G
+- **16种上下文**：前后各一个碱基
+- **总数**：6 × 16 = 96种
+
+```
+示例：序列 ...ACGT... 中 C>T 突变
+       ↓ ↓ ↓
+       A C G → A[C>T]G 类别
+```
+
+---
+
+## 1.4 生物学意义
+
+::: {.columns}
+::: {.column width="50%"}
+### 反映机制
+
+- DNA损伤类型
+- 修复能力
+- 环境暴露
+:::
+::: {.column width="50%"}
+### 应用场景
+
+- 病因学研究
+- 肿瘤分类
+- 治疗决策
+:::
+:::
+
+---
+
+# 第2部分：分析方法
+
+## 2.1 两类分析策略
+
+| 策略 | 描述 | 适用场景 |
+|------|------|----------|
+| **De novo** | 从数据提取新特征 | 探索研究 |
+| **Refitting** | 拟合已知特征 | 病因分析 |
+
+---
+
+## 2.2 NMF分解原理
+
+**数学表达**：
+
+$$M \approx W \times H$$
+
+- **M**：样本×突变类型矩阵
+- **W**：样本×特征贡献
+- **H**：特征×突变类型谱
+
+---
+
+## 2.3 特征数量选择
+
+::: {.columns}
+::: {.column width="50%"}
+### 评估指标
+
+- 误差曲线
+- 稳定性评分
+- 生物学可解释性
+:::
+::: {.column width="50%"}
+### 选择原则
+
+- 误差最小
+- 稳定性最优
+- 特征有意义
+:::
+:::
+
+---
+
+# 第3部分：COSMIC数据库
+
+## 3.1 COSMIC介绍
+
+**网址**：https://cancer.sanger.ac.uk/signatures/
+
+### 数据库内容
+
+- 所有已知突变特征谱图
+- 特征病因解释
+- 癌症类型分布
+- 分析工具推荐
+
+---
+
+## 3.2 常见SBS特征
+
+| 特征 | 可能病因 | 突变特点 |
+|------|----------|----------|
+| **SBS1** | 年龄（脱氨） | C>T in CpG |
+| **SBS2** | APOBEC | C>T/G at TpC |
+| **SBS4** | 吸烟 | C>A为主 |
+| **SBS7** | UV照射 | C>T为主 |
+| **SBS13** | APOBEC | 类似SBS2 |
+
+---
+
+## 3.3 特征命名规范
+
+- **SBS + 数字**：单碱基替换
+- **DBS + 数字**：双碱基替换
+- **ID + 数字**：插入缺失
+- **CN + 数字**：拷贝数
+
+---
+
+# 第4部分：Sigminer使用
+
+## 4.1 Sigminer安装
+
+```r
+# 从 CRAN 安装
+install.packages("sigminer")
+
+# 或从 GitHub 安装最新版
+devtools::install_github("ShixiangWang/sigminer")
+
+library(sigminer)
+```
+
+---
+
+## 4.2 Sigminer文档
+
+- **GitHub**：https://github.com/ShixiangWang/sigminer
+- **Book**：https://shixiangwang.github.io/sigminer-book/
+
+---
+
+## 4.3 分析流程
+
+```
+数据准备 → 突变矩阵 → 特征提取 → 可视化 → 解读
+    ↓          ↓           ↓
+  MAF       sig_tally   sig_extract
+```
+
+---
+
+## 4.4 构建突变矩阵
+
+```r
+library(sigminer)
+library(maftools)
+
+# 读取MAF数据
+laml <- read.maf(maf = "sample.maf")
+
+# 构建突变矩阵
+mt_tally <- sig_tally(laml, mode = "SBS")
+```
+
+---
+
+## 4.5 De novo特征提取
+
+```r
+# 提取特征
+sig_result <- sig_extract(
+    mt_tally,
+    n_sig = 2:8,    # 特征数量范围
+    cores = 1,      # CPU核心数
+    n_iter = 20     # 迭代次数
+)
+
+# 查看最佳特征数
+sig_result$n_sigs
+```
+
+---
+
+## 4.6 特征可视化
+
+```r
+# 特征谱图
+show_signature_profile(sig_result)
+
+# 样本贡献
+show_signature_exposure(sig_result)
+
+# 贡献热图
+show_signature_heatmap(sig_result)
+```
+
+---
+
+# 第5部分：结果解读
+
+## 5.1 特征谱图解读
+
+::: {.columns}
+::: {.column width="50%"}
+### 解读要点
+
+- 高峰位置反映突变偏好
+- 与COSMIC比对识别病因
+- 考虑生物学背景
+:::
+::: {.column width="50%"}
+### 常见模式
+
+- C>T in CpG → 年龄相关
+- C>A为主 → 吸烟
+- TpC上下文 → APOBEC
+:::
+:::
+
+---
+
+## 5.2 特征贡献解读
+
+| 主要特征 | 推断病因 |
+|----------|----------|
+| SBS1/SBS5高 | 年龄相关 |
+| SBS2/SBS13高 | APOBEC活性 |
+| SBS4高 | 吸烟暴露 |
+
+---
+
+## 5.3 生物学意义推断
+
+::: {.callout-tip}
+**应用场景**：
+
+- 病因追溯：识别致癌因素
+- 分类诊断：肿瘤亚型划分
+- 治疗决策：预测治疗响应
+:::
+
+---
+
+# 第6部分：特征拟合
+
+## 6.1 拟合到COSMIC
+
+```r
+# 特征拟合
+fit_result <- sig_fit(
+    mt_matrix,
+    sig_index = "cosmic_v3_sbs",
+    type = "SBS"
+)
+
+# 查看拟合结果
+fit_result$exposure
+```
+
+---
+
+## 6.2 拟合vs提取对比
+
+| 方面 | De novo | Refitting |
+|------|---------|-----------|
+| 依赖性 | 不依赖已知 | 需要参考库 |
+| 新发现 | 可发现新特征 | 仅已知特征 |
+| 解读 | 需后续比对 | 直接可解读 |
+
+---
+
+# 总结
+
+## 本讲要点
+
+1. **突变特征** — 突变过程的"指纹"
+2. **SBS分类** — 96种突变类型
+3. **分析方法** — De novo和Refitting
+4. **NMF原理** — 矩阵分解提取特征
+5. **COSMIC** — 突变特征参考数据库
+6. **Sigminer** — 特征分析R包
+
+---
+
+# 谢谢！
+
+## 联系方式
+
+📧 wangshx@csu.edu.cn
+🌐 https://wanglabcsu.github.io/
+
+---
+
+## 参考资料
+
+1. Alexandrov LB et al. The repertoire of mutational signatures in human cancer. Nature. 2020
+2. COSMIC Signatures：https://cancer.sanger.ac.uk/signatures/
+3. Sigminer Book：https://shixiangwang.github.io/sigminer-book/

@@ -1,0 +1,31 @@
+/*-- scss:defaults --*/
+
+$primary: #c0392b;
+$body-bg: #1a1a1a;
+$body-color: #e0e0e0;
+$code-bg: #2d2d2d;
+$pre-bg: #2d2d2d;
+
+/*-- scss:rules --*/
+
+.quarto-title-banner {
+  background: linear-gradient(135deg, $primary 0%, darken($primary, 10%) 100%);
+}
+
+.course-card {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.schedule-table tr:hover {
+  background-color: #2d2d2d;
+}
+
+.feature-box {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+  border-left-color: $primary;
+}
+
+.instructor-card {
+  background: #2d2d2d;
+}

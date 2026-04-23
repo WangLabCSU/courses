@@ -1,0 +1,78 @@
+/* CSU Brand Colors */
+:root {
+  --csu-red: #8B0000;
+  --csu-gold: #C5B358;
+}
+
+.navbar {
+  background-color: var(--csu-red) !important;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+  color: #FFFFFF !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--csu-gold) !important;
+}
+
+/* Sidebar styling */
+.sidebar {
+  border-right: 2px solid var(--csu-red);
+}
+
+/* Content styling */
+.quarto-title-block h1.title {
+  color: var(--csu-red);
+}
+
+/* Code block styling */
+.code-summary {
+  background-color: #f8f9fa;
+  border-left: 3px solid var(--csu-red);
+}
+
+/* Download button styling */
+.btn-download {
+  background-color: var(--csu-red);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin: 5px;
+}
+
+.btn-download:hover {
+  background-color: var(--csu-gold);
+  color: var(--csu-red);
+}
+
+/* Details/summary styling */
+details {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 15px 0;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--csu-red);
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+}
+
+table th {
+  background-color: var(--csu-red);
+  color: white;
+}
+
+table td, table th {
+  border: 1px solid #dee2e6;
+  padding: 8px;
+}

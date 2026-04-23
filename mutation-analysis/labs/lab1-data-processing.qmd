@@ -1,0 +1,432 @@
+---
+title: "实验1：突变数据处理与分析"
+author: "王诗翔"
+date: "2026-04-23"
+execute:
+  freeze: false
+  eval: true
+  echo: true
+  output: true
+  warning: false
+  message: false
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+## 实验目标
+
+通过本实验，学生将学会：
+
+- 使用 maftools 读取和处理 MAF 数据
+- 了解 MAF 数据的基本结构和字段
+- 绘制突变概览图和 oncoplot
+- 进行基因突变频率分析
+- 完成生存分析实践
+
+## 实验准备
+
+### 安装必要包
+
+```r
+# 安装 maftools
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("maftools")
+
+# 加载包
+library(maftools)
+```
+
+### 数据准备
+
+本实验使用 maftools 内置的 TCGA LAML（急性髓系白血病）数据。
+
+```r
+# 加载示例数据路径
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml.clin <- system.file("extdata", "tcga_laml_annot.tsv", package = "maftools")
+
+# 数据下载链接（课程网站提供）
+# <a href="../data/tcga_laml.maf.gz" download>下载 MAF 数据</a>
+# <a href="../data/tcga_laml_clinical.tsv" download>下载临床数据</a>
+```
+
+## 1. MAF 数据读取
+
+### 创建 MAF 对象
+
+```r
+# 读取 MAF 文件并合并临床数据
+laml <- read.maf(maf = laml.maf, clinicalData = laml.clin)
+
+# 查看 MAF 对象基本信息
+laml
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+An object of class  MAF
+                    ID  summary   Mean  Median
+ 1:              Samples      193     NA      NA
+ 2:               Genes      880     NA      NA
+ 3:   Missense_Mutations     565     NA      NA
+ 4:   Nonsense_Mutations      85     NA      NA
+ 5:  Frame_Shift_Del_Ins      75     NA      NA
+ 6:            Variants     1627      8       6
+ 7:                TITV      193     NA      NA
+```
+
+</details>
+
+### 查看 MAF 数据结构
+
+```r
+# 查看样本概览
+sample_summary <- getSampleSummary(laml)
+head(sample_summary, 10)
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+   Tumor_Sample_Barcode Mutations_per_sample Missense_Mutation Nonsense_Mutation
+1:         TCGA-AB-2809                    6                3                0
+2:         TCGA-AB-2810                   10                5                1
+3:         TCGA-AB-2811                    5                2                1
+4:         TCGA-AB-2812                    8                4                0
+5:         TCGA-AB-2813                    7                3                1
+...
+```
+
+</details>
+
+```r
+# 查看基因突变概览
+gene_summary <- getGeneSummary(laml)
+head(gene_summary, 10)
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+   Hugo_Symbol Mutations_per_gene Missense_Mutation Nonsense_Mutation Frame_Shift_Del
+1:        FLT3                 54               29               8               5
+2:        DNMT3A               48               22              10               4
+3:         NPM1               30                1              16              13
+4:         IDH2               20               10               0               0
+5:         IDH1               18               13               0               0
+...
+```
+
+</details>
+
+```r
+# 查看变异类型分布
+fields_summary <- getFields(laml)
+head(fields_summary, 10)
+```
+
+### 查看临床数据
+
+```r
+# 查看临床数据
+clinical_data <- getClinicalData(laml)
+head(clinical_data, 10)
+```
+
+<details>
+<summary>点击查看运行结果</summary>
+
+```
+   Tumor_Sample_Barcode   FAB_classification Days_to_last_followup Overall_Survival_Status
+1:         TCGA-AB-2809                    M4                   365                       Alive
+2:         TCGA-AB-2810                    M3                   124                       Alive
+3:         TCGA-AB-2811                    M1                    82                       Alive
+...
+```
+
+</details>
+
+## 2. 突变概览可视化
+
+### 绘制突变概览图
+
+```r
+# 绘制突变类型分布图
+plotmafSummary(maf = laml, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+该图包含以下几个部分：
+
+- **上方左图**：各样本的突变数量分布
+- **上方右图**：突变类型分布（TITV）
+- **下方左图**：基因突变数量分布
+- **下方右图**：变异分类分布
+
+</details>
+
+### 绘制 Oncoplot
+
+Oncoplot 是展示基因突变分布的核心可视化工具。
+
+```r
+# 绘制前20个高频突变基因的 oncoplot
+oncoplot(maf = laml, top = 20)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+Oncoplot 展示内容：
+
+- **行**：基因名称，按突变频率排序
+- **列**：样本，按突变模式聚类
+- **颜色**：不同突变类型
+- **右侧条形图**：基因突变频率
+- **左侧条形图**：样本突变数量
+
+</details>
+
+### 自定义 Oncoplot
+
+```r
+# 添加临床数据注释
+oncoplot(
+    maf = laml,
+    top = 10,
+    clinicalFeatures = c("FAB_classification", "Overall_Survival_Status"),
+    sortByAnnotation = TRUE
+)
+```
+
+## 3. 突变频率分析
+
+### 查看高频突变基因
+
+```r
+# 获取高频突变基因列表
+top_genes <- getGeneSummary(laml)
+top_genes <- top_genes[order(-top_genes$Mutations_per_gene), ]
+head(top_genes, 10)
+```
+
+### 绘制瀑布图（Waterfall Plot）
+
+```r
+# 绘制特定基因的瀑布图
+waterfall(
+    maf = laml,
+    genes = c("FLT3", "DNMT3A", "NPM1", "IDH1", "IDH2"),
+    fontSize = 12
+)
+```
+
+## 4. 突变类型分析
+
+### TITV 分析（转换颠换分析）
+
+```r
+# 绘制 TITV 分析图
+titv(maf = laml, plotType = "bar")
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+TITV 分析展示：
+
+- **转换（Ti）**：A→G, G→A, C→T, T→C
+- **颠换（Tv）**：A→C, A→T, G→C, G→T, C→A, C→G, T→A, T→G
+- 各样本的转换/颠换比例分布
+
+</details>
+
+### 变异类型分布统计
+
+```r
+# 统计各变异类型数量
+variant_counts <- laml@variant.classification.summary
+print(variant_counts)
+```
+
+## 5. 生存分析实践
+
+### 准备生存分析数据
+
+```r
+# 查看可用临床数据字段
+clinical_vars <- colnames(getClinicalData(laml))
+print(clinical_vars)
+```
+
+### 基因突变生存分析
+
+```r
+# 分析 FLT3 基因突变与生存的关系
+mafSurvival(
+    maf = laml,
+    genes = "FLT3",
+    clinicalData = getClinicalData(laml),
+    clinicalFeature = "Overall_Survival_Status",
+    timeFeature = "Days_to_last_followup"
+)
+```
+
+<details>
+<summary>点击查看结果解读指南</summary>
+
+生存分析结果解读要点：
+
+- **风险比（HR）**：>1 表示突变增加风险，<1 表示突变降低风险
+- **P值**：<0.05 表示差异显著
+- **生存曲线**：直观展示两组生存差异
+- **置信区间**：反映估计的不确定性
+
+</details>
+
+### 比较多个基因
+
+```r
+# 分析多个基因的生存差异
+mafSurvival(
+    maf = laml,
+    genes = c("FLT3", "DNMT3A", "NPM1"),
+    clinicalData = getClinicalData(laml),
+    clinicalFeature = "Overall_Survival_Status",
+    timeFeature = "Days_to_last_followup"
+)
+```
+
+## 6. 突变关联分析
+
+### 基因突变互斥/协同分析
+
+```r
+# 分析基因突变之间的互斥或协同关系
+somaticInteractions(
+    maf = laml,
+    top = 25,
+    pvalue = c(0.05, 0.1)
+)
+```
+
+<details>
+<summary>点击查看结果说明</summary>
+
+突变关联分析结果：
+
+- **互斥（Mutually Exclusive）**：基因突变很少同时发生
+- **协同（Co-occurring）**：基因突变常同时发生
+- **P值**：评估关联是否显著
+- **热图**：可视化关联模式
+
+</details>
+
+## 7. 数据子集操作
+
+### 按样本筛选
+
+```r
+# 随机选择部分样本进行分析
+set.seed(123)  # 设置随机种子保证可重复性
+samples <- laml@variants.per.sample$Tumor_Sample_Barcode
+selected_samples <- sample(samples, 50)
+
+laml_subset <- subsetMaf(laml, tsb = selected_samples)
+
+# 查看子集数据
+laml_subset
+```
+
+### 按基因筛选
+
+```r
+# 选择特定基因进行分析
+genes_of_interest <- c("FLT3", "DNMT3A", "NPM1", "TP53")
+laml_genes <- subsetMaf(laml, genes = genes_of_interest)
+
+# 查看筛选后的基因突变情况
+getGeneSummary(laml_genes)
+```
+
+## 8. Oncoplot 进阶定制
+
+### 添加基因通路注释
+
+```r
+# 创建基因通路分组
+pathways <- list(
+    "Signaling" = c("FLT3", "KIT"),
+    "Epigenetic" = c("DNMT3A", "IDH1", "IDH2"),
+    "Transcription" = c("NPM1", "RUNX1")
+)
+
+# 绘制带通路注释的 oncoplot
+oncoplot(
+    maf = laml,
+    top = 15,
+    pathways = pathways,
+    pathwayTitle = "Gene Pathways"
+)
+```
+
+## 实验作业
+
+完成以下练习并提交 R Markdown 报告：
+
+### 作业1：绘制 Oncoplot
+
+使用以下代码绘制 oncoplot：
+
+```r
+library(maftools)
+set.seed(学号)  # 请替换为你的学号
+
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = 'maftools')
+laml.clin <- system.file('extdata', 'tcga_laml_annot.tsv', package = 'maftools')
+
+laml <- read.maf(maf = laml.maf, clinicalData = laml.clin)
+samps <- laml@variants.per.sample$Tumor_Sample_Barcode
+laml <- subsetMaf(laml, tsb = sample(samps, 150))
+
+# 绘制 oncoplot
+oncoplot(maf = laml, top = 20)
+```
+
+### 作业2：生存分析
+
+1. 挑选一个基因进行生存分析
+2. 说明挑选该基因的理由（参考文献或临床意义）
+3. 对生存分析结果进行解读
+
+**示例代码**：
+
+```r
+# 基因选择建议：查看基因突变频率和临床意义
+gene_summary <- getGeneSummary(laml)
+head(gene_summary, 20)
+
+# 选择感兴趣的基因进行生存分析
+mafSurvival(
+    maf = laml,
+    genes = "你选择的基因",
+    clinicalData = getClinicalData(laml),
+    clinicalFeature = "Overall_Survival_Status",
+    timeFeature = "Days_to_last_followup"
+)
+```
+
+### 提交要求
+
+- 将分析过程整理为 R Markdown 文档
+- 保存为 HTML 格式
+- 包含完整的代码、结果和解读
