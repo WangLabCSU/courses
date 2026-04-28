@@ -47,3 +47,6 @@ venv/
 
 **/*.quarto_ipynb
 _quarto_internal_scss_error.scss
+geneCountMatrix.txt
+samplesinfo.txt
+GO_BP_upregulated.csv

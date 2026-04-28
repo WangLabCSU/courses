@@ -20,9 +20,9 @@ execute:
 4. 绘制火山图、热图等可视化图表
 5. 进行基础的功能富集分析（GO/KEGG）
 
-**实验时长**：45分钟
-**实验数据**：真实甲状腺癌RNA-seq数据（PTC vs ATC）
-**数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
+- **实验时长**：45分钟
+- **实验数据**：真实甲状腺癌RNA-seq数据（PTC vs ATC）
+- **数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
 
 ---
 
@@ -40,6 +40,7 @@ execute:
 | **clusterProfiler** | 功能富集分析的R包，支持GO/KEGG/GSEA |
 
 ### ⚠️ 常见错误
+
 | 错误 | 正确做法 |
 |------|----------|
 | 使用pvalue而非padj筛选 | 必须使用padj（BH校正后） |
@@ -53,7 +54,7 @@ execute:
 
 ### 加载包和真实数据
 
-```r
+```{r}
 # 安装和加载所需包
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -68,6 +69,9 @@ for (pkg in packages) {
   }
 }
 
+# 中文字体
+showtext::showtext_auto()
+
 # 加载真实RNA-seq数据（PTC vs ATC甲状腺癌数据）
 # 如果实验1已完成，可以直接使用dds对象
 # 否则运行以下代码重新加载数据
@@ -77,24 +81,35 @@ for (pkg in packages) {
 # - samplesinfo.txt: ../data/samplesinfo.txt
 # 代码中使用GitHub链接确保可执行
 
-# 下载并读取数据
-data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
-data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
+# 下载数据文件（如果不存在）
+data_url_counts <- "http://biotree.top:38123/courses/rna-seq-analysis/data/geneCountMatrix.txt"
+data_url_info <- "http://biotree.top:38123/courses/rna-seq-analysis/data/samplesinfo.txt"
 
-if (!file.exists("geneCountMatrix.txt")) {
+#data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
+#data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
+
+if (!file.exists("../data/geneCountMatrix.txt")) {
   download.file(data_url_counts, "geneCountMatrix.txt", mode = "wb")
+  cat("已下载 geneCountMatrix.txt\n")
+  count_file <- "geneCountMatrix.txt"
+} else {
+  count_file <- "../data/geneCountMatrix.txt"
 }
-if (!file.exists("samplesinfo.txt")) {
+if (!file.exists("../data/samplesinfo.txt")) {
   download.file(data_url_info, "samplesinfo.txt", mode = "wb")
+  cat("已下载 samplesinfo.txt\n")
+  info_file <- "samplesinfo.txt"
+} else {
+  info_file <- "../data/samplesinfo.txt"
 }
 
 # 1. 读取表达矩阵
-counts_matrix <- read.table("geneCountMatrix.txt", header = TRUE, sep = "\t", check.names = FALSE)
+counts_matrix <- read.table(count_file, header = TRUE, sep = "\t", check.names = FALSE)
 counts <- counts_matrix[, -1]  # 移除基因symbol列
 rownames(counts) <- counts_matrix$gene_symbol
 
 # 2. 读取样本信息
-sample_info <- read.table("samplesinfo.txt", header = TRUE, sep = "\t")
+sample_info <- read.table(info_file, header = TRUE, sep = "\t")
 conditions <- factor(sample_info$type, levels = c("PTC", "ATC"))
 
 # 3. 创建DESeq2对象
@@ -126,7 +141,7 @@ cat("样本名称:", colnames(dds), "\n")
 
 ### 练习1.1：运行DESeq2差异分析
 
-```r
+```{r}
 # TODO: 完成DESeq2差异分析流程
 
 # 1. 运行DESeq2（包含标准化、离散度估计、统计检验）
@@ -175,7 +190,7 @@ cat("padj < 0.05:", sum(res$padj < 0.05, na.rm = TRUE), "\n")
 
 ### 练习1.2：理解结果表并筛选差异基因
 
-```r
+```{r}
 # TODO: 整理和解读差异分析结果
 
 # 1. 将结果转换为数据框并移除NA
@@ -208,7 +223,7 @@ print(head(top_down[, c("gene", "baseMean", "log2FoldChange", "padj")], 10))
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 res_df <- as.data.frame(res)
@@ -240,7 +255,7 @@ table(res_df$diff_status)
 
 MA图展示表达量（mean）与差异倍数（log2FC）的关系。
 
-```r
+```{r}
 # TODO: 创建MA图
 
 # 方法1：使用DESeq2内置函数（快速）
@@ -289,7 +304,7 @@ print(ma_plot)
 
 火山图同时展示差异倍数和统计显著性。
 
-```r
+```{r}
 # TODO: 创建火山图
 
 # 1. 准备数据
@@ -328,7 +343,7 @@ print(volcano_labeled)
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 res_plot <- res_df
@@ -352,6 +367,7 @@ print(volcano_plot)
 
 ::: {.callout-note}
 ### 火山图解读
+
 - **左上/右上区域**：既显著又差异大的基因
 - **顶部水平线**：padj = 0.05阈值
 - **垂直虚线**：|log2FC| = 1阈值
@@ -362,7 +378,7 @@ print(volcano_plot)
 
 ### 练习2.3：差异基因热图
 
-```r
+```{r}
 # TODO: 创建差异基因表达热图
 
 # 1. 选择Top差异基因进行可视化（padj最小的前50个）
@@ -396,7 +412,7 @@ pheatmap(heatmap_scaled,
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 top_genes_heatmap <- head(res_df[order(res_df$padj), "gene"], 50)
@@ -423,6 +439,7 @@ pheatmap(heatmap_scaled,
 
 ::: {.callout-tip}
 ### 热图解读
+
 - **红色**：高表达
 - **蓝色**：低表达
 - **列聚类**：样本是否按条件分组
@@ -435,7 +452,7 @@ pheatmap(heatmap_scaled,
 
 ### 练习3.1：GO富集分析
 
-```r
+```{r}
 # TODO: 进行GO功能富集分析
 
 # 1. 准备差异基因列表
@@ -507,7 +524,7 @@ cat("\n结果已保存到: GO_BP_upregulated.csv\n")
 
 ### 练习3.2：KEGG通路富集分析
 
-```r
+```{r}
 # TODO: 进行KEGG通路富集分析
 
 # 1. 基因ID转换（SYMBOL → ENTREZID）
@@ -535,7 +552,7 @@ dotplot(kk, showCategory = 15, title = "KEGG Pathway Enrichment")
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 gene_df <- bitr(gene_list_up, fromType = "SYMBOL",
@@ -551,6 +568,7 @@ dotplot(kk, showCategory = 15)
 
 ::: {.callout-note}
 ### 常用物种代码
+
 | 物种 | 代码 |
 |------|------|
 | 人类 | hsa |
@@ -563,7 +581,7 @@ dotplot(kk, showCategory = 15)
 
 ### 练习3.3：网络图可视化（cnetplot）
 
-```r
+```{r}
 # TODO: 绘制富集基因与通路的网络图
 
 # 1. 准备基因表达变化数据
@@ -573,17 +591,9 @@ names(gene_foldchange) <- res_df$gene
 # 2. 绘制cnetplot
 # 显示前5个显著富集的条目及其关联基因
 cnetplot(ego_up,
-         categorySize = "pvalue",      # 节点大小按p值
-         foldChange = gene_foldchange, # 显示基因表达变化
-         showCategory = 5,             # 显示前5个条目
-         circular = FALSE,             # 线性布局
-         colorEdge = TRUE)             # 按条目着色边
-
-# 3. 圆形布局（更美观）
-cnetplot(ego_up,
          foldChange = gene_foldchange,
-         showCategory = 3,
-         circular = TRUE)
+         showCategory = 5              # 显示前5个条目
+)
 ```
 
 <details>
@@ -593,8 +603,6 @@ cnetplot(ego_up,
 
 - **大节点**：富集条目（GO term）
 - **小节点**：基因
-- **红色基因**：上调
-- **蓝色基因**：下调
 - **用途**：查看哪些基因参与多个通路，以及基因与通路的关联关系
 
 </details>
@@ -603,7 +611,7 @@ cnetplot(ego_up,
 
 ### 练习3.4：GSEA分析（可选，进阶）
 
-```r
+```{r}
 # TODO: 进行GSEA分析
 
 # 1. 准备排序基因列表（所有基因，按log2FC排序）

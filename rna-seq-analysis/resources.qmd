@@ -34,8 +34,8 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 瑞典国家生物信息学基础设施RNA-seq培训材料
 :::
 ::: {.resource-card}
-#### [WangLab Workshop](https://github.com/WangLabCSU/workshop-RNAseq)
-本实验室RNA-seq培训资料，与课程内容配套
+#### [Workshop RNA-seq](https://github.com/WangLabCSU/workshop-RNAseq)
+本实验室fork的RNA-seq培训资料
 :::
 :::
 
@@ -61,6 +61,7 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 
 | 工具 | 用途 | 链接 |
 |------|------|------|
+| **fastp** | 一个超快速的全能FASTQ预处理器（质量控制/接头/修剪/过滤/分割/合并...） | https://github.com/OpenGene/fastp |
 | **FastQC** | 测序数据质控 | https://www.bioinformatics.babraham.ac.uk/projects/fastqc/ |
 | **Trimmomatic** | 接头和低质量序列去除 | http://www.usadellab.org/cms/?page=trimmomatic |
 | **STAR** | RNA-seq reads比对 | https://github.com/alexdobin/STAR |
@@ -90,6 +91,7 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 ### 课程示例数据
 
 课程使用真实甲状腺癌RNA-seq数据集（PTC vs ATC），包含：
+
 - **对照组（PTC）**和**实验组（ATC）**各3个生物学重复
 - ~20,000个基因的原始计数矩阵
 - 含批次信息的完整样本metadata
@@ -98,14 +100,6 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 |------|------|------|
 | `geneCountMatrix.txt` | 基因表达原始计数矩阵（~20,000基因 × 6样本） | <a href="data/geneCountMatrix.txt" download>下载</a> |
 | `samplesinfo.txt` | 样本信息表（样本名、分组、批次） | <a href="data/samplesinfo.txt" download>下载</a> |
-
-### 公开数据集
-
-| 数据集 | 说明 | 获取方式 |
-|--------|------|----------|
-| **airway** | 人气道上皮细胞数据集 | `data(airway, package="airway")` |
-| **pasilla** | 果蝇RNA-seq数据集 | `data(pasillaGenes)` |
-| **GSE52778** | 人类前列腺癌数据集 | GEO数据库 |
 
 ## 学习路径建议
 
@@ -134,4 +128,4 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 
 ---
 
-**提示**：如果遇到问题，建议首先查阅官方文档和Vignette，然后在Bioconductor支持论坛或Biostars搜索类似问题。
+**提示**：如果遇到问题，建议首先查阅官方文档和Vignette，然后通过搜索引擎/AI搜索类似问题。

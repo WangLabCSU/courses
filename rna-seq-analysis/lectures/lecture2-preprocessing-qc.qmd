@@ -6,16 +6,19 @@ subtitle: "从FASTQ到表达矩阵"
 ## 本讲概述
 
 **学习目标**：
+
 - 理解FASTQ格式和质量分数
 - 掌握FastQC质控报告解读
 - 理解比对原理和常用工具
 - 掌握标准化方法的选择
 
 **重点难点**：
+
 - 🔑 **重点**：质控指标解读、标准化原理
 - ⚠️ **难点**：TPM vs FPKM vs Size Factors 的区别与选择
 
 **配套数据**：本课程使用真实甲状腺癌RNA-seq数据（PTC vs ATC）
+
 - <a href="../data/geneCountMatrix.txt" download>下载 geneCountMatrix.txt</a>
 - <a href="../data/samplesinfo.txt" download>下载 samplesinfo.txt</a>
 
@@ -251,7 +254,7 @@ size factor_j = median_i (counts_ij / geometric_mean_i)
 **计算示例**：
 | 样本 | 总reads | Size Factor | 校正后counts |
 |------|---------|-------------|--------------|
-| A | 10M | 1.0 | counts × 1.0 |
+| A | 10M | 1.0 | counts / 1.0 |
 | B | 20M | 2.0 | counts / 2.0 |
 
 ::: {.callout-tip}

@@ -20,9 +20,9 @@ execute:
 4. 通过PCA和相关性热图评估样本质量
 5. 识别潜在的批次效应和异常样本
 
-**实验时长**：45分钟
-**实验数据**：基于真实甲状腺癌RNA-seq数据（PTC vs ATC）的简化数据集
-**数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
+- **实验时长**：45分钟
+- **实验数据**：基于真实甲状腺癌RNA-seq数据（PTC vs ATC）的简化数据集
+- **数据下载**：<a href="../data/geneCountMatrix.txt" download>geneCountMatrix.txt</a> | <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
 
 ---
 
@@ -50,7 +50,7 @@ execute:
 
 ### 安装和加载包
 
-```r
+```{r}
 # 安装Bioconductor包（如果尚未安装）
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -76,6 +76,9 @@ library(DESeq2)
 library(ggplot2)
 library(pheatmap)
 library(RColorBrewer)
+
+# 中文字体
+showtext::showtext_auto()
 ```
 
 ---
@@ -106,28 +109,38 @@ library(RColorBrewer)
 - <a href="../data/samplesinfo.txt" download>samplesinfo.txt</a>
 :::
 
-```r
+```{r}
 # TODO: 下载数据文件（从课程网站下载到工作目录）
 # 如果在本地运行，可以直接使用课程网站下载的文件
 # 或从以下链接下载：
 # - geneCountMatrix.txt: https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt
 # - samplesinfo.txt: https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt
 
-# 下载数据文件（如果不存在）
-data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
-data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
 
-if (!file.exists("geneCountMatrix.txt")) {
+# 下载数据文件（如果不存在）
+data_url_counts <- "http://biotree.top:38123/courses/rna-seq-analysis/data/geneCountMatrix.txt"
+data_url_info <- "http://biotree.top:38123/courses/rna-seq-analysis/data/samplesinfo.txt"
+
+#data_url_counts <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/geneCountMatrix.txt"
+#data_url_info <- "https://github.com/WangLabCSU/courses/raw/main/rna-seq-analysis/data/samplesinfo.txt"
+
+if (!file.exists("../data/geneCountMatrix.txt")) {
   download.file(data_url_counts, "geneCountMatrix.txt", mode = "wb")
   cat("已下载 geneCountMatrix.txt\n")
+  count_file <- "geneCountMatrix.txt"
+} else {
+  count_file <- "../data/geneCountMatrix.txt"
 }
-if (!file.exists("samplesinfo.txt")) {
+if (!file.exists("../data/samplesinfo.txt")) {
   download.file(data_url_info, "samplesinfo.txt", mode = "wb")
   cat("已下载 samplesinfo.txt\n")
+  info_file <- "samplesinfo.txt"
+} else {
+  info_file <- "../data/samplesinfo.txt"
 }
 
 # 3. 读取表达矩阵（基因计数矩阵）
-counts_matrix <- read.table("geneCountMatrix.txt", header = TRUE, sep = "\t", check.names = FALSE)
+counts_matrix <- read.table(count_file, header = TRUE, sep = "\t", check.names = FALSE)
 
 # 查看数据结构
 cat("原始数据维度:", dim(counts_matrix), "\n")
@@ -143,7 +156,7 @@ cat("样本名称:\n")
 print(colnames(counts))
 
 # 5. 读取样本信息
-sample_info <- read.table("samplesinfo.txt", header = TRUE, sep = "\t")
+sample_info <- read.table(info_file, header = TRUE, sep = "\t")
 cat("\n样本信息:\n")
 print(sample_info)
 
@@ -171,7 +184,7 @@ cat("\n零值比例:", round(mean(counts == 0) * 100, 1), "%\n")
 - 矩阵维度：约20,000+个基因 × 6个样本（真实数据规模）
 - 样本：ATC1, ATC2, ATC3（未分化甲状腺癌）vs PTC1, PTC2, PTC3（乳头状甲状腺癌）
 - 总reads数：各样本测序深度约数百万（真实测序深度）
-- 零值比例：约30-50%，符合RNA-seq数据特征（大量低表达/未表达基因）
+- 零值比例：约20-50%，符合RNA-seq数据特征（大量低表达/未表达基因）
 
 </details>
 
@@ -181,7 +194,7 @@ cat("\n零值比例:", round(mean(counts == 0) * 100, 1), "%\n")
 
 ### 练习2.1：创建DESeq2对象
 
-```r
+```{r}
 # TODO: 创建样本信息表并构建DESeq2对象
 
 # 1. 创建colData数据框（样本信息）
@@ -211,7 +224,7 @@ cat("\n注意：数据中包含批次信息（C1, C2），可用于后续的批�
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 colData <- data.frame(
@@ -231,6 +244,7 @@ dds <- DESeqDataSetFromMatrix(
 
 ::: {.callout-warning}
 ### ⚠️ 常见错误
+
 **错误**：使用TPM/FPKM等标准化数据创建DESeq2对象
 **正确**：DESeq2必须使用原始count数据，标准化在内部自动进行
 :::
@@ -240,10 +254,11 @@ dds <- DESeqDataSetFromMatrix(
 ### 练习2.2：过滤低表达基因
 
 **为什么需要过滤？**
+
 - 低表达基因的计数随机性大，可能引入噪音
 - 减少计算量，提高统计效能
 
-```r
+```{r}
 # TODO: 完成低表达基因过滤
 
 # 1. 统计过滤前的基因数
@@ -269,7 +284,7 @@ print(dds)
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 genes_before <- nrow(dds)
@@ -292,12 +307,14 @@ dds <- dds_filtered
 ### 练习2.3：计算Size Factors（测序深度标准化）
 
 **原理**：中位数比值法
+
 ```
 size factor_j = median_i (counts_ij / geometric_mean_i)
 ```
+
 假设：大多数基因在不同样本间表达稳定
 
-```r
+```{r}
 # TODO: 完成size factor计算和分析
 
 # 1. 计算每个样本的总reads数
@@ -337,7 +354,7 @@ ggplot(df_plot, aes(x = LibSize, y = SizeFactor, color = Condition)) +
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 lib_size <- colSums(counts(dds))
@@ -351,9 +368,51 @@ size_factors <- sizeFactors(dds)
 
 ::: {.callout-note}
 ### 💡 关键理解
+
 - Size Factor > 1：该样本测序深度高于中位数，counts会被缩小
 - Size Factor < 1：该样本测序深度低于中位数，counts会被放大
 - 理想情况下，Size Factor应与测序深度正相关
+:::
+
+::: {.callout-important}
+### 🔍 深入理解：为什么 Library Size 大但 Size Factor 可能 < 1？
+
+这是学习者常遇到的困惑！关键在于理解 **Size Factor ≠ Library Size 归一化**。
+
+**DESeq2 的中位数比值法原理**：
+
+```
+size factor_j = median_i (counts_ij / geometric_mean_i)
+```
+
+对于每个基因 i，计算其在所有样本中的几何平均值，然后计算每个样本中该基因与几何平均值的比值，最后取所有基因比值的中位数。
+
+**可能出现 "Library Size 大但 Size Factor < 1" 的原因**：
+
+1. **表达分布差异**：PTC2 虽然总 reads 多，但这些 reads 可能集中在少数高表达基因上，而大多数基因的表达量相对较低。
+
+2. **几何平均效应**：如果一个样本中大多数基因（特别是中等表达基因）的表达量低于几何平均值，即使有少数超高表达基因"贡献"了大量 reads，size factor 仍可能 < 1。
+
+3. **RNA 组成偏好**：某些生物学条件可能导致特定基因大幅上调，"吸收"了大量测序资源，导致其他基因的相对比例下降。
+
+**类比理解**：
+
+想象两个国家的人均收入比较：
+
+- A国：总收入100亿，人口1亿，但90%的财富集中在1%的富人手中
+- B国：总收入80亿，人口1亿，财富分配相对均匀
+
+虽然A国总收入更高，但如果看"中位数收入"，B国可能更高。Size Factor 就像"中位数收入"，不受极端值影响。
+
+**如何验证**：
+
+可以检查 PTC2 样本中基因表达的分布：
+
+- 计算基因表达的 Gini 系数（不平等程度）
+- 比较高表达基因占比
+- 查看是否存在少数极高表达基因
+
+这是 DESeq2 方法设计的优势——对 RNA 组成偏好具有稳健性！
 :::
 
 ---
@@ -362,7 +421,7 @@ size_factors <- sizeFactors(dds)
 
 ### 练习3.1：获取标准化和转换后的数据
 
-```r
+```{r}
 # TODO: 获取不同类型的数据
 
 # 1. 获取normalized counts（size factor校正后）
@@ -388,7 +447,7 @@ cat("\nVST数据范围:", round(min(vst_matrix), 2), "to", round(max(vst_matrix)
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 normalized_counts <- counts(dds, normalized = TRUE)
@@ -400,6 +459,7 @@ vst_matrix <- assay(dds_vst)
 
 ::: {.callout-note}
 ### VST vs rlog 选择
+
 - **VST**：适用于大样本（n > 30），计算更快
 - **rlog**：适用于小样本（n < 30），效果更稳定
 - 本实验使用VST即可
@@ -409,7 +469,7 @@ vst_matrix <- assay(dds_vst)
 
 ### 练习3.2：样本间相关性分析
 
-```r
+```{r}
 # TODO: 计算和可视化样本间相关性
 
 # 1. 计算样本间Pearson相关系数矩阵
@@ -430,12 +490,11 @@ pheatmap(cor_matrix,
          main = "Sample Correlation Heatmap",
          color = colorRampPalette(brewer.pal(9, "Blues"))(100),
          display_numbers = TRUE,
-         number_color = "white",
          fontsize_number = 8)
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 cor_matrix <- cor(vst_matrix)
@@ -455,6 +514,7 @@ pheatmap(cor_matrix,
 
 ::: {.callout-important}
 ### 质控判断标准
+
 ✅ **良好**：组内相关性 > 组间相关性（同条件样本聚类在一起）
 ❌ **异常**：样本按批次或其他非生物学因素聚类
 :::
@@ -465,7 +525,7 @@ pheatmap(cor_matrix,
 
 PCA帮助我们识别样本间的主要变异来源和潜在的批次效应。
 
-```r
+```{r}
 # TODO: 完成PCA分析
 
 # 1. 使用DESeq2的plotPCA函数
@@ -496,7 +556,7 @@ cat("3. 是否有明显的异常样本？", "\n")
 ```
 
 <details>
-<summary>点击查看参考答案</summary>
+<summary>点击查看核心代码</summary>
 
 ```r
 pca_plot <- plotPCA(dds_vst, intgroup = "condition")

@@ -87,7 +87,7 @@ showtext::showtext_auto()
 
 # 第2部分：功能注释数据库
 
-## 2.1 Gene Ontology (GO)
+## 2.1 Gene Ontology (GO) {.small}
 
 **三大分支**：
 
@@ -186,6 +186,12 @@ gene_df <- bitr(gene_symbols,
 P(X=k) = C(M,k) × C(N-M, n-k) / C(N,n)
 ```
 
+## 4.1 ORA原理
+
+::: {.columns}
+![](ora.png){fig-align="center" width="100%"}
+:::
+
 ---
 
 ## 4.2 ORA分析步骤
@@ -206,7 +212,7 @@ P(X=k) = C(M,k) × C(N-M, n-k) / C(N,n)
 
 ---
 
-## 4.3 GO富集分析代码
+## 4.3 GO富集分析代码 {.small}
 
 ```r
 # 1. ID转换
@@ -250,6 +256,7 @@ head(ego)
 ## 5.1 KEGG分析的特殊性
 
 **注意**：`enrichKEGG()` 支持的ID类型与GO不同：
+
 - 支持：kegg, ncbi-geneid, ncbi-proteinid, uniprot
 - **不支持**：SYMBOL, ENSEMBL
 
@@ -353,6 +360,7 @@ gsea <- gseGO(
 ## 7.1 条形图和点图
 
 ### 条形图
+
 ```r
 barplot(ego, showCategory = 20, title = "GO BP Enrichment")
 ```
@@ -363,36 +371,46 @@ dotplot(ego, showCategory = 15, orderBy = "p.adjust")
 ```
 
 **点图解读**：
+
 - **点大小**：富集基因数（Count）
 - **颜色**：显著性（p.adjust）
 - **X轴**：GeneRatio
 
 ---
 
-## 7.2 网络图（Cnetplot）
+## 7.2 网络图（Cnetplot）{.small}
+
+::: {.columns}
+![](cnetplot.png){fig-align="center" width="40%"}
+:::
 
 ```r
 cnetplot(ego,
-         categorySize = "pvalue",
          foldChange = geneList,
          showCategory = 5)
 ```
 
+
 **用途**：
+
 - 显示富集条目间的基因重叠
 - 查看哪些基因参与多个通路
-- 结合表达变化方向（红色=上调，蓝色=下调）
 
 ---
 
 ## 7.3 GSEA Mountain Plot
 
+::: {.columns}
+![](gseaplot.png){fig-align="center" width="40%"}
+:::
+
 ```r
 gseaplot2(gsea, geneSetID = 1, title = gsea$Description[1])
 ```
 
-**图例解读**：
-- 绿线：富集分数曲线
+**解读**：
+
+- 富集分数曲线
 - 黑色竖线：基因集中基因在排序列表中的位置
 - 热图：基因表达值分布
 
@@ -452,15 +470,24 @@ KEGG分析显示上调基因富集于"Pathways in cancer"
 5. **可视化** — 条形图、点图、**cnetplot**、GSEA mountain plot
 6. **结果解读** — 关注显著性、GeneRatio、生物学意义
 
+## 作业
+
+1. 以 batch 为协变量完成 ATC vs PTV 的差异表达分析
+2. 对差异基因进行GO和KEGG富集分析，撰写结果描述
+3. 使用点图和cnetplot可视化富集结果
+4. 展示Top1的GSEA结果，并解读其生物学意义
+
+- 主要形式为 `.R`/`.Rmd/Qmd`脚本，需包含注释和结果输出
+
 ---
 
 # 谢谢！
 
 ## 联系方式
 
-📧 wangshx@csu.edu.cn
-🌐 https://wanglabcsu.github.io/
-🐙 https://github.com/WangLabCSU
+- 📧 wangshx@csu.edu.cn
+- 🌐 https://wanglabcsu.github.io/
+- 🐙 https://github.com/WangLabCSU
 
 ---
 

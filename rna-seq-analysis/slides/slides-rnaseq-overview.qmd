@@ -59,11 +59,15 @@ showtext::showtext_auto()
 - **定量分析** — 测定每个基因的转录本丰度
 - **差异分析** — 比较不同条件下基因表达变化
 - **新转录本发现** — 鉴定新的基因和剪接异构体
-- **等位基因表达** — 分析杂合子中等位基因特异性表达
+- ...
 
 ---
 
 ## 1.2 RNA-seq vs 芯片技术
+
+::: {.columns}
+![](microarray-and-rnaseq.jpg){fig-align="right" width="50%"}
+:::
 
 | 特性 | RNA-seq | 芯片（Microarray） |
 |------|---------|-------------------|
@@ -82,6 +86,7 @@ showtext::showtext_auto()
 ::: {.columns}
 ::: {.column width="50%"}
 ### 研究领域
+
 - 🧬 **肿瘤研究** — 癌症驱动基因、分型标志物
 - 💊 **药物研发** — 药物反应预测、靶点发现
 - 🧫 **发育生物学** — 时空表达模式分析
@@ -89,6 +94,7 @@ showtext::showtext_auto()
 :::
 ::: {.column width="50%"}
 ### 临床转化
+
 - 疾病分子分型
 - 预后标志物发现
 - 治疗靶点筛选
@@ -102,13 +108,13 @@ showtext::showtext_auto()
 
 ## 2.1 整体流程图
 
-```
-样本采集 → RNA提取 → mRNA富集 → 片段化 → cDNA合成
-                                                ↓
-结果分析 ← 数据处理 ← 测序 ← 文库制备 ← 接头连接
-```
+::: {.columns}
+![](rnaseq-workflow.png){fig-align="center" width="60%"}
+:::
+
 
 **关键质控点**：
+
 - RNA完整性（RIN > 7）
 - 文库浓度和片段大小
 - 测序质量（Q30 > 85%）
@@ -139,11 +145,13 @@ showtext::showtext_auto()
 **适用**：真核生物、完整RNA样本
 
 **优点**：
+
 - 富集成熟mRNA
 - 数据利用率高
 - rRNA污染低
 
 **缺点**：
+
 - 丢失非编码RNA
 - 无poly-A的转录本丢失
 - 不适合降解样本
@@ -153,11 +161,13 @@ showtext::showtext_auto()
 **适用**：原核生物、降解样本
 
 **优点**：
+
 - 保留非编码RNA
 - 更全面的转录组
 - 适合FFPE样本
 
 **缺点**：
+
 - rRNA残留可能较高
 - 数据复杂度增加
 :::
@@ -177,6 +187,8 @@ showtext::showtext_auto()
 4. **测序引物结合**
 5. **循环测序** — 加入荧光标记的dNTP
 6. **图像采集** — 读取每个碱基的荧光信号
+
+- [在线视频 - B 站](https://www.bilibili.com/video/BV1W44y1373N/?spm_id_from=333.337.search-card.all.click&vd_source=295fe87a6b67e73540bc390bf01d423e)
 
 ---
 
@@ -218,7 +230,7 @@ showtext::showtext_auto()
 
 ## 4.1 实验设计基本原则
 
-```markdown
+```
 1. 对照组设置 — 必须设置对照组
 2. 随机化 — 样本处理顺序随机
 3. 平衡设计 — 各组样本数相等
@@ -343,6 +355,7 @@ Q = -10 × log10(P)  （P为错误概率）
 
 ::: {.callout-warning}
 **低比对率可能原因**：
+
 - 接头未去除干净
 - 样本污染
 - 参考基因组选择错误
@@ -399,9 +412,9 @@ Q = -10 × log10(P)  （P为错误概率）
 
 ## 联系方式
 
-📧 wangshx@csu.edu.cn
-🌐 https://wanglabcsu.github.io/
-🐙 https://github.com/WangLabCSU
+- 📧 wangshx@csu.edu.cn
+- 🌐 https://wanglabcsu.github.io/
+- 🐙 https://github.com/WangLabCSU
 
 ---
 
