@@ -50,37 +50,33 @@ jobs:
             liblzma-dev \
             python3
 
-      - name: Install R dependencies
+      - name: Install R dependencies via pak
         run: |
-          # 安装 CRAN 包
-          install.packages(c(
-            "rmarkdown",
-            "knitr",
-            "showtext",
-            "tidyverse",
-            "DT",
-            "reticulate",
-            "pheatmap",
-            "RColorBrewer",
-            "sigminer"
+          # 所有需要安装的 R 包（CRAN + Bioconductor）
+          pkgs <- c(
+            "rmarkdown", "knitr", "showtext", "tidyverse", "DT",
+            "reticulate", "pheatmap", "RColorBrewer", "sigminer",
+            "DESeq2", "edgeR", "clusterProfiler", "enrichplot",
+            "org.Hs.eg.db", "GenomicRanges", "maftools",
+            "VariantAnnotation", "TCGAbiolinks"
+          )
+
+          # 安装 pak（自动处理二进制缓存和并行下载）
+          install.packages("pak", repos = sprintf(
+            "https://r-lib.github.io/p/pak/stable/%s/%s/%s",
+            .Platform$pkgType, R.Version()$os, R.Version()$arch
           ))
 
-          # 安装 BiocManager（如未安装）
-          if (!require("BiocManager", quietly = TRUE))
-            install.packages("BiocManager")
+          # 自动检测并安装可能遗漏的系统依赖
+          sysreqs <- pak::pkg_system_requirements(pkgs)
+          if (length(sysreqs) > 0) {
+            system(paste("sudo apt-get install -y",
+              paste(shQuote(sysreqs), collapse = " ")))
+          }
 
-          # 安装 Bioconductor 包
-          BiocManager::install(c(
-            "DESeq2",
-            "edgeR",
-            "clusterProfiler",
-            "enrichplot",
-            "org.Hs.eg.db",
-            "GenomicRanges",
-            "maftools",
-            "VariantAnnotation",
-            "TCGAbiolinks"
-          ))
+          # 统一安装所有 R 包
+          # pak 自动从 CRAN 和 Bioconductor 解析安装源
+          pak::pak(pkgs)
         shell: Rscript {0}
         
       - name: Render website
