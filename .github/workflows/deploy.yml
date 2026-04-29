@@ -67,15 +67,9 @@ jobs:
             .Platform$pkgType, R.Version()$os, R.Version()$arch
           ))
 
-          # 自动检测并安装可能遗漏的系统依赖
-          sysreqs <- pak::pkg_system_requirements(pkgs)
-          if (length(sysreqs) > 0) {
-            system(paste("sudo apt-get install -y",
-              paste(shQuote(sysreqs), collapse = " ")))
-          }
-
-          # 统一安装所有 R 包
-          # pak 自动从 CRAN 和 Bioconductor 解析安装源
+          # 统一安装所有 R 包（CRAN + Bioconductor）
+          # 系统依赖已在上一阶段手动安装完备
+          # pak 自动处理依赖解析、并行下载和二进制缓存
           pak::pak(pkgs)
         shell: Rscript {0}
         
