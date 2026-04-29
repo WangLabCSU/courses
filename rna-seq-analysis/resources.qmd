@@ -37,6 +37,10 @@ edgeR用户指南，适用于复杂实验设计的差异分析
 #### [Workshop RNA-seq](https://github.com/WangLabCSU/workshop-RNAseq)
 本实验室fork的RNA-seq培训资料
 :::
+::: {.resource-card}
+#### [Auto SRA RNA-seq Pipeline](https://github.com/WangLabCSU/auto_sra_rnaseq_pipeline)
+自动化SRA RNA-seq数据下载与处理流程（fastq-dump、质控、比对、表达定量）
+:::
 :::
 
 ## 参考书籍

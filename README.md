@@ -195,6 +195,7 @@ rsync -avz _site/ user@server:/var/www/html/courses/
 - https://github.com/WangLabCSU/bioc-project
 - https://github.com/WangLabCSU/RBiocBook
 - https://github.com/WangLabCSU/BS831
+- https://github.com/WangLabCSU/auto_sra_rnaseq_pipeline
 - https://github.com/WangLabCSU/lincs-workshop-2020
 - https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook
 

@@ -41,13 +41,34 @@ jobs:
 
       - name: Install R dependencies
         run: |
+          # 安装 CRAN 包
           install.packages(c(
             "rmarkdown",
             "knitr",
             "showtext",
             "tidyverse",
             "DT",
-            "reticulate"
+            "reticulate",
+            "pheatmap",
+            "RColorBrewer",
+            "sigminer"
+          ))
+
+          # 安装 BiocManager（如未安装）
+          if (!require("BiocManager", quietly = TRUE))
+            install.packages("BiocManager")
+
+          # 安装 Bioconductor 包
+          BiocManager::install(c(
+            "DESeq2",
+            "edgeR",
+            "clusterProfiler",
+            "enrichplot",
+            "org.Hs.eg.db",
+            "GenomicRanges",
+            "maftools",
+            "VariantAnnotation",
+            "TCGAbiolinks"
           ))
         shell: Rscript {0}
         
