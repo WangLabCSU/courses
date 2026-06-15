@@ -2,7 +2,7 @@
 title: "RNA-seq概述"
 subtitle: "转录组测序原理与实验流程"
 author: "王诗翔 副教授<br>中南大学生物医学信息系"
-date: "2026-03-21"
+date: "2026-04-30"
 format:
   revealjs:
     theme: [default, ../styles/slides.scss]
