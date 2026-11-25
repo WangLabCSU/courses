@@ -57,7 +57,10 @@ if [ ! -d "$SOURCE_DIR" ]; then
     exit 1
 fi
 
-# Sync with rsync: force overwrite, delete extraneous files on destination
-rsync -avz --delete "$SOURCE_DIR/" "$TARGET_HOST:$TARGET_DIR/"
+# Sync with rsync: force overwrite, delete extraneous files on destination.
+# --chmod ensures all synced files/dirs are readable by the web server user
+# (Caddy runs as a non-owner account; a locally restrictive file mode such as
+# 700 would otherwise propagate via -a and cause HTTP 403 on download).
+rsync -avz --delete --chmod=Du=rwx,Do=rx,Fu=rw,Fo=r "$SOURCE_DIR/" "$TARGET_HOST:$TARGET_DIR/"
 
 echo "Sync completed successfully!"
